@@ -1,7 +1,7 @@
 <?php
     $this->layout("_theme");
 ?>
-
+   <link rel="stylesheet" href="<?= url('assets/app/css/styleSass.css') ?>">
 <div id="container">
 
         <!--Container da Barra Lateral-->

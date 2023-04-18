@@ -1,0 +1,12 @@
+@import "../variables/colors.scss";
+
+.deps {
+    margin-left: 30px;
+    font-size: 35px;
+    font-family: Palatino, URW Palladio L, serif;
+  }
+
+nav{
+    background-color: $background-light;
+    border-bottom: 1px solid #737373 !important;;
+}

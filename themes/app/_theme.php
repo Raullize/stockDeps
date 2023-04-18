@@ -6,9 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="<?= url('assets/app/css/style.css') ?>">
-    <link rel="stylesheet" href="<?= url('assets/app/css/styleSass.css') ?>">
-
+    <link rel="stylesheet" href="<?= url('assets/app/css/styleSassGeral.css') ?>">
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
@@ -19,7 +17,9 @@
 
  <!--TOPO DA PÁGINA-->
  <nav class="navbar">
+    <a class="navbar-brand"href="<?= url() ?>">
         <p class="deps">Stock deps</p>
+    </a>
         <!--BARRA DE PESQUISA-->
         <div class="inputPesquisa">
             <form class="d-flex" role="search">
@@ -28,8 +28,9 @@
                 <button class="btn btn-outline-dark" type="submit">Procurar</button>
             </form>
         </div>
-        <hr>
+        
     </nav>
+    
 
 <?php
 
