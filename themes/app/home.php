@@ -6,25 +6,29 @@
    <div class="container1">
   <!--BARRA LATERAL DO SITE-->
   <div class="barraLateral">
-    <a href="<?= url('/estoque') ?>">
+    <a href="<?= url('estoque') ?>">
       <button class="botaoBarraLateral">
         <img class="iconesBarraLateral" id="iconeEstoque" src="<?= url('assets/app/icones/iconeEstoque.png') ?>" alt="">
         <p class="nomesBarraLateral">Estoque</p>
       </button>
     </a>
+    <a href="<?= url('cadastro') ?>"> 
     <button class="botaoBarraLateral">
       <img class="iconesBarraLateral" id="iconeProduto" src="<?= url('assets/app/icones/iconeProduto.png') ?>" alt="">
       <p class="nomesBarraLateral">Cadastro</p>
     </button>
+    </a>
     <button class="botaoBarraLateral">
       <img class="iconesBarraLateral" id="iconeContabilidade"
         src="<?= url('assets/app/icones/iconeContabilidade.png') ?>" alt="">
       <p class="nomesBarraLateral">Contabilidade</p>
     </button>
+    <a href="<?= url('clientes') ?>"> 
     <button class="botaoBarraLateral">
       <img class="iconesBarraLateral" id="iconeClientes" src="<?= url('assets/app/icones/iconeClientes.png') ?>" alt="">
       <p class="nomesBarraLateral">Clientes</p>
     </button>
+    </a>
   </div>
 
   <!--DASHBOARD-->
@@ -34,7 +38,7 @@
       <input type="radio" class="" name="checks" id="checkProduto">
       <label for="checkProduto">
         <p class="botaoRelatorioBalanco">
-          1m
+          1m 
         </p>
       </label>
 
@@ -93,7 +97,6 @@
             <p class="resposta mt-5">Total = 24</p>
           </div>
         </div>
-
-
+        
     </div>
   </div>

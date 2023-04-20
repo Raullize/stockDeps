@@ -9,4 +9,11 @@ nav {
   border-bottom: 1px solid #737373 !important;
 }
 
+.inputPesquisa {
+  width: 400px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateY(35%) translateX(-15%);
+}
 /*# sourceMappingURL=styleSassGeral.css.map */

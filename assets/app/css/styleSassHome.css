@@ -153,7 +153,7 @@
 }
 
 .botaoRelatorioBalanco:hover {
-  background-color: #9494b8;
+  background-color: #b3c6ff;
 }
 
 label {
@@ -167,7 +167,7 @@ input[type=radio] {
 }
 
 input[type=radio]:checked + label {
-  background-color: #9494b8;
+  background-color: #99b3ff;
 }
 
 /*# sourceMappingURL=styleSassHome.css.map */
