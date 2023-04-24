@@ -8,8 +8,8 @@ function criaCartaoCarrossel(cliente) {
         <P class="info-cliente"><strong>Celular:</strong> ${cliente.celular}</P>
         <p class="info-cliente"><strong>Cidade:</strong> ${cliente.cidade}</p>
         <p class="info-cliente"><strong>Bairro:</strong> ${cliente.bairro}</p>
-        <p class="info-cliente"><strong>UF:</strong> ${cliente.uf}</p>
-        <button class="btn btn-danger"> Histórico </button>
+        <p class="info-cliente"><strong>UF:</strong> ${cliente.uf}</p>    
+        <button class="btn btn-danger embaixo"> Histórico </button>
       </div>
     `;
 }

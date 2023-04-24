@@ -11,7 +11,8 @@
    </head>
 <body>
   <div class="container">
-    <div class="title">Cadastro de clientes</div>
+    <div class="title">Cadastro de clientes <a href="<?= url('') ?>"><button class="botao-voltar">Voltar</button></a> </div> 
+   
     <div class="content">
       <form action="#">
         <div class="user-details">
@@ -19,6 +20,7 @@
             <span class="details">Nome completo</span>
             <input type="text" placeholder="Escreva o nome completo" required>
           </div>
+    
           <div class="input-box">
             <span class="details">Email</span>
             <input type="text" placeholder="Escreva o email" required>

@@ -50,7 +50,13 @@
         <!--Telas com as funções do estoque-->
         <div class="containerFuncoes">
             <!--Telas de cadastro dos produtos-->
+           
             <div class="cadastroProdutos">
+                 <div class="center mb-5"> 
+                    <p class="display-3"> 
+                        Produtos 
+                    </p>
+                </div>
                 <div class="inputCadastro">
                     <form class="d-flex" role="search">
                         <input class="form-control form-control-lg me-2" type="search" placeholder="Nome do produto"
@@ -83,6 +89,11 @@
             </div>
             <!--Tela de controle e filtro do saldo dos produtos-->
             <div class="saldoProdutos">
+            <div class="center"> 
+                    <p class="display-3"> 
+                        Saldo 
+                    </p>
+                </div>
                 <div class="inputCadastro">
                     <form class="d-flex" role="search">
                         <select class="form-select form-select-lg " aria-label=".form-select-lg example">
@@ -103,17 +114,20 @@
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
+                                <th scope="col">Preço</th>
                                 <th scope="col">QTD.</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Vassoura</td>
+                                <td>42,90</td>
                                 <td> 7 </td>
                             </tr>
 
                             <tr>
                                 <td>Maquina de lavar</td>
+                                <td>42,90</td>
                                 <td> 8 </td>
                             </tr>
                         </tbody>
@@ -122,6 +136,11 @@
             </div>
             <!--Tela de controle de entrada dos produtos-->
             <div class="entradaProdutos">
+            <div class="center"> 
+                    <p class="display-3"> 
+                        Entradas 
+                    </p>
+                </div>
                 <div class="inputEntrada">
                     <for role="search">
                         <select class="form-select form-select-lg" aria-label=".form-select-lg example">
@@ -178,7 +197,12 @@
                 </div>
             </div>
             <div class="saidaProdutos">
-                <p class="display-3"> Saídas </p>
+                <div class="center"> 
+                    <p class="display-3"> 
+                        Saídas 
+                    </p>
+                </div>
+               
                 <div class="inputEntrada">
                     <for role="search">
                         <select class="form-select form-select-lg" aria-label=".form-select-lg example">

@@ -35,7 +35,7 @@
   <div class="relatorio">
 
     <div class="containerBotoesBalanco">
-      <input type="radio" class="" name="checks" id="checkProduto">
+      <input type="radio" class="" name="checks" id="checkProduto" checked>
       <label for="checkProduto">
         <p class="botaoRelatorioBalanco">
           1m 

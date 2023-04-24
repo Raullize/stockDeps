@@ -162,5 +162,9 @@ td {
   display: flex;
 }
 
+.center{
+  margin-right: 100px;
+  text-align: center;
+}
 
 /*# sourceMappingURL=styleSass.css.map */

@@ -120,3 +120,9 @@ input[type=radio]:checked+label {
     text-align: center;
     width: fit-content;
 }
+
+.embaixo{
+    align-self: center;
+    position: absolute;
+    bottom: 20px;
+}
