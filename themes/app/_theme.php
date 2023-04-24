@@ -16,21 +16,44 @@
 <body>
 
  <!--TOPO DA PÁGINA-->
- <nav class="navbar">
-    <a class="navbar-brand"href="<?= url() ?>">
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+  <a class="navbar-brand"href="<?= url() ?>">
         <p class="deps">Stock deps</p>
     </a>
-        <!--BARRA DE PESQUISA-->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active navLinks" aria-current="page" href="<?= url('') ?>">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active navLinks" href="<?= url('estoque') ?>"> Estoque</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active navLinks" href="<?= url('cadastro') ?>">Cadastro</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active navLinks" href="<?= url('contabilidade') ?>">Contabilidade</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active navLinks" href="<?= url('clientes') ?>">Clientes</a>
+        </li>
+       
+     
+      </ul>
+      <form class="d-flex" role="search">
         <div class="inputPesquisa">
-            <form class="d-flex" role="search">
-                <input class="form-control form-control-lg me-2" type="search" placeholder="Procurar cliente"
-                    aria-label="Search">
-                <button class="btn btn-outline-dark" type="submit">Procurar</button>
-            </form>
+            <input class="form-control me-2" type="search" placeholder="Procurar cliente" aria-label="Search">
+            <button class="btn btn-outline-dark" type="submit">Procurar</button>
         </div>
-        
-    </nav>
-    
+      </form>
+    </div>
+  </div>
+</nav>
 
 <?php
 

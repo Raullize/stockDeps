@@ -17,7 +17,7 @@ echo '</script>';
        
     <div class="titulo">
         <div class="radios">
-          <input type="radio" class="botao-selecionavel" name="checks" id="checkCarrossel">
+          <input type="radio" class="botao-selecionavel" name="checks" id="checkCarrossel" checked>
             <label for="checkCarrossel">
             <p class="botao-produtos">
             Carrossel
