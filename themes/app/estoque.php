@@ -89,7 +89,7 @@
             </div>
             <!--Tela de controle e filtro do saldo dos produtos-->
             <div class="saldoProdutos">
-            <div class="center"> 
+            <div class="center mb-5"> 
                     <p class="display-3"> 
                         Saldo 
                     </p>
@@ -136,7 +136,7 @@
             </div>
             <!--Tela de controle de entrada dos produtos-->
             <div class="entradaProdutos">
-            <div class="center"> 
+            <div class="center mb-5"> 
                     <p class="display-3"> 
                         Entradas 
                     </p>
@@ -197,7 +197,7 @@
                 </div>
             </div>
             <div class="saidaProdutos">
-                <div class="center"> 
+                <div class="center mb-5"> 
                     <p class="display-3"> 
                         Saídas 
                     </p>

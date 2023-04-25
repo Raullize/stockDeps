@@ -7,35 +7,57 @@
     <!---<title> Responsive Registration Form | CodingLab </title>--->
     <link rel="stylesheet" href="<?= url('assets/app/css/styleCadastro.css') ?>">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
    </head>
 <body>
-  <div class="container">
-    <div class="title">Cadastro de clientes <a href="<?= url('') ?>"><button class="botao-voltar">Voltar</button></a> </div> 
-   
-    <div class="content">
-      <form action="#">
-        <div class="user-details">
-          <div class="input-box">
-            <span class="details">Nome completo</span>
-            <input type="text" placeholder="Escreva o nome completo" required>
-          </div>
-    
-          <div class="input-box">
-            <span class="details">Email</span>
-            <input type="text" placeholder="Escreva o email" required>
-          </div>
-          <div class="input-box">
-            <span class="details">CPF</span>
-            <input type="text" placeholder="Digite o CPF" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Celular</span>
-            <input type="text" placeholder="Digite o número do celular" required>
-          </div>
-          <div class="input-box">
-            <span class="details">UF</span>
-            <select class="details">
+<div class="container">
+	<div class="header">
+		<div class="title">Cadastrar cliente <a href="<?= url('') ?>"><button class="botao-voltar">Voltar</button></a></div>
+	</div>
+	<form id="form" class="form flex">
+    <div class="block mini-container">
+      <div class="form-control">
+        <label for="nome-completo">Nome completo</label>
+        <input type="text" placeholder="Nome completo" id="nome-completo" />
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+      </div>
+      <div class="form-control">
+        <label for="email">Email</label>
+        <input type="email" placeholder="exemplo@email.com" id="email" />
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+      </div>
+      <div class="form-control">
+        <label for="cpf">CPF</label>
+        <input type="text" placeholder="000.000.000-00" id="cpf"/>
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+      </div>
+      <div class="form-control">
+        <label for="bairro">Bairro</label>
+        <input type="text" placeholder="Informe o bairro" id="bairro"/>
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+      </div>
+      
+    </div>
+    <div class="block mini-container">
+    <div class="form-control">
+        <label for="celular">Celular</label>
+        <input type="number" placeholder="Digite o número do celular" id="celular" />
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+      </div>
+      <div class="form-control">
+      <span class="details">UF</span>
+            <select class="details" id="uf">
                 <option value="">Selecione a UF</option>
                 <option value="AC">Acre</option>
                 <option value="AL">Alagoas</option>
@@ -65,23 +87,27 @@
                 <option value="SE">Sergipe</option>
                 <option value="TO">Tocantins</option>
             </select>
-          </div>
-          <div class="input-box">
-            <span class="details">Cidade</span>
-            <input type="text" placeholder="Informe a cidade" required>
-          </div>
-          <div class="input-box">
-            <span class="details">Bairro</span>
-            <input type="text" placeholder="Informe o bairro" required>
-        </div>
-        </div>
-        
-        <div class="button">
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+      </div>
+      <div class="form-control">
+        <label for="cidade">Cidade</label>
+        <input type="text" placeholder="Informe a cidade" id="cidade"/>
+        <i class="fas fa-check-circle"></i>
+        <i class="fas fa-exclamation-circle"></i>
+        <small>Error message</small>
+      </div>
+      <div class="button">
           <input type="submit" value="Registre">
         </div>
-      </form>
     </div>
-  </div>
+   
+	</form>
+</div>
 
+
+
+<script src="<?= url('assets/app/js/cadastro.js') ?>"></script>
 </body>
 </html>

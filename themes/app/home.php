@@ -79,7 +79,7 @@
         <div class="block">
           <div class="cartao-pequeno">
             <p class="titulo-relatorio">Renda</p>
-            <p class="resposta">20000 R$</p>
+            <p class="resposta">R$ 20000 </p>
           </div>
 
           <div class="cartao-medio">
