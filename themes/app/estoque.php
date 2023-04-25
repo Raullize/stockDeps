@@ -1,5 +1,15 @@
 <?php
     $this->layout("_theme");
+
+    //PEGA OS DADOS DAS CATEGORIAS DO BANCO DE DADOS
+    echo '<script>';
+    echo 'var categorias = ' . json_encode($categorias) . ';';
+    echo '</script>';
+
+    //PEGA OS DADOS DOS PRODUTOS DO BANCO DE DADOS
+    echo '<script>';
+    echo 'var produtos = ' . json_encode($produtos) . ';';
+    echo '</script>';
 ?>
    <link rel="stylesheet" href="<?= url('assets/app/css/styleSassEstoque.css') ?>">
 <div id="container">
@@ -66,14 +76,14 @@
                 </div>
 
                 <div class="tabelaDeProdutos">
-                    <table class="table">
+                    <table class="table" id="tabela-produtos">
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody >
                             <tr>
                                 <td>Vassoura</td>
                                 <td><button class="botao-deletar"> DELETAR </button></td>
@@ -262,3 +272,4 @@
     </div>
 
     <script src="<?= url('assets/app/js/estoque.js') ?>"></script>
+    <script src="<?= url('assets/app/js/produtosEstoque.js') ?>"></script>

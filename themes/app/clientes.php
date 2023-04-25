@@ -1,5 +1,7 @@
 <?php
 $this->layout("_theme");
+
+//PEGA OS DADOS DOS CLIENTES DO BANCO DE DADOS
 echo '<script>';
 echo 'var cliente = ' . json_encode($clientes) . ';';
 echo '</script>';

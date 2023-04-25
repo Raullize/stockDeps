@@ -3,7 +3,9 @@
 namespace Source\App;
 
 use League\Plates\Engine;
+use Source\Models\Categorias;
 use Source\Models\Clientes;
+use Source\Models\Produtos;
 
 class App
 {
@@ -22,13 +24,24 @@ class App
 
     public function estoque () : void 
     {
-        echo $this->view->render("estoque");
+        $produto = new Produtos();
+        $produtos = $produto->selectAll();
+        $categoria = new Categorias();
+        $categorias = $categoria->selectAll();
+        echo $this->view->render("estoque",[
+            "produtos" => $produtos,
+            "categorias" => $categorias
+        ]);
 
     }
 
     public function cadastro () : void 
     {
-        echo $this->view->render("cadastro");
+        $categoria = new Categorias();
+        $categorias = $categoria->selectAll();
+        echo $this->view->render("cadastro", [
+            "categorias" => $categorias
+        ]);
 
     }
 
