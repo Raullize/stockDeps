@@ -11,7 +11,7 @@ hr {
 
 
 .containerBarraLateral {
-  margin-top: 10px;
+  margin-top: 40px;
   margin-left: 50px;
   width: 20%;
 }
@@ -62,7 +62,7 @@ input[type=radio]:checked + label {
 }
 
 .inputCadastro {
-  width: 620px;
+  width: 90%;
 }
 
 .inputEntrada {
@@ -71,7 +71,7 @@ input[type=radio]:checked + label {
 
 .botao-cadastrar-produto {
   margin-left: 20px;
-  width: 180px;
+  width: 300px;
   border-radius: 6px;
   background-color: #e0e0eb;
   border: 0px;
@@ -79,16 +79,21 @@ input[type=radio]:checked + label {
 
 .botao-cadastrar-quantidade {
   width: 250px;
+  height: 50px;
   border-radius: 6px;
   background-color: #e0e0eb;
   border: 0px;
 }
-
+.botao-cadastrar-quantidade:hover{
+  background-color: #d0d0e1;
+}
 .botao-cadastrar-produto:hover {
   background-color: #d0d0e1;
 }
 
 .tabelaDeProdutos {
+  height: 300px; 
+  overflow-y: scroll;
   margin-top: 30px;
   margin-left: 20px;
   width: 90%;
@@ -166,5 +171,76 @@ td {
   margin-right: 100px;
   text-align: center;
 }
+
+
+#modal{
+  border-radius: 30px;
+  top: 50px;
+  position: absolute;
+  width: 600px;
+  height: 550px;
+  margin-left: 30%;
+  background: #d1d1e0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+ 
+}
+
+.modal-content {
+  width: 400px;
+  height: 400px;
+  background-color: #d1d1e0;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  margin-top: 0;
+}
+
+.modal-content label{
+  height: 20px;
+}
+
+input {
+  margin-top: 0px;
+  height: 40px;
+  display: block;
+  padding: 2px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  width: 100%;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+#cancel-button{
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin-left: 10px;
+  background-color: #b30000;
+}
+
+#save-button{
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  margin-left: 10px;
+  background-color: #009933;
+}
+
 
 /*# sourceMappingURL=styleSass.css.map */

@@ -5,7 +5,6 @@
     echo '<script>';
     echo 'var categorias = ' . json_encode($categorias) . ';';
     echo '</script>';
-
     //PEGA OS DADOS DOS PRODUTOS DO BANCO DE DADOS
     echo '<script>';
     echo 'var produtos = ' . json_encode($produtos) . ';';
@@ -71,28 +70,22 @@
                     <form class="d-flex" role="search">
                         <input class="form-control form-control-lg me-2" type="search" placeholder="Nome do produto"
                             aria-label="Search">
+                            <input class="form-control form-control-lg me-2" type="number" placeholder="Preço do produto"
+                            aria-label="Search">
                         <button class="botao-cadastrar-produto" type="submit">CADASTRAR</button>
                     </form>
                 </div>
 
                 <div class="tabelaDeProdutos">
-                    <table class="table" id="tabela-produtos">
+                    <table class="table" >
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody >
-                            <tr>
-                                <td>Vassoura</td>
-                                <td><button class="botao-deletar"> DELETAR </button></td>
-                            </tr>
-
-                            <tr>
-                                <td>Maquina de lavar</td>
-                                <td><button class="botao-deletar"> DELETAR </button></td>
-                            </tr>
+                        <tbody id="tabela-produtos">
+                           
                         </tbody>
                     </table>
                 </div>
@@ -105,44 +98,30 @@
                     </p>
                 </div>
                 <div class="inputCadastro">
-                    <form class="d-flex" role="search">
-                        <select class="form-select form-select-lg " aria-label=".form-select-lg example">
+                    <form class="d-flex" role="search" id="form-saldo">
+                        <select class="form-select form-select-lg " aria-label=".form-select-lg example" id="dropdown-categorias-saldo">
                             <option selected>Selecione uma categoria de itens</option>
-                            <option value="1">Lava roupas</option>
-                            <option value="2">Lava louças</option>
-                            <option value="3">Lava carros</option>
-                            <option value="4">Limpeza de ambiente</option>
-                            <option value="5">Geral</option>
+                           
 
                         </select>
-                        <button class="botao-cadastrar-produto" type="submit">FILTRAR</button>
+                        <button class="botao-cadastrar-produto" type="submit" id="botao-filtrar">FILTRAR</button>
                     </form>
                 </div>
-
-                <div class="tabelaDeProdutos">
-                    <table class="table">
+                
+                <div class="tabelaDeProdutos" >
+                    <table class="table" >
                         <thead>
-                            <tr>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Preço</th>
-                                <th scope="col">QTD.</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Preço</th>
+                            <th scope="col">QTD.</th>
+                        </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Vassoura</td>
-                                <td>42,90</td>
-                                <td> 7 </td>
-                            </tr>
-
-                            <tr>
-                                <td>Maquina de lavar</td>
-                                <td>42,90</td>
-                                <td> 8 </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="tabela-saldo"></tbody>
                     </table>
                 </div>
+
+
             </div>
             <!--Tela de controle de entrada dos produtos-->
             <div class="entradaProdutos">
@@ -153,22 +132,12 @@
                 </div>
                 <div class="inputEntrada">
                     <for role="search">
-                        <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                        <select class="form-select form-select-lg " aria-label=".form-select-lg example" id="dropdown-categorias-entradas">
                             <option selected>Selecione uma categoria de itens</option>
-                            <option value="1">Lava roupas</option>
-                            <option value="2">Lava louças</option>
-                            <option value="3">Lava carros</option>
-                            <option value="4">Limpeza de ambiente</option>
-                            <option value="5">Geral</option>
                         </select>
                         <div class="flex">
-                            <select class="form-select form-select-lg mt-3" aria-label=".form-select-lg example">
-                                <option selected>Selecione um item</option>
-                                <option value="1">Lava roupas</option>
-                                <option value="2">Lava louças</option>
-                                <option value="3">Lava carros</option>
-                                <option value="4">Limpeza de ambiente</option>
-                                <option value="5">Geral</option>
+                            <select class="form-select form-select-lg my-3" aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
+                                <option>Selecione um item</option>
                             </select>
                             <input class="form-control form-control-lg mx-2 mt-3" type="search"
                                 placeholder="Quantidade">
@@ -181,7 +150,7 @@
                 </div>
 
                 <div class="tabelaDeProdutos">
-                    <table class="table">
+                    <table class="table" id="tabela-entradas">
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
@@ -215,22 +184,12 @@
                
                 <div class="inputEntrada">
                     <for role="search">
-                        <select class="form-select form-select-lg" aria-label=".form-select-lg example">
+                        <select class="form-select form-select-lg " aria-label=".form-select-lg example" id="dropdown-categorias-saidas">
                             <option selected>Selecione uma categoria de itens</option>
-                            <option value="1">Lava roupas</option>
-                            <option value="2">Lava louças</option>
-                            <option value="3">Lava carros</option>
-                            <option value="4">Limpeza de ambiente</option>
-                            <option value="5">Geral</option>
                         </select>
                         <div class="flex">
-                            <select class="form-select form-select-lg mt-3" aria-label=".form-select-lg example">
-                                <option selected>Selecione um item</option>
-                                <option value="1">Lava roupas</option>
-                                <option value="2">Lava louças</option>
-                                <option value="3">Lava carros</option>
-                                <option value="4">Limpeza de ambiente</option>
-                                <option value="5">Geral</option>
+                            <select class="form-select form-select-lg my-3 " aria-label=".form-select-lg example" id="dropdown-itens-saidas">
+                            <option>Selecione um item</option>
                             </select>
                             <input class="form-control form-control-lg mx-2 mt-3" type="search"
                                 placeholder="Quantidade">
@@ -269,7 +228,36 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <script src="<?= url('assets/app/js/estoque.js') ?>"></script>
+        <div id="modal">
+           
+            <h3>Editar produto</h3>
+            <div class="modal-content">
+                <form>
+                <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome">
+                    
+                    <label for="descricao">Descrição:</label>
+                    <input type="text" id="descricao" name="descricao">
+                    
+                    <label for="preco">Preço:</label>
+                    <input type="number" id="preco" name="preco" min="0" step="0.01">
+                    
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" id="quantidade" name="quantidade" min="0">
+                    
+                    <div class="modal-buttons">
+                        <button type="button" id="cancel-button">Cancelar</button>
+                        <button type="submit" id="save-button">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="<?= url('assets/app/js/dropdowns.js') ?>"></script>
+    <script src="<?= url('assets/app/js/displayEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/produtosEstoque.js') ?>"></script>
+    <script src="<?= url('assets/app/js/saldoEstoque.js') ?>"></script>
+    <script src="<?= url('assets/app/js/entradasEstoque.js') ?>"></script>
+    <script src="<?= url('assets/app/js/modalEstoque.js') ?>"></script>
+   
