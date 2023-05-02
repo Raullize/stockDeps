@@ -26,8 +26,10 @@ class App
     {
         $produto = new Produtos();
         $produtos = $produto->selectAll();
+
         $categoria = new Categorias();
         $categorias = $categoria->selectAll();
+
         echo $this->view->render("estoque",[
             "produtos" => $produtos,
             "categorias" => $categorias
@@ -39,6 +41,7 @@ class App
     {
         $categoria = new Categorias();
         $categorias = $categoria->selectAll();
+        
         echo $this->view->render("cadastro", [
             "categorias" => $categorias
         ]);
