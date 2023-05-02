@@ -195,6 +195,8 @@ class Clientes
         }
     }
 
+    /*Alterar a funçãpo findbyemail -> findbyCPF*/
+
     public function findByEmail(string $email) : bool
     {
         $query = "SELECT * FROM users WHERE email = :email";
@@ -228,6 +230,9 @@ class Clientes
         $_SESSION["user"] = $arrayUser;
         $this->message = "Usuário alterado com sucesso!";
     }
+
+
+    /*finalizar a insert*/
 
     public function insert() : bool
     {
