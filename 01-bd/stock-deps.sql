@@ -24,12 +24,22 @@ DROP TABLE IF EXISTS `categorias`;
 CREATE TABLE `categorias` (
                          `id` int(11) NOT NULL AUTO_INCREMENT,
                          `nome` varchar(255) NOT NULL,
-                         `descricao` varchar(255) NOT NULL,
+                         `descricao` text NOT NULL,
                          `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
                          `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
                          PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+INSERT INTO `categorias`(`id`, `nome`, `descricao`) VALUES 
+('10', 'Lava Roupas', 'Categoria indicada especialmente para produtos de limpeza nas etapas de lavagem de roupas e tecidos em geral.'),
+('20', 'Lava Louças', 'Categoria indicada especialmente para produtos de limpeza nas etapas de lavagem de louças e objetos de cozinha em geral.'),
+('30', 'Lava Carro', 'Categoria indicada especialmente para produtos de limpeza nas etapas de lavagem de carrosem geral.'),
+('40', 'Limpeza de Ambiente', 'Categoria indicada especialmente para produtos de limpeza nas etapas de higienização e aromatização de ambientes.'),
+('50', 'Outros', 'Categoria indicada para produtos de limpeza em geral entre outros.');
+
+
+
 
 --
 -- Dumping data for table `categorias`
@@ -49,6 +59,7 @@ CREATE TABLE `produtos` (
                              `idCategoria` int(11) NOT NULL,
                              `nome` varchar(255) NOT NULL,
                              `preco` varchar(11) NOT NULL,
+                             `descricao` text NOT NULL,
                              `quantidade` varchar(11) NOT NULL,
                              `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
                              `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
