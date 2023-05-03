@@ -18,7 +18,18 @@ class App
 
     public function home () : void 
     {
-        echo $this->view->render("home");
+        $cliente = new Clientes();
+        $clientes = $cliente->selectAll();
+        $produto = new Produtos();
+        $produtos = $produto->selectAll();
+        $categoria = new Categorias();
+        $categorias = $categoria->selectAll();
+
+        echo $this->view->render("home",[
+            "produtos" => $produtos,
+            "categorias" => $categorias,
+            "clientes" => $clientes
+        ]);
 
     }
 

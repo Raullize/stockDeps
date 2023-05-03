@@ -1,23 +1,22 @@
-@import "../variables/colors.scss";
-hr{
+hr {
     height: 1px;
     width: 100%;
-}
-#container{
+  }
+  
+  #container {
     display: flex;
     height: 1000px;
-    background-color: $background-light;
-}
-nav{
-    background-color: $background-light;
-}
-.containerBarraLateral{
-    margin-top: 10px;
+    background-color: #f2f2f2;
+  }
+  
+  
+  .containerBarraLateral {
+    margin-top: 40px;
     margin-left: 50px;
     width: 20%;
-}
-
-.botao-produtos{
+  }
+  
+  .botao-produtos {
     display: block;
     padding-left: 15px;
     font-size: 18px;
@@ -28,75 +27,87 @@ nav{
     text-align: left;
     padding-top: 10px;
     cursor: pointer;
-}
-.botao-produtos:hover{
-    background-color: $botao-barraLateral;
-}
-
-label{
+  }
+  
+  .botao-produtos:hover {
+    background-color: #d1d1e0;
+  }
+  
+  label {
     width: 100%;
     border-radius: 5px;
     height: 50px;
-}
-input[type="radio"]{
+  }
+  
+  input[type=radio] {
     display: none;
-}
-
-input[type="radio"]:checked + label  {
+  }
+  
+  input[type=radio]:checked + label {
     background-color: #d0d0e1;
-}
-
-.titulosBarraLateral{
-    margin-top:20px ;
+  }
+  
+  .titulosBarraLateral {
+    margin-top: 20px;
     margin-bottom: 15px;
     font-weight: bold;
     font-size: 15px;
-}
-
-.containerFuncoes{
+  }
+  
+  .containerFuncoes {
     margin-left: 30px;
     width: 100%;
     height: 300px;
     margin-top: 30px;
-}
-
-.inputCadastro{
-    width: 900px;
-}
-.inputEntrada{
+  }
+  
+  .inputCadastro {
     width: 90%;
-}
-.botao-cadastrar-produto{
+  }
+  
+  .inputEntrada {
+    width: 90%;
+  }
+  
+  .botao-cadastrar-produto {
     margin-left: 20px;
-    width: 180px;
+    width: 300px;
     border-radius: 6px;
-    background-color:#e0e0eb;
+    background-color: #e0e0eb;
     border: 0px;
-}
-
-.botao-cadastrar-quantidade{
+  }
+  
+  .botao-cadastrar-quantidade {
     width: 250px;
+    height: 50px;
     border-radius: 6px;
-    background-color:#e0e0eb;
+    background-color: #e0e0eb;
     border: 0px;
-}
-
-.botao-cadastrar-produto:hover{
-    background-color:#d0d0e1
-}
-
-.tabelaDeProdutos{
+  }
+  .botao-cadastrar-quantidade:hover{
+    background-color: #d0d0e1;
+  }
+  .botao-cadastrar-produto:hover {
+    background-color: #d0d0e1;
+  }
+  
+  .tabelaDeProdutos {
+    height: 300px; 
+    overflow-y: scroll;
     margin-top: 30px;
     margin-left: 20px;
     width: 90%;
-}
-.btn{
+  }
+  
+  .btn {
     float: right;
-}
-td{
+  }
+  
+  td {
     vertical-align: middle;
-}
-.botao-deletar{ 
+  }
+  
+  .botao-deletar {
     display: flex;
     border: 0px;
     border-radius: 5px;
@@ -110,11 +121,13 @@ td{
     color: #cc0000;
     font-weight: 500;
     cursor: pointer;
-}
-.botao-deletar:hover{
+  }
+  
+  .botao-deletar:hover {
     border: solid 1px red;
-}
-.botao-editar{ 
+  }
+  
+  .botao-editar {
     display: flex;
     border: 0px;
     border-radius: 5px;
@@ -128,23 +141,104 @@ td{
     color: #006622;
     font-weight: 500;
     cursor: pointer;
-}
-.botao-editar:hover{
+  }
+  
+  .botao-editar:hover {
     border: solid 1px green;
-}
-
-.cadastroProdutos{
-    display:block;;
-}
-.saldoProdutos{
+  }
+  
+  .cadastroProdutos {
+    display: block;
+  }
+  
+  .saldoProdutos {
     display: none;
-}
-.entradaProdutos{
+  }
+  
+  .entradaProdutos {
     display: none;
-}
-.saidaProdutos{
+  }
+  
+  .saidaProdutos {
     display: none;
-}
-.flex{
+  }
+  
+  .flex {
     display: flex;
-}
+  }
+  
+  .center{
+    margin-right: 100px;
+    text-align: center;
+  }
+  
+  
+  #modal{
+    border-radius: 30px;
+    top: 50px;
+    position: absolute;
+    width: 600px;
+    height: 550px;
+    margin-left: 30%;
+    background: #d1d1e0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+  }
+  
+  .modal-content {
+    width: 400px;
+    height: 400px;
+    background-color: #d1d1e0;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  
+  .modal-title {
+    font-size: 1.5rem;
+    margin-top: 0;
+  }
+  
+  .modal-content label{
+    height: 20px;
+  }
+  
+  input {
+    margin-top: 0px;
+    height: 40px;
+    display: block;
+    padding: 2px;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    width: 100%;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  
+  #cancel-button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    background-color: #b30000;
+  }
+  
+  #save-button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    background-color: #009933;
+  }
+  

@@ -67,12 +67,17 @@
                     </p>
                 </div>
                 <div class="inputCadastro">
-                    <form class="d-flex" role="search">
-                        <input class="form-control form-control-lg me-2" type="search" placeholder="Nome do produto"
-                            aria-label="Search">
-                            <input class="form-control form-control-lg me-2" type="number" placeholder="Preço do produto"
-                            aria-label="Search">
-                        <button class="botao-cadastrar-produto" type="submit">CADASTRAR</button>
+                    <form class="" role="search">
+                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="dropdown-categorias-produtos">
+                            <option selected>Selecione uma categoria para o novo item</option>
+                        </select>
+                        <div class="flex">
+                            <input class="form-control form-control-lg me-2" type="search" placeholder="Nome do produto"
+                                aria-label="Search">
+                                <input class="form-control form-control-lg me-2" type="number" placeholder="Preço do produto"
+                                aria-label="Search">
+                            <button class="botao-cadastrar-produto" type="submit">CADASTRAR</button>
+                        </div>
                     </form>
                 </div>
 
@@ -235,20 +240,17 @@
             <div class="modal-content">
                 <form>
                 <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome">
-                    
-                    <label for="descricao">Descrição:</label>
-                    <input type="text" id="descricao" name="descricao">
+                    <input type="text" id="nome" name="nome" class="my-3">
                     
                     <label for="preco">Preço:</label>
-                    <input type="number" id="preco" name="preco" min="0" step="0.01">
+                    <input type="number" id="preco" name="preco" min="0" step="0.01" class="my-3">
                     
                     <label for="quantidade">Quantidade:</label>
-                    <input type="number" id="quantidade" name="quantidade" min="0">
+                    <input type="number" id="quantidade" name="quantidade" min="0" class="my-3">
                     
                     <div class="modal-buttons">
-                        <button type="button" id="cancel-button">Cancelar</button>
-                        <button type="submit" id="save-button">Salvar</button>
+                        <button type="button" id="cancel-button" class="mt-4">Cancelar</button>
+                        <button type="submit" id="save-button" class="mt-4">Salvar</button>
                     </div>
                 </form>
             </div>

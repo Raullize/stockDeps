@@ -1,5 +1,17 @@
 <?php
     $this->layout("_theme");
+    echo '<script>';
+    echo 'var categorias = ' . json_encode($categorias) . ';';
+    echo '</script>';
+    //PEGA OS DADOS DOS PRODUTOS DO BANCO DE DADOS
+    echo '<script>';
+    echo 'var produtos = ' . json_encode($produtos) . ';';
+    echo '</script>';
+
+    echo '<script>';
+    echo 'var clientes = ' . json_encode($clientes) . ';';
+    echo '</script>';
+    
 ?>
    <link rel="stylesheet" href="<?= url('assets/app/css/styleSassHome.css') ?>">
 
@@ -84,19 +96,21 @@
 
           <div class="cartao-medio">
             <p class="titulo-relatorio">Clientes</p>
-            <p class="resposta">30</p>
+            <p class="resposta" id="qtd-clientes"></p>
           </div>
         </div>
         <div class="block">
-          <div class="cartao-grande">
+          <div class="cartao-grande" id="conta-itens">
             <p class="titulo-relatorio mb-4">Itens em cada categoria:</p>
-            <p class="resposta-letra">Lava roupas = 24</p>
-            <p class="resposta-letra">Lava louças = 24</p>
-            <p class="resposta-letra">Lava carro = 24</p>
-            <p class="resposta-letra">Limpeza de Ambiente = 24</p>
-            <p class="resposta mt-5">Total = 24</p>
+            <p class="resposta-letra" id="lava-roupas-qtd">Lava roupas = 24</p>
+            <p class="resposta-letra" id="lava-loucas-qtd">Lava louças = 24</p>
+            <p class="resposta-letra" id="lava-carros-qtd">Lava carro = 24</p>
+            <p class="resposta-letra" id="limpeza-ambiente-qtd">Limpeza de Ambiente = 24</p>
+            <p class="resposta mt-5" id="total-produtos-qtd">Total = 24</p>
           </div>
         </div>
         
     </div>
   </div>
+  <script src="<?= url('assets/app/js/home.js') ?>"></script>
+   

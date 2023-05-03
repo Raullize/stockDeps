@@ -1,6 +1,7 @@
 const selectCategoriasEntradas = document.getElementById("dropdown-categorias-entradas");
 const selectCategoriasSaidas = document.getElementById("dropdown-categorias-saidas");
 const selectCategoriasSaldo = document.getElementById("dropdown-categorias-saldo");
+const selectCategoriaProdutos = document.getElementById("dropdown-categorias-produtos");
 
 const selectItensEntradas = document.getElementById('dropdown-itens-entradas');
 const selectItensSaidas = document.getElementById('dropdown-itens-saidas');
@@ -44,7 +45,9 @@ document.addEventListener("DOMContentLoaded", function () {
     selectCategoriasEntradas.insertAdjacentHTML('beforeend', adicionaCategoriasDropdown(categorias));
     selectCategoriasSaidas.insertAdjacentHTML('beforeend', adicionaCategoriasDropdown(categorias));
     selectCategoriasSaldo.insertAdjacentHTML('beforeend', adicionaCategoriasDropdown(categorias));
+    selectCategoriaProdutos.insertAdjacentHTML('beforeend', adicionaCategoriasDropdown(categorias));
 });
+
 
   selectCategoriasEntradas.addEventListener("change", function() {
     const categoriaSelecionada = selectCategoriasEntradas.value;

@@ -1,4 +1,5 @@
-@import "../variables/colors.scss";
+@import "../colors/colors.scss";
+
 
 .container1 {
   display: flex;
@@ -9,14 +10,16 @@
   margin: 0px;
 }
 
-.flex{
+.flex {
   display: flex;
 }
-.block{
+
+.block {
   margin-left: 15px;
   margin-right: 5px;
   display: block;
 }
+
 .barraLateral {
   padding: 10px;
   margin-top: 4%;
@@ -28,12 +31,12 @@
 
 .botaoBarraLateral {
   font-size: 15px;
-  color: black;
+  color: $cor-texto;
   font-family: Arial, Helvetica, sans-serif;
   margin-bottom: 20px;
   width: 100%;
   height: 80px;
-  border: 1px solid black;
+  border: 1px solid $borda-preta;
   border-radius: 10px;
   cursor: pointer;
 }
@@ -54,18 +57,10 @@
   width: 45%;
 }
 
-.inputPesquisa {
-  width: 400px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  transform: translateY(35%) translateX(-15%);
-}
 
 .divisoria {
   margin-top: 8px;
 }
-
 
 .relatorio {
   width: 100%;
@@ -78,7 +73,7 @@
 
 .cartao-pequeno {
   float: inline-start;
-  background-color: #d6e0f5;
+  background-color: $bg-cartoes;
   width: 300px;
   height: 130px;
   margin-top: 30px;
@@ -88,9 +83,9 @@
   box-shadow: 6px 6px 6px #888;
 }
 
-.cartao-medio{
+.cartao-medio {
   float: inline-start;
-  background-color: #d6e0f5;
+  background-color: $bg-cartoes;
   width: 300px;
   height: 180px;
   margin-top: 30px;
@@ -100,9 +95,9 @@
   box-shadow: 6px 6px 6px #888;
 }
 
-.cartao-grande{
+.cartao-grande {
   float: right;
-  background-color: #d6e0f5;
+  background-color: $bg-cartoes;
   width: 400px;
   height: 340px;
   margin-top: 30px;
@@ -112,22 +107,21 @@
   box-shadow: 6px 6px 6px #888;
 }
 
-.titulo-relatorio{
+.titulo-relatorio {
   text-align: left;
   margin: 0px;
   margin-left: 20px;
   font-size: 30px;
- 
 }
 
-.resposta{
+.resposta {
   margin: 0px;
   font-size: 40px;
   text-align: center;
   font-weight: 600;
 }
 
-.resposta-letra{
+.resposta-letra {
   font-size: 20px;
   text-align: left;
   margin: 0px;
@@ -150,12 +144,12 @@
   border-radius: 5px;
   cursor: pointer;
   background-color: transparent;
-  border: 1px solid $botao-barraLateral ;
+  border: 1px solid $botao-barraLateral;
   text-align: center;
 }
 
 .botaoRelatorioBalanco:hover {
-  background-color: #9494b8;
+  background-color: $hover-botoes;
 }
 
 label {
@@ -164,10 +158,62 @@ label {
   height: 35px;
 }
 
-input[type="radio"] {
+input[type=radio] {
   display: none;
 }
 
-input[type="radio"]:checked+label {
-  background-color: #9494b8;
+input[type=radio]:checked + label {
+  background-color: #99b3ff;
+}
+
+/*# sourceMappingURL=styleSassHome.css.map */
+.dark-mode {
+  .container1 {
+    background-color: $background-dark;
+    color: $cor-texto-dark;
+  }
+  
+  .botaoBarraLateral {
+    color: $cor-texto-dark;
+    background-color: $botao-barraLateral-dark;
+    border: 1px solid $borda-preta-dark;
+  }
+  
+  .botaoBarraLateral:hover {
+    background-color: $hover-botoes-dark;
+  }
+  
+  .cartao-pequeno, .cartao-medio, .cartao-grande {
+    background-color: $bg-cartoes-dark;
+    box-shadow: 6px 6px 6px #888;
+  }
+  
+  .titulo-relatorio {
+    color: $cor-texto-dark;
+  }
+  
+  .resposta {
+    color: $cor-texto-dark;
+  }
+  
+  .resposta-letra {
+    color: $cor-texto-dark;
+  }
+  
+  .botaoRelatorioBalanco {
+    background-color: transparent;
+    border: 1px solid $botao-barraLateral-dark;
+  }
+  
+  .botaoRelatorioBalanco:hover {
+    background-color: $hover-botoes-dark;
+  }
+  
+  label {
+    background-color: $botao-barraLateral-dark;
+  }
+  
+  input[type=radio]:checked + label {
+    background-color: $hover-botoes-dark;
+  }
 }

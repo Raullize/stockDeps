@@ -26,7 +26,7 @@ function adicionaProdutosListaSaldo(categoriaSelecionada) {
         <td> ${produtosFiltrados[i].nome} </td> 
         <td> R$${produtosFiltrados[i].preco} </td> 
         <td> ${produtosFiltrados[i].quantidade} </td> 
-        <td> <button class="botao-editar">EDITAR</button></td>
+        <td> <button class="botao-editar" data-nome="${produtosFiltrados[i].nome}"  data-preco="${produtosFiltrados[i].preco}" data-quantidade="${produtosFiltrados[i].quantidade}">EDITAR</button></td>
       </tr>
       `;
   }
