@@ -52,7 +52,7 @@ class App
 
             if(!is_email($data["email"])){
                 $json = [
-                    "message" => "<br> Informe um e-mail válido!",
+                    "message" => "Informe um e-mail válido!",
                     "type" => "warning"
                 ];
                 echo json_encode($json);
@@ -70,11 +70,9 @@ class App
                 $data["uf"]
             );
 
-            /*Alterar a funçãpo findbyemail -> findbyCPF*/
-
-            if($client->findByEmail($data["email"])){
+            if($client->findByCpf($data["cpf"])){
                 $json = [
-                    "message" => "<br> Email já cadastrado!",
+                    "message" => "Cpf já cadastrado!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
@@ -83,19 +81,20 @@ class App
 
             /*terminar a função INSERT*/
 
-            if(!$user->insert()){
+            if($client->insert()){
+
                 $json = [
-                    "message" => $user->getMessage(),
-                    "type" => "error"
+                    "name" => $data["name"],
+                    "email" => $data["email"],
+                    "message" => "Cliente cadastrado com sucesso!",
+                    "type" => "success"
                 ];
                 echo json_encode($json);
                 return;
             } else {
                 $json = [
-                    "name" => $data["name"],
-                    "email" => $data["email"],
-                    "message" => $user->getMessage(),
-                    "type" => "success"
+                    "message" => "Cliente não cadastrado!",
+                    "type" => "error"
                 ];
                 echo json_encode($json);
                 return;

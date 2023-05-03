@@ -133,11 +133,8 @@
             const client = await data.json();
             console.log(client);
             if(client) {
-                if(client.type == "success"){
-                    window.alert("FOII!");
-                } else {
-                    message.innerHTML = client.message;
-                }
+                message.innerHTML = client.message;
+
                 message.classList.add("message");
                 message.classList.remove("success", "warning", "error");
                 message.classList.add(`${client.type}`);

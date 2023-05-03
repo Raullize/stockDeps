@@ -175,7 +175,7 @@ class Clientes
             return $stmt->fetchAll();
         }
     }
-
+/*
     public function findById() : bool
     {
         $query = "SELECT * FROM users WHERE id = :id";
@@ -194,14 +194,14 @@ class Clientes
             return true;
         }
     }
-
+*/
     /*Alterar a funçãpo findbyemail -> findbyCPF*/
 
-    public function findByEmail(string $email) : bool
+    public function findByCpf($cpf) : bool
     {
-        $query = "SELECT * FROM users WHERE email = :email";
+        $query = "SELECT * FROM clientes WHERE cpf = :cpf";
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":cpf", $cpf);
         $stmt->execute();
         if($stmt->rowCount() == 1){
             return true;
@@ -209,7 +209,7 @@ class Clientes
             return false;
         }
     }
-
+/*
     public function update()
     {
         $query = "UPDATE users SET name = :name, email = :email, photo = :photo, document = :document WHERE id = :id";
@@ -231,21 +231,26 @@ class Clientes
         $this->message = "Usuário alterado com sucesso!";
     }
 
-
+*/
     /*finalizar a insert*/
 
     public function insert() : bool
     {
-        $query = "INSERT INTO users (name, email, password, type) VALUES (:name, :email, :password, :type)";
+        $query = "INSERT INTO clientes (nome, cpf, email, celular, cidade, bairro, uf) 
+                  VALUES (:nome, :cpf, :email, :celular, :cidade, :bairro, :uf)";
+
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":type",$this->type);
-        $stmt->bindValue(":password", password_hash($this->password,PASSWORD_DEFAULT));
+
+        $stmt->bindParam(":nome", $this->nome);
+        $stmt->bindParam(":cpf", $this->cpf);
+        $stmt->bindValue(":email", $this->email);
+        $stmt->bindParam(":celular",$this->celular);
+        $stmt->bindParam(":cidade",$this->cidade);
+        $stmt->bindParam(":bairro",$this->bairro);
+        $stmt->bindParam(":uf",$this->uf);
+
         $stmt->execute();
-        $this->id = Connect::getInstance()->lastInsertId();
-        $this->message = "Usuário cadastrado com sucesso!";
-        $_SESSION["user"] = $this;
+
         return true;
     }
 
