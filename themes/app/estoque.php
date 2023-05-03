@@ -76,8 +76,13 @@
                                 aria-label="Search">
                                 <input class="form-control form-control-lg me-2" type="number" placeholder="Preço do produto"
                                 aria-label="Search">
-                            <button class="botao-cadastrar-produto" type="submit">CADASTRAR</button>
+                           
                         </div>
+                        <div class="flex">
+                        
+                        <textarea class="form-control mt-4" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
+                        
+                             <button class="botao-cadastrar-produto mt-4" type="submit">CADASTRAR</button>
                     </form>
                 </div>
 

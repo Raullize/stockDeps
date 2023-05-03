@@ -29,6 +29,9 @@
    
         <!--teste-->
         <li class="nav-item">
+          <a class="navLinks" href="<?= url('') ?>">  Início</a>
+        </li>
+        <li class="nav-item">
           <a class="navLinks" href="<?= url('estoque') ?>">  Estoque</a>
         </li>
         <li class="nav-item">

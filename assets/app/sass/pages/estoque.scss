@@ -1,12 +1,19 @@
+@import "../colors/colors.scss";
+
 hr {
     height: 1px;
     width: 100%;
+  }
+
+  body{
+    width: 100%;
+    background-color: $background-light;
   }
   
   #container {
     display: flex;
     height: 1000px;
-    background-color: #f2f2f2;
+    background-color: $background-light;
   }
   
   
@@ -30,7 +37,7 @@ hr {
   }
   
   .botao-produtos:hover {
-    background-color: #d1d1e0;
+    background-color: $botao-barraLateral;
   }
   
   label {
@@ -44,7 +51,7 @@ hr {
   }
   
   input[type=radio]:checked + label {
-    background-color: #d0d0e1;
+    background-color: $botao-barraLateral;
   }
   
   .titulosBarraLateral {
@@ -73,7 +80,7 @@ hr {
     margin-left: 20px;
     width: 300px;
     border-radius: 6px;
-    background-color: #e0e0eb;
+    background-color: $botoes-produtos;
     border: 0px;
   }
   
@@ -81,14 +88,14 @@ hr {
     width: 250px;
     height: 50px;
     border-radius: 6px;
-    background-color: #e0e0eb;
+    background-color: $botoes-produtos;
     border: 0px;
   }
   .botao-cadastrar-quantidade:hover{
-    background-color: #d0d0e1;
+    background-color: $botoes-produtos-hover;
   }
   .botao-cadastrar-produto:hover {
-    background-color: #d0d0e1;
+    background-color: $botoes-produtos-hover;
   }
   
   .tabelaDeProdutos {
@@ -112,7 +119,7 @@ hr {
     border: 0px;
     border-radius: 5px;
     width: 100px;
-    background-color: #d1d1e0;
+    background-color: $botao-barraLateral;
     float: right;
     padding-left: 17px;
     text-align: center;
@@ -132,7 +139,7 @@ hr {
     border: 0px;
     border-radius: 5px;
     width: 100px;
-    background-color: #d1d1e0;
+    background-color: $botao-barraLateral;
     float: right;
     padding-left: 22px;
     text-align: center;
@@ -180,7 +187,7 @@ hr {
     width: 600px;
     height: 550px;
     margin-left: 30%;
-    background: #d1d1e0;
+    background: $botao-barraLateral;
     display: none;
     flex-direction: column;
     justify-content: center;
@@ -191,7 +198,7 @@ hr {
   .modal-content {
     width: 400px;
     height: 400px;
-    background-color: #d1d1e0;
+    background-color: $botao-barraLateral;
     padding: 20px;
     border-radius: 5px;
   }
