@@ -74,7 +74,7 @@ DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
                          `id` int(11) NOT NULL AUTO_INCREMENT,
                          `nome` varchar(255) NOT NULL,
-                         `cpf` varchar(11) NOT NULL,
+                         `cpf` varchar(14) NOT NULL,
                          `email` varchar(255) NOT NULL,
                          `celular` varchar(14) NOT NULL,
                          `cidade` varchar(50) NOT NULL,
