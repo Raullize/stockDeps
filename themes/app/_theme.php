@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="<?= url('assets/app/css/styleSassGeral.css') ?>">
+    
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <!-- JavaScript Bundle with Popper -->
@@ -26,6 +27,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
    
+        <!--teste-->
         <li class="nav-item">
           <a class="navLinks" href="<?= url('estoque') ?>">  Estoque</a>
         </li>
@@ -89,11 +91,12 @@
   </div>
 </nav>
 
+
+  <script src="<?= url('assets/app/js/tema.js') ?>"></script>
+</body>
+</html>
 <?php
 
    echo $this->section("content");
 
 ?>
-  <script src="<?= url('assets/app/js/tema.js') ?>"></script>
-</body>
-</html>
