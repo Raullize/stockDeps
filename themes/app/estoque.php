@@ -10,7 +10,13 @@
     echo 'var produtos = ' . json_encode($produtos) . ';';
     echo '</script>';
 ?>
+
+
    <link rel="stylesheet" href="<?= url('assets/app/css/styleSassEstoque.css') ?>">
+
+   <body>
+    
+   
 <div id="container">
 
         <!--Container da Barra Lateral-->
@@ -68,21 +74,22 @@
                 </div>
                 <div class="inputCadastro">
                     <form class="" role="search">
-                        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="dropdown-categorias-produtos">
+                        <select class="form-select form-select-lg mb-3 inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-produtos">
                             <option selected>Selecione uma categoria para o novo item</option>
                         </select>
                         <div class="flex">
-                            <input class="form-control form-control-lg me-2" type="search" placeholder="Nome do produto"
+                            <input class="form-control form-control-lg me-2 inputForm" type="search" placeholder="Nome do produto"
                                 aria-label="Search">
-                                <input class="form-control form-control-lg me-2" type="number" placeholder="Preço do produto"
+                                <input class="form-control form-control-lg me-2 inputForm" type="number" placeholder="Preço do produto"
                                 aria-label="Search">
                            
                         </div>
                         <div class="flex">
                         
-                        <textarea class="form-control mt-4" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
+                        <textarea class="form-control mt-4 inputForm" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
                         
                              <button class="botao-cadastrar-produto mt-4" type="submit">CADASTRAR</button>
+                        </div>
                     </form>
                 </div>
 
@@ -109,7 +116,7 @@
                 </div>
                 <div class="inputCadastro">
                     <form class="d-flex" role="search" id="form-saldo">
-                        <select class="form-select form-select-lg " aria-label=".form-select-lg example" id="dropdown-categorias-saldo">
+                        <select class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-saldo">
                             <option selected>Selecione uma categoria de itens</option>
                            
 
@@ -125,6 +132,7 @@
                             <th scope="col">Nome</th>
                             <th scope="col">Preço</th>
                             <th scope="col">QTD.</th>
+                            <th scope="col">Ações</th>
                         </tr>
                         </thead>
                         <tbody id="tabela-saldo"></tbody>
@@ -142,14 +150,14 @@
                 </div>
                 <div class="inputEntrada">
                     <for role="search">
-                        <select class="form-select form-select-lg " aria-label=".form-select-lg example" id="dropdown-categorias-entradas">
+                        <select class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-entradas">
                             <option selected>Selecione uma categoria de itens</option>
                         </select>
                         <div class="flex">
-                            <select class="form-select form-select-lg my-3" aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
+                            <select class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
                                 <option>Selecione um item</option>
                             </select>
-                            <input class="form-control form-control-lg mx-2 mt-3" type="search"
+                            <input class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
                                 placeholder="Quantidade">
 
                             <button class="botao-cadastrar-quantidade mt-3" type="submit">SALVAR</button>
@@ -267,4 +275,4 @@
     <script src="<?= url('assets/app/js/saldoEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/entradasEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/modalEstoque.js') ?>"></script>
-   
+   </body>
