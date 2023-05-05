@@ -202,14 +202,14 @@
                
                 <div class="inputEntrada">
                     <for role="search">
-                        <select class="form-select form-select-lg " aria-label=".form-select-lg example" id="dropdown-categorias-saidas">
+                        <select class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-saidas">
                             <option selected>Selecione uma categoria de itens</option>
                         </select>
                         <div class="flex">
-                            <select class="form-select form-select-lg my-3 " aria-label=".form-select-lg example" id="dropdown-itens-saidas">
+                            <select class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example" id="dropdown-itens-saidas">
                             <option>Selecione um item</option>
                             </select>
-                            <input class="form-control form-control-lg mx-2 mt-3" type="search"
+                            <input class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
                                 placeholder="Quantidade">
 
                             <button class="botao-cadastrar-quantidade mt-3" type="submit">SALVAR</button>
