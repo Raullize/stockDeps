@@ -1,8 +1,57 @@
+.block {
+  display: block;
+}
+
+.link-clientes {
+  text-decoration: none;
+}
+
 .navLinks {
   color: black;
   text-decoration: none;
   margin-right: 20px;
   font-weight: 500;
+}
+
+#procurar-cliente {
+  width: 280px;
+}
+
+nav {
+  position: absolute;
+  height: 100px;
+}
+
+#client-list {
+  top: 80px;
+  position: absolute;
+  float: right;
+  width: 320px;
+  right: 60px;
+  display: flex;
+  transition: opacity 0.3s ease-out;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.clientes-card {
+  background-color: #242424;
+  color: white;
+  top: 100px;
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-out;
+}
+
+.clientes-card:hover {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.client-card.hidden {
+  opacity: 0;
 }
 
 .botao-procurar {
@@ -11,6 +60,11 @@
   padding-right: 20px;
   padding-left: 20px;
   border-radius: 8px;
+}
+
+.botao-procurar:hover {
+  background-color: black;
+  color: white;
 }
 
 .deps {
@@ -67,6 +121,11 @@ nav .nav-item {
 .dark-mode .botao-procurar {
   color: #f2f2f2;
   background-color: #1c1c1c;
+  border: 1px solid #f2f2f2;
+}
+.dark-mode .botao-procurar:hover {
+  background-color: white;
+  color: black;
   border: 1px solid #f2f2f2;
 }
 .dark-mode .inputPesquisa {

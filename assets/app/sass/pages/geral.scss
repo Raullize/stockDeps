@@ -1,7 +1,11 @@
 @import "../colors/colors.scss";
 
-
-
+.block{
+  display: block;
+}
+.link-clientes{
+  text-decoration: none;
+}
 .navLinks {
   color: black;
   text-decoration: none;
@@ -9,12 +13,58 @@
   font-weight: 500;
 }
 
+#procurar-cliente{
+  width: 280px;
+}
+
+
+nav{
+  position: absolute;
+  height: 100px;
+}
+#client-list {
+  top: 80px;
+  position: absolute;
+  float: right;
+  width: 320px;
+  right: 60px;
+  display: flex;
+  transition: opacity 0.3s ease-out;
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.clientes-card {
+  background-color: #242424;
+  color: white;
+  top:100px;
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-out;
+}
+
+.clientes-card:hover {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.client-card.hidden {
+  opacity: 0;
+}
+
+
 .botao-procurar{
   width: 100px;
   padding: 5px;
   padding-right: 20px;
   padding-left: 20px;
   border-radius: 8px;
+}
+.botao-procurar:hover{
+ background-color: black;
+ color: white;
 }
 
 
@@ -82,7 +132,11 @@ nav {
     background-color: $background-dark;
     border: 1px solid $borda-preta-dark;
   }
-  
+  .botao-procurar:hover{
+    background-color: white;
+    color: black;
+    border: 1px solid $borda-preta-dark;
+   }
   .inputPesquisa {
     background-color: $background-dark;
   }

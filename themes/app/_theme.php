@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -15,6 +16,7 @@
     <title>Stock Deps</title>
 </head>
 <body>
+  
 
  <!--TOPO DA PÁGINA-->
 
@@ -86,16 +88,21 @@
       </ul>
       <form class="d-flex" role="search">
         <div class="inputPesquisa">
-            <input class="form-control me-2" type="search" placeholder="Procurar cliente" aria-label="Search">
-            <button class="botao-procurar" type="submit">Procurar</button>
+          <div class="block">
+            <input id="procurar-cliente" class="form-control  mt-3 mx-3" type="search" placeholder="Procurar cliente" aria-label="Search">
+            
+          </div>
         </div>
       </form>
     </div>
   </div>
 </nav>
-
+            <div id="client-list">
+              
+            </div>
 
   <script src="<?= url('assets/app/js/tema.js') ?>"></script>
+  
 </body>
 </html>
 <?php
