@@ -35,6 +35,9 @@ class App
 
     public function estoque () : void 
     {
+        $cliente = new Clientes();
+        $clientes = $cliente->selectAll();
+
         $produto = new Produtos();
         $produtos = $produto->selectAll();
 
@@ -43,7 +46,8 @@ class App
 
         echo $this->view->render("estoque",[
             "produtos" => $produtos,
-            "categorias" => $categorias
+            "categorias" => $categorias,
+            "clientes" => $clientes
         ]);
 
     }

@@ -10,6 +10,8 @@ body {
   background-color: $background-light;
 }
 
+
+
 #container {
   display: flex;
   height: 1000px;
@@ -180,6 +182,46 @@ td {
 .center {
   margin-right: 100px;
   text-align: center;
+}
+
+.link-clientes-saidas{
+  border: 0px;
+  background-color: transparent !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#client-list-saidas {
+  display: none;
+  top: 430px;
+  position: absolute;
+  float: left;
+  width: 477px;
+  left: 290px;
+  display: flex;
+  transition:  0.3s ease-out;
+  overflow-y: scroll;
+  max-height: 300px;
+}
+
+.clientes-card-saidas {
+  background-color: #3a3a3a;
+  color: black !important;
+  top:100px;
+  width: 460px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.3s ease-out;
+}
+
+.clientes-card-saidas:hover {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.client-card-saidas.hidden {
+  opacity: 0;
 }
 
 

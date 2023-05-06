@@ -3,7 +3,7 @@ $this->layout("_theme");
 
 //PEGA OS DADOS DOS CLIENTES DO BANCO DE DADOS
 echo '<script>';
-echo 'var cliente = ' . json_encode($clientes) . ';';
+echo 'var clientes = ' . json_encode($clientes) . ';';
 echo '</script>';
 ?>
 <!-- Carrega o Jquery-->
@@ -45,5 +45,5 @@ echo '</script>';
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="<?= url('assets/app/js/clientes.js') ?>"></script>
-
+<script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
 </body>

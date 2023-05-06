@@ -112,6 +112,6 @@
         
     </div>
   </div>
-  <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
+ 
   <script src="<?= url('assets/app/js/home.js') ?>"></script>
-   
+  <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>

@@ -6,7 +6,6 @@ const totalProdutos = document.getElementById('total-produtos-qtd');
 
 const qtdClientes = document.getElementById('qtd-clientes');
 
-
 function adicionaQtdProdutos(produtos) {
     lavaRoupasQtd.innerHTML =  "Lava roupas: "  + produtos.filter(produto => produto.idCategoria === 1).length;
     lavaLoucasQtd.innerHTML =   "Lava louças: "  + produtos.filter(produto => produto.idCategoria === 2).length;

@@ -89,7 +89,7 @@
       <form class="d-flex" role="search">
         <div class="inputPesquisa">
           <div class="block">
-            <input id="procurar-cliente" class="form-control  mt-3 mx-3" type="search" placeholder="Procurar cliente" aria-label="Search">
+            <input id="procurar-cliente" class="form-control  mt-1 mx-3" type="search" placeholder="Procurar cliente" aria-label="Search">
             
           </div>
         </div>
@@ -106,7 +106,7 @@
 </body>
 </html>
 <?php
-
+ 
    echo $this->section("content");
-
+    
 ?>

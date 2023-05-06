@@ -1,33 +1,33 @@
 
-function criaCartaoCarrossel(cliente) {
+function criaCartaoCarrossel(clientes) {
     return `
       <div class="card">
-        <h3>${cliente.nome}</h3>
-        <p class="info-cliente"><strong>CPF:</strong> ${cliente.cpf}</p>
-        <p class="info-cliente"><strong>Email:</strong> ${cliente.email}</p>
-        <P class="info-cliente"><strong>Celular:</strong> ${cliente.celular}</P>
-        <p class="info-cliente"><strong>Cidade:</strong> ${cliente.cidade}</p>
-        <p class="info-cliente"><strong>Bairro:</strong> ${cliente.bairro}</p>
-        <p class="info-cliente"><strong>UF:</strong> ${cliente.uf}</p>    
+        <h3 my-3>${clientes.nome}</h3>
+        <p class="info-clientes mt-3"><strong>CPF:</strong> ${clientes.cpf}</p>
+        <p class="info-clientes mt-3"><strong>Email:</strong> ${clientes.email}</p>
+        <P class="info-clientes mt-3"><strong>Celular:</strong> ${clientes.celular}</P>
+        <p class="info-clientes mt-3"><strong>Cidade:</strong> ${clientes.cidade}</p>
+        <p class="info-clientes mt-3"><strong>Bairro:</strong> ${clientes.bairro}</p>
+        <p class="info-clientes mt-3"><strong>UF:</strong> ${clientes.uf}</p>    
         <button class="btn btn-danger embaixo"> Histórico </button>
       </div>
     `;
 }
-function criaCardBloco(cliente) {
+function criaCardBloco(clientes) {
     return `
       <div class="card-bloco">
   
         <div class="flex">
             <div class="block camada">
                 <div class="item-cartao"></div> 
-                <p class="info-cliente-bloco "><strong>CPF:</strong> ${cliente.cpf}</p>
-                <p class="info-cliente-bloco"><strong>Email:</strong> ${cliente.email}</p>
+                <p class="info-cliente-bloco "><strong>CPF:</strong> ${clientes.cpf}</p>
+                <p class="info-cliente-bloco"><strong>Email:</strong> ${clientes.email}</p>
                 
             </div>
             <div class="block camada">
-                  <div class="item-cartao"><h3>${cliente.nome}</h3> </div> 
-                <P class="info-cliente-bloco"><strong>Celular:</strong> ${cliente.celular}</P>
-                <p class="info-cliente-bloco"><strong>Cidade:</strong> ${cliente.cidade}</p>
+                  <div class="item-cartao"><h3>${clientes.nome}</h3> </div> 
+                <P class="info-cliente-bloco"><strong>Celular:</strong> ${clientes.celular}</P>
+                <p class="info-cliente-bloco"><strong>Cidade:</strong> ${clientes.cidade}</p>
             </div>    
             <div class="block camada">
                 <div class="item-cartao"> 
@@ -35,8 +35,8 @@ function criaCardBloco(cliente) {
                     Histórico
                     </button> 
                 </div>  
-                <p class="info-cliente-bloco"><strong>Bairro:</strong> ${cliente.bairro}</p>
-                <p class="info-cliente-bloco"><strong>UF:</strong> ${cliente.uf}</p>
+                <p class="info-cliente-bloco"><strong>Bairro:</strong> ${clientes.bairro}</p>
+                <p class="info-cliente-bloco"><strong>UF:</strong> ${clientes.uf}</p>
             </div>
         </div>
       </div>
@@ -62,8 +62,8 @@ document.addEventListener("DOMContentLoaded", function () {
             $('#carousel .card').remove();
         }
 
-        cliente.forEach(function (cliente) {
-            $('#carousel').append(criaCartaoCarrossel(cliente));
+        clientes.forEach(function (clientes) {
+            $('#carousel').append(criaCartaoCarrossel(clientes));
         });
 
         $('#carousel').owlCarousel({
@@ -105,7 +105,7 @@ botaoBloco.addEventListener("change", function () {
         divCarrossel.style.display = "none";
 
         if (divBloco.innerHTML === "") { // adiciona cards somente se a div estiver vazia
-            cliente.forEach(function (cliente) {
+            clientes.forEach(function (cliente) {
                 divBloco.innerHTML += criaCardBloco(cliente);
             });
         }

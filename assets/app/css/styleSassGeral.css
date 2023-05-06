@@ -23,20 +23,21 @@ nav {
 }
 
 #client-list {
+  display: none;
   top: 80px;
   position: absolute;
   float: right;
   width: 320px;
   right: 60px;
   display: flex;
-  transition: opacity 0.3s ease-out;
-  height: 400px;
+  transition: 0.3s ease-out;
   overflow-y: scroll;
+  max-height: 300px;
 }
 
 .clientes-card {
-  background-color: #242424;
-  color: white;
+  background-color: #3a3a3a;
+  color: black !important;
   top: 100px;
   width: 300px;
   padding: 10px;
@@ -105,6 +106,9 @@ nav .nav-item {
 .dark-mode .body {
   background-color: #1c1c1c;
   color: #f2f2f2;
+}
+.dark-mode .clientes-card {
+  background-color: #242424;
 }
 .dark-mode .deps {
   display: flex;

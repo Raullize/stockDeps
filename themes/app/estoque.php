@@ -1,15 +1,20 @@
 <?php
-    $this->layout("_theme");
+     $this->layout("_theme");
+     echo '<script>';
+     echo 'var categorias = ' . json_encode($categorias) . ';';
+     echo '</script>';
+     //PEGA OS DADOS DOS PRODUTOS DO BANCO DE DADOS
+     echo '<script>';
+     echo 'var produtos = ' . json_encode($produtos) . ';';
+     echo '</script>';
+ 
+     echo '<script>';
+     echo 'var clientes = ' . json_encode($clientes) . ';';
+     echo '</script>';
 
-    //PEGA OS DADOS DAS CATEGORIAS DO BANCO DE DADOS
-    echo '<script>';
-    echo 'var categorias = ' . json_encode($categorias) . ';';
-    echo '</script>';
-    //PEGA OS DADOS DOS PRODUTOS DO BANCO DE DADOS
-    echo '<script>';
-    echo 'var produtos = ' . json_encode($produtos) . ';';
-    echo '</script>';
+     
 ?>
+
 
 
    <link rel="stylesheet" href="<?= url('assets/app/css/styleSassEstoque.css') ?>">
@@ -211,11 +216,17 @@
                             </select>
                             <input class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
                                 placeholder="Quantidade">
-
-                            <button class="botao-cadastrar-quantidade mt-3" type="submit">SALVAR</button>
+                        
+                            
                         </div>
-
-
+                        <div class="flex">
+                
+                        <input id="procurar-cliente-saidas" class="form-control form-control-lg inputForm " 
+                        type="search" placeholder="Escolha o cliente" aria-label="Search">
+                        <div id="client-list-saidas">
+                        </div>
+                        <button class="botao-cadastrar-quantidade mx-2" type="submit">SALVAR</button>
+                    </div>
                         </form>
                 </div>
 
@@ -268,11 +279,12 @@
                 </form>
             </div>
         </div>
-    </div>
+    </div><script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
     <script src="<?= url('assets/app/js/dropdowns.js') ?>"></script>
     <script src="<?= url('assets/app/js/displayEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/produtosEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/saldoEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/entradasEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/modalEstoque.js') ?>"></script>
+    
    </body>
