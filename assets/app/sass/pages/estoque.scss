@@ -1,5 +1,6 @@
 @import "../colors/colors.scss";
 
+
 hr {
   height: 1px;
   width: 100%;
@@ -10,7 +11,9 @@ body {
   background-color: $background-light;
 }
 
-
+textarea{
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
 
 #container {
   display: flex;
@@ -227,25 +230,30 @@ td {
 
 #modal {
   border-radius: 30px;
-  top: 50px;
+  top: 100px;
   position: absolute;
-  width: 600px;
-  height: 550px;
-  margin-left: 30%;
+  width: 700px;
+  height: 500px;
+  margin-left: 25%;
   background: $botao-barraLateral;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
+  display: none ;
+  flex-direction: row;
 }
-
+.modal-content-descricao{
+  background-color: $botao-barraLateral;
+  width: 300px;
+  height: 500px;
+  float: right;
+  border-radius: 5px;
+  padding-top: 60px;
+}
 .modal-content {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 500px;
   background-color: $botao-barraLateral;
   padding: 20px;
   border-radius: 5px;
+  margin-left: 50px;
 }
 
 .modal-title {
@@ -256,6 +264,12 @@ td {
 .modal-content label {
   height: 20px;
 }
+
+#label-modal-descricao{
+  height: 35px;
+}
+
+
 
 input {
   margin-top: 0px;
@@ -323,21 +337,72 @@ input {
     border: 1px solid #ff1a1a;
   }
   .inputForm{
-    border: 1px solid $laranjaDeps;
+    border: 1px solid $borda-preta-dark;
   }
   .botao-cadastrar-produto{
-    border: 1px solid $laranjaDeps;
+    border: 1px solid $borda-preta-dark;
     background-color: $botao-barraLateral-dark;
-    color:$laranjaDeps ;
+    color:$borda-preta-dark ;
   }
   .botao-cadastrar-quantidade{
-    border: 1px solid $laranjaDeps;
+    border: 1px solid $borda-preta-dark;
     background-color: $botao-barraLateral-dark;
-    color:$laranjaDeps ;
+    color:$borda-preta-dark ;
   }
   .botao-editar{
     border: 1px solid #004d99;
     background-color: $botao-barraLateral-dark;
     color: #004d99 ;
+  }
+  #modal {
+    background: $botao-barraLateral-dark;
+    h3{
+      color: $cor-texto-dark;
+    }
+    
+  }
+  select{
+    background-color: $bg-cartoes-dark;
+    color: $cor-texto-dark;
+  }
+  textarea{
+      border: 0px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      background-color: $bg-cartoes-dark;
+      color: $cor-texto-dark;
+    }
+  .modal-content-descricao {
+    background-color: $botao-barraLateral-dark;
+  }
+  
+  .modal-content {
+    background-color: $botao-barraLateral-dark;
+  }
+  
+  .modal-title {
+    color: $cor-texto-dark;
+  }
+  
+  .modal-content label {
+    color: $cor-texto-dark;
+  }
+  
+  #label-modal-descricao {
+    color: $cor-texto-dark;
+  }
+  
+  input {
+    background-color: $bg-cartoes-dark;
+    color: $cor-texto-dark;
+  }
+
+  #cancel-button {
+    color: white;
+    background-color: red;
+  }
+  
+  #save-button {
+    color: white;
+    background-color: green;
   }
 }

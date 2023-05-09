@@ -1,4 +1,3 @@
-
 const modal = document.getElementById('modal');
 const botoesEditar = document.getElementsByClassName('botao-editar');
 const botaoCancelar = document.getElementById('cancel-button');
@@ -16,10 +15,12 @@ botaoFiltrar.addEventListener('click', function () {
       const nome = this.dataset.nome;
       const preco = parseFloat(this.dataset.preco.replace(",", ".")).toFixed(2);
       const quantidade = parseInt(this.dataset.quantidade);
+      const descricao = this.dataset.descricao;
       // Defina os valores dos campos de entrada do modal
       document.getElementById('nome').value = nome;
       document.getElementById('preco').value = preco.toString().replace(",", "."); // Formatar e substituir ponto por vírgula
       document.getElementById('quantidade').value = quantidade;
+      document.getElementById('descricao-produto-modal').value = descricao;
 
       // Exiba o modal
       modal.style.display = "flex";
@@ -27,4 +28,3 @@ botaoFiltrar.addEventListener('click', function () {
   }
 
 })
-

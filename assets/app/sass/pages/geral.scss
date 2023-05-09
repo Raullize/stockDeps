@@ -148,6 +148,10 @@ nav {
   .navLinks:hover {
     color: $hover-botoes-dark;
   }
+  input {
+    background-color: $bg-cartoes-dark;
+    color: $cor-texto-dark;
+  }
 }
 
 .tema {

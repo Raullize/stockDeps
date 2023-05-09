@@ -8,14 +8,16 @@ function adicionaProdutosListaSaldo(categoriaSelecionada) {
   let produtosFiltrados = [];
   let idCategorias;
 
-  if (categoriaSelecionada === "Lava roupas") {
-    idCategorias = 1;
-  } else if (categoriaSelecionada === "Lava louças") {
-    idCategorias = 2;
-  } else if (categoriaSelecionada === "Lava carros") {
-    idCategorias = 3;
-  } else if (categoriaSelecionada === "Limpeza de ambiente") {
-    idCategorias = 4;
+  if (categoriaSelecionada === "Lava Roupas") {
+    idCategorias = 10;
+  } else if (categoriaSelecionada === "Lava Louças") {
+    idCategorias = 20;
+  } else if (categoriaSelecionada === "Lava Carros") {
+    idCategorias = 30;
+  } else if (categoriaSelecionada === "Limpeza de Ambiente") {
+    idCategorias = 40;
+  }else if (categoriaSelecionada === "Outros") {
+    idCategorias = 50;
   }
   produtosFiltrados = produtos.filter(produto => produto.idCategoria === idCategorias);
 
@@ -26,7 +28,7 @@ function adicionaProdutosListaSaldo(categoriaSelecionada) {
         <td> ${produtosFiltrados[i].nome} </td> 
         <td> R$${produtosFiltrados[i].preco} </td> 
         <td> ${produtosFiltrados[i].quantidade} </td> 
-        <td> <button class="botao-editar" data-nome="${produtosFiltrados[i].nome}"  data-preco="${produtosFiltrados[i].preco}" data-quantidade="${produtosFiltrados[i].quantidade}">EDITAR</button></td>
+        <td> <button class="botao-editar" data-nome="${produtosFiltrados[i].nome}"  data-preco="${produtosFiltrados[i].preco}" data-quantidade="${produtosFiltrados[i].quantidade}" data-descricao="${produtosFiltrados[i].descricao}">EDITAR</button></td>
       </tr>
       `;
   }

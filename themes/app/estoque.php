@@ -259,10 +259,10 @@
         </div>
 
         <div id="modal">
-           
-            <h3>Editar produto</h3>
-            <div class="modal-content">
-                <form>
+           <form class="flex" >
+               
+                <div class="modal-content">
+                 <h3>Editar produto</h3>
                 <label for="nome">Nome:</label>
                     <input type="text" id="nome" name="nome" class="my-3">
                     
@@ -271,15 +271,24 @@
                     
                     <label for="quantidade">Quantidade:</label>
                     <input type="number" id="quantidade" name="quantidade" min="0" class="my-3">
-                    
+
                     <div class="modal-buttons">
                         <button type="button" id="cancel-button" class="mt-4">Cancelar</button>
                         <button type="submit" id="save-button" class="mt-4">Salvar</button>
                     </div>
-                </form>
-            </div>
+                
+                </div>
+                <div class="modal-content-descricao">
+                <label for="descricao-produto-modal" id="label-modal-descricao">Descrição do produto:</label>
+                <textarea class="form-control " id="descricao-produto-modal" rows="9" placeholder="Descrição do produto"></textarea>
+                </div>    
+            </form>
         </div>
-    </div><script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
+            
+    </div>
+    
+    
+    <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
     <script src="<?= url('assets/app/js/dropdowns.js') ?>"></script>
     <script src="<?= url('assets/app/js/displayEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/produtosEstoque.js') ?>"></script>

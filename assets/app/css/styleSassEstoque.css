@@ -8,6 +8,10 @@ body {
   background-color: #f2f2f2;
 }
 
+textarea {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 #container {
   display: flex;
   height: 1000px;
@@ -221,24 +225,32 @@ td {
 
 #modal {
   border-radius: 30px;
-  top: 50px;
+  top: 100px;
   position: absolute;
-  width: 600px;
-  height: 550px;
-  margin-left: 30%;
+  width: 700px;
+  height: 500px;
+  margin-left: 25%;
   background: #d1d1e0;
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
+}
+
+.modal-content-descricao {
+  background-color: #d1d1e0;
+  width: 300px;
+  height: 500px;
+  float: right;
+  border-radius: 5px;
+  padding-top: 60px;
 }
 
 .modal-content {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 500px;
   background-color: #d1d1e0;
   padding: 20px;
   border-radius: 5px;
+  margin-left: 50px;
 }
 
 .modal-title {
@@ -248,6 +260,10 @@ td {
 
 .modal-content label {
   height: 20px;
+}
+
+#label-modal-descricao {
+  height: 35px;
 }
 
 input {
@@ -313,22 +329,65 @@ input {
   border: 1px solid #ff1a1a;
 }
 .dark-mode .inputForm {
-  border: 1px solid #ff6600;
+  border: 1px solid #f2f2f2;
 }
 .dark-mode .botao-cadastrar-produto {
-  border: 1px solid #ff6600;
+  border: 1px solid #f2f2f2;
   background-color: #2e2e2e;
-  color: #ff6600;
+  color: #f2f2f2;
 }
 .dark-mode .botao-cadastrar-quantidade {
-  border: 1px solid #ff6600;
+  border: 1px solid #f2f2f2;
   background-color: #2e2e2e;
-  color: #ff6600;
+  color: #f2f2f2;
 }
 .dark-mode .botao-editar {
   border: 1px solid #004d99;
   background-color: #2e2e2e;
   color: #004d99;
+}
+.dark-mode #modal {
+  background: #2e2e2e;
+}
+.dark-mode #modal h3 {
+  color: #f2f2f2;
+}
+.dark-mode select {
+  background-color: #3a3a3a;
+  color: #f2f2f2;
+}
+.dark-mode textarea {
+  border: 0px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  background-color: #3a3a3a;
+  color: #f2f2f2;
+}
+.dark-mode .modal-content-descricao {
+  background-color: #2e2e2e;
+}
+.dark-mode .modal-content {
+  background-color: #2e2e2e;
+}
+.dark-mode .modal-title {
+  color: #f2f2f2;
+}
+.dark-mode .modal-content label {
+  color: #f2f2f2;
+}
+.dark-mode #label-modal-descricao {
+  color: #f2f2f2;
+}
+.dark-mode input {
+  background-color: #3a3a3a;
+  color: #f2f2f2;
+}
+.dark-mode #cancel-button {
+  color: white;
+  background-color: red;
+}
+.dark-mode #save-button {
+  color: white;
+  background-color: green;
 }
 
 /*# sourceMappingURL=styleSassEstoque.css.map */

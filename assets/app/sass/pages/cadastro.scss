@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,500&display=swap');
+@import "../colors/colors.scss";
 
 * {
 	box-sizing: border-box;
@@ -30,9 +31,12 @@ body {
 }
 
 .header {
+    display: flex;
 	border-bottom: 1px solid #f0f0f0;
 	background-color: #f7f7f7;
 	padding: 20px 40px;
+    align-items: center;
+    justify-content: center;
 }
 
 .header h2 {
@@ -159,7 +163,7 @@ body {
 }
 
 .mini-container{
-    width: 300px;
+    width: 400px;
     margin: 20px;
 }
 
@@ -171,6 +175,7 @@ body {
     border-radius: 5px;
     border: 0px;
     height: 40px;
+    margin-left: 70px;
 }
 .botao-voltar:hover{
     background-color: #ce99ff;
@@ -191,13 +196,113 @@ form .button input {
     background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
 
-form .button input:hover {
-    /* transform: scale(0.99); */
-    background: linear-gradient(-135deg, #71b7e6, #9b59b6);
-}
-
-
 .dark-mode{
-
-
+    .title{
+        color:$cor-texto-dark;
+    }
+    label{
+        color:$cor-texto-dark;
+    }
+    .details{
+        color:$cor-texto-dark;
+    }
+    .header{
+        background-color:$background-dark;
+    }
+    .container {
+        background-color:$background-dark;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+      input {
+        background-color: $bg-cartoes-dark;
+        color: $cor-texto-dark;
+      }
+      select {
+        background-color: $bg-cartoes-dark;
+        color: $cor-texto-dark;
+      }
 }
+
+.tema {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 100px;
+  
+    label {
+      width: 160px;
+      height: 40px;
+      position: relative;
+      display: block;
+      background: #ebebeb;
+      border-radius: 200px;
+      box-shadow: inset 0px 5px 15px rgba(0, 0, 0, 0.4), inset 0px -5px 15px rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+  
+    label:after {
+      content: "";
+      width: 36px;
+      height: 36px;
+      position: absolute;
+      top: 3px;
+      left: 8px;
+      background: linear-gradient(180deg, #ffcc89, #d8860b);
+      border-radius: 180px;
+      box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+    }
+  
+    input {
+      width: 0;
+      height: 0;
+      visibility: hidden;
+    }
+  
+    input:checked+label {
+      background: #242424;
+    }
+  
+    input:checked+label:after {
+      left: 150px;
+      transform: translateX(-100%);
+      background: linear-gradient(180deg, #777, #3a3a3a);
+    }
+  
+    label:active:after {
+      width: 80px;
+    }
+  
+    input:checked+label+.background {
+      background: #242424;
+    }
+  
+    label svg {
+      position: absolute;
+      width: 30px;
+      top: 6px;
+      z-index: 100;
+    }
+  
+    label svg.sun {
+      left: 11px;
+      fill: #fff;
+      transition: 0.3s;
+    }
+  
+    label svg.moon {
+      left: 117px;
+      fill: #7e7e7e;
+      transition: 0.3s;
+    }
+  
+    input:checked+label svg.sun {
+      fill: #7e7e7e;
+    }
+  
+    input:checked+label svg.moon {
+      fill: #fff;
+    }
+  }
