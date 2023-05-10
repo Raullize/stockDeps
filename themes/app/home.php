@@ -102,11 +102,12 @@
         <div class="block">
           <div class="cartao-grande" id="conta-itens">
             <p class="titulo-relatorio mb-4">Itens em cada categoria:</p>
-            <p class="resposta-letra" id="lava-roupas-qtd">Lava roupas = 24</p>
-            <p class="resposta-letra" id="lava-loucas-qtd">Lava louças = 24</p>
-            <p class="resposta-letra" id="lava-carros-qtd">Lava carro = 24</p>
-            <p class="resposta-letra" id="limpeza-ambiente-qtd">Limpeza de Ambiente = 24</p>
-            <p class="resposta mt-5" id="total-produtos-qtd">Total = 24</p>
+            <p class="resposta-letra" id="lava-roupas-qtd">Lava roupas = 0</p>
+            <p class="resposta-letra" id="lava-loucas-qtd">Lava louças = 0</p>
+            <p class="resposta-letra" id="lava-carros-qtd">Lava carro = 0</p>
+            <p class="resposta-letra" id="limpeza-ambiente-qtd">Limpeza de Ambiente = 0</p>
+            <p class="resposta-letra" id="outros-qtd">Outros = 0</p>
+            <p class="resposta mt-3" id="total-produtos-qtd">Total = 0</p>
           </div>
         </div>
         

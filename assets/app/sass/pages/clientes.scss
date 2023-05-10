@@ -47,6 +47,7 @@ h3 {
 
 .card {
     margin-top: 5px;
+    margin-bottom: 50px;
     padding: 20px;
     height: 600px;
     background-color: #e6e6ff;
@@ -58,7 +59,6 @@ h3 {
 .card-bloco{
     cursor: pointer;
     padding: 20px;
-    height: 300px;
     width: 1000px;
     margin:10px auto;
     background-color: #e6e6ff;
@@ -130,7 +130,7 @@ input[type=radio]:checked+label {
 
 .dark-mode {
     // Cores escuras
-   
+   background-color: $background-dark;
   
     .container1 {
         background-color: $background-dark;

@@ -55,38 +55,42 @@ document.addEventListener("DOMContentLoaded", function () {
         divBloco.style.display = "none";
         divBloco.innerHTML = "";
 
-        // Verifica se já há cards no carrossel
-        if ($('#carousel .card').length > 0) {
-            // Se já houver, destrói os cards
-            $('#carousel').owlCarousel('destroy');
-            $('#carousel .card').remove();
-        }
+     
+            // Cria os cards do carrossel
+            clientes.forEach((cliente) => {
+                var cartao = criaCartaoCarrossel(cliente);
+                divCarrossel.innerHTML += cartao;
+            });
 
-        clientes.forEach(function (clientes) {
-            $('#carousel').append(criaCartaoCarrossel(clientes));
-        });
-
-        $('#carousel').owlCarousel({
-            loop: true,
-            margin: 10,
-            nav: true,
-            dots: false,
-            responsive: {
-                0: {
-                    items: 1
-                },
-                600: {
-                    items: 4
-                },
-                1000: {
-                    items: 5
+            // Inicializa o carrossel
+            $('#carousel').owlCarousel({
+                loop: true,
+                margin: 10,
+                nav: true,
+                dots: false,
+                responsive: {
+                    0: {
+                        items: 1,
+                        nav: true
+                    },
+                    600: {
+                        items: 3,
+                        nav: false
+                    },
+                    1000: {
+                        items: 5,
+                        nav: true,
+                        loop: false
+                    }
                 }
-            }
-        });
-
+            });
+        
     }
-    exibirCarrossel(); // chama a função para exibir o carrossel assim que a página for carregada
-});
+
+
+    // Exibe o carrossel por padrão
+    exibirCarrossel();
+})
 
 botaoCarrosel.addEventListener("change", function () {
     if (botaoCarrosel.checked) {
