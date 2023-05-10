@@ -22,6 +22,7 @@ $route->namespace("Source\App");
 $route->group("/"); // agrupa em /app
 $route->get("/","App:home");
 $route->get("/estoque","App:estoque");
+$route->post("/estoque","App:estoqueCadastro");
 
 $route->get("/cadastro","App:cadastro");
 $route->post("/cadastro","App:cadastro");

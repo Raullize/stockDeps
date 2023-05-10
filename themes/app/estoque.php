@@ -78,22 +78,29 @@
                     </p>
                 </div>
                 <div class="inputCadastro">
-                    <form class="" role="search">
-                        <select class="form-select form-select-lg mb-3 inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-produtos">
+                    <form id="form-cadastro" name="cadastro" method="POST" action="" class="" role="search">
+                        <select name="categoria" class="form-select form-select-lg mb-3 inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-produtos">
                             <option selected>Selecione uma categoria para o novo item</option>
                         </select>
                         <div class="flex">
-                            <input class="form-control form-control-lg me-2 inputForm" type="search" placeholder="Nome do produto"
+                            <input name="nome" class="form-control form-control-lg me-2 inputForm" type="search" placeholder="Nome do produto"
                                 aria-label="Search">
-                                <input class="form-control form-control-lg me-2 inputForm" type="number" placeholder="Preço do produto"
+                                <input name="preco" class="form-control form-control-lg me-2 inputForm" type="number" placeholder="Preço do produto"
                                 aria-label="Search">
                            
                         </div>
                         <div class="flex">
                         
-                        <textarea class="form-control mt-4 inputForm" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
+                        <textarea name="descricao" class="form-control mt-4 inputForm" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
                         
+                            <div>
+                                
                              <button class="botao-cadastrar-produto mt-4" type="submit">CADASTRAR</button>
+
+                            <div id="message"></div>
+
+                            </div>
+
                         </div>
                     </form>
                 </div>
@@ -286,8 +293,29 @@
         </div>
             
     </div>
-    
-    
+
+     <script type="text/javascript" async>
+        const form = document.querySelector("#form-cadastro");
+        const message = document.querySelector("#message");
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const dataProduto = new FormData(form);
+            const data = await fetch("<?= url("estoque"); ?>",{
+                method: "POST",
+                body: dataProduto,
+            });
+            const produto = await data.json();
+            console.log(produto);
+            if(produto) {
+                message.innerHTML = produto.message;
+
+                message.classList.add("message");
+                message.classList.remove("success", "warning", "error");
+                message.classList.add(`${produto.type}`);
+            }
+        });
+    </script>
+
     <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
     <script src="<?= url('assets/app/js/dropdowns.js') ?>"></script>
     <script src="<?= url('assets/app/js/displayEstoque.js') ?>"></script>
