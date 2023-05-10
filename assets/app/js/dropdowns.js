@@ -12,6 +12,7 @@ const inputEscolheCliente = document.getElementById('procurar-cliente-saidas');
 const listaDeClientesSaidas = document.getElementById('client-list-saidas');
 const botaoClientesSaidas = document.getElementsByClassName('link-clientes-saidas');
 
+//funçãao qque adiciona as categorias nos selects
 function adicionaCategoriasDropdown(categorias) {
   let options = "";
   for (let i = 0; i < categorias.length; i++) {
