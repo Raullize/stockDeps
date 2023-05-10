@@ -11,13 +11,15 @@ class Produtos
     private $nome;
     private $preco;
     private $quantidade;
+    private $descricao;
 
     public function __construct(
         int $id = NULL,
-        string $idCategoria = NULL,
+        int $idCategoria = NULL,
         string $nome = NULL,
         string $preco = NULL,
-        string $quantidade= NULL
+        string $quantidade = NULL,
+        string $descricao = NULL
     )
     {
         $this->id = $id;
@@ -25,6 +27,7 @@ class Produtos
         $this->nome = $nome;
         $this->preco = $preco;
         $this->quantidade = $quantidade;
+        $this->descricao = $descricao;
     }
 
     /**
@@ -46,7 +49,7 @@ class Produtos
     /**
      * @return string|null
      */
-    public function getIdCategoria(): ?string
+    public function getIdCategoria(): ?int
     {
         return $this->idCategoria;
     }
@@ -54,7 +57,7 @@ class Produtos
     /**
      * @param string|null $name
      */
-    public function setIdCategoria(?string $idCategoria): void
+    public function setIdCategoria(?int $idCategoria): void
     {
         $this->idCategoria = $idCategoria;
     }
@@ -107,6 +110,22 @@ class Produtos
         $this->quantidade = $quantidade;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getDescricao(): ?string
+    {
+        return $this->descricao;
+    }
+
+    /**
+     * @param string|null $descricao
+     */
+    public function setDescricao(?string $descricao): void
+    {
+        $this->descricao = $descricao;
+    }
+
     public function selectAll ()
     {
         $query = "SELECT * FROM produtos";
@@ -120,26 +139,7 @@ class Produtos
         }
     }
 
-    public function findById() : bool
-    {
-        $query = "SELECT * FROM users WHERE id = :id";
-        $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":id",$this->id);
-        $stmt->execute();
-
-        if($stmt->rowCount() == 0){
-            return false;
-        } else {
-            $user = $stmt->fetch();
-            $this->name = $user->name;
-            $this->email = $user->email;
-            $this->document = $user->document;
-            $this->photo = $user->photo;
-            return true;
-        }
-    }
-
-    public function findByEmail(string $email) : bool
+    public function validateProdutos(string $nome, int $id) : bool
     {
         $query = "SELECT * FROM users WHERE email = :email";
         $stmt = Connect::getInstance()->prepare($query);
