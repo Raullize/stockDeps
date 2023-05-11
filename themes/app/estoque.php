@@ -83,19 +83,30 @@
                             <option selected>Selecione uma categoria para o novo item</option>
                         </select>
                         <div class="flex">
-                            <input name="nome" class="form-control form-control-lg me-2 inputForm" type="search" placeholder="Nome do produto"
-                                aria-label="Search">
-                                <input name="preco" class="form-control form-control-lg me-2 inputForm" type="number" placeholder="Preço do produto"
-                                aria-label="Search">
-                           
+                            <div>
+                            <input name="nome" class="form-control form-control-lg me-2 inputForm" type="text" placeholder="Nome do produto"
+                                aria-label="Search" id="input-nome-produto">
+                                
+                                <div id="message-nome"></div>
+                            </div>
+                                <div>
+                                    <input name="preco" class="form-control form-control-lg me-2 inputForm" type="number" step="any" placeholder="Preço do produto"
+                                    aria-label="Search" id="input-preco-produto">
+                                     <div id="message-preco"></div>
+                                </div>
                         </div>
+                        
+
+                        
+                    </div>
+                        
                         <div class="flex">
                         
                         <textarea name="descricao" class="form-control mt-4 inputForm" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
                         
                             <div>
                                 
-                             <button class="botao-cadastrar-produto mt-4" type="submit">CADASTRAR</button>
+                             <button class="botao-cadastrar-produto mt-4" type="submit" id="botao-produtos">CADASTRAR</button>
 
                             <div id="message"></div>
 
@@ -103,7 +114,7 @@
 
                         </div>
                     </form>
-                </div>
+                
 
                 <div class="tabelaDeProdutos">
                     <table class="table" >
@@ -118,7 +129,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+        </div>
             <!--Tela de controle e filtro do saldo dos produtos-->
             <div class="saldoProdutos">
             <div class="center mb-5"> 
@@ -294,16 +305,17 @@
             
     </div>
 
-     <script type="text/javascript" async>
+    <script type="text/javascript" async>      
         const form = document.querySelector("#form-cadastro");
         const message = document.querySelector("#message");
         form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+            e.preventDefault();        
             const dataProduto = new FormData(form);
             const data = await fetch("<?= url("estoque"); ?>",{
                 method: "POST",
                 body: dataProduto,
             });
+            
             const produto = await data.json();
             console.log(produto);
             if(produto) {
@@ -316,6 +328,7 @@
         });
     </script>
 
+    <script src="<?= url('assets/app/js/estoqueForm.js') ?>"></script>
     <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
     <script src="<?= url('assets/app/js/dropdowns.js') ?>"></script>
     <script src="<?= url('assets/app/js/displayEstoque.js') ?>"></script>
@@ -323,5 +336,5 @@
     <script src="<?= url('assets/app/js/saldoEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/entradasEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/modalEstoque.js') ?>"></script>
-    
+     
    </body>

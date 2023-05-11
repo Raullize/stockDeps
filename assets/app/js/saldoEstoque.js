@@ -8,15 +8,15 @@ function adicionaProdutosListaSaldo(categoriaSelecionada) {
   let produtosFiltrados = [];
   let idCategorias;
 
-  if (categoriaSelecionada === "Lava Roupas") {
+  if (categoriaSelecionada == 10) {
     idCategorias = 10;
-  } else if (categoriaSelecionada === "Lava Louças") {
+  } else if (categoriaSelecionada == 20) {
     idCategorias = 20;
-  } else if (categoriaSelecionada === "Lava Carros") {
+  } else if (categoriaSelecionada == 30) {
     idCategorias = 30;
-  } else if (categoriaSelecionada === "Limpeza de Ambiente") {
+  } else if (categoriaSelecionada == 40) {
     idCategorias = 40;
-  }else if (categoriaSelecionada === "Outros") {
+  }else if (categoriaSelecionada == 50) {
     idCategorias = 50;
   }
   produtosFiltrados = produtos.filter(produto => produto.idCategoria === idCategorias);

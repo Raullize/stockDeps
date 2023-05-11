@@ -158,6 +158,29 @@ td {
   cursor: pointer;
 }
 
+#dropdown-itens-entradas{
+  overflow-y: scroll;
+}
+#input-nome-produto{
+  width: 472px;
+}
+#input-preco-produto{
+  width: 472px;
+}
+#botao-produtos{
+  margin-right: 104px;
+}
+
+//Mensagens form produtos
+#message-nome{
+  margin-left: 5px;
+  color: red;
+}
+
+#message-preco{
+  color: red;
+}
+
 .botao-editar:hover {
   border: solid 1px green;
 }
@@ -186,6 +209,9 @@ td {
   margin-right: 100px;
   text-align: center;
 }
+
+//SESSÃO RELATIVA A LISTA DE CLIENTES
+
 
 .link-clientes-saidas{
   border: 0px;
@@ -226,6 +252,9 @@ td {
 .client-card-saidas.hidden {
   opacity: 0;
 }
+
+
+//SESSÃO RELATIVA AO MODAL
 
 
 #modal {
@@ -308,6 +337,8 @@ input {
   background-color: #009933;
 }
 
+
+//SESSÃO RELATIVA AO DARK MODE
 
 .dark-mode {
   #container {

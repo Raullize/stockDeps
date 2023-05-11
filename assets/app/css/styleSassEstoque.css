@@ -154,6 +154,31 @@ td {
   cursor: pointer;
 }
 
+#dropdown-itens-entradas {
+  overflow-y: scroll;
+}
+
+#input-nome-produto {
+  width: 472px;
+}
+
+#input-preco-produto {
+  width: 472px;
+}
+
+#botao-produtos {
+  margin-right: 104px;
+}
+
+#message-nome {
+  margin-left: 5px;
+  color: red;
+}
+
+#message-preco {
+  color: red;
+}
+
 .botao-editar:hover {
   border: solid 1px green;
 }
