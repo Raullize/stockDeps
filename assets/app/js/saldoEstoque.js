@@ -1,6 +1,6 @@
 const tabelaSaldo = document.getElementById("tabela-saldo");
 const botaoFiltrar = document.getElementById("botao-filtrar");
-const form = document.getElementById('form-saldo');
+const formSaldo   = document.getElementById('form-saldo');
 const selectCategoriaSaldo = document.getElementById('dropdown-categorias-saldo');
 
 
@@ -38,14 +38,15 @@ function adicionaProdutosListaSaldo(categoriaSelecionada) {
 
 botaoFiltrar.addEventListener("click", function() {
   const categoriaSelecionada = selectCategoriaSaldo.value;
-  
+    if(produtos.length > 0) {
     tabelaSaldo.innerHTML = ""; // Limpa os options anteriores
     tabelaSaldo.insertAdjacentHTML('beforeend', adicionaProdutosListaSaldo(categoriaSelecionada)); // Adiciona os novos options
-})
+    }  
+  })
 
 
 
-form.addEventListener('submit', function (event) {
+formSaldo.addEventListener('submit', function (event) {
   event.preventDefault();
 
 
