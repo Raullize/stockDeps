@@ -17,7 +17,7 @@ function adicionaCategoriasDropdown(categorias) {
   let options = "";
   for (let i = 0; i < categorias.length; i++) {
     options += `
-      <option value="${categorias[i].nome}"> ${categorias[i].nome}</option>
+      <option value="${categorias[i].id}"> ${categorias[i].nome}</option>
     `;
   }
   return options;
