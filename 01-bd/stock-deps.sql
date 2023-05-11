@@ -59,7 +59,6 @@ CREATE TABLE `produtos` (
                              `idCategoria` int(11) NOT NULL,
                              `nome` varchar(255) NOT NULL,
                              `preco` varchar(11) NOT NULL,
-                             `quantidade` varchar(11) NOT NULL,
                              `descricao` text NOT NULL,
                              `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
                              `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),

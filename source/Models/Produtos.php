@@ -10,7 +10,6 @@ class Produtos
     private $idCategoria;
     private $nome;
     private $preco;
-    private $quantidade;
     private $descricao;
 
     public function __construct(
@@ -18,7 +17,6 @@ class Produtos
         int $idCategoria = NULL,
         string $nome = NULL,
         string $preco = NULL,
-        string $quantidade = NULL,
         string $descricao = NULL
     )
     {
@@ -26,7 +24,6 @@ class Produtos
         $this->idCategoria = $idCategoria;
         $this->nome = $nome;
         $this->preco = $preco;
-        $this->quantidade = $quantidade;
         $this->descricao = $descricao;
     }
 
@@ -97,22 +94,6 @@ class Produtos
     /**
      * @return string|null
      */
-    public function getQuantidade(): ?string
-    {
-        return $this->quantidade;
-    }
-
-    /**
-     * @param string|null $quantidade
-     */
-    public function setQuantidade(?string $quantidade): void
-    {
-        $this->quantidade = $quantidade;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getDescricao(): ?string
     {
         return $this->descricao;
@@ -139,11 +120,12 @@ class Produtos
         }
     }
 
-    public function validateProdutos(string $nome, int $id) : bool
+    public function validateProdutos(string $nome, int $idCategoria) : bool
     {
-        $query = "SELECT * FROM users WHERE email = :email";
+        $query = "SELECT * FROM produtos WHERE nome = :nome AND idCategoria = :idCategoria";
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":nome", $nome);
+        $stmt->bindParam(":idCategoria", $idCategoria);
         $stmt->execute();
         if($stmt->rowCount() == 1){
             return true;
@@ -152,39 +134,15 @@ class Produtos
         }
     }
 
-    public function update()
-    {
-        $query = "UPDATE users SET name = :name, email = :email, photo = :photo, document = :document WHERE id = :id";
-        $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":name",$this->name);
-        $stmt->bindParam(":email",$this->email);
-        $stmt->bindParam(":photo",$this->photo);
-        $stmt->bindParam(":document",$this->document);
-        $stmt->bindParam(":id",$this->id);
-        $stmt->execute();
-        $arrayUser = [
-            "id" => $this->id,
-            "name" => $this->name,
-            "email" => $this->email,
-            "photo" => $this->photo,
-            "document" => $this->document
-        ];
-        $_SESSION["user"] = $arrayUser;
-        $this->message = "Usuário alterado com sucesso!";
-    }
-
     public function insert() : bool
     {
-        $query = "INSERT INTO users (name, email, password, type) VALUES (:name, :email, :password, :type)";
+        $query = "INSERT INTO produtos (idCategoria, nome, preco, descricao) VALUES (:idCategoria, :nome, :preco, :descricao)";
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":type",$this->type);
-        $stmt->bindValue(":password", password_hash($this->password,PASSWORD_DEFAULT));
+        $stmt->bindParam(":idCategoria", $this->idCategoria);
+        $stmt->bindParam(":nome", $this->nome);
+        $stmt->bindParam(":preco", $this->preco);
+        $stmt->bindValue(":descricao", $this->descricao);
         $stmt->execute();
-        $this->id = Connect::getInstance()->lastInsertId();
-        $this->message = "Usuário cadastrado com sucesso!";
-        $_SESSION["user"] = $this;
         return true;
     }
 
