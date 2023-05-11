@@ -65,48 +65,41 @@ class App
                 return;
             }
 
-            if(!is_email($data["email"])){
+            $produto = new Produtos();
+
+            var_dump($data);
+
+            /*if(!$produto->validateProdutos($data["nome"], $data["categoria"])){
                 $json = [
-                    "message" => "Informe um e-mail válido!",
+                    "message" => "Produto já cadastrado!",
                     "type" => "warning"
                 ];
                 echo json_encode($json);
                 return;
             }
+            */
 
-            $client = new Clientes(
+            $produto = new Produtos(
                 NULL,
-                $data["name"],
-                $data["cpf"],
-                $data["email"],
-                $data["celular"],
-                $data["cidade"],
-                $data["bairro"],
-                $data["uf"]
+                $data["categoria"],
+                $data["nome"],
+                $data["preco"],
+                $data["descricao"]
             );
 
-            if($client->findByCpf($data["cpf"])){
-                $json = [
-                    "message" => "Cpf já cadastrado!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            if($client->insert()){
+            if($produto->insert()){
 
                 $json = [
-                    "name" => $data["name"],
-                    "email" => $data["email"],
-                    "message" => "Cliente cadastrado com sucesso!",
+                    "message" => "Produto cadastrado com sucesso!",
                     "type" => "success"
                 ];
+
                 echo json_encode($json);
                 return;
+
             } else {
                 $json = [
-                    "message" => "Cliente não cadastrado!",
+                    "message" => "Produto não cadastrado!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
