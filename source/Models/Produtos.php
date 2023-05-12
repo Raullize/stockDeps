@@ -120,7 +120,7 @@ class Produtos
         }
     }
 
-    public function validateProdutos(string $nome, int $idCategoria) : bool
+    public function validateProdutos($nome, $idCategoria) : bool
     {
         $query = "SELECT * FROM produtos WHERE nome = :nome AND idCategoria = :idCategoria";
         $stmt = Connect::getInstance()->prepare($query);

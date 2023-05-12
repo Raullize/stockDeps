@@ -12,8 +12,8 @@ define("CONF_DB_NAME", "stock-deps"); // aqui deve ser alterado para o nome do b
 
 // PROJECT URLs
 
-define("CONF_URL_BASE", "http://www.localhost/stock-deps"); // depois da / deve vir o nome da pasta do trabalho
-define("CONF_URL_TEST", "http://www.localhost/stock-deps"); // depois da / deve vir o nome da pasta do trabalho
+define("CONF_URL_BASE", "http://127.0.0.1/stock-deps"); // depois da / deve vir o nome da pasta do trabalho
+define("CONF_URL_TEST", "http://127.0.0.1/stock-deps"); // depois da / deve vir o nome da pasta do trabalho
 
 // VIEW
 

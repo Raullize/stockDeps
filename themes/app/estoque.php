@@ -318,13 +318,10 @@
             
             const produto = await data.json();
             console.log(produto);
-            if(produto) {
                 message.innerHTML = produto.message;
-
                 message.classList.add("message");
                 message.classList.remove("success", "warning", "error");
                 message.classList.add(`${produto.type}`);
-            }
         });
     </script>
 

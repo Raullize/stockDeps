@@ -67,17 +67,15 @@ class App
 
             $produto = new Produtos();
 
-            var_dump($data);
-
-            /*if(!$produto->validateProdutos($data["nome"], $data["categoria"])){
+            if($produto->validateProdutos($data["nome"], $data["categoria"])){
                 $json = [
-                    "message" => "Produto já cadastrado!",
+                    "message" => "<div style='margin-left: 25px; color: red'>Produto já cadastrado!</div>",
                     "type" => "warning"
                 ];
                 echo json_encode($json);
                 return;
             }
-            */
+            
 
             $produto = new Produtos(
                 NULL,
@@ -90,7 +88,7 @@ class App
             if($produto->insert()){
 
                 $json = [
-                    "message" => "Produto cadastrado com sucesso!",
+                    "message" => "<div style='margin-left: 25px; color: green'>Produto cadastrado com sucesso!</div>",
                     "type" => "success"
                 ];
 
@@ -99,7 +97,7 @@ class App
 
             } else {
                 $json = [
-                    "message" => "Produto não cadastrado!",
+                    "message" => "<div style='margin-left: 25px; color: red'>Produto não cadastrado!</div>",
                     "type" => "error"
                 ];
                 echo json_encode($json);
