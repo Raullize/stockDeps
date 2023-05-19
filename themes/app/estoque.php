@@ -96,9 +96,7 @@
                                 </div>
                         </div>
                         
-
-                        
-                    </div>
+                        </div>
                         
                         <div class="flex">
                         
@@ -173,21 +171,25 @@
                 </div>
                 <div class="inputEntrada">
                     <for role="search">
-                        <select class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-entradas">
+                    <form id="form-entrada" name="entrada" action="" method="post">    
+                        <select name="categoria" class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-entradas">
                             <option selected>Selecione uma categoria de itens</option>
                         </select>
                         <div class="flex">
-                            <select class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
+                            <select name="item" class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
                                 <option>Selecione um item</option>
                             </select>
-                            <input class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
+                            <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
                                 placeholder="Quantidade">
 
                             <button class="botao-cadastrar-quantidade mt-3" type="submit">SALVAR</button>
+
+                            <div id="message-entrada"></div>
+
                         </div>
 
 
-                        </form>
+                    </form>
                 </div>
 
                 <div class="tabelaDeProdutos">
@@ -322,6 +324,26 @@
                 message.classList.add("message");
                 message.classList.remove("success", "warning", "error");
                 message.classList.add(`${produto.type}`);
+        });
+    </script>
+
+<script type="text/javascript" async>      
+        const form_entrada = document.querySelector("#form-entrada");
+        const message_entrada = document.querySelector("#message-entrada");
+        form_entrada.addEventListener("submit", async (e) => {
+            e.preventDefault();        
+            const dataEntrada = new FormData(form_entrada);
+            const data = await fetch("<?= url("estoque"); ?>",{
+                method: "POST",
+                body: dataEntrada,
+            });
+            
+            const entrada = await data.json();
+            console.log(entrada);
+                message_entrada.innerHTML = entrada.message;
+                message_entrada.classList.add("message_entrada");
+                message_entrada.classList.remove("success", "warning", "error");
+                message_entrada.classList.add(`${entrada.type}`);
         });
     </script>
 

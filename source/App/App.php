@@ -107,6 +107,61 @@ class App
 
     }
 
+    public function estoqueEntrada (?array $data) : void 
+    {
+        if(!empty($data)){
+
+            if(in_array("", $data)){
+                $json = [
+                    "message" => "<div style='color: red'>Informe todos os campos para cadastrar!</div>",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $produto = new Produtos();
+
+            if($produto->validateProdutos($data["nome"], $data["categoria"])){
+                $json = [
+                    "message" => "<div style='margin-left: 25px; color: red'>Produto já cadastrado!</div>",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+            
+
+            $produto = new Produtos(
+                NULL,
+                $data["categoria"],
+                $data["nome"],
+                $data["preco"],
+                $data["descricao"]
+            );
+
+            if($produto->insert()){
+
+                $json = [
+                    "message" => "<div style='margin-left: 25px; color: green'>Produto cadastrado com sucesso!</div>",
+                    "type" => "success"
+                ];
+
+                echo json_encode($json);
+                return;
+
+            } else {
+                $json = [
+                    "message" => "<div style='margin-left: 25px; color: red'>Produto não cadastrado!</div>",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+
+    }
+
     public function cadastro (?array $data) : void 
     {
         if(!empty($data)){
