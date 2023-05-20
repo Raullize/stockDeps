@@ -43,7 +43,7 @@ function adicionaItensDropdown(categoriaSelecionada) {
   let options = "";
   for (let i = 0; i < produtosFiltrados.length; i++) {
     options += `
-        <option value="${produtosFiltrados[i].nome}"> ${produtosFiltrados[i].nome}</option>
+        <option value="${produtosFiltrados[i].id}"> ${produtosFiltrados[i].nome}</option>
       `;
   }
   return options;
