@@ -9,6 +9,14 @@
     echo '</script>';
 
     echo '<script>';
+    echo 'var entradas = ' . json_encode($entradas) . ';';
+    echo '</script>';
+
+    echo '<script>';
+    echo 'var saidas = ' . json_encode($saidas) . ';';
+    echo '</script>';
+
+    echo '<script>';
     echo 'var clientes = ' . json_encode($clientes) . ';';
     echo '</script>';
     
@@ -77,14 +85,13 @@
         <div class="block">
           <div class="cartao-pequeno">
             <p class="titulo-relatorio">Vendas</p>
-            <p class="resposta">5900</p>
+            <p class="resposta" id="qtd-vendas"></p>
           </div>
 
           <div class="cartao-medio">
             <p class="titulo-relatorio">Mais vendidos:</p>
-            <p class="resposta-letra">1 - Lava roupas</p>
-            <p class="resposta-letra">2 - Lava carros</p>
-            <p class="resposta-letra">3 - Lava louças</p>
+            <p class="resposta-letra" id="ranking-categorias"></p>
+            
           </div>
 
         </div>

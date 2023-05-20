@@ -3,11 +3,15 @@ const switchTema = document.getElementById('darkmode-toggle');
 switchTema.addEventListener('change', () => {
   if (switchTema.checked) {
     // ativar o modo escuro
-    document.cookie = 'darkmode=true';
+    const now = new Date();
+    const expireDate = new Date(now.getTime() + (365 * 24 * 60 * 60 * 1000)); // expira em 1 ano
+    document.cookie = `darkmode=true; expires=${expireDate.toUTCString()}`;
     document.documentElement.classList.add('dark-mode');
   } else {
     // ativar o modo claro
-    document.cookie = 'darkmode=false';
+    const now = new Date();
+    const expireDate = new Date(now.getTime() - (24 * 60 * 60 * 1000)); // expira em 1 dia
+    document.cookie = `darkmode=false; expires=${expireDate.toUTCString()}`;
     document.documentElement.classList.remove('dark-mode');
   }
 });

@@ -9,6 +9,14 @@
      echo '</script>';
  
      echo '<script>';
+     echo 'var entradas = ' . json_encode($entradas) . ';';
+     echo '</script>';
+
+     echo '<script>';
+     echo 'var saidas = ' . json_encode($saidas) . ';';
+     echo '</script>';
+
+     echo '<script>';
      echo 'var clientes = ' . json_encode($clientes) . ';';
      echo '</script>';
 
