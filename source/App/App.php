@@ -16,7 +16,7 @@ class App
         $this->view = new Engine(CONF_VIEW_APP,'php');
     }
 
-    public function home () : void 
+    public function inicio () : void 
     {
         $cliente = new Clientes();
         $clientes = $cliente->selectAll();
@@ -25,7 +25,7 @@ class App
         $categoria = new Categorias();
         $categorias = $categoria->selectAll();
 
-        echo $this->view->render("home",[
+        echo $this->view->render("inicio",[
             "produtos" => $produtos,
             "categorias" => $categorias,
             "clientes" => $clientes
