@@ -38,7 +38,7 @@ function adicionaItensDropdown(categoriaSelecionada) {
   }else if (categoriaSelecionada == 50) {
     idCategorias = 50;
   }
-
+//teste
   produtosFiltrados = produtos.filter(produto => produto.idCategoria === idCategorias);
   let options = "";
   for (let i = 0; i < produtosFiltrados.length; i++) {
