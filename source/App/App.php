@@ -5,6 +5,7 @@ namespace Source\App;
 use League\Plates\Engine;
 use Source\Models\Categorias;
 use Source\Models\Clientes;
+use Source\Models\Entradas;
 use Source\Models\Produtos;
 
 class App
@@ -113,37 +114,25 @@ class App
 
             if(in_array("", $data)){
                 $json = [
-                    "message" => "<div style='color: red'>Informe todos os campos para cadastrar!</div>",
+                    "message" => "<div style='color: red'>Informe todos os campos para dar entrada neste produto!</div>",
                     "type" => "warning"
                 ];
                 echo json_encode($json);
                 return;
             }
 
-            $produto = new Produtos();
+                $entrada = new Entradas(
+                    NULL,
+                    $data["categoria"],
+                    $data["item"],
+                    $data["quantidade"]
+                );
 
-            if($produto->validateProdutos($data["nome"], $data["categoria"])){
-                $json = [
-                    "message" => "<div style='margin-left: 25px; color: red'>Produto já cadastrado!</div>",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-            
 
-            $produto = new Produtos(
-                NULL,
-                $data["categoria"],
-                $data["nome"],
-                $data["preco"],
-                $data["descricao"]
-            );
-
-            if($produto->insert()){
+            if($entrada->insert()){
 
                 $json = [
-                    "message" => "<div style='margin-left: 25px; color: green'>Produto cadastrado com sucesso!</div>",
+                    "message" => "<div style='margin-left: 25px; color: green'>Produtos adicionados com sucesso!</div>",
                     "type" => "success"
                 ];
 
@@ -152,7 +141,7 @@ class App
 
             } else {
                 $json = [
-                    "message" => "<div style='margin-left: 25px; color: red'>Produto não cadastrado!</div>",
+                    "message" => "<div style='margin-left: 25px; color: red'>Produto não adicionado!</div>",
                     "type" => "error"
                 ];
                 echo json_encode($json);

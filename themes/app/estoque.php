@@ -321,7 +321,7 @@
         form.addEventListener("submit", async (e) => {
             e.preventDefault();        
             const dataProduto = new FormData(form);
-            const data = await fetch("<?= url("estoque"); ?>",{
+            const data = await fetch("<?= url("estoque-cadastro"); ?>",{
                 method: "POST",
                 body: dataProduto,
             });
@@ -335,13 +335,14 @@
         });
     </script>
 
-<script type="text/javascript" async>      
+<script type="text/javascript" async>  
+
         const form_entrada = document.querySelector("#form-entrada");
         const message_entrada = document.querySelector("#message-entrada");
         form_entrada.addEventListener("submit", async (e) => {
             e.preventDefault();        
             const dataEntrada = new FormData(form_entrada);
-            const data = await fetch("<?= url("estoque"); ?>",{
+            const data = await fetch("<?= url("estoque-entrada"); ?>",{
                 method: "POST",
                 body: dataEntrada,
             });
@@ -353,6 +354,7 @@
                 message_entrada.classList.remove("success", "warning", "error");
                 message_entrada.classList.add(`${entrada.type}`);
         });
+
     </script>
 
     <script src="<?= url('assets/app/js/estoqueForm.js') ?>"></script>
