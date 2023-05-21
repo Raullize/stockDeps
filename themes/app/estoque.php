@@ -184,7 +184,7 @@
                             <option selected>Selecione uma categoria de itens</option>
                         </select>
                         <div class="flex">
-                            <select name="item" class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
+                            <select name="produto" class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
                                 <option>Selecione um item</option>
                             </select>
                             <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"

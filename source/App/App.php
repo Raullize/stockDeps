@@ -124,7 +124,7 @@ class App
                 $entrada = new Entradas(
                     NULL,
                     $data["categoria"],
-                    $data["item"],
+                    $data["produto"],
                     $data["quantidade"]
                 );
 
