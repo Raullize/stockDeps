@@ -7,6 +7,7 @@ use Source\Models\Categorias;
 use Source\Models\Clientes;
 use Source\Models\Entradas;
 use Source\Models\Produtos;
+use Source\Models\Saidas;
 
 class App
 {
@@ -142,6 +143,50 @@ class App
             } else {
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: red'>Produto não adicionado!</div>",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+
+    }
+
+    public function estoqueSaidas (?array $data) : void 
+    {
+        if(!empty($data)){
+
+            if(in_array("", $data)){
+                $json = [
+                    "message" => "<div style='color: red'>Informe todos os campos para dar saída neste produto!</div>",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+                $saidas = new Saidas(
+                    NULL,
+                    $data["categoria"],
+                    $data["cliente"],
+                    $data["produto"],
+                    $data["quantidade"]
+                );
+
+
+            if($saidas->insert()){
+
+                $json = [
+                    "message" => "<div style='margin-left: 25px; color: green'>Produtos retirados com sucesso!</div>",
+                    "type" => "success"
+                ];
+
+                echo json_encode($json);
+                return;
+
+            } else {
+                $json = [
+                    "message" => "<div style='margin-left: 25px; color: red'>Produto não retirado!</div>",
                     "type" => "error"
                 ];
                 echo json_encode($json);

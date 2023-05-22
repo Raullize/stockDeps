@@ -234,28 +234,32 @@
                 </div>
                
                 <div class="inputEntrada">
-                    <for role="search">
-                        <select class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-saidas">
-                            <option selected>Selecione uma categoria de itens</option>
-                        </select>
-                        <div class="flex">
-                            <select class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example" id="dropdown-itens-saidas">
-                            <option>Selecione um item</option>
+                    <form id="form-saidas" name="saidas" action="" method="post">
+                        <for role="search">
+                            <select name="categoria" class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-saidas">
+                                <option selected>Selecione uma categoria de itens</option>
                             </select>
-                            <input class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
+                            <div class="flex">
+                                <select name="produto" class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example" id="dropdown-itens-saidas">
+                                    <option>Selecione um item</option>
+                                </select>
+                                <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
                                 placeholder="Quantidade">
                         
                             
-                        </div>
-                        <div class="flex">
+                            </div>
+                            <div class="flex">
                 
-                        <input id="procurar-cliente-saidas" class="form-control form-control-lg inputForm " 
-                        type="search" placeholder="Escolha o cliente" aria-label="Search">
-                        <div id="client-list-saidas">
+                            <input name="cliente" id="procurar-cliente-saidas" class="form-control form-control-lg inputForm " 
+                            type="search" placeholder="Escolha o cliente" aria-label="Search">
+                            <div id="client-list-saidas">
+                            </div>
+                            <button class="botao-cadastrar-quantidade mx-2" type="submit">SALVAR</button>
+
+                            <div id="message-saidas"></div>
+
                         </div>
-                        <button class="botao-cadastrar-quantidade mx-2" type="submit">SALVAR</button>
-                    </div>
-                        </form>
+                    </form>
                 </div>
 
                 <div class="tabelaDeProdutos">
@@ -315,47 +319,69 @@
             
     </div>
 
-    <script type="text/javascript" async>      
-        const form = document.querySelector("#form-cadastro");
-        const message = document.querySelector("#message");
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();        
-            const dataProduto = new FormData(form);
-            const data = await fetch("<?= url("estoque-cadastro"); ?>",{
-                method: "POST",
-                body: dataProduto,
-            });
-            
-            const produto = await data.json();
-            console.log(produto);
-                message.innerHTML = produto.message;
-                message.classList.add("message");
-                message.classList.remove("success", "warning", "error");
-                message.classList.add(`${produto.type}`);
+<script type="text/javascript" async>      
+    const form = document.querySelector("#form-cadastro");
+    const message = document.querySelector("#message");
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();        
+        const dataProduto = new FormData(form);
+        const data = await fetch("<?= url("estoque-cadastro"); ?>",{
+            method: "POST",
+            body: dataProduto,
         });
-    </script>
+        
+        const produto = await data.json();
+        console.log(produto);
+            message.innerHTML = produto.message;
+            message.classList.add("message");
+            message.classList.remove("success", "warning", "error");
+            message.classList.add(`${produto.type}`);
+    });
+</script>
 
 <script type="text/javascript" async>  
 
-        const form_entrada = document.querySelector("#form-entrada");
-        const message_entrada = document.querySelector("#message-entrada");
-        form_entrada.addEventListener("submit", async (e) => {
-            e.preventDefault();        
-            const dataEntrada = new FormData(form_entrada);
-            const data = await fetch("<?= url("estoque-entrada"); ?>",{
-                method: "POST",
-                body: dataEntrada,
-            });
-            
-            const entrada = await data.json();
-            console.log(entrada);
-                message_entrada.innerHTML = entrada.message;
-                message_entrada.classList.add("message_entrada");
-                message_entrada.classList.remove("success", "warning", "error");
-                message_entrada.classList.add(`${entrada.type}`);
+    const form_entrada = document.querySelector("#form-entrada");
+    const message_entrada = document.querySelector("#message-entrada");
+    form_entrada.addEventListener("submit", async (e) => {
+        e.preventDefault();        
+        const dataEntrada = new FormData(form_entrada);
+        const data = await fetch("<?= url("estoque-entrada"); ?>",{
+            method: "POST",
+            body: dataEntrada,
         });
+            
+        const entrada = await data.json();
+        console.log(entrada);
+            message_entrada.innerHTML = entrada.message;
+            message_entrada.classList.add("message_entrada");
+            message_entrada.classList.remove("success", "warning", "error");
+            message_entrada.classList.add(`${entrada.type}`);
+    });
 
-    </script>
+</script>
+
+<script type="text/javascript" async>  
+
+    const form_saidas = document.querySelector("#form-saidas");
+    const message_saidas = document.querySelector("#message-saidas");
+    form_saidas.addEventListener("submit", async (e) => {
+        e.preventDefault();        
+        const dataSaidas = new FormData(form_saidas);
+        const data = await fetch("<?= url("estoque-saidas"); ?>",{
+            method: "POST",
+            body: dataSaidas,
+        });
+            
+        const saidas = await data.json();
+        console.log(saidas);
+            message_saidas.innerHTML = saidas.message;
+            message_saidas.classList.add("message_saidas");
+            message_saidas.classList.remove("success", "warning", "error");
+            message_saidas.classList.add(`${saidas.type}`);
+    });
+
+</script>
 
     <script src="<?= url('assets/app/js/estoqueForm.js') ?>"></script>
     <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>

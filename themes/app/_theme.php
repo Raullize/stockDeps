@@ -39,7 +39,7 @@
           <a class="navLinks" href="<?= url('cadastro') ?>">Cadastro</a>
         </li>
         <li class="nav-item">
-          <a class="navLinks" href="<?= url('contabilidade') ?>">Contabilidade</a>
+          <a class="navLinks" href="<?= url('relatorios') ?>">Relatórios</a>
         </li>
         <li class="nav-item">
           <a class="navLinks" href="<?= url('clientes') ?>">Clientes</a>
