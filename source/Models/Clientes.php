@@ -229,7 +229,7 @@ class Clientes
 */
     /*finalizar a insert*/
 
-    public function insert() : bool
+    public function insert() 
     {
         $query = "INSERT INTO clientes (nome, cpf, email, celular, cidade, bairro, uf) 
                   VALUES (:nome, :cpf, :email, :celular, :cidade, :bairro, :uf)";
@@ -248,6 +248,8 @@ class Clientes
 
         return true;
     }
+
+    /*
 
     public function validate (string $email, string $password) : bool
     {
@@ -296,4 +298,6 @@ class Clientes
         ]];
     }
 
-}
+*/
+
+} 
