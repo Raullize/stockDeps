@@ -175,27 +175,22 @@ class Clientes
             return $stmt->fetchAll();
         }
     }
-/*
-    public function findById() : bool
+
+    public function findByIdName($nome) 
     {
-        $query = "SELECT * FROM users WHERE id = :id";
+        $query = "SELECT * FROM clientes WHERE nome = :nome";
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":id",$this->id);
+        $stmt->bindParam(":nome", $nome);
         $stmt->execute();
 
         if($stmt->rowCount() == 0){
             return false;
         } else {
-            $user = $stmt->fetch();
-            $this->name = $user->name;
-            $this->email = $user->email;
-            $this->document = $user->document;
-            $this->photo = $user->photo;
-            return true;
+            $cliente = $stmt->fetch();
+            return $cliente->id;
         }
     }
-*/
-    /*Alterar a funçãpo findbyemail -> findbyCPF*/
+    
 
     public function findByCpf($cpf) : bool
     {

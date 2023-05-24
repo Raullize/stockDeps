@@ -165,10 +165,12 @@ class App
                 return;
             }
 
+            $cliente = new Clientes();
+
                 $saidas = new Saidas(
                     NULL,
                     $data["categoria"],
-                    $data["cliente"],
+                    $cliente->findByIdName($data["cliente"]),
                     $data["produto"],
                     $data["quantidade"]
                 );
