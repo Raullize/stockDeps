@@ -21,44 +21,59 @@ function adicionaQtdProdutos(produtos) {
   }
 }
 
-function adicionarRankingCategorias(saidas,produtos) {
-  const lavaRoupas = idCategorias === 10 ? idCategorias : null;
-  const lavaLoucas = idCategorias === 20 ? idCategorias : null;
-  const lavaCarros = idCategorias === 30 ? idCategorias : null;
-  const limpezaAmbiente = idCategorias === 40 ? idCategorias : null;
-  const outros = idCategorias === 50 ? idCategorias : null;
+var categoriasComprimento = [];
+
+
+function adicionarRankingCategorias(saidas) {
+  const lavaRoupas = saidas.idCategoria === 10 ? saidas.idCategoria : null;
+  const lavaLoucas = saidas.idCategoria === 20 ? saidas.idCategoria : null;
+  const lavaCarros = saidas.idCategoria === 30 ? saidas.idCategoria : null;
+  const limpezaAmbiente = saidas.idCategoria === 40 ? saidas.idCategoria : null;
+  const outros = saidas.idCategoria === 50 ? saidas.idCategoria : null;
+
+  const categoriasComprimento = []; // Array para armazenar as categorias e seus comprimentos
+
   if (saidas) {
-    rankingLavaRoupas = "Lava roupas: " + saidas.filter(saida => saida.idProdutos === lavaRoupas).length;
-    rankinglavaLoucas = "Lava louças: " + saidas.filter(saida => saida.idProdutos === lavaLoucas).length;
-    rankinglavaCarros = "Lava carros: " + saidas.filter(saida => saida.idProdutos === lavaCarros).length;
-    rankinglimpezaAmbiente = "Limpeza ambiente: " + saidas.filter(saida => saida.idProdutos === limpezaAmbiente).length;
-    rankingoutros = "Outros: " + saidas.filter(saida => saida.idProdutos === outros).length;
-    rankingCategorias.innerHTML = "Total: " + produtos.length
+
+      const categoriaLavaRoupas = { nome: "Lava roupas", length: saidas.filter(saida => saida.idCategoria === 10).length };
+      categoriasComprimento.push(categoriaLavaRoupas);
+ 
+    
+
+      const categoriaLavaLoucas = { nome: "Lava louças", length: saidas.filter(saida => saida.idCategoria === 20).length };
+      categoriasComprimento.push(categoriaLavaLoucas);
+
+    
+
+      const categoriaLavaCarros = { nome: "Lava carros", length: saidas.filter(saida => saida.idCategoria === 30).length };
+      categoriasComprimento.push(categoriaLavaCarros);
+
+    
+
+      const categoriaLimpezaAmbiente = { nome: "Limpeza ambiente", length: saidas.filter(saida => saida.idCategoria === 40).length };
+      categoriasComprimento.push(categoriaLimpezaAmbiente);
+
+    
+ 
+      const categoriaOutros = { nome: "Outros", length: saidas.filter(saida => saida.idCategoria === 50).length };
+      categoriasComprimento.push(categoriaOutros);
+ 
+  }
+  console.log(categoriasComprimento)
+  categoriasComprimento.sort((a, b) => b.length - a.length);
+  if (categoriasComprimento.length > 0) {
+    const maiorCategoria = categoriasComprimento[0].nome;
+    const segundaMaior = categoriasComprimento[1].nome;
+    const terceiraMaior = categoriasComprimento[2].nome;
+    rankingCategorias.innerHTML = "1° - " + maiorCategoria + "<br>"+
+                                  "2° - " + segundaMaior + "<br>"+
+                                  "3° - " + terceiraMaior + "<br>" 
+                                  
+  } else {
+    console.log("Não há categorias disponíveis.");
   }
 }
 
-function adicionarRankingCategoriasTeste(saidas, produtos) {
-  const categorias = [
-    { id: 10, nome: 'Lava roupas' },
-    { id: 20, nome: 'Lava louças' },
-    { id: 30, nome: 'Lava carros' },
-    { id: 40, nome: 'Limpeza ambiente' },
-    { id: 50, nome: 'Outros' }
-  ];
-  
-  const categoriasOrdenadas = categorias.sort((a, b) => {
-    const qtdA = saidas.filter(saida => saida.idProdutos === a.id).length;
-    const qtdB = saidas.filter(saida => saida.idProdutos === b.id).length;
-    return qtdB - qtdA;
-  });
-  
-  let ranking = '';
-  for (let i = 0; i < 3 && i < categoriasOrdenadas.length; i++) {
-    ranking += categoriasOrdenadas[i].nome + ': ' + saidas.filter(saida => saida.idProdutos === categoriasOrdenadas[i].id).length + '<br>';
-  }
-  
-  rankingCategorias.innerHTML = ranking;
-}
 
 
 function contaClientes(clientes) {
@@ -73,7 +88,7 @@ function contaVendas(saidas) {
   }
 }
 
-
+adicionarRankingCategorias(saidas)
 adicionaQtdProdutos(produtos)
-
 contaClientes(clientes)
+contaVendas(saidas)

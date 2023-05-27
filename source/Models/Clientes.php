@@ -175,27 +175,22 @@ class Clientes
             return $stmt->fetchAll();
         }
     }
-/*
-    public function findById() : bool
+
+    public function findByIdName($nome) 
     {
-        $query = "SELECT * FROM users WHERE id = :id";
+        $query = "SELECT * FROM clientes WHERE nome = :nome";
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":id",$this->id);
+        $stmt->bindParam(":nome", $nome);
         $stmt->execute();
 
         if($stmt->rowCount() == 0){
             return false;
         } else {
-            $user = $stmt->fetch();
-            $this->name = $user->name;
-            $this->email = $user->email;
-            $this->document = $user->document;
-            $this->photo = $user->photo;
-            return true;
+            $cliente = $stmt->fetch();
+            return $cliente->id;
         }
     }
-*/
-    /*Alterar a funçãpo findbyemail -> findbyCPF*/
+    
 
     public function findByCpf($cpf) : bool
     {
@@ -234,7 +229,7 @@ class Clientes
 */
     /*finalizar a insert*/
 
-    public function insert() : bool
+    public function insert() 
     {
         $query = "INSERT INTO clientes (nome, cpf, email, celular, cidade, bairro, uf) 
                   VALUES (:nome, :cpf, :email, :celular, :cidade, :bairro, :uf)";
@@ -253,6 +248,8 @@ class Clientes
 
         return true;
     }
+
+    /*
 
     public function validate (string $email, string $password) : bool
     {
@@ -301,4 +298,6 @@ class Clientes
         ]];
     }
 
-}
+*/
+
+} 

@@ -1,5 +1,6 @@
 const tabelaProdutos = document.getElementById("tabela-produtos");
 const tabelaEntradas = document.getElementById("tabela-entradas"); 
+const tabelaSaidas = document.getElementById("tabela-saidas"); 
 
 function adicionaProdutosLista(produtos) {
   return `
@@ -20,11 +21,11 @@ function adicionaProdutosEntradas(entradas, produtos) {
         var nomeProduto = produtos[j].nome;
         tr += `
           <tr> 
-            <td> ${nomeProduto} </td> 
-            <td> ${entradas[i].quantidade} </td> 
-            <td> 
-            <td> <button class="botao-editar" data-nome="${nomeProduto}"  data-preco="${entradas[i].preco}" data-quantidade="${entradas[i].quantidade}">EDITAR</button></td>
-            </td> 
+            <td>${nomeProduto}</td> 
+            <td>${entradas[i].quantidade}</td> 
+            <td>
+              <button class="botao-editar" data-nome="${nomeProduto}" data-preco="${entradas[i].preco}" data-quantidade="${entradas[i].quantidade}">EDITAR</button>
+            </td>
           </tr>
         `;
       }
@@ -32,6 +33,7 @@ function adicionaProdutosEntradas(entradas, produtos) {
   }
   return tr;
 }
+
 
 function adicionaProdutosSaidas(saidas, produtos, clientes) {
   let tr = '';
@@ -62,10 +64,12 @@ function adicionaProdutosSaidas(saidas, produtos, clientes) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  tabelaSaidas.insertAdjacentHTML('beforeend',adicionaProdutosSaidas(saidas, produtos, clientes));
+  tabelaEntradas.insertAdjacentHTML('beforeend', adicionaProdutosEntradas(entradas, produtos));
   if(produtos.length > 0) {
   produtos.forEach(function (produtos) {
     tabelaProdutos.insertAdjacentHTML('beforeend', adicionaProdutosLista(produtos));
-    tabelaEntradas.insertAdjacentHTML('beforeend', adicionaProdutosEntradas(entradas, produtos));
+    
   });
   }
 });

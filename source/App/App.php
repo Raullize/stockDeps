@@ -22,15 +22,21 @@ class App
     {
         $cliente = new Clientes();
         $clientes = $cliente->selectAll();
+
         $produto = new Produtos();
         $produtos = $produto->selectAll();
+
         $categoria = new Categorias();
         $categorias = $categoria->selectAll();
+
+        $saidas = new Saidas();
+        $saidas = $saidas->selectAll();
 
         echo $this->view->render("inicio",[
             "produtos" => $produtos,
             "categorias" => $categorias,
-            "clientes" => $clientes
+            "clientes" => $clientes,
+            "saidas" => $saidas
         ]);
 
     }
@@ -46,10 +52,18 @@ class App
         $categoria = new Categorias();
         $categorias = $categoria->selectAll();
 
+        $entradas = new Entradas();
+        $entradas = $entradas->selectAll();
+
+        $saidas = new Saidas();
+        $saidas = $saidas->selectAll();
+
         echo $this->view->render("estoque",[
             "produtos" => $produtos,
             "categorias" => $categorias,
-            "clientes" => $clientes
+            "clientes" => $clientes,
+            "entradas" => $entradas,
+            "saidas" => $saidas
         ]);
 
     }
@@ -165,10 +179,12 @@ class App
                 return;
             }
 
+            $cliente = new Clientes();
+
                 $saidas = new Saidas(
                     NULL,
                     $data["categoria"],
-                    $data["cliente"],
+                    $cliente->findByIdName($data["cliente"]),
                     $data["produto"],
                     $data["quantidade"]
                 );

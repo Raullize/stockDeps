@@ -7,7 +7,7 @@
      echo '<script>';
      echo 'var produtos = ' . json_encode($produtos) . ';';
      echo '</script>';
- 
+
      echo '<script>';
      echo 'var entradas = ' . json_encode($entradas) . ';';
      echo '</script>';
@@ -201,29 +201,17 @@
                 </div>
 
                 <div class="tabelaDeProdutos">
-                    <table class="table" id="tabela-entradas">
+                    <table class="table" >
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
                                 <th scope="col">QTD.</th>
-                                <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Vassoura</td>
-                                <td> 7 </td>
-                                <td><button class="botao-editar"> EDITAR </button></td>
-                            </tr>
-
-                            <tr>
-                                <td>Maquina de lavar</td>
-                                <td> 8 </td>
-                                <td><button class="botao-editar"> EDITAR </button></td>
-                            </tr>
+                        <tbody id="tabela-entradas">
+                           
                         </tbody>
                     </table>
-
                 </div>
             </div>
             <div class="saidaProdutos">
@@ -263,29 +251,18 @@
                 </div>
 
                 <div class="tabelaDeProdutos">
-                    <table class="table">
+                    <table class="table" >
                         <thead>
                             <tr>
                                 <th scope="col">Nome</th>
                                 <th scope="col">QTD.</th>
-                                <th></th>
+                                <th scope="col">Cliente</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Vassoura</td>
-                                <td> 7 </td>
-                                <td><button class="botao-editar"> EDITAR </button></td>
-                            </tr>
-
-                            <tr>
-                                <td>Maquina de lavar</td>
-                                <td> 8 </td>
-                                <td><button class="botao-editar"> EDITAR </button></td>
-                            </tr>
+                        <tbody id="tabela-saidas">
+                           
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>

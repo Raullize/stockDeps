@@ -16,11 +16,13 @@
     echo 'var saidas = ' . json_encode($saidas) . ';';
     echo '</script>';
 
+
     echo '<script>';
     echo 'var clientes = ' . json_encode($clientes) . ';';
     echo '</script>';
     
 ?>
+
    <link rel="stylesheet" href="<?= url('assets/app/css/styleSassHome.css') ?>">
 
    <div class="container1">
@@ -54,33 +56,6 @@
   <!--DASHBOARD-->
   <div class="relatorio">
 
-    <div class="containerBotoesBalanco">
-      <input type="radio" class="" name="checks" id="checkProduto" checked>
-      <label for="checkProduto">
-        <p class="botaoRelatorioBalanco">
-          1m 
-        </p>
-      </label>
-
-      <input type="radio" class="" name="checks" id="checkProduto2">
-      <label for="checkProduto2">
-        <p class="botaoRelatorioBalanco">
-          3m
-        </p>
-      </label>
-      <input type="radio" class="" name="checks" id="checkProduto3">
-      <label for="checkProduto3">
-        <p class="botaoRelatorioBalanco">
-          6m
-        </p>
-      </label>
-      <input type="radio" class="" name="checks" id="checkProduto4">
-      <label for="checkProduto4">
-        <p class="botaoRelatorioBalanco">
-          Máx
-        </p>
-      </label>
-    </div>
       <div class="flex">
         <div class="block">
           <div class="cartao-pequeno">
