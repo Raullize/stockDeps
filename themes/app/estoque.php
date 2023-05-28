@@ -61,14 +61,14 @@
 
                 <input type="radio" class="botao-selecionavel" name="checks" id="checkEntradas">
                 <label for="checkEntradas">
-                    <p class="botao-produtos">
+                    <p class="botao-produtos" id="barralateral-entradas">
                         ENTRADAS
                     </p>
                 </label>
 
                 <input type="radio" class="botao-selecionavel" name="checks" id="checkSaidas">
                 <label for="checkSaidas">
-                    <p class="botao-produtos">
+                    <p class="botao-produtos" id="barralateral-saidas">
                         SAÍDAS
                     </p>
                 </label>
@@ -184,16 +184,17 @@
                             <option selected>Selecione uma categoria de itens</option>
                         </select>
                         <div class="flex">
-                            <select name="produto" class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
+                            <select name="produto" class="form-select form-select-lg mt-3 inputForm select-entradas"  aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
                                 <option>Selecione um item</option>
                             </select>
                             <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
                                 placeholder="Quantidade">
 
-                            <button class="botao-cadastrar-quantidade mt-3" type="submit">SALVAR</button>
+                            <div>
+                                <button class="botao-cadastrar-quantidade mt-3" type="submit">SALVAR</button>
 
-                            <div id="message-entrada"></div>
-
+                                <div id="message-entrada"></div>
+                            </div>
                         </div>
 
 
@@ -243,10 +244,11 @@
                             type="search" placeholder="Escolha o cliente" aria-label="Search">
                             <div id="client-list-saidas">
                             </div>
-                            <button class="botao-cadastrar-quantidade mx-2" type="submit">SALVAR</button>
+                            <div>
+                                <button class="botao-cadastrar-quantidade mx-2" type="submit">SALVAR</button>
 
-                            <div id="message-saidas"></div>
-
+                                <div id="message-saidas"></div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -293,6 +295,49 @@
                 <label for="descricao-produto-modal" id="label-modal-descricao">Descrição do produto:</label>
                 <textarea class="form-control " id="descricao-produto-modal" rows="9" placeholder="Descrição do produto"></textarea>
                 </div>    
+            </form>
+        </div>
+
+        <div id="modal-entradas" style="display:none">
+           <form class="flex" >
+               
+                <div class="modal-content">
+                 <h3 class="mb-4">Editar entradas</h3>
+                <label for="nome-entradas">Nome:</label>
+                    <input type="text" id="nome-entradas" name="nome" class="my-3">
+                    
+                    <label for="quantidade-entradas">Quantidade:</label>
+                    <input type="number" id="quantidade-entradas" name="quantidade" min="0" class="my-3">
+
+                    <div class="modal-buttons">
+                        <button type="button" id="cancel-button-entradas" class="mt-4">Cancelar</button>
+                        <button type="submit" id="save-button" class="mt-4">Salvar</button>
+                    </div>
+                
+                </div>   
+            </form>
+        </div>
+
+        <div id="modal-saidas" style="display:none">
+           <form class="flex" >
+               
+                <div class="modal-content">
+                 <h3 class="mb-4">Editar saidas</h3>
+                <label for="nome-saidas">Nome:</label>
+                    <input type="text" id="nome-saidas" name="nome" class="my-3">
+                    
+                    <label for="quantidade-saidas">Quantidade:</label>
+                    <input type="number" id="quantidade-saidas" name="quantidade" min="0" class="my-3">
+
+                    <label for="cliente-saidas">Cliente:</label>
+                    <input type="search" id="cliente-saidas" name="quantidade" min="0" class="my-3">
+
+                    <div class="modal-buttons">
+                        <button type="button" id="cancel-button-saidas" class="mt-4">Cancelar</button>
+                        <button type="submit" id="save-button" class="mt-4">Salvar</button>
+                    </div>
+                
+                </div>   
             </form>
         </div>
             

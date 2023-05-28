@@ -1,6 +1,6 @@
 @import "../colors/colors.scss";
-
-
+modal
+.botao-editar
 hr {
   height: 1px;
   width: 100%;
@@ -142,7 +142,9 @@ td {
   border: solid 1px red;
 }
 
-.botao-editar {
+.botao-editar,
+.botao-editar-entradas,
+.botao-editar-saidas {
   display: flex;
   border: 0px;
   border-radius: 5px;
@@ -253,11 +255,16 @@ td {
   opacity: 0;
 }
 
+.select-entradas{
+  height: 50px;
+}
 
 //SESSÃO RELATIVA AO MODAL
 
 
-#modal {
+#modal,
+#modal-entradas,
+#modal-saidas {
   border-radius: 30px;
   top: 100px;
   position: absolute;
@@ -283,6 +290,22 @@ td {
   padding: 20px;
   border-radius: 5px;
   margin-left: 50px;
+}
+#modal-entradas{
+  .modal-content{
+    height: 480px;
+    margin-top: 20px;
+    margin-left: 170px;
+    align-items: center;
+  }
+}
+#modal-saidas{
+  .modal-content{
+    height: 480px;
+    margin-top: 20px;
+    margin-left: 170px;
+    align-items: center;
+  }
 }
 
 .modal-title {
@@ -317,7 +340,9 @@ input {
   margin-top: 40px;
 }
 
-#cancel-button {
+#cancel-button,
+#cancel-button-entradas,
+#cancel-button-saidas {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -380,12 +405,16 @@ input {
     background-color: $botao-barraLateral-dark;
     color:$borda-preta-dark ;
   }
-  .botao-editar{
+  .botao-editar,
+  .botao-editar-entradas,
+  .botao-editar-saidas {
     border: 1px solid #004d99;
     background-color: $botao-barraLateral-dark;
     color: #004d99 ;
   }
-  #modal {
+  #modal,
+  #modal-entradas,
+  #modal-saidas {
     background: $botao-barraLateral-dark;
     h3{
       color: $cor-texto-dark;

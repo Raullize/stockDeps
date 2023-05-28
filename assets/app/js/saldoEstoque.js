@@ -4,6 +4,7 @@ const formSaldo = document.getElementById('form-saldo');
 const selectCategoriaSaldo = document.getElementById('dropdown-categorias-saldo');
 
 
+
 function adicionaProdutosListaSaldo(categoriaSelecionada) {
   let produtosFiltrados = [];
   let idCategorias;
@@ -22,29 +23,34 @@ function adicionaProdutosListaSaldo(categoriaSelecionada) {
   produtosFiltrados = produtos.filter(produto => produto.idCategoria === idCategorias);
 
   let tabela = "";
+
   for (let i = 0; i < produtosFiltrados.length; i++) {
+    
+      
     tabela += `
       <tr> 
-        <td class="col-6"> ${produtosFiltrados[i].nome} </td> 
-        <td class="col-6"> R$${produtosFiltrados[i].preco} </td> 
-        <td class="col-6"> ${produtosFiltrados[i].quantidade} </td> 
-        <td class="col-2"> 
+        <td> ${produtosFiltrados[i].nome} </td> 
+        <td> R$${produtosFiltrados[i].preco} </td> 
+        <td> a</td> 
+        <td> 
           <button class="botao-editar mx-2" data-nome="${produtosFiltrados[i].nome}"  data-preco="${produtosFiltrados[i].preco}" data-quantidade="${produtosFiltrados[i].quantidade}" data-descricao="${produtosFiltrados[i].descricao}">
           EDITAR</button>
           <button class="botao-deletar">DELETAR</button>
         </td>
       </tr>
-      `;
+      `;}
+       return tabela;
   }
-  return tabela;
+  
+ 
 
-}
+
 
 botaoFiltrar.addEventListener("click", function () {
   const categoriaSelecionada = selectCategoriaSaldo.value;
   if (produtos.length > 0) {
     tabelaSaldo.innerHTML = ""; // Limpa os options anteriores
-    tabelaSaldo.insertAdjacentHTML('beforeend', adicionaProdutosListaSaldo(categoriaSelecionada)); // Adiciona os novos options
+    tabelaSaldo.insertAdjacentHTML('beforeend', adicionaProdutosListaSaldo(categoriaSelecionada,entradas,saidas)); // Adiciona os novos options
   }
 })
 
