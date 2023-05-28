@@ -158,10 +158,10 @@
                     <table class="table" >
                         <thead>
                         <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Preço</th>
-                            <th scope="col">QTD.</th>
-                            <th scope="col">Ações</th>
+                            <th scope="col" class="text-center">Nome</th>
+                            <th scope="col" class="text-center">Preço</th>
+                            <th scope="col" class="text-center">QTD.</th>
+                            <th scope="col" class="text-center">Ações</th>
                         </tr>
                         </thead>
                         <tbody id="tabela-saldo"></tbody>
@@ -200,12 +200,13 @@
                     </form>
                 </div>
 
-                <div class="tabelaDeProdutos">
-                    <table class="table" >
+                <div class="tabelaDeProdutos ">
+                    <table class="table table-responsive" >
                         <thead>
                             <tr>
-                                <th scope="col">Nome</th>
-                                <th scope="col">QTD.</th>
+                                <th scope="col" class="text-center">Nome</th>
+                                <th scope="col" class="text-center">QTD.</th>
+                                <th scope="col" class="text-center">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-entradas">
@@ -254,9 +255,10 @@
                     <table class="table" >
                         <thead>
                             <tr>
-                                <th scope="col">Nome</th>
-                                <th scope="col">QTD.</th>
-                                <th scope="col">Cliente</th>
+                                <th scope="col" class="text-center">Nome</th>
+                                <th scope="col" class="text-center">QTD.</th>
+                                <th scope="col" class="text-center">Cliente</th>
+                                <th scope="col" class="text-center">Ações</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-saidas">

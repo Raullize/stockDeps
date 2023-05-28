@@ -1,6 +1,6 @@
 const tabelaProdutos = document.getElementById("tabela-produtos");
-const tabelaEntradas = document.getElementById("tabela-entradas"); 
-const tabelaSaidas = document.getElementById("tabela-saidas"); 
+const tabelaEntradas = document.getElementById("tabela-entradas");
+const tabelaSaidas = document.getElementById("tabela-saidas");
 
 function adicionaProdutosLista(produtos) {
   return `
@@ -24,7 +24,8 @@ function adicionaProdutosEntradas(entradas, produtos) {
             <td>${nomeProduto}</td> 
             <td>${entradas[i].quantidade}</td> 
             <td>
-              <button class="botao-editar" data-nome="${nomeProduto}" data-preco="${entradas[i].preco}" data-quantidade="${entradas[i].quantidade}">EDITAR</button>
+              <button class="botao-editar mx-2" data-nome="${nomeProduto}" data-preco="${entradas[i].preco}" data-quantidade="${entradas[i].quantidade}">EDITAR</button>
+              <button class="botao-deletar">DELETAR</button></td>
             </td>
           </tr>
         `;
@@ -51,9 +52,11 @@ function adicionaProdutosSaidas(saidas, produtos, clientes) {
             <td> ${saidas[i].quantidade} </td> 
             <td> ${nomeCliente} </td> 
             <td> 
-            <td> <button class="botao-editar" data-nome="${nomeProduto}"  data-preco="${saidas[i].preco}" data-quantidade="${saidas[i].quantidade}" 
-            data-quantidade="${nomeCliente}">EDITAR</button></td>
-            </td> 
+              <button class="botao-editar mx-2" data-nome="${nomeProduto}"  data-preco="${saidas[i].preco}" data-quantidade="${saidas[i].quantidade}" 
+              data-quantidade="${nomeCliente}">EDITAR</button>
+              <button class="botao-deletar" data-nome="${nomeProduto}"  data-preco="${saidas[i].preco}" data-quantidade="${saidas[i].quantidade}" 
+              data-quantidade="${nomeCliente}">DELETAR</button></td>
+            </td>
           </tr>
         `;
       }
@@ -64,13 +67,13 @@ function adicionaProdutosSaidas(saidas, produtos, clientes) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-  tabelaSaidas.insertAdjacentHTML('beforeend',adicionaProdutosSaidas(saidas, produtos, clientes));
+  tabelaSaidas.insertAdjacentHTML('beforeend', adicionaProdutosSaidas(saidas, produtos, clientes));
   tabelaEntradas.insertAdjacentHTML('beforeend', adicionaProdutosEntradas(entradas, produtos));
-  if(produtos.length > 0) {
-  produtos.forEach(function (produtos) {
-    tabelaProdutos.insertAdjacentHTML('beforeend', adicionaProdutosLista(produtos));
-    
-  });
+  if (produtos.length > 0) {
+    produtos.forEach(function (produtos) {
+      tabelaProdutos.insertAdjacentHTML('beforeend', adicionaProdutosLista(produtos));
+
+    });
   }
 });
 
