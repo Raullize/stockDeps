@@ -5,10 +5,12 @@ const tabelaSaidas = document.getElementById("tabela-saidas");
 function adicionaProdutosLista(produtos) {
   return `
     <tr> 
-      <td> ${produtos.nome} </td> 
-      <td> 
-        <button class="botao-deletar"> DELETAR </button> 
-      </td> 
+        <form method="post" id="${produtos.id}">
+        <td> ${produtos.nome} </td>
+        <td>     
+          <input type="submit" value="DELETAR" class="botao-deletar" >
+        </td> 
+      </form>
     </tr>
   `;
 }
