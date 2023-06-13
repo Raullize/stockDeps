@@ -26,11 +26,14 @@ $route->get("/estoque","App:estoque");
 $route->post("/estoque-cadastro","App:estoqueCadastro");
 $route->post("/estoque-entrada","App:estoqueEntrada");
 $route->post("/estoque-saidas","App:estoqueSaidas");
+$route->post("/estoque-deletar", "App:estoqueDeletar");
+$route->post("/estoque-atualizar", "App:estoqueAtualizar");
 
 $route->get("/cadastro","App:cadastro");
 $route->post("/cadastro","App:cadastro");
 
 $route->get("/clientes","App:clientes");
+$route->post("/historico-cliente", "App:getHistoricoCliente");
 
 
 $route->group(null); // desagrupo do /app

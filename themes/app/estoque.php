@@ -1,3 +1,4 @@
+
 <?php
      $this->layout("_theme");
      echo '<script>';
@@ -24,13 +25,25 @@
 ?>
 
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
    <link rel="stylesheet" href="<?= url('assets/app/css/styleSassEstoque.css') ?>">
 
    <body>
-    
-   
-<div id="container">
+       
+       
+       
+       <div id="container">
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div id='containerBotoesModalExcluir'>
+                <h3>Deseja excluir o item: <span class='itemExcluir'></span></h3>
+                <button id="confirmarExcluir" class='btnModalExcluir'>Sim</button>
+                <button class='btnModalExcluir cancelarExcluir'>Não</button>
+                </div>
+            </div>
+        </div>
 
         <!--Container da Barra Lateral-->
         <div class="containerBarraLateral">
@@ -85,43 +98,34 @@
                         Produtos 
                     </p>
                 </div>
+                <!--  -->
                 <div class="inputCadastro">
-                    <form id="form-cadastro" name="cadastro" method="POST" action="" class="" role="search">
-                        <select name="categoria" class="form-select form-select-lg mb-3 inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-produtos">
-                            <option selected>Selecione uma categoria para o novo item</option>
-                        </select>
-                        <div class="flex">
-                            <div>
-                            <input name="nome" class="form-control form-control-lg me-2 inputForm" type="text" placeholder="Nome do produto"
-                                aria-label="Search" id="input-nome-produto">
-                                
-                                <div id="message-nome"></div>
-                            </div>
-                                <div>
-                                    <input name="preco" class="form-control form-control-lg me-2 inputForm" type="number" step="any" placeholder="Preço do produto"
-                                    aria-label="Search" id="input-preco-produto">
-                                     <div id="message-preco"></div>
-                                </div>
-                        </div>
-                        
-                        </div>
-                        
-                        <div class="flex">
-                        
-                        <textarea name="descricao" class="form-control mt-4 inputForm" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
-                        
-                            <div>
-                                
-                             <button class="botao-cadastrar-produto mt-4" type="submit" id="botao-produtos">CADASTRAR</button>
-
-                            <div id="message"></div>
-
-                            </div>
-
-                        </div>
-                    </form>
-                
-
+  <form id="form-cadastro" name="cadastro" method="POST" action="" class="" role="search">
+    <select name="categoria" class="form-select form-select-lg mb-3 inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-produtos">
+      <option selected value=''>Selecione uma categoria para o novo item</option>
+    </select>
+    <div class="flex">
+      <div>
+        <input name="nome" class="form-control form-control-lg me-2 inputForm" type="text" placeholder="Nome do produto"
+          aria-label="Search" id="input-nome-produto">
+        <div id="message-nome"></div>
+      </div>
+      <div>
+        <input name="preco" class="form-control form-control-lg me-2 inputForm" type="number" step="any" placeholder="Preço do produto"
+          aria-label="Search" id="input-preco-produto">
+        <div id="message-preco"></div>
+      </div>
+    </div>
+    <div class="flex">
+      <textarea name="descricao" class="form-control mt-4 inputForm" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
+      <div>
+        <button class="botao-cadastrar-produto mt-4" type="submit" id="botao-produtos">CADASTRAR</button>
+        <div id="message"></div>
+      </div>
+    </div>
+  </form>
+</div>
+                <!--  -->
                 <div class="tabelaDeProdutos">
                     <table class="table" >
                         <thead>
@@ -146,7 +150,7 @@
                 <div class="inputCadastro">
                     <form class="d-flex" role="search" id="form-saldo">
                         <select class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-saldo">
-                            <option selected>Selecione uma categoria de itens</option>
+                            <option selected value=''>Selecione uma categoria de itens</option>
                            
 
                         </select>
@@ -161,7 +165,6 @@
                             <th scope="col" class="text-center">Nome</th>
                             <th scope="col" class="text-center">Preço</th>
                             <th scope="col" class="text-center">QTD.</th>
-                            <th scope="col" class="text-center">Ações</th>
                         </tr>
                         </thead>
                         <tbody id="tabela-saldo"></tbody>
@@ -181,13 +184,13 @@
                     <for role="search">
                     <form id="form-entrada" name="entrada" action="" method="post">    
                         <select name="categoria" class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-entradas">
-                            <option selected>Selecione uma categoria de itens</option>
+                            <option selected value=''>Selecione uma categoria de itens</option>
                         </select>
                         <div class="flex">
                             <select name="produto" class="form-select form-select-lg mt-3 inputForm select-entradas"  aria-label=".form-select-lg example"  id="dropdown-itens-entradas">
-                                <option>Selecione um item</option>
+                                <option value=''>Selecione um item</option>
                             </select>
-                            <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
+                            <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="number"
                                 placeholder="Quantidade">
 
                             <div>
@@ -227,13 +230,13 @@
                     <form id="form-saidas" name="saidas" action="" method="post">
                         <for role="search">
                             <select name="categoria" class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-saidas">
-                                <option selected>Selecione uma categoria de itens</option>
+                                <option selected value=''>Selecione uma categoria de itens</option>
                             </select>
                             <div class="flex">
                                 <select name="produto" class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example" id="dropdown-itens-saidas">
-                                    <option>Selecione um item</option>
+                                    <option value=''>Selecione um item</option>
                                 </select>
-                                <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="search"
+                                <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="number"
                                 placeholder="Quantidade">
                         
                             
@@ -287,7 +290,7 @@
 
                     <div class="modal-buttons">
                         <button type="button" id="cancel-button" class="mt-4">Cancelar</button>
-                        <button type="submit" id="save-button" class="mt-4">Salvar</button>
+                        <button type="submit" class="save-button" class="mt-4">Salvar</button>
                     </div>
                 
                 </div>
@@ -299,7 +302,7 @@
         </div>
 
         <div id="modal-entradas" style="display:none">
-           <form class="flex" >
+           <form class="flex" id="formEditarEntradas">
                
                 <div class="modal-content">
                  <h3 class="mb-4">Editar entradas</h3>
@@ -311,7 +314,7 @@
 
                     <div class="modal-buttons">
                         <button type="button" id="cancel-button-entradas" class="mt-4">Cancelar</button>
-                        <button type="submit" id="save-button" class="mt-4">Salvar</button>
+                        <button type="submit" class="save-button btnUpdateEntradas" class="mt-4">Salvar</button>
                     </div>
                 
                 </div>   
@@ -319,9 +322,9 @@
         </div>
 
         <div id="modal-saidas" style="display:none">
-           <form class="flex" >
-               
-                <div class="modal-content">
+           <form class="flex" id="formEditarSaidas">
+ 
+               <div class="modal-content">
                  <h3 class="mb-4">Editar saidas</h3>
                 <label for="nome-saidas">Nome:</label>
                     <input type="text" id="nome-saidas" name="nome" class="my-3">
@@ -330,11 +333,11 @@
                     <input type="number" id="quantidade-saidas" name="quantidade" min="0" class="my-3">
 
                     <label for="cliente-saidas">Cliente:</label>
-                    <input type="search" id="cliente-saidas" name="quantidade" min="0" class="my-3">
+                    <input type="search" id="cliente-saidas" name="cliente" min="0" class="my-3">
 
                     <div class="modal-buttons">
                         <button type="button" id="cancel-button-saidas" class="mt-4">Cancelar</button>
-                        <button type="submit" id="save-button" class="mt-4">Salvar</button>
+                        <button type="submit" class="save-button btnUpdateSaidas" class="mt-4">Salvar</button>
                     </div>
                 
                 </div>   
@@ -344,68 +347,212 @@
     </div>
 
 <script type="text/javascript" async>      
-    const form = document.querySelector("#form-cadastro");
+    const form = $("#form-cadastro");
     const message = document.querySelector("#message");
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();        
-        const dataProduto = new FormData(form);
-        const data = await fetch("<?= url("estoque-cadastro"); ?>",{
-            method: "POST",
-            body: dataProduto,
-        });
+
+    form.on("submit", function(e) {
+        e.preventDefault();
+
+        const serializedData = form.serialize();
+    
+        const areInputsFilled = verifyInputs(form);
+
         
-        const produto = await data.json();
-        console.log(produto);
-            message.innerHTML = produto.message;
-            message.classList.add("message");
-            message.classList.remove("success", "warning", "error");
-            message.classList.add(`${produto.type}`);
-    });
+        if (!areInputsFilled) {
+            exibirMensagemTemporaria('Preencha todos os elementos do formulário.');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "<?= url("estoque-cadastro"); ?>",
+            data: serializedData,
+            dataType: "json",
+            success: function (response) {    
+                message.innerHTML = response.message;
+                message.classList.add("message");
+                message.classList.remove("success", "warning", "error");
+                message.classList.add(`${response.type}`);
+
+                if(!response['error'] && response.type != 'error'){
+                location.reload(true);
+            } 
+            }
+        });
+    })
+
 </script>
 
 <script type="text/javascript" async>  
 
-    const form_entrada = document.querySelector("#form-entrada");
+    const form_entrada = $("#form-entrada");
     const message_entrada = document.querySelector("#message-entrada");
-    form_entrada.addEventListener("submit", async (e) => {
-        e.preventDefault();        
-        const dataEntrada = new FormData(form_entrada);
-        const data = await fetch("<?= url("estoque-entrada"); ?>",{
-            method: "POST",
-            body: dataEntrada,
-        });
-            
-        const entrada = await data.json();
-        console.log(entrada);
+    
+    form_entrada.on("submit",  function(e) {
+        e.preventDefault();
+
+    const serializedData = form_entrada.serialize();
+    $.ajax({
+        type: "POST",
+        url: "<?= url("estoque-entrada"); ?>",
+        data: serializedData,
+        dataType: "json",
+        success: function (response) {
+        const areInputsFilled = verifyInputs(form_entrada);
+
+        
+        if (!areInputsFilled) {
+            exibirMensagemTemporaria('Preencha todos os elementos do formulário.');
+             return;
+        }
+
             message_entrada.innerHTML = entrada.message;
             message_entrada.classList.add("message_entrada");
             message_entrada.classList.remove("success", "warning", "error");
             message_entrada.classList.add(`${entrada.type}`);
+
+            if(!response['error'] && response.type != 'error'){
+                location.reload(true);
+            } 
+        }, error: function(response){
+            console.log(response)
+        }
     });
+})
+    
+    //     e.preventDefault();        
+    //     const dataEntrada = new FormData(form_entrada);
+    //     const data = await fetch("",{
+    //         method: "POST",
+    //         body: dataEntrada,
+    //     });
+            
+    //     const entrada = await data.json();
+    //     console.log(entrada);
+    //         message_entrada.innerHTML = entrada.message;
+    //         message_entrada.classList.add("message_entrada");
+    //         message_entrada.classList.remove("success", "warning", "error");
+    //         message_entrada.classList.add(`${entrada.type}`);
+    // });
 
 </script>
 
 <script type="text/javascript" async>  
 
-    const form_saidas = document.querySelector("#form-saidas");
+    const form_saidas = $("#form-saidas");
     const message_saidas = document.querySelector("#message-saidas");
-    form_saidas.addEventListener("submit", async (e) => {
-        e.preventDefault();        
-        const dataSaidas = new FormData(form_saidas);
-        const data = await fetch("<?= url("estoque-saidas"); ?>",{
-            method: "POST",
-            body: dataSaidas,
-        });
-            
-        const saidas = await data.json();
-        console.log(saidas);
-            message_saidas.innerHTML = saidas.message;
+
+    form_saidas.on("submit", async (e) => {
+        e.preventDefault();
+        const serializedData = form_saidas.serialize();
+
+        const areInputsFilled = verifyInputs(form_saidas);
+
+        
+        if (!areInputsFilled) {
+            exibirMensagemTemporaria('Preencha todos os elementos do formulário.');
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "<?= url("estoque-saidas"); ?>",
+            data: serializedData,
+            dataType: "json",
+            success: function (response) {
+             message_saidas.innerHTML = response.message;
             message_saidas.classList.add("message_saidas");
             message_saidas.classList.remove("success", "warning", "error");
             message_saidas.classList.add(`${saidas.type}`);
+
+            if(!response['error'] && response.type != 'error'){
+                location.reload(true);
+            } 
+            }, error: function (response) {
+                console.log(response);
+            }
+        });
+        // console.log(form_saidas);
+        
+        // $("#")
+        // const dataSaidas = new FormData(form_saidas);
+        // const data = await fetch("",{
+        //     method: "POST",
+        //     body: dataSaidas,
+        // });
+            
+        // const saidas = await data.json();
+        
+        // console.log(saidas);
+
+        //     message_saidas.innerHTML = saidas.message;
+        //     message_saidas.classList.add("message_saidas");
+        //     message_saidas.classList.remove("success", "warning", "error");
+        //     message_saidas.classList.add(`${saidas.type}`);
+
     });
 
+    // $(".save-button").on("click", function(){
+    //     console.log($this);
+    // })
+
+function verifyInputs(form) {
+  let areInputsFilled = true;
+
+  // Percorre todos os elementos de input, select e textarea do formulário
+  $(form).find('input, select, textarea').each(function() {
+    const value = $(this).val() ? $(this).val().trim() : '';
+    const isDisabled = $(this).is(':disabled');
+
+    // Verifica se o elemento está vazio ou desabilitado
+    console.log($(this));
+    console.log(value);
+    if ((value === '' || value === null) && !isDisabled) {
+      areInputsFilled = false;
+      return false; // Interrompe o loop
+    }
+  });
+
+  return areInputsFilled;
+}
+
 </script>
+
+<script>
+      function exibirMensagemTemporaria(mensagem) {
+    // Cria o elemento da mensagem
+    const elementoMensagem = $('<div>')
+      .css({
+        position: 'absolute',
+        top: '25%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        background: '#FF4C4C',
+        color: 'white',
+        padding: '10px',
+        borderRadius: '5px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+        zIndex: '9999', // Adiciona o z-index desejado
+        display: 'none' // Inicia oculto
+      })
+      .text(mensagem);
+  
+    // Adiciona o elemento à página
+    $('body').append(elementoMensagem);
+  
+    // Animação de aparecimento suave
+    elementoMensagem.fadeIn(400);
+  
+    // Define um temporizador para remover o elemento após 15 segundos
+    setTimeout(() => {
+      elementoMensagem.fadeOut(400, () => {
+        elementoMensagem.remove();
+      });
+    }, 2500);
+  }
+</script>
+
+
 
     <script src="<?= url('assets/app/js/estoqueForm.js') ?>"></script>
     <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
@@ -413,7 +560,8 @@
     <script src="<?= url('assets/app/js/displayEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/produtosEstoque.js') ?>"></script>
     <script src="<?= url('assets/app/js/saldoEstoque.js') ?>"></script>
-    <script src="<?= url('assets/app/js/entradasEstoque.js') ?>"></script>
+    <script src="<?= url('assets/app/js/estoqueDeletar.js') ?>"></script>
+    <script src="<?= url('assets/app/js/estoqueEditar.js') ?>"></script>
     <script src="<?= url('assets/app/js/modalEstoque.js') ?>"></script>
      
    </body>

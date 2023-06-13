@@ -1,7 +1,8 @@
 const mensagemNome = document.getElementById('message-nome')
 const mensagemPreco = document.getElementById('message-preco')
 
-form.addEventListener('submit',function(){
+
+form.on('submit',function(){
     const inputNomeProduto = document.getElementById('input-nome-produto').value;
     const inputPrecoProduto = document.getElementById('input-preco-produto').value;
     const botaoProduto =    document.getElementById('botao-produtos');

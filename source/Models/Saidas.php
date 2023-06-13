@@ -120,8 +120,25 @@ class Saidas
         }
     }
 
-    public function insert() : bool
+    public function insert()
     {
+        $output = array();
+
+        $queryVefifyQtd = "SELECT (COALESCE(totalE,0) - COALESCE(totalS,0)) AS sobra
+        FROM( SELECT SUM(e.quantidade) AS totalE  FROM entradas e WHERE e.idProdutos = :idProdutos ) AS subconsultaE,
+        ( SELECT SUM(s.quantidade) AS totalS FROM saidas s WHERE s.idProdutos = :idProdutos
+        ) AS subconsultaS;
+        ";
+        $stmt = Connect::getInstance()->prepare($queryVefifyQtd);
+        $stmt->bindParam(":idProdutos", $this->idProdutos);
+        $stmt->execute();
+        $result = $stmt->fetch();        
+
+        if($this->quantidade > $result->sobra){
+            $output['error'] = "Quantidade insuficiente para retirada";
+            return false  ;
+        }
+
         $query = "INSERT INTO saidas (idCategoria, idClientes, idProdutos, quantidade) VALUES (:idCategoria, :idClientes, :idProdutos, :quantidade)";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":idCategoria", $this->idCategoria);
@@ -129,6 +146,8 @@ class Saidas
         $stmt->bindParam(":idProdutos", $this->idProdutos);
         $stmt->bindValue(":quantidade", $this->quantidade);
         $stmt->execute();
+
+        $output['success'] = "Saída inserida com sucesso";
         return true;
     }
     

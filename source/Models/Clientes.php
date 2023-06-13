@@ -3,7 +3,7 @@
 namespace Source\Models;
 
 use Source\Core\Connect;
-
+use \PDO;
 class Clientes
 {
     private $id;
@@ -203,6 +203,41 @@ class Clientes
         } else {
             return false;
         }
+    }
+
+    public function getHistoricoSaidas($idCliente){
+        $query = "SELECT p.nome AS nomeProduto, c.nome as nomeCategoria, s.quantidade, s.created_at FROM saidas s JOIN produtos p ON s.idProdutos = p.id 
+        JOIN categorias c ON s.idCategoria = c.id WHERE s.idClientes = :idCliente;";
+         $stmt = Connect::getInstance()->prepare($query);
+         $stmt->bindParam(":idCliente", $idCliente);
+         $stmt->execute();
+         $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+         $output = array();
+
+         if(!$resultados){
+            $output['error'] = "Nenhum registro encontrado";
+            return $output['error'];
+        }
+
+        return $resultados;
+    }
+
+    public function getDadosCliente($idCliente){
+        $query = "SELECT * FROM clientes WHERE id = :idCliente;";
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(":idCliente", $idCliente);
+        $stmt->execute();
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $output = array();
+
+        if(!$resultados){
+           $output['error'] = "Não foi possível realizar a consulta";
+           return $output['error'];
+       }
+
+       return $resultados;
     }
 /*
     public function update()

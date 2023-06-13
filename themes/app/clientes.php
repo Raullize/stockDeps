@@ -18,7 +18,26 @@ echo '</script>';
 <link rel="stylesheet" href="<?= url('assets/app/css/styleSassClientes.css') ?>">
 </head>
 <body>
- <div class="container1">
+  
+  <div class="container1">
+   <!--  -->
+       <div id="myModal" class="modal">
+         <div class="modal-content">
+           <span class="fecharModal">&times;</span>
+            <h3 id='nomeCliente'></h3>
+           
+             <table id='tableHistorico'>
+               <thead>
+               <th>Categoria</th>
+               <th>Produto</th>
+               <th>Quantidade</th>
+               <th>Data</th>
+               </thead>
+               <tbody id="historicoSaidas"></tbody>
+             </table>
+         </div>
+       </div>
+   <!--  -->
  <div class="titulo">
         <div class="radios">
           <input type="radio" class="botao-selecionavel" name="checks" id="checkCarrossel" checked>
@@ -46,4 +65,6 @@ echo '</script>';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="<?= url('assets/app/js/clientes.js') ?>"></script>
 <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
+<script src="<?= url('assets/app/js/clientesHistorico.js') ?>"></script>
+
 </body>

@@ -29,29 +29,23 @@ function adicionaProdutosListaSaldo(categoriaSelecionada, entradas, saidas) {
 
     for (let j = 0; j < entradas.length; j++) {
       if (produtosFiltrados[i].id === entradas[j].idProdutos) {
-        quantidadeEntradas = parseInt(entradas[j].quantidade);
+        quantidadeEntradas += parseInt(entradas[j].quantidade);
       }
     }
 
     for (let j = 0; j < saidas.length; j++) {
       if (produtosFiltrados[i].id === saidas[j].idProdutos) {
-        quantidadeSaidas = parseInt(saidas[j].quantidade);
+        quantidadeSaidas += parseInt(saidas[j].quantidade);
       }
     }
 
     let saldo = quantidadeEntradas - quantidadeSaidas;
     tabela += `
+    
       <tr> 
         <td> ${produtosFiltrados[i].nome} </td> 
         <td> R$${produtosFiltrados[i].preco} </td> 
         <td> ${saldo}</td> 
-        <td> 
-          <button class="botao-editar mx-2" data-nome="${produtosFiltrados[i].nome}"  data-preco="${produtosFiltrados[i].preco}" data-quantidade="${produtosFiltrados[i].quantidade}" data-descricao="${produtosFiltrados[i].descricao}">
-          EDITAR</button>
-          <button class="btn btn-danger">
-            <img class="iconeDeletar" src="<?= url('assets/app/icones/iconeDeletar.png') ?>" alt="">
-          </button>
-        </td>
       </tr>
     `;
   }

@@ -9,13 +9,13 @@ function criaCartaoCarrossel(clientes) {
         <p class="info-clientes mt-3"><strong>Cidade:</strong> ${clientes.cidade}</p>
         <p class="info-clientes mt-3"><strong>Bairro:</strong> ${clientes.bairro}</p>
         <p class="info-clientes mt-3"><strong>UF:</strong> ${clientes.uf}</p>    
-        <button class="btn btn-danger embaixo"> Histórico </button>
+        <button  idC='${clientes.id}' class="btn btn-danger embaixo historico"> Histórico </button>
       </div>
     `;
 }
 function criaCardBloco(clientes) {
     return `
-      <div class="card-bloco">
+      <div class="card-bloco" s>
   
         <div class="flex">
             <div class="block camada">
@@ -31,7 +31,7 @@ function criaCardBloco(clientes) {
             </div>    
             <div class="block camada">
                 <div class="item-cartao"> 
-                    <button class="btn btn-danger center"> 
+                    <button class="btn btn-danger center historico" idC='${clientes.id}'> 
                     Histórico
                     </button> 
                 </div>  

@@ -8,14 +8,18 @@ use Source\Models\Clientes;
 use Source\Models\Entradas;
 use Source\Models\Produtos;
 use Source\Models\Saidas;
+use Source\Models\EstoqueFeatures;
+
 
 class App
 {
     private $view;
+    private EstoqueFeatures $estoqueFeatures;
 
     public function __construct()
     {
         $this->view = new Engine(CONF_VIEW_APP,'php');
+        $this->estoqueFeatures = new EstoqueFeatures();
     }
 
     public function inicio () : void 
@@ -168,6 +172,18 @@ class App
 
     public function estoqueSaidas (?array $data) : void 
     {
+
+        $cliente = new Clientes();
+
+        $saidas = new Saidas(
+            NULL,
+            $data["categoria"],
+            $cliente->findByIdName($data["cliente"]),
+            $data["produto"],
+            $data["quantidade"]
+        );
+
+
         if(!empty($data)){
 
             if(in_array("", $data)){
@@ -189,20 +205,16 @@ class App
                     $data["quantidade"]
                 );
 
-
             if($saidas->insert()){
-
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: green'>Produtos retirados com sucesso!</div>",
                     "type" => "success"
                 ];
-
                 echo json_encode($json);
                 return;
-
             } else {
                 $json = [
-                    "message" => "<div style='margin-left: 25px; color: red'>Produto não retirado!</div>",
+                    "message" => "<div style='margin-left: 25px; color: red'>Saldo insuficiente para retirada!</div>",
                     "type" => "error"
                 ];
                 echo json_encode($json);
@@ -210,6 +222,17 @@ class App
             }
         }
 
+    }
+
+
+    public function estoqueDeletar(?array $data){
+        $output = $this->estoqueFeatures->deleteRegister($data['table'], $data['id']);
+        echo json_encode($output);
+    }
+
+    public function estoqueAtualizar(?array $data){
+        $output = $this->estoqueFeatures->updateRegister($data['table'], $data['id'], $data['quantidade']);
+        echo json_encode($output);
     }
 
     public function cadastro (?array $data) : void 
@@ -287,6 +310,15 @@ class App
             "clientes" => $clientes
         ]);
 
+    }
+
+    public function getHistoricoCliente(?array $data){
+        $cliente = new Clientes();
+        $historico = $cliente->getHistoricoSaidas($data['idCliente']);
+        $nomeCliente = $cliente->getDadosCliente($data['idCliente'])[0]['nome'];
+
+        $retorno = array("nomeCliente" => $nomeCliente, "historico" => $historico);
+        echo json_encode($retorno);
     }
 
 }
