@@ -231,7 +231,7 @@ class App
     }
 
     public function estoqueAtualizar(?array $data){
-        $output = $this->estoqueFeatures->updateRegister($data['table'], $data['id'], $data['quantidade']);
+        $output = $this->estoqueFeatures->updateRegister($data['table'], $data['id'], $data['quantidade'], $data['idProduto']);
         echo json_encode($output);
     }
 

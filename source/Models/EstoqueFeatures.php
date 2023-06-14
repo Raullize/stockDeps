@@ -40,7 +40,7 @@ class EstoqueFeatures{
   return $output;
   }
 
-  public function updateRegister($table, $id, $quantidade){
+  public function updateRegister($table, $id, $quantidade, $idProduto){
     $output = array();
 
     $allowedTables = array("entradas", "saidas"); // Defina as tabelas permitidas
@@ -50,6 +50,30 @@ class EstoqueFeatures{
     }
 
     try {
+
+      if($table == "saidas"){
+        $queryQuantiaAnterior = "SELECT quantidade FROM saidas WHERE id = :idRegistro";
+        $stmtQA = Connect::getInstance()->prepare($queryQuantiaAnterior);
+        $stmtQA->bindParam(":idRegistro", $id);
+        $stmtQA->execute();
+        $valorInicial = $stmtQA->fetch()->quantidade;
+
+        $queryVefifyQtd = "SELECT (COALESCE(totalE,0) - COALESCE(totalS,0)) AS sobra
+        FROM( SELECT SUM(e.quantidade) AS totalE  FROM entradas e WHERE e.idProdutos = :idProdutos ) AS subconsultaE,
+        ( SELECT SUM(s.quantidade) AS totalS FROM saidas s WHERE s.idProdutos = :idProdutos
+        ) AS subconsultaS;";
+        $stmtVQ = Connect::getInstance()->prepare($queryVefifyQtd);
+        $stmtVQ->bindParam(":idProdutos", $idProduto);
+        $stmtVQ->execute();
+        $saldo = $stmtVQ->fetch()->sobra; 
+        $diferenca = $quantidade - $valorInicial;
+
+        if($diferenca > $saldo){
+          $output['error'] = "Itens insuficientes para retirada";
+          return $output;
+        }
+      }
+
       $query = "UPDATE ".$table." SET quantidade = :quantidade WHERE id = :idRegistro";
       $stmt = Connect::getInstance()->prepare($query);
       $stmt->bindParam(":idRegistro", $id);
