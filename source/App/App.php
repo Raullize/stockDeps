@@ -2,6 +2,7 @@
 
 namespace Source\App;
 
+use Dompdf\Dompdf;
 use League\Plates\Engine;
 use Source\Models\Categorias;
 use Source\Models\Clientes;
@@ -309,6 +310,169 @@ class App
         echo $this->view->render("clientes", [
             "clientes" => $clientes
         ]);
+
+    }
+
+    public function relatorio () : void 
+    {
+
+        echo $this->view->render("relatorio");
+
+    }
+
+    public function relatorioClientes () : void
+    {
+
+    $cliente = new Clientes();
+    $clientes = $cliente->selectAll();
+
+    $clienteList = "";
+    foreach ($clientes as $cliente){
+        $clienteList .= "
+            <tr>
+                <td>{$cliente->nome}</td>
+                <td>{$cliente->email}</td>
+                <td>{$cliente->celular}</td>
+                <td>{$cliente->cidade}</td>
+                <td>{$cliente->bairro}</td>
+                <td>{$cliente->uf}</td>
+            </tr>
+        ";
+    }
+
+    $dompdf = new Dompdf();
+
+    $dompdf->loadHtml("<html>
+    <body>
+    <div>
+        <h1>Relatório de Clientes</h1>
+    </div>
+    
+    <h2>Lista de clientes cadastrados:</h2>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Telefone</th>
+            <th>Cidade</th>
+            <th>Bairro</th>
+            <th>UF</th>
+        </tr>
+        $clienteList
+    </table>
+            
+    </body>
+    
+    <style>
+        body {
+            font-family: arial, sans-serif;
+        }
+        h1 {
+            text-align: center;margin-bottom: 100px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 90px;
+        }
+        
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    
+    </html>");
+
+    // (Optional) Setup the paper size and orientation
+    $dompdf->setPaper('A4', 'portrait');
+
+    // Render the HTML as PDF
+    $dompdf->render();
+
+    // Output the generated PDF to Browser
+    $dompdf->stream("relatório-clientes");
+
+    }
+
+    public function relatorioProdutos () : void
+    {
+
+    $produto = new Produtos();
+    $produtos = $produto->selectAll();
+
+    $produtoList = "";
+    foreach ($produtos as $produto){
+        $produtoList .= "
+            <tr>
+                <td>{$produto->nome}</td>
+                <td>{$produto->preco}</td>
+                <td>{$produto->descricao}</td>
+                <td>{$produto->created_at}</td>
+            </tr>
+        ";
+    }
+
+    $dompdf = new Dompdf();
+
+    $dompdf->loadHtml("<html>
+    <body>
+    <div>
+        <h1>Relatório de Produtos</h1>
+    </div>
+    
+    <h2>Lista de Produtos em Estoque:</h2>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Descrição</th>
+            <th>Data</th>
+        </tr>
+        $produtoList
+    </table>
+            
+    </body>
+    
+    <style>
+        body {
+            font-family: arial, sans-serif;
+        }
+        h1 {
+            text-align: center;margin-bottom: 100px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 90px;
+        }
+        
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    
+    </html>");
+
+    // (Optional) Setup the paper size and orientation
+    $dompdf->setPaper('A4', 'portrait');
+
+    // Render the HTML as PDF
+    $dompdf->render();
+
+    // Output the generated PDF to Browser
+    $dompdf->stream("relatório-produtos");
 
     }
 
