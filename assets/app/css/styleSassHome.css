@@ -1,7 +1,41 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
 .container1 {
   display: flex;
   background-color: #f2f2f2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
+
+.card {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 10px;
+  width: calc(20% - 20px);
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    width: calc(33.33% - 20px);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .card {
+    width: calc(50% - 20px);
+  }
+}
+
+//↟↟ RESPONSIVIDADE ↟↟ //
 
 .nomesBarraLateral {
   margin: 0px;
@@ -59,16 +93,13 @@
 }
 
 .relatorio {
-  width: 100%;
+  width: 500px;
   height: 700px;
-  margin-top: 2%;
-  margin-left: 50px;
-  margin-right: 40px;
-  margin-bottom: 20px;
+  margin: 0 auto;
 }
 
 .cartao-pequeno {
-  float: inline-start;
+  float: none;
   background-color: #d6e0f5;
   width: 300px;
   height: 130px;
@@ -154,14 +185,13 @@ label {
   height: 35px;
 }
 
-input[type=radio] {
+input[type='radio'] {
   display: none;
 }
 
-input[type=radio]:checked + label {
+input[type='radio']:checked + label {
   background-color: #99b3ff;
 }
-
 
 .dark-mode .container1 {
   background-color: #1c1c1c;
@@ -175,7 +205,9 @@ input[type=radio]:checked + label {
 .dark-mode .botaoBarraLateral:hover {
   background-color: #4d4d4d;
 }
-.dark-mode .cartao-pequeno, .dark-mode .cartao-medio, .dark-mode .cartao-grande {
+.dark-mode .cartao-pequeno,
+.dark-mode .cartao-medio,
+.dark-mode .cartao-grande {
   background-color: #3a3a3a;
   box-shadow: 6px 6px 6px #888;
 }
@@ -198,7 +230,7 @@ input[type=radio]:checked + label {
 .dark-mode label {
   background-color: #2e2e2e;
 }
-.dark-mode input[type=radio]:checked + label {
+.dark-mode input[type='radio']:checked + label {
   background-color: #4d4d4d;
 }
 

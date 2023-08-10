@@ -26,5 +26,5 @@ define("CONF_SITE_NAME", "Stock Deps");
 
 // FILES
 
-define ("CONF_UPLOAD_DIR","storage");
-define("CONF_UPLOAD_IMAGE_DIR","images");
+define("CONF_UPLOAD_DIR", "storage");
+define("CONF_UPLOAD_IMAGE_DIR", "images");
