@@ -26,13 +26,51 @@ echo '</script>';
 <link rel="stylesheet" href="<?= url('assets/app/css/styleSassHome.css') ?>">
 
 
-<div class="container">
-  <div class="card">Card 1 Content</div>
-  <div class="card">Card 2 Content</div>
-  <div class="card">Card 3 Content</div>
-  <div class="card">Card 4 Content</div>
-  <div class="card">Card 5 Content</div>
-</div>
+
+<div class="container1">
+  <div class="card">
+    <div class="cartao-pequeno">
+      <p class="titulo-relatorio">Vendas</p>
+      <p class="resposta" id="qtd-vendas"></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="cartao-medio">
+      <p class="titulo-relatorio">Mais vendidos:</p>
+      <p class="resposta-letra" id="ranking-categorias"></p>
+
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="cartao-pequeno">
+      <p class="titulo-relatorio">Renda</p>
+      <p class="resposta">R$ 20000 </p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="cartao-medio">
+      <p class="titulo-relatorio">Clientes</p>
+      <p class="resposta" id="qtd-clientes"></p>
+    </div>
+  </div>
+
+
+
+
+  <div class="card">
+    <div class="cartao-grande" id="conta-itens">
+      <p class="titulo-relatorio mb-4">Itens em cada categoria:</p>
+      <p class="resposta-letra" id="lava-roupas-qtd">Lava roupas = 0</p>
+      <p class="resposta-letra" id="lava-loucas-qtd">Lava louças = 0</p>
+      <p class="resposta-letra" id="lava-carros-qtd">Lava carro = 0</p>
+      <p class="resposta-letra" id="limpeza-ambiente-qtd">Limpeza de Ambiente = 0</p>
+      <p class="resposta-letra" id="outros-qtd">Outros = 0</p>
+      <p class="resposta mt-3" id="total-produtos-qtd">Total = 0</p>
+    </div>
+  </div>
 </div>
 
 
