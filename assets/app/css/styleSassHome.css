@@ -1,14 +1,7 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-.container1 {
+.container {
   display: flex;
-  background-color: #f2f2f2;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
-  align-items: center;
   padding: 20px;
   max-width: 1000px;
   margin: 0 auto;
@@ -20,24 +13,34 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 10px;
-  width: calc(20% - 20px);
-  height: 100%;
+  flex: 1;
+  min-width: calc(20% - 20px);
   box-sizing: border-box;
 }
 
 @media screen and (max-width: 768px) {
   .card {
-    width: calc(33.33% - 20px);
+    min-width: calc(33.33% - 20px);
   }
 }
 
 @media screen and (max-width: 480px) {
   .card {
-    width: calc(50% - 20px);
+    min-width: calc(50% - 20px);
   }
 }
 
 //↟↟ RESPONSIVIDADE ↟↟ //
+
+.container1 {
+  display: flex;
+  background-color: #f2f2f2;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
 
 .nomesBarraLateral {
   margin: 0px;
@@ -92,68 +95,6 @@ body {
 
 .divisoria {
   margin-top: 8px;
-}
-
-.relatorio {
-  width: 500px;
-  height: 700px;
-  margin: 0 auto;
-}
-
-.cartao-pequeno {
-  background-color: #d6e0f5;
-  width: 300px;
-  height: 130px;
-  margin-top: 30px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 0px;
-  box-shadow: 6px 6px 6px #888;
-}
-
-.cartao-medio {
-  background-color: #d6e0f5;
-  width: 300px;
-  height: 180px;
-  margin-top: 30px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 0px;
-  box-shadow: 6px 6px 6px #888;
-}
-
-.cartao-grande {
-  background-color: #111;
-  width: 400px;
-  height: 340px;
-  margin-top: 30px;
-  padding: 10px;
-  border-radius: 5px;
-  border: 0px;
-  box-shadow: 6px 6px 6px #111;
-}
-
-.titulo-relatorio {
-  text-align: left;
-  margin: 0px;
-  margin-left: 20px;
-  font-size: 30px;
-}
-
-.resposta {
-  margin: 0px;
-  font-size: 40px;
-  text-align: center;
-  font-weight: 600;
-}
-
-.resposta-letra {
-  font-size: 20px;
-  text-align: left;
-  margin: 0px;
-  margin-top: 2px;
-  margin-left: 25px;
-  font-weight: 400;
 }
 
 .containerBotoesBalanco {
