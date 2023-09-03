@@ -1,18 +1,7 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-}
-
-.container1 {
-  display: flex;
   background-color: #f2f2f2;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
 }
 
 .card {
@@ -21,20 +10,12 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin: 10px;
-  width: calc(20% - 20px);
   box-sizing: border-box;
 }
-.relatorio {
-  width: 500px;
-  height: 700px;
-  margin: 0 auto;
-}
+
 
 .cartao-pequeno {
   background-color: #d6e0f5;
-  width: 300px;
-  height: 130px;
-
   border-radius: 5px;
   border: 0px;
   box-shadow: 6px 6px 6px #888;
@@ -42,8 +23,6 @@ body {
 
 .cartao-medio {
   background-color: #d6e0f5;
-  width: 300px;
-  height: 180px;
   padding: 10px;
   border-radius: 5px;
   border: 0px;
@@ -51,13 +30,11 @@ body {
 }
 
 .cartao-grande {
-  background-color: #111;
-  width: 400px;
-  height: 340px;
+  background-color: #d6e0f5;
   padding: 10px;
   border-radius: 5px;
   border: 0px;
-  box-shadow: 6px 6px 6px #111;
+  box-shadow: 6px 6px 6px #888;
 }
 
 .titulo-relatorio {
@@ -83,149 +60,66 @@ body {
   font-weight: 400;
 }
 
-@media screen and (max-width: 768px) {
-  .card {
-    width: calc(33.33% - 20px);
-  }
+/*↟↟ RESPONSIVIDADE ↟↟ */
+
+
+
+.dark-mode body{
+  background-color: #1c1c1c;
 }
 
-@media screen and (max-width: 480px) {
-  .card {
-    width: calc(50% - 20px);
-  }
+.dark-mode .card{
+  background-color: #1c1c1c;
+  box-shadow: 0px 2px 2px 2px rgb(255, 255, 255);
 }
-
-//↟↟ RESPONSIVIDADE ↟↟ //
-
-.nomesBarraLateral {
-  margin: 0px;
-}
-
-.flex {
-  display: flex;
-}
-
-.block {
-  margin-left: 15px;
-  margin-right: 5px;
-  display: block;
-}
-
-.barraLateral {
-  padding: 10px;
-  margin-top: 4%;
-  margin-left: 30px;
-  width: 180px;
-  height: 420px;
-  border-radius: 5px;
-}
-
-.botaoBarraLateral {
-  font-size: 15px;
-  color: #000000;
-  font-family: Arial, Helvetica, sans-serif;
-  margin-bottom: 20px;
-  width: 100%;
-  height: 80px;
-  border: 1px solid #000000;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.botaoBarraLateral:hover {
-  background-color: #d1d1e0;
-}
-
-.iconesBarraLateral {
-  width: 42%;
-}
-
-#iconeEstoque {
-  width: 70%;
-}
-
-#iconeContabilidade {
-  width: 45%;
-}
-
-.divisoria {
-  margin-top: 8px;
-}
-
-.containerBotoesBalanco {
-  margin: 0;
-  width: 100%;
-  height: 40px;
-  text-align: center;
-}
-
-.botaoRelatorioBalanco {
-  height: 35px;
-  width: 50px;
-  border: 0px;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: transparent;
-  border: 1px solid #d1d1e0;
-  text-align: center;
-}
-
-.botaoRelatorioBalanco:hover {
-  background-color: #b3c6ff;
-}
-
-label {
-  width: 50px;
-  border-radius: 5px;
-  height: 35px;
-}
-
-input[type='radio'] {
-  display: none;
-}
-
-input[type='radio']:checked + label {
-  background-color: #99b3ff;
-}
-
 .dark-mode .container1 {
   background-color: #1c1c1c;
   color: #f2f2f2;
 }
+
 .dark-mode .botaoBarraLateral {
   color: #f2f2f2;
   background-color: #2e2e2e;
   border: 1px solid #f2f2f2;
 }
+
 .dark-mode .botaoBarraLateral:hover {
   background-color: #4d4d4d;
 }
+
 .dark-mode .cartao-pequeno,
 .dark-mode .cartao-medio,
 .dark-mode .cartao-grande {
   background-color: #3a3a3a;
   box-shadow: 6px 6px 6px #888;
 }
+
 .dark-mode .titulo-relatorio {
   color: #f2f2f2;
 }
+
 .dark-mode .resposta {
   color: #f2f2f2;
 }
+
 .dark-mode .resposta-letra {
   color: #f2f2f2;
 }
+
 .dark-mode .botaoRelatorioBalanco {
   background-color: transparent;
   border: 1px solid #2e2e2e;
 }
+
 .dark-mode .botaoRelatorioBalanco:hover {
   background-color: #4d4d4d;
 }
+
 .dark-mode label {
   background-color: #2e2e2e;
 }
-.dark-mode input[type='radio']:checked + label {
+
+.dark-mode input[type='radio']:checked+label {
   background-color: #4d4d4d;
 }
 

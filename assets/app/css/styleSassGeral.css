@@ -6,6 +6,40 @@
   text-decoration: none;
 }
 
+.navbar-toggler {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 991.98px) {
+  .navbar-expand-lg .navbar-collapse {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Adjust this value */
+    width: 300px;
+    height: 100vh;
+    background-color: #f8f9fa;
+    transition: right 0.3s;
+    z-index: 1000; /* Add this line */
+  }
+
+  .navbar-collapse.show {
+    right: 0;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    margin-top: 50px;
+  }
+
+  .navbar-nav .nav-item {
+    margin-left: 0;
+  }
+}
+
 .navLinks {
   color: black;
   text-decoration: none;
