@@ -26,7 +26,7 @@ function adicionaProdutosEntradas(entradas, produtos) {
             <td>${entradas[i].quantidade}</td> 
             <td>
               <button class="botao-editar-entradas btnEditarRegistro mx-2" data-nome="${nomeProduto}"  data-quantidade="${entradas[i].quantidade}">EDITAR</button>
-              <button class="botao-deletar">DELETAR</button></td>
+              <button class="botao-deletar mx-2">DELETAR</button></td>
             </td>
           </tr>
         `;
@@ -55,7 +55,7 @@ function adicionaProdutosSaidas(saidas, produtos, clientes) {
             <td> 
               <button class="botao-editar-saidas btnEditarRegistro mx-2" data-nome="${nomeProduto}" data-quantidade="${saidas[i].quantidade}" 
               data-cliente="${nomeCliente}">EDITAR</button>
-              <button class="botao-deletar" data-nome="${nomeProduto}"  data-preco="${saidas[i].preco}" data-quantidade="${saidas[i].quantidade}" 
+              <button class="botao-deletar mx-2" data-nome="${nomeProduto}"  data-preco="${saidas[i].preco}" data-quantidade="${saidas[i].quantidade}" 
               data-quantidade="${nomeCliente}">DELETAR</button></td>
             </td>
           </tr>

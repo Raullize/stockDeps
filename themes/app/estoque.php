@@ -105,13 +105,13 @@ echo '</script>';
                             </select>
                         </div>
 
-                        <div class="form-group mt-2 d-flex flex-column flex-lg-row ">
-                            <div class="col-md-12 col-lg-6 ">
+                        <div class="form-group mt-4 d-flex justify-content-around flex-column flex-lg-row ">
+                            <div class="col-md-12 col-lg-6">
                                 <input name="nome" class="form-control w-100" type="text" placeholder="Nome do produto" id="input-nome-produto">
                                 <div id="message-nome"></div>
                             </div>
 
-                            <div class="col-md-12 col-lg-6 ">
+                            <div class="col-md-12 col-lg-6">
                                 <div class="form-group flex-column">
                                     <input name="preco" class="form-control w-100" type="number" step="any" placeholder="Preço do produto" id="input-preco-produto">
                                     <div id="message-preco"></div>
@@ -203,9 +203,13 @@ echo '</script>';
                                     <option value=''>Selecione um item</option>
                                 </select>
                             </div>
-                            <div class="form-group d-flex justify-content-between align-items-center mt-2">
-                                <input name="quantidade" class="form-control form-control-lg inputForm" type="number" placeholder="Quantidade">
-                                <button class="btn btn-primary btn-block mx-2" type="submit">SALVAR</button>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <div class="form-group d-flex align-items-stretch">
+                                        <input name="quantidade" class="form-control form-control-lg flex-grow-2" type="number" placeholder="Quantidade">
+                                        <button class="botao-cadastrar-produto px-3 py-2 mx-2" type="submit">SALVAR</button>
+                                    </div>
+                                </div>
                             </div>
 
                             <div id="message-entrada"></div>
@@ -243,27 +247,41 @@ echo '</script>';
                                 <select name="categoria" class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-categorias-saidas">
                                     <option selected value=''>Selecione uma categoria de itens</option>
                                 </select>
-                                <div class="flex">
-                                    <select name="produto" class="form-select form-select-lg my-3 inputForm" aria-label=".form-select-lg example" id="dropdown-itens-saidas">
-                                        <option value=''>Selecione um item</option>
-                                    </select>
-                                    <input name="quantidade" class="form-control form-control-lg mx-2 mt-3 inputForm" type="number" placeholder="Quantidade">
 
-
-                                </div>
-                                <div class="flex">
-
-                                    <input name="cliente" id="procurar-cliente-saidas" class="form-control form-control-lg inputForm " type="search" placeholder="Escolha o cliente" aria-label="Search">
-                                    <div id="client-list-saidas">
+                                <div class="form-group mt-4 d-flex justify-content-around flex-column flex-lg-row ">
+                                    <div class="col-md-12 col-lg-6">
+                                        <select name="produto" class="form-select form-select-lg inputForm" aria-label=".form-select-lg example" id="dropdown-itens-saidas">
+                                            <option value=''>Selecione um item</option>
+                                        </select>
                                     </div>
-                                    <div>
-                                        <button class="botao-cadastrar-quantidade mx-2" type="submit">SALVAR</button>
 
-                                        <div id="message-saidas"></div>
+                                    <div class="col-md-12 col-lg-6">
+                                        <div class="form-group flex-column">
+                                        <input name="quantidade" class="form-control form-control-lg  inputForm" type="number" placeholder="Quantidade">
+                                        </div>
                                     </div>
                                 </div>
-                        </form>
+                               
+                                   
+
+                               
+
+                                <div class="row mt-3">
+                                    <div class="col">
+                                        <div class="form-group d-flex align-items-stretch">
+                                            <input name="cliente" id="procurar-cliente-saidas" class="form-control form-control-lg inputForm " type="search" placeholder="Escolha o cliente" aria-label="Search">
+                                            <div id="client-list-saidas"></div>
+                                            <button class="botao-cadastrar-quantidade mx-2" type="submit">SALVAR</button>
+
+                                            <div id="message-saidas"></div>
+                                        </div>
+                                    </div>
+                                </div>
                     </div>
+
+
+                    </form>
+
 
                     <div class="tabelaDeProdutos">
                         <table class="table">
@@ -282,77 +300,78 @@ echo '</script>';
                     </div>
                 </div>
             </div>
-
-            <div id="modal">
-                <form class="flex">
-
-                    <div class="modal-content">
-                        <h3>Editar produto</h3>
-                        <label for="nome">Nome:</label>
-                        <input type="text" id="nome" name="nome" class="my-3">
-
-                        <label for="preco">Preço:</label>
-                        <input type="number" id="preco" name="preco" min="0" step="0.01" class="my-3">
-
-                        <label for="quantidade">Quantidade:</label>
-                        <input type="number" id="quantidade" name="quantidade" min="0" class="my-3">
-
-                        <div class="modal-buttons">
-                            <button type="button" id="cancel-button" class="mt-4">Cancelar</button>
-                            <button type="submit" class="save-button" class="mt-4">Salvar</button>
-                        </div>
-
-                    </div>
-                    <div class="modal-content-descricao">
-                        <label for="descricao-produto-modal" id="label-modal-descricao">Descrição do produto:</label>
-                        <textarea class="form-control " id="descricao-produto-modal" rows="9" placeholder="Descrição do produto"></textarea>
-                    </div>
-                </form>
-            </div>
-
-            <div id="modal-entradas" style="display:none">
-                <form class="flex" id="formEditarEntradas">
-
-                    <div class="modal-content">
-                        <h3 class="mb-4">Editar entradas</h3>
-                        <label for="nome-entradas">Nome:</label>
-                        <input type="text" id="nome-entradas" name="nome" class="my-3">
-
-                        <label for="quantidade-entradas">Quantidade:</label>
-                        <input type="number" id="quantidade-entradas" name="quantidade" min="0" class="my-3">
-
-                        <div class="modal-buttons">
-                            <button type="button" id="cancel-button-entradas" class="mt-4">Cancelar</button>
-                            <button type="submit" class="save-button btnUpdateEntradas" class="mt-4">Salvar</button>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-
-            <div id="modal-saidas" style="display:none">
-                <form class="flex" id="formEditarSaidas">
-
-                    <div class="modal-content">
-                        <h3 class="mb-4">Editar saidas</h3>
-                        <label for="nome-saidas">Nome:</label>
-                        <input type="text" id="nome-saidas" name="nome" class="my-3">
-
-                        <label for="quantidade-saidas">Quantidade:</label>
-                        <input type="number" id="quantidade-saidas" name="quantidade" min="0" class="my-3">
-
-                        <label for="cliente-saidas">Cliente:</label>
-                        <input type="search" id="cliente-saidas" name="cliente" min="0" class="my-3">
-
-                        <div class="modal-buttons">
-                            <button type="button" id="cancel-button-saidas" class="mt-4">Cancelar</button>
-                            <button type="submit" class="save-button btnUpdateSaidas" class="mt-4">Salvar</button>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
         </div>
+
+        <div id="modal">
+            <form class="flex">
+
+                <div class="modal-content">
+                    <h3>Editar produto</h3>
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" class="my-3">
+
+                    <label for="preco">Preço:</label>
+                    <input type="number" id="preco" name="preco" min="0" step="0.01" class="my-3">
+
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" id="quantidade" name="quantidade" min="0" class="my-3">
+
+                    <div class="modal-buttons">
+                        <button type="button" id="cancel-button" class="mt-4">Cancelar</button>
+                        <button type="submit" class="save-button" class="mt-4">Salvar</button>
+                    </div>
+
+                </div>
+                <div class="modal-content-descricao">
+                    <label for="descricao-produto-modal" id="label-modal-descricao">Descrição do produto:</label>
+                    <textarea class="form-control " id="descricao-produto-modal" rows="9" placeholder="Descrição do produto"></textarea>
+                </div>
+            </form>
+        </div>
+
+        <div id="modal-entradas" style="display:none">
+            <form class="flex" id="formEditarEntradas">
+
+                <div class="modal-content">
+                    <h3 class="mb-4">Editar entradas</h3>
+                    <label for="nome-entradas">Nome:</label>
+                    <input type="text" id="nome-entradas" name="nome" class="my-3">
+
+                    <label for="quantidade-entradas">Quantidade:</label>
+                    <input type="number" id="quantidade-entradas" name="quantidade" min="0" class="my-3">
+
+                    <div class="modal-buttons">
+                        <button type="button" id="cancel-button-entradas" class="mt-4">Cancelar</button>
+                        <button type="submit" class="save-button btnUpdateEntradas" class="mt-4">Salvar</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div id="modal-saidas" style="display:none">
+            <form class="flex" id="formEditarSaidas">
+
+                <div class="modal-content">
+                    <h3 class="mb-4">Editar saidas</h3>
+                    <label for="nome-saidas">Nome:</label>
+                    <input type="text" id="nome-saidas" name="nome" class="my-3">
+
+                    <label for="quantidade-saidas">Quantidade:</label>
+                    <input type="number" id="quantidade-saidas" name="quantidade" min="0" class="my-3">
+
+                    <label for="cliente-saidas">Cliente:</label>
+                    <input type="search" id="cliente-saidas" name="cliente" min="0" class="my-3">
+
+                    <div class="modal-buttons">
+                        <button type="button" id="cancel-button-saidas" class="mt-4">Cancelar</button>
+                        <button type="submit" class="save-button btnUpdateSaidas" class="mt-4">Salvar</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
     </div>
 
     <script type="text/javascript" async>
