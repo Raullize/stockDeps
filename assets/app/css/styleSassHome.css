@@ -6,20 +6,17 @@ body {
 .container1 {
   display: flex;
   background-color: #f2f2f2;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
   width: 100%;
   height: 100%;
-  margin: 0 auto;
 }
 
 .card {
   background-color: #f0f0f0;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   margin: 10px;
   width: calc(20% - 20px);
   box-sizing: border-box;
@@ -34,7 +31,6 @@ body {
   background-color: #d6e0f5;
   width: 300px;
   height: 130px;
-
   border-radius: 5px;
   border: 0px;
   box-shadow: 6px 6px 6px #888;
@@ -44,7 +40,6 @@ body {
   background-color: #d6e0f5;
   width: 300px;
   height: 180px;
-  padding: 10px;
   border-radius: 5px;
   border: 0px;
   box-shadow: 6px 6px 6px #888;
@@ -54,7 +49,6 @@ body {
   background-color: #111;
   width: 400px;
   height: 340px;
-  padding: 10px;
   border-radius: 5px;
   border: 0px;
   box-shadow: 6px 6px 6px #111;
