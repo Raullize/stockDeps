@@ -19,57 +19,54 @@
 
   <!--TOPO DA PÁGINA-->
 
-  <nav class="navbar navbar-expand-lg bg-body-tertiary pt-1 pb-1">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="<?= url() ?>">
+  <nav class="navbar navbar-expand-lg pt-1 pb-1">
+    <div class="container">
+      <a class="navbar-brand" href="#">
         <p class="deps mt-3">Stock deps</p>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+        &#9776;
       </button>
-
-      <!--teste-->
-      <li class="nav-item">
-        <a class="navLinks" href="<?= url('') ?>"> Início</a>
-      </li>
-      <li class="nav-item">
-        <a class="navLinks" href="<?= url('estoque') ?>"> Estoque</a>
-      </li>
-      <li class="nav-item">
-        <a class="navLinks" href="<?= url('cadastro') ?>">Cadastro</a>
-      </li>
-      <li class="nav-item">
-        <a class="navLinks" href="<?= url('relatorio') ?>">Relatórios</a>
-      </li>
-      <li class="nav-item">
-        <a class="navLinks" href="<?= url('clientes') ?>">Clientes</a>
-      </li>
-      <div class="tema">
-
-        <input type="checkbox" id="darkmode-toggle" />
-        <label for="darkmode-toggle">
-
-        </label>
-      </div>
-      </ul>
-
-      <form class="d-flex" role="search">
-        <div class="inputPesquisa">
-          <div class="block">
-            <input id="procurar-cliente" class="form-control  mt-1 mx-3" type="search" placeholder="Procurar cliente" aria-label="Search">
-
-          </div>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('') ?>">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('estoque') ?>">Estoque</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('cadastro') ?>">Cadastro</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('relatorio') ?>">Relatórios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('clientes') ?>">Clientes</a>
+          </li>
+        </ul>
+        <div class="form-check form-switch tema">
+          <input class="form-check-input" type="checkbox" id="darkmode-toggle">
+          <label class="form-check-label" for="darkmode-toggle"></label>
         </div>
-      </form>
-    </div>
+        <form class="d-flex" role="search">
+          <div class="inputPesquisa">
+            <div class="block">
+              <input id="procurar-cliente" class="form-control mt-1 mx-3" type="search" placeholder="Procurar cliente" aria-label="Search">
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </nav>
   <div id="client-list">
 
   </div>
 
+
   <script src="<?= url('assets/app/js/tema.js') ?>"></script>
 
+  <script src="<?= url('assets/app/js/hamburguer.js') ?>"></script>
 </body>
 
 </html>
