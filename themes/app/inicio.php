@@ -20,7 +20,6 @@ echo '</script>';
 echo '<script>';
 echo 'var clientes = ' . json_encode($clientes) . ';';
 echo '</script>';
-
 ?>
 
 <link rel="stylesheet" href="<?= url('assets/app/css/styleSassHome.css') ?>">
