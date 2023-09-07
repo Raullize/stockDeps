@@ -26,7 +26,7 @@ h3 {
 }
 
 .info-cliente-bloco {
-  margin: 60px;
+  margin: 30px;
   text-align: start;
 }
 
@@ -46,7 +46,6 @@ h3 {
   margin-top: 5px;
   margin-bottom: 50px;
   padding: 20px;
-  height: 600px;
   background-color: #e6e6ff;
 }
 
@@ -57,7 +56,6 @@ h3 {
 .card-bloco {
   cursor: pointer;
   padding: 20px;
-  width: 1000px;
   margin: 10px auto;
   background-color: #e6e6ff;
   border-radius: 20px;
@@ -98,18 +96,6 @@ input[type=radio]:checked + label {
   background-color: #d1d1e0;
 }
 
-.flex {
-  display: flex;
-}
-
-.block {
-  display: block;
-}
-
-.camada {
-  width: 350px;
-}
-
 .item-cartao {
   height: 50px;
 }
@@ -119,12 +105,6 @@ input[type=radio]:checked + label {
   display: flex;
   text-align: center;
   width: fit-content;
-}
-
-.embaixo {
-  align-self: center;
-  position: absolute;
-  bottom: 20px;
 }
 
 .dark-mode {
@@ -209,7 +189,6 @@ input[type=radio]:checked + label {
 .modal {
   display: none;
   position: fixed;
-  z-index: 999;
   left: 0;
   top: 0;
   width: 100%;

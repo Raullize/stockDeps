@@ -1,7 +1,7 @@
 
 function criaCartaoCarrossel(clientes) {
     return `
-      <div class="card">
+    <div class="card d-flex flex-column">
         <h3 my-3>${clientes.nome}</h3>
         <p class="info-clientes mt-3"><strong>CPF:</strong> ${clientes.cpf}</p>
         <p class="info-clientes mt-3"><strong>Email:</strong> ${clientes.email}</p>
@@ -9,37 +9,34 @@ function criaCartaoCarrossel(clientes) {
         <p class="info-clientes mt-3"><strong>Cidade:</strong> ${clientes.cidade}</p>
         <p class="info-clientes mt-3"><strong>Bairro:</strong> ${clientes.bairro}</p>
         <p class="info-clientes mt-3"><strong>UF:</strong> ${clientes.uf}</p>    
-        <button  idC='${clientes.id}' class="btn btn-danger embaixo historico"> Histórico </button>
-      </div>
+        <button idC='${clientes.id}' class="btn btn-danger  historico mt-2">Histórico</button>
+    </div>
+
     `;
 }
 function criaCardBloco(clientes) {
     return `
-      <div class="card-bloco" s>
-  
-        <div class="flex">
-            <div class="block camada">
-                <div class="item-cartao"></div> 
-                <p class="info-cliente-bloco "><strong>CPF:</strong> ${clientes.cpf}</p>
+    <div class="card-bloco d-flex flex-column justify-content-center col-9">
+        <div class="item-cartao col-md-12"><h3>${clientes.nome}</h3></div> 
+        <button class="btn btn-danger center historico m-4" idC='${clientes.id}'> 
+            Histórico
+        </button> 
+        <div class="d-flex flex-wrap">
+            <div class="flex-column col-md-4">
+                <p class="info-cliente-bloco"><strong>CPF:</strong> ${clientes.cpf}</p>
                 <p class="info-cliente-bloco"><strong>Email:</strong> ${clientes.email}</p>
-                
             </div>
-            <div class="block camada">
-                  <div class="item-cartao"><h3>${clientes.nome}</h3> </div> 
+            <div class=" flex-column col-md-4">
                 <P class="info-cliente-bloco"><strong>Celular:</strong> ${clientes.celular}</P>
                 <p class="info-cliente-bloco"><strong>Cidade:</strong> ${clientes.cidade}</p>
             </div>    
-            <div class="block camada">
-                <div class="item-cartao"> 
-                    <button class="btn btn-danger center historico" idC='${clientes.id}'> 
-                    Histórico
-                    </button> 
-                </div>  
+            <div class="flex-column col-md-4">
                 <p class="info-cliente-bloco"><strong>Bairro:</strong> ${clientes.bairro}</p>
                 <p class="info-cliente-bloco"><strong>UF:</strong> ${clientes.uf}</p>
             </div>
         </div>
-      </div>
+    </div>
+
     `;
 }
 
@@ -55,36 +52,36 @@ document.addEventListener("DOMContentLoaded", function () {
         divBloco.style.display = "none";
         divBloco.innerHTML = "";
 
-     
-            // Cria os cards do carrossel
-            clientes.forEach((cliente) => {
-                var cartao = criaCartaoCarrossel(cliente);
-                divCarrossel.innerHTML += cartao;
-            });
 
-            // Inicializa o carrossel
-            $('#carousel').owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: true,
-                dots: false,
-                responsive: {
-                    0: {
-                        items: 1,
-                        nav: true
-                    },
-                    600: {
-                        items: 3,
-                        nav: false
-                    },
-                    1000: {
-                        items: 5,
-                        nav: true,
-                        loop: false
-                    }
+        // Cria os cards do carrossel
+        clientes.forEach((cliente) => {
+            var cartao = criaCartaoCarrossel(cliente);
+            divCarrossel.innerHTML += cartao;
+        });
+
+        // Inicializa o carrossel
+        $('#carousel').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            dots: false,
+            responsive: {
+                0: {
+                    items: 1,
+                    nav: true
+                },
+                600: {
+                    items: 3,
+                    nav: false
+                },
+                1000: {
+                    items: 5,
+                    nav: true,
+                    loop: false
                 }
-            });
-        
+            }
+        });
+
     }
 
 

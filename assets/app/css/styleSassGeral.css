@@ -6,6 +6,10 @@
   text-decoration: none;
 }
 
+.close-button {
+  display: none;
+}
+
 .navbar-toggler {
   border: none;
   background: none;
