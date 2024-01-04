@@ -7,13 +7,10 @@ body {
   width: 100%;
   background-color: #f2f2f2;
 }
-
+modal-buttons
 textarea {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
-
-
-
 
 .botao-produtos {
   display: block;
@@ -42,7 +39,7 @@ input[type=radio] {
   display: none;
 }
 
-input[type=radio]:checked + label {
+input[type=radio]:checked+label {
   background-color: #d1d1e0;
 }
 
@@ -53,9 +50,11 @@ input[type=radio]:checked + label {
   font-size: 15px;
 }
 
-
-
-
+.modal-align{
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%);
+}
 .inputEntrada {
   width: 90%;
 }
@@ -83,7 +82,6 @@ input[type=radio]:checked + label {
 }
 
 .tabelaDeProdutos {
-  
   height: 300px;
   overflow-y: scroll;
   margin-top: 30px;
@@ -184,12 +182,6 @@ td {
   display: none;
 }
 
-.flex {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-}
-
 .center {
   margin-right: 100px;
   text-align: center;
@@ -250,9 +242,6 @@ td {
   border-radius: 30px;
   top: 100px;
   position: absolute;
-  width: 700px;
-  height: 500px;
-  margin-left: 25%;
   background: #d1d1e0;
   display: none;
   flex-direction: row;
@@ -268,19 +257,14 @@ td {
 }
 
 .modal-content {
-  width: 300px;
-  height: 500px;
   background-color: #d1d1e0;
   padding: 20px;
   border-radius: 5px;
-  margin-left: 50px;
 }
 
 #modal-entradas .modal-content {
-  height: 480px;
   margin-top: 20px;
   align-items: center;
-  width: 70%;
 }
 
 #modal-saidas .modal-content {
@@ -314,16 +298,11 @@ input {
   width: 100%;
 }
 
-.modal-buttons {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
 
 #cancel-button,
 #cancel-button-entradas,
 #cancel-button-saidas {
-  padding: 10px 20px;
+  padding: 20px 30px;
   border: none;
   border-radius: 5px;
   color: white;
@@ -333,7 +312,7 @@ input {
 }
 
 .save-button {
-  padding: 10px 20px;
+  padding: 20px 30px;
   border: none;
   border-radius: 5px;
   color: white;
@@ -344,44 +323,60 @@ input {
 
 
 
-.dark-mode .container-fluid {
+
+.dark-mode body {
   background-color: #1c1c1c;
 }
+
 .dark-mode p {
   color: #f2f2f2;
 }
+
 .dark-mode th {
   color: #f2f2f2;
 }
+
 .dark-mode td {
   color: #f2f2f2;
 }
-.dark-mode input[type=radio]:checked + label {
+
+.dark-mode input[type=radio]:checked+label {
   background-color: #2e2e2e;
 }
+
 .dark-mode .botao-produtos:hover {
   background-color: #4d4d4d;
 }
+
 .dark-mode .botao-deletar {
   background-color: #2e2e2e;
   color: #ff1a1a;
 }
+
 .dark-mode .botao-deletar:hover {
   border: 1px solid #ff1a1a;
 }
+
 .dark-mode .inputForm {
   border: 1px solid #f2f2f2;
 }
+
 .dark-mode .botao-cadastrar-produto {
   border: 1px solid #f2f2f2;
   background-color: #2e2e2e;
   color: #f2f2f2;
 }
+
+.dark-mode label{
+  color: white;
+}
+
 .dark-mode .botao-cadastrar-quantidade {
   border: 1px solid #f2f2f2;
   background-color: #2e2e2e;
   color: #f2f2f2;
 }
+
 .dark-mode .botao-editar,
 .dark-mode .botao-editar-entradas,
 .dark-mode .botao-editar-saidas {
@@ -389,49 +384,61 @@ input {
   background-color: #2e2e2e;
   color: #004d99;
 }
+
 .dark-mode #modal,
 .dark-mode #modal-entradas,
 .dark-mode #modal-saidas {
   background: #2e2e2e;
 }
+
 .dark-mode #modal h3,
 .dark-mode #modal-entradas h3,
 .dark-mode #modal-saidas h3 {
   color: #f2f2f2;
 }
+
 .dark-mode select {
   background-color: #3a3a3a;
   color: #f2f2f2;
 }
+
 .dark-mode textarea {
   border: 0px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   background-color: #3a3a3a;
   color: #f2f2f2;
 }
+
 .dark-mode .modal-content-descricao {
   background-color: #2e2e2e;
 }
+
 .dark-mode .modal-content {
   background-color: #2e2e2e;
 }
+
 .dark-mode .modal-title {
   color: #f2f2f2;
 }
+
 .dark-mode .modal-content label {
   color: #f2f2f2;
 }
+
 .dark-mode #label-modal-descricao {
   color: #f2f2f2;
 }
+
 .dark-mode input {
   background-color: #3a3a3a;
   color: #f2f2f2;
 }
+
 .dark-mode #cancel-button {
   color: white;
   background-color: red;
 }
+
 .dark-mode .save-button {
   color: white;
   background-color: green;
@@ -469,19 +476,19 @@ input {
 }
 
 .close:hover {
-opacity: 0.5;
+  opacity: 0.5;
 }
 
-.btnModalExcluir{
+.btnModalExcluir {
   border: 1px solid #f2f2f2;
   background-color: #2e2e2e;
   color: #f2f2f2;
   width: 70%;
-    height: 50px;
-    border-radius: 6px;
+  height: 50px;
+  border-radius: 6px;
 }
 
-#containerBotoesModalExcluir{
+#containerBotoesModalExcluir {
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -494,11 +501,12 @@ opacity: 0.5;
 
 body.modal-open {
   overflow: hidden;
-  height: 100svh; 
+  height: 100svh;
 }
 
-img{
+img {
   width: 40px;
   height: 40px;
 }
+
 /*# sourceMappingURL=styleSassEstoque.css.map */

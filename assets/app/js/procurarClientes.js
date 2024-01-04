@@ -25,7 +25,8 @@ function criaCardsProcurarCliente(event) {
     if (textoPesquisado == "") {
       listaDeClientes.style.display = 'none';
     } else {
-      listaDeClientes.style.display = "block";
+      listaDeClientes.style.display = "d-flex";
+      listaDeClientes.style.display = "flex-column";
     }
   }
   

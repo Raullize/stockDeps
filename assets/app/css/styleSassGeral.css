@@ -180,12 +180,18 @@ nav .nav-item {
   background-color: #3a3a3a;
   color: #f2f2f2;
 }
+.dark-mode .navbar-collapse{
+  background-color: #1c1c1c;
+}
+
+.dark-mode .navbar-toggler{
+  background-color: white;
+}
 
 .tema {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 100px;
 }
 .tema label {
   width: 160px;

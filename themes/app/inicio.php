@@ -60,7 +60,7 @@ echo '</script>';
     <div class="col-md-6 col-lg-3 mb-3">
       <div class="card h-50">
         <div class="cartao-pequeno h-100">
-          <p class="titulo-relatorio">Renda</p>
+          <p class="titulo-relatorio">Lucro</p>
           <p class="resposta">R$ 20000 </p>
         </div>
       </div>

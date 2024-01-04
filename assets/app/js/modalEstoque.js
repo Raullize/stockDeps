@@ -48,11 +48,10 @@ botaoFiltrar.addEventListener('click', function () {
 
 })
 
+// Event listener para abrir o modal
 entradasBarraLateral.addEventListener("click", function () {
-  
   for (let i = 0; i < botoesEditarEntradas.length; i++) {
     botoesEditarEntradas[i].addEventListener('click', function () {
-    
       const nomeEntradas = this.dataset.nome;
       const quantidadeEntradas = parseInt(this.dataset.quantidade);
       document.getElementById('nome-entradas').value = nomeEntradas;
@@ -60,10 +59,15 @@ entradasBarraLateral.addEventListener("click", function () {
  
       document.getElementById('nome-entradas').setAttribute('disabled', 'disabled');
       modalEntradas.style.display = "flex";
+      modalEntradas.style.justifyContent = "center";
+      modalEntradas.classList.add("modal-align");
     });
-   
+    
   }
 });
+
+
+
 
   SaidasBarraLateral.addEventListener("click", function () {
  
@@ -80,8 +84,11 @@ entradasBarraLateral.addEventListener("click", function () {
       
       document.getElementById('nome-saidas').setAttribute('disabled', 'disabled');
       document.getElementById('cliente-saidas').setAttribute('disabled', 'disabled');
-     
+
       modalSaidas.style.display = "flex";
+      modalSaidas.style.justifyContent = "center";
+      modalSaidas.classList.add("teste");
+
     });
    
   }

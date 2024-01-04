@@ -257,14 +257,14 @@ echo '</script>';
 
                                     <div class="col-md-12 col-lg-6">
                                         <div class="form-group flex-column">
-                                        <input name="quantidade" class="form-control form-control-lg  inputForm" type="number" placeholder="Quantidade">
+                                            <input name="quantidade" class="form-control form-control-lg  inputForm" type="number" placeholder="Quantidade">
                                         </div>
                                     </div>
                                 </div>
-                               
-                                   
 
-                               
+
+
+
 
                                 <div class="row mt-3">
                                     <div class="col">
@@ -328,47 +328,49 @@ echo '</script>';
                 </div>
             </form>
         </div>
+        
+        <div id="modal-entradas" class="col-md-7  p-3">
+            <form id="formEditarEntradas" class="col-md-10">
 
-        <div id="modal-entradas" style="display:none">
-            <form class="flex" id="formEditarEntradas">
-
-                <div class="modal-content">
-                    <h3 class="mb-4">Editar entradas</h3>
-                    <label for="nome-entradas">Nome:</label>
-                    <input type="text" id="nome-entradas" name="nome" class="my-3">
-
-                    <label for="quantidade-entradas">Quantidade:</label>
-                    <input type="number" id="quantidade-entradas" name="quantidade" min="0" class="my-3">
-
-                    <div class="modal-buttons">
-                        <button type="button" id="cancel-button-entradas" class="mt-4">Cancelar</button>
-                        <button type="submit" class="save-button btnUpdateEntradas" class="mt-4">Salvar</button>
-                    </div>
-
+                <div class="form-group">
+                    <h3 class="mb-4 col-md-12">Editar entradas</h3>
                 </div>
+                <label for="nome-entradas ">Nome:</label>
+                <input type="text" id="nome-entradas" name="nome" class="my-3">
+
+                <label for="quantidade-entradas">Quantidade:</label>
+                <input type="number" id="quantidade-entradas" name="quantidade" min="0" class="my-3">
+
+                <div class="d-flex justify-content-center">
+                    <button type="button" id="cancel-button-entradas">Cancelar</button>
+                    <button type="submit" class="save-button btnUpdateEntradas">Salvar</button>
+                </div>
+
+
             </form>
         </div>
 
-        <div id="modal-saidas" style="display:none">
-            <form class="flex" id="formEditarSaidas">
+        <div id="modal-saidas" class="col-md-7  p-3">
+            <form id="formEditarSaidas" class="col-md-10">
 
-                <div class="modal-content">
+                <div class="form-group">
                     <h3 class="mb-4">Editar saidas</h3>
-                    <label for="nome-saidas">Nome:</label>
-                    <input type="text" id="nome-saidas" name="nome" class="my-3">
+                </div>
+                <label for="nome-saidas">Nome:</label>
+                <input type="text" id="nome-saidas" name="nome" class="my-3">
 
-                    <label for="quantidade-saidas">Quantidade:</label>
-                    <input type="number" id="quantidade-saidas" name="quantidade" min="0" class="my-3">
+                <label for="quantidade-saidas">Quantidade:</label>
+                <input type="number" id="quantidade-saidas" name="quantidade" min="0" class="my-3">
 
-                    <label for="cliente-saidas">Cliente:</label>
-                    <input type="search" id="cliente-saidas" name="cliente" min="0" class="my-3">
+                <label for="cliente-saidas">Cliente:</label>
+                <input type="search" id="cliente-saidas" name="cliente" min="0" class="my-3">
 
-                    <div class="modal-buttons">
-                        <button type="button" id="cancel-button-saidas" class="mt-4">Cancelar</button>
-                        <button type="submit" class="save-button btnUpdateSaidas" class="mt-4">Salvar</button>
+                    <div class="d-flex justify-content-center">
+                        <button type="button" id="cancel-button-saidas" >Cancelar</button>
+                        <button type="submit" class="save-button btnUpdateSaidas">Salvar</button>
                     </div>
 
-                </div>
+                
             </form>
         </div>
     </div>

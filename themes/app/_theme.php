@@ -19,47 +19,50 @@
 
   <!--TOPO DA PÁGINA-->
   <nav class="navbar navbar-expand-lg ">
-  <div class="container">
-    <a class="navbar-brand" href="#">
-      <p class="deps mt-3">Stock deps</p>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      &#9776;
-    </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-   
-<button class="close-button" type="button">&#10006;</button>
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="<?= url('') ?>">Início</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="<?= url('estoque') ?>">Estoque</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="<?= url('cadastro') ?>">Cadastro</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="<?= url('relatorio') ?>">Relatórios</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="<?= url('clientes') ?>">Clientes</a>
-        </li>
-      </ul>
-      <div class="form-check form-switch tema">
-        <input class="form-check-input" type="checkbox" id="darkmode-toggle">
-        <label class="form-check-label" for="darkmode-toggle"></label>
-      </div>
-      <form class="d-flex" role="search">
-        <div class="inputPesquisa">
-          <div class="block">
-            <input id="procurar-cliente" class="form-control mt-1 mx-3" type="search" placeholder="Procurar cliente" aria-label="Search">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <p class="deps mt-3">Stock deps</p>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        &#9776;
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+
+        <button class="close-button" type="button">&#10006;</button>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('') ?>">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('estoque') ?>">Estoque</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('cadastro') ?>">Cadastro</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('relatorio') ?>">Relatórios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="<?= url('clientes') ?>">Clientes</a>
+          </li>
+          <li class="nav-item">
+            <div class="form-check form-switch tema">
+              <input class="form-check-input" type="checkbox" id="darkmode-toggle">
+              <label class="form-check-label" for="darkmode-toggle"></label>
+            </div>
+          </li>
+        </ul>
+     
+        <form class="d-flex" role="search">
+          <div class="inputPesquisa">
+            <div class="block">
+              <input id="procurar-cliente" class="form-control mt-1 mx-3" type="search" placeholder="Procurar cliente" aria-label="Search">
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
 
   <div id="client-list">
