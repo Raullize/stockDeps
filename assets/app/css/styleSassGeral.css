@@ -6,13 +6,10 @@
   text-decoration: none;
 }
 
-<<<<<<< Updated upstream
 .close-button {
   display: none;
 }
 
-=======
->>>>>>> Stashed changes
 .navbar-toggler {
   border: none;
   background: none;
@@ -21,10 +18,6 @@
   cursor: pointer;
 }
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 @media (max-width: 991.98px) {
   .navbar-expand-lg .navbar-collapse {
     position: fixed;

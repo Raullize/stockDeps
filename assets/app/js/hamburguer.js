@@ -1,5 +1,4 @@
 const navbarToggle = document.querySelector(".navbar-toggler");
-<<<<<<< Updated upstream
 const navbarCollapse = document.querySelector(".collapse.navbar-collapse");
 const closeButton = document.querySelector(".close-button");
 
@@ -30,11 +29,3 @@ window.addEventListener("resize", updateButtonVisibility);
 
 // Chame a função para verificar a visibilidade inicial do botão
 updateButtonVisibility();
-=======
-const navbarCollapse = document.querySelector("#navbarSupportedContent");
-
-navbarToggle.addEventListener("click", () => {
-  navbarCollapse.classList.toggle("show");
-  navbarCollapse.style.float = "right";
-});
->>>>>>> Stashed changes
