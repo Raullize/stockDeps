@@ -18,7 +18,12 @@
 
 
   <!--TOPO DA PÁGINA-->
+<<<<<<< Updated upstream
   <nav class="navbar navbar-expand-lg ">
+=======
+
+  <nav class="navbar navbar-expand-lg pt-1 pb-1">
+>>>>>>> Stashed changes
     <div class="container">
       <a class="navbar-brand" href="#">
         <p class="deps mt-3">Stock deps</p>
@@ -26,6 +31,7 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         &#9776;
       </button>
+<<<<<<< Updated upstream
       <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
 
         <button class="close-button" type="button">&#10006;</button>
@@ -53,6 +59,30 @@
           </li>
         </ul>
      
+=======
+      <div class="collapse navbar-collapse " id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Início</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="estoque">Estoque</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Cadastro</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Relatórios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Clientes</a>
+          </li>
+        </ul>
+        <div class="form-check form-switch tema "  >
+          <input class="form-check-input" type="checkbox" id="darkmode-toggle">
+          <label class="form-check-label" for="darkmode-toggle"></label>
+        </div>
+>>>>>>> Stashed changes
         <form class="d-flex" role="search">
           <div class="inputPesquisa">
             <div class="block">
@@ -69,8 +99,13 @@
 
   </div>
 
+<<<<<<< Updated upstream
 
   <script src="<?= url('assets/app/js/tema.js') ?>"></script>
+=======
+ <script src="<?= url('assets/app/js/tema.js') ?>"></script>
+ <script src="<?= url('assets/app/js/hamburguer.js') ?>"></script>
+>>>>>>> Stashed changes
 
   <script src="<?= url('assets/app/js/hamburguer.js') ?>"></script>
 </body>
