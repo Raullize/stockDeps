@@ -34,16 +34,16 @@ echo '</script>';
           <p class="resposta" id="qtd-vendas"></p>
         </div>
       </div>
-      
-      <div class="card">
-        <div class="cartao-medio">
-          <p class="titulo-relatorio">Mais vendidos:</p>
-          <p class="resposta-letra" id="ranking-categorias"></p>
+
+
+      <div class="card h-50">
+        <div class="cartao-medio h-100">
+          <p class="titulo-relatorio">Clientes</p>
+          <p class="resposta" id="qtd-clientes"></p>
         </div>
       </div>
-   
     </div>
-    
+
     <div class="col-md-6 col-lg-4 ">
       <div class="card h-100">
         <div class="cartao-grande h-100" id="conta-itens">
@@ -58,16 +58,10 @@ echo '</script>';
       </div>
     </div>
     <div class="col-md-6 col-lg-3 mb-3">
-      <div class="card h-50">
-        <div class="cartao-pequeno h-100">
-          <p class="titulo-relatorio">Lucro</p>
-          <p class="resposta">R$ 20000 </p>
-        </div>
-      </div>
-      <div class="card h-50">
+      <div class="card h-100">
         <div class="cartao-medio h-100">
-          <p class="titulo-relatorio">Clientes</p>
-          <p class="resposta" id="qtd-clientes"></p>
+          <p class="titulo-relatorio">Mais vendidos:</p>
+          <p class="resposta-letra" id="ranking-categorias"></p>
         </div>
       </div>
     </div>
