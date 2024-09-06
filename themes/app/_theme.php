@@ -20,7 +20,7 @@
   <!--TOPO DA PÁGINA-->
   <nav class="navbar navbar-expand-lg ">
     <div class="container">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="<?= url('') ?>">
         <p class="deps mt-3">Stock deps</p>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,8 +36,8 @@
           <li class="nav-item">
             <a class="nav-link" href="<?= url('estoque') ?>">Estoque</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="<?= url('cadastro') ?>">Cadastro</a>
+          <li class="nav-item" id="cadastro-item" data-url-clientes="/stock-deps/cadastro" data-url-categorias="/stock-deps/categorias">
+            <a class="nav-link" href="#">Cadastro</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="<?= url('relatorio') ?>">Relatórios</a>

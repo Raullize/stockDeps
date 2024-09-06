@@ -126,6 +126,7 @@ echo '</script>';
                                 <div class="form-group d-flex align-items-stretch">
                                     <textarea name="descricao" class="form-control flex-grow-1" id="descricao-produto" rows="3" placeholder="Descrição do produto"></textarea>
                                     <button class="botao-cadastrar-produto mx-2 px-5" type="submit" id="botao-produtos">CADASTRAR</button>
+                                    <div id="message"></div>
                                 </div>
                             </div>
                         </div>

@@ -301,6 +301,68 @@ class App
         echo $this->view->render("cadastro");
     }
 
+    public function categorias () : void 
+    {
+
+        $categoria = new Categorias();
+        $categorias = $categoria->selectAll();
+
+        echo $this->view->render("categorias",[
+            "categorias" => $categorias
+        ]);
+
+    }
+
+    public function categoriasInserir (?array $data) : void 
+    {
+
+        if(!empty($data)){
+
+            if(in_array("", $data)){
+                $json = [
+                    "message" => "<div style='text-align: center; color: red'>Informe todos os campos para cadastrar!</div>",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+        $categoria = new Categorias(
+            NULL,
+            $data["name"],
+            $data["description"]
+        );
+
+        if($categoria->findByName($data["name"])){
+            $json = [
+                "message" => "Categoria já cadastrada!",
+                "type" => "error"
+            ];
+            echo json_encode($json);
+            return;
+        }
+        
+        if($categoria->insert()){
+
+            $json = [
+                "name" => $data["name"],
+                "description" => $data["description"],
+                "message" => "Categoria cadastrada com sucesso!",
+                "type" => "success"
+            ];
+            echo json_encode($json);
+            return;
+        } else {
+            $json = [
+                "message" => "Categoria não cadastrada!",
+                "type" => "error"
+            ];
+            echo json_encode($json);
+            return;
+        }
+    }
+}
+
     public function clientes () : void 
     {
 

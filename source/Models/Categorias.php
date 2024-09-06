@@ -88,15 +88,29 @@ class Categorias
     }
 
     public function insert()
-    {
-        $query = "INSERT INTO faqs (question, answer) 
-                  VALUES(:question, :answer)";
-        $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":question", $this->question);
-        $stmt->bindParam(":answer", $this->answer);
-        $stmt->execute();
-        $this->message = "FAQ cadastrada com sucesso!";
+{
+    $query = "INSERT INTO categorias (nome, descricao) 
+              VALUES(:nome, :descricao)";
+    $stmt = Connect::getInstance()->prepare($query);
+    $stmt->bindParam(":nome", $this->nome);
+    $stmt->bindParam(":descricao", $this->descricao);
+    $stmt->execute();
+
+    return true;
+}
+
+
+public function findByName($nome) : bool
+{
+    $query = "SELECT * FROM categorias WHERE nome = :nome";
+    $stmt = Connect::getInstance()->prepare($query);
+    $stmt->bindParam(":nome", $nome);
+    $stmt->execute();
+    if($stmt->rowCount() == 1){
         return true;
+    } else {
+        return false;
     }
+}
 
 }
