@@ -41,6 +41,9 @@ $route->get("/pdf-r-v", "App:relatorioClientes");
 $route->get("/cadastro", "App:cadastro");
 $route->post("/cadastro", "App:cadastro");
 
+$route->get("/categorias", "App:categorias");
+$route->post("/categorias-inserir", "App:categoriasInserir");
+
 $route->get("/clientes", "App:clientes");
 $route->post("/historico-cliente", "App:getHistoricoCliente");
 
