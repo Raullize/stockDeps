@@ -4,7 +4,11 @@
 
 // DATABASE
 
+<<<<<<< HEAD
 define("CONF_DB_HOST", "127.0.0.1");
+=======
+define("CONF_DB_HOST", "localhost");
+>>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
 define("CONF_DB_USER", "root");
 define("CONF_DB_PASS", "");
 define("CONF_DB_NAME", "stock-deps"); // aqui deve ser alterado para o nome do banco de dados

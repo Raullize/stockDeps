@@ -2,7 +2,10 @@
 
 namespace Source\Models;
 
+<<<<<<< HEAD
 use PDOException;
+=======
+>>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
 use Source\Core\Connect;
 
 class Categorias
@@ -88,6 +91,7 @@ class Categorias
         }
     }
 
+<<<<<<< HEAD
     public function insert() : bool
 {
     try {
@@ -111,6 +115,21 @@ class Categorias
     }
 }
 
+=======
+    public function insert()
+{
+    $query = "INSERT INTO categorias (nome, descricao) 
+              VALUES(:nome, :descricao)";
+    $stmt = Connect::getInstance()->prepare($query);
+    $stmt->bindParam(":nome", $this->nome);
+    $stmt->bindParam(":descricao", $this->descricao);
+    $stmt->execute();
+
+    return true;
+}
+
+
+>>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
 public function findByName($nome) : bool
 {
     $query = "SELECT * FROM categorias WHERE nome = :nome";
@@ -124,6 +143,7 @@ public function findByName($nome) : bool
     }
 }
 
+<<<<<<< HEAD
 public function findById($id) : bool
 {
     $query = "SELECT * FROM categorias WHERE id = :id";
@@ -157,4 +177,6 @@ public function delete($id) : bool
     }
 }
 
+=======
+>>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
 }
