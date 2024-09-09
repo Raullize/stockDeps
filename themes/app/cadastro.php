@@ -145,11 +145,7 @@
 
   </div>
 
-<<<<<<< HEAD
   <script src="<?= url('assets/app/js/tema.js')?>"></script>
-=======
-  <script src="<?= url('assets/app/js/tema.js') ?>"></script>
->>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
 </body>
 
 </html>

@@ -313,11 +313,8 @@ class App
 
     }
 
-<<<<<<< HEAD
     // categoriasInserir : Array -> JSON
     // insere uma categoria no Banco de Dados e devolve um JSON de mensagem e um status
-=======
->>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
     public function categoriasInserir (?array $data) : void 
     {
 
@@ -368,7 +365,6 @@ class App
     }
 }
 
-<<<<<<< HEAD
 // categoriasDeletar : Array -> JSON
 // Deleta uma categoria no Banco de Dados e devolve um JSON de mensagem e um status
 public function categoriasDeletar (?array $data) : void 
@@ -408,8 +404,6 @@ public function categoriasDeletar (?array $data) : void
     }
 }
 
-=======
->>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
     public function clientes () : void 
     {
 

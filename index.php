@@ -4,7 +4,6 @@ ob_start();
 
 session_start();
 
-<<<<<<< HEAD
 // Permitir requisições de qualquer origem (ajuste conforme necessário)
 header("Access-Control-Allow-Origin: *");
 
@@ -14,8 +13,6 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 // Permitir cabeçalhos específicos que possam ser utilizados na requisição
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-=======
->>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
 require __DIR__ . "/vendor/autoload.php";
 
 use CoffeeCode\Router\Router;
@@ -53,15 +50,10 @@ $route->get("/pdf-r-v", "App:relatorioClientes");
 $route->get("/cadastro", "App:cadastro");
 $route->post("/cadastro", "App:cadastro");
 
-<<<<<<< HEAD
 //CRUD CATEGORIAS
 $route->get("/categorias", "App:categorias");
 $route->post("/categorias-inserir", "App:categoriasInserir");
 $route->post("/categorias-deletar", "App:categoriasDeletar");
-=======
-$route->get("/categorias", "App:categorias");
-$route->post("/categorias-inserir", "App:categoriasInserir");
->>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
 
 $route->get("/clientes", "App:clientes");
 $route->post("/historico-cliente", "App:getHistoricoCliente");

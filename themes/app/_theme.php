@@ -11,13 +11,10 @@
   <!-- CSS only -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
-<<<<<<< HEAD
   <!-- FONT AWESOME PAGE CATEGORIES -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
 
-=======
->>>>>>> 4906133f697bf8a57791c54a769827aa53362dec
   <title>Stock Deps</title>
 </head>
 
