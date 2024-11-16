@@ -32,6 +32,12 @@ $route->namespace("Source\App");
 $route->group("/"); // agrupa em /app
 
 $route->get("/", "App:inicio");
+$route->get("/estoqueTeste", "App:estoqueTeste");
+$route->get("/getProdutos", "App:getProdutos");
+$route->get("/getCategorias", "App:getCategorias");
+$route->get("/getClientes", "App:getClientes");
+$route->get("/getEntradas", "App:getEntradas");
+$route->get("/getSaidas", "App:getSaidas");
 
 $route->get("/estoque", "App:estoque");
 $route->post("/estoque-cadastro", "App:estoqueCadastro");

@@ -46,6 +46,58 @@ class App
 
     }
 
+    public function estoqueTeste () : void 
+    {
+        $cliente = new Clientes();
+        $clientes = $cliente->selectAll();
+
+        $produto = new Produtos();
+        $produtos = $produto->selectAll();
+
+        $categoria = new Categorias();
+        $categorias = $categoria->selectAll();
+
+        $entradas = new Entradas();
+        $entradas = $entradas->selectAll();
+
+        $saidas = new Saidas();
+        $saidas = $saidas->selectAll();
+
+        echo $this->view->render("estoqueTeste",[
+            "produtos" => $produtos,
+            "categorias" => $categorias,
+            "clientes" => $clientes,
+            "entradas" => $entradas,
+            "saidas" => $saidas
+        ]);
+
+    }
+
+    public function getProdutos() {
+        $produto = new Produtos();
+        echo json_encode($produto->selectAll());
+    }
+    
+    public function getCategorias() {
+        $categoria = new Categorias();
+        echo json_encode($categoria->selectAll());
+    }
+    
+    public function getClientes() {
+        $cliente = new Clientes();
+        echo json_encode($cliente->selectAll());
+    }
+    
+    public function getEntradas() {
+        $entradas = new Entradas();
+        echo json_encode($entradas->selectAll());
+    }
+    
+    public function getSaidas() {
+        $saidas = new Saidas();
+        echo json_encode($saidas->selectAll());
+    }
+
     public function estoque () : void 
     {
         $cliente = new Clientes();

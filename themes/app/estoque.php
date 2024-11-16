@@ -19,10 +19,7 @@ echo '</script>';
 echo '<script>';
 echo 'var clientes = ' . json_encode($clientes) . ';';
 echo '</script>';
-
-
 ?>
-
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/styleSassEstoque.css') ?>">
@@ -44,13 +41,10 @@ echo '</script>';
                 </div>
             </div>
 
-            <!--Container da Barra Lateral-->
-            <div class="col-md-6 col-lg-2 mb-3">
-                <!--Barra Lateral cadastro de produtos-->
-                <div class="barraLateralCadastro">
-                    <!--Título barra lateral CADASTRO-->
-                    <p class="titulosBarraLateral">CADASTRO</p>
 
+            <div class="col-md-6 col-lg-2 mb-3">
+                <div class="barraLateralCadastro">
+                    <p class="titulosBarraLateral">CADASTRO</p>
                     <input type="radio" class="botao-selecionavel" name="checks" id="checkProduto" checked>
                     <label for="checkProduto">
                         <p class="botao-produtos">
