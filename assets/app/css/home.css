@@ -1,0 +1,86 @@
+    /* Estilos Gerais */
+    body {
+        background-color: #1c1c1c;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+    }
+    .dashboard {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 24px;
+        color: #ffffff;
+    }
+
+    /* Estilo dos Cartões */
+    .card-custom {
+        background-color: #313131;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+        transition: transform 0.3s ease;
+        text-align: center;
+        flex: 1;
+        margin: 10px;
+    }
+    .card-custom:hover {
+        transform: scale(1.05);
+    }
+    .card-custom h2 {
+        font-size: 18px;
+        color: #a8a8b3;
+    }
+    .card-custom p {
+        font-size: 28px;
+        font-weight: bold;
+        color: #ff8c00;
+    }
+
+    /* Container dos Cartões */
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    /* Contêiner dos Gráficos */
+    .chart-container {
+        background-color: #313131;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        margin-top: 20px;
+    }
+    .chart {
+        height: 200px;
+        background: linear-gradient(135deg, #ff8c00 0%, #d35400 100%);
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+
+    /* Select de Lucro */
+    .lucro-select {
+        background-color: #2a2a3d;
+        color: #ffffff;
+        border: 1px solid #ff8c00;
+        border-radius: 5px;
+        padding: 5px;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    /* Layout Responsivo */
+    @media (max-width: 768px) {
+        .card-custom {
+            flex-basis: 100%;
+            margin: 5px 0;
+        }
+        .chart {
+            height: 150px;
+        }
+    }

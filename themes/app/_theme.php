@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="<?= url('assets/app/css/styleSassGeral.css') ?>">
 
   <!-- CSS only -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- FONT AWESOME PAGE CATEGORIES -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -70,12 +71,10 @@
 
 
   <div id="client-list">
-
   </div>
 
 
   <script src="<?= url('assets/app/js/tema.js') ?>"></script>
-
   <script src="<?= url('assets/app/js/hamburguer.js') ?>"></script>
 </body>
 

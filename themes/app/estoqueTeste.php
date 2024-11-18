@@ -18,6 +18,8 @@ $this->layout("_theme");
                     </button>
                     <button>Adicionar Categoria</button>
                     <button>Adicionar Notas</button>
+                    <button class="btn btn-info" id="consultarEntradasBtn">Consultar Entradas</button>
+                    <button class="btn btn-info" id="consultarSaidasBtn">Consultar Saídas</button>
                     <div>
                         <label for="categoria" class="text-light px-2">Procurar produto: </label>
                         <input type="text" name="buscarProduto" id="buscarProduto" placeholder="Procurar produto">
@@ -34,6 +36,8 @@ $this->layout("_theme");
                             <th>Nome</th>
                             <th>Descrição</th>
                             <th>Preço</th>
+                            <th>Quantidade</th>
+                            <th>Status</th>
                             <th class="text-center" colspan="2">Ações</th>
                         </tr>
                     </thead>
@@ -44,6 +48,9 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
+
+    <!-- MODAIS -->
+
     <!-- Modal Adicionar Produto -->
     <div class="modal fade" id="modalAdicionarProduto" tabindex="-1" aria-labelledby="modalAdicionarProdutoLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -54,22 +61,22 @@ $this->layout("_theme");
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="nomeProduto" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nomeProduto" placeholder="Digite o nome do produto">
+                        <label for="nomeProdutoAdicionar" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
                     </div>
                     <div class="mb-3">
-                        <label for="descricaoProduto" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="descricaoProduto" placeholder="Digite a descrição do produto"></textarea>
+                        <label for="descricaoProdutoAdicionar" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="descricaoProdutoAdicionar" placeholder="Digite a descrição do produto"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="categoriaProduto" class="form-label">Categoria</label>
-                        <select class="form-control" id="categoriaProduto">
+                        <label for="categoriaProdutoAdicionar" class="form-label">Categoria</label>
+                        <select class="form-control" id="categoriaProdutoAdicionar">
                             <!-- As categorias serão preenchidas dinamicamente -->
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="precoSaidaProduto" class="form-label">Preço para Saídas</label>
-                        <input type="number" step="0.01" class="form-control" id="precoSaidaProduto" placeholder="Digite o preço para saídas">
+                        <label for="precoSaidaProdutoAdicionar" class="form-label">Preço para Saídas</label>
+                        <input type="number" step="0.01" class="form-control" id="precoSaidaProdutoAdicionar" placeholder="Digite o preço para saídas">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -80,32 +87,31 @@ $this->layout("_theme");
         </div>
     </div>
 
-
-    <!-- Modal Editar -->
-    <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <!-- Modal Editar Produto -->
+    <div class="modal" id="modalEditar" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarLabel">Editar Produto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <h5 class="modal-title">Editar Produto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formEditarProduto">
-                        <!-- Campos do Formulário de Edição -->
-                        <div class="mb-3">
-                            <label for="nomeProduto" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nomeProduto" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="descricaoProduto" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="descricaoProduto" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="precoProduto" class="form-label">Preço</label>
-                            <input type="number" class="form-control" id="precoProduto" step="0.01" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                    </form>
+                    <div class="mb-3">
+                        <label for="nomeProduto" class="form-label">Nome</label>
+                        <input type="text" id="nomeProduto" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descricaoProduto" class="form-label">Descrição</label>
+                        <textarea id="descricaoProduto" class="form-control"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="precoProduto" class="form-label">Preço</label>
+                        <input type="number" id="precoProduto" class="form-control" step="0.01">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Salvar Alterações</button>
                 </div>
             </div>
         </div>
@@ -190,174 +196,120 @@ $this->layout("_theme");
         </div>
     </div>
 
-    <script type="text/javascript" async>
-        const form = $("#form-cadastro");
-        const message = document.querySelector("#message");
+    <!-- Modal Consultar Entradas-->
+    <div class="modal fade" id="modalEntradas" tabindex="-1" aria-labelledby="modalEntradasLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEntradasLabel">Consultar Entradas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label for="buscarEntradas" class="text-light px-2">Procurar entrada:</label>
+                        <input type="text" id="buscarEntradas" placeholder="Procurar entrada" class="form-control">
+                    </div>
+                    <table class="table table-bordered table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ID Produto</th>
+                                <th>Quantidade</th>
+                                <th>Criado Em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabelaEntradas">
+                            <!-- Entradas serão preenchidas dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        form.on("submit", function(e) {
-            e.preventDefault();
+    <!-- Modal Editar Entradas -->
+    <div class="modal fade" id="modalEditarEntrada" tabindex="-1" aria-labelledby="modalEditarEntradaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarEntradaLabel">Editar Entrada</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarEntrada">
+                        <div class="mb-3">
+                            <label for="idProdutoEntrada" class="form-label">ID Produto</label>
+                            <input type="number" class="form-control" id="idProdutoEntrada" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantidadeEntrada" class="form-label">Quantidade</label>
+                            <input type="number" class="form-control" id="quantidadeEntrada" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            const serializedData = form.serialize();
+    <!-- Modal Consultar Saidas -->
+    <div class="modal fade" id="modalSaidas" tabindex="-1" aria-labelledby="modalSaidasLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalSaidasLabel">Consultar Saídas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label for="buscarSaidas" class="text-light px-2">Procurar saída:</label>
+                        <input type="text" id="buscarSaidas" placeholder="Procurar saída" class="form-control">
+                    </div>
+                    <table class="table table-bordered table-striped mt-3">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>ID Produto</th>
+                                <th>Quantidade</th>
+                                <th>Criado Em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabelaSaidas">
+                            <!-- Saídas serão preenchidas dinamicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            const areInputsFilled = verifyInputs(form);
+    <!-- Modal Editar Saidas -->
+    <div class="modal fade" id="modalEditarSaida" tabindex="-1" aria-labelledby="modalEditarSaidaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarSaidaLabel">Editar Saída</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formEditarSaida">
+                    <div class="mb-3">
+                        <label for="idProdutoSaida" class="form-label">ID Produto</label>
+                        <input type="number" class="form-control" id="idProdutoSaida" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantidadeSaida" class="form-label">Quantidade</label>
+                        <input type="number" class="form-control" id="quantidadeSaida" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-
-            if (!areInputsFilled) {
-                exibirMensagemTemporaria('Preencha todos os elementos do formulário.');
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "<?= url("estoque-cadastro"); ?>",
-                data: serializedData,
-                dataType: "json",
-                success: function(response) {
-                    message.innerHTML = response.message;
-                    message.classList.add("message");
-                    message.classList.remove("success", "warning", "error");
-                    message.classList.add(`${response.type}`);
-
-                    if (!response['error'] && response.type != 'error') {
-                        location.reload(true);
-                    }
-                }
-            });
-        })
-    </script>
-
-    <script type="text/javascript" async>
-        const form_entrada = $("#form-entrada");
-        const message_entrada = document.querySelector("#message-entrada");
-
-        form_entrada.on("submit", function(e) {
-            e.preventDefault();
-
-            const serializedData = form_entrada.serialize();
-            $.ajax({
-                type: "POST",
-                url: "<?= url("estoque-entrada"); ?>",
-                data: serializedData,
-                dataType: "json",
-                success: function(response) {
-                    const areInputsFilled = verifyInputs(form_entrada);
-
-
-                    if (!areInputsFilled) {
-                        exibirMensagemTemporaria('Preencha todos os elementos do formulário.');
-                        return;
-                    }
-
-                    message_entrada.innerHTML = entrada.message;
-                    message_entrada.classList.add("message_entrada");
-                    message_entrada.classList.remove("success", "warning", "error");
-                    message_entrada.classList.add(`${entrada.type}`);
-
-                    if (!response['error'] && response.type != 'error') {
-                        location.reload(true);
-                    }
-                },
-                error: function(response) {
-                    console.log(response)
-                }
-            });
-        })
-
-        //     e.preventDefault();        
-        //     const dataEntrada = new FormData(form_entrada);
-        //     const data = await fetch("",{
-        //         method: "POST",
-        //         body: dataEntrada,
-        //     });
-
-        //     const entrada = await data.json();
-        //     console.log(entrada);
-        //         message_entrada.innerHTML = entrada.message;
-        //         message_entrada.classList.add("message_entrada");
-        //         message_entrada.classList.remove("success", "warning", "error");
-        //         message_entrada.classList.add(`${entrada.type}`);
-        // });
-    </script>
-
-    <script type="text/javascript" async>
-        const form_saidas = $("#form-saidas");
-        const message_saidas = document.querySelector("#message-saidas");
-
-        form_saidas.on("submit", async (e) => {
-            e.preventDefault();
-            const serializedData = form_saidas.serialize();
-
-            const areInputsFilled = verifyInputs(form_saidas);
-
-
-            if (!areInputsFilled) {
-                exibirMensagemTemporaria('Preencha todos os elementos do formulário.');
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "<?= url("estoque-saidas"); ?>",
-                data: serializedData,
-                dataType: "json",
-                success: function(response) {
-                    message_saidas.innerHTML = response.message;
-                    message_saidas.classList.add("message_saidas");
-                    message_saidas.classList.remove("success", "warning", "error");
-                    message_saidas.classList.add(`${saidas.type}`);
-
-                    if (!response['error'] && response.type != 'error') {
-                        location.reload(true);
-                    }
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            });
-            // console.log(form_saidas);
-
-            // $("#")
-            // const dataSaidas = new FormData(form_saidas);
-            // const data = await fetch("",{
-            //     method: "POST",
-            //     body: dataSaidas,
-            // });
-
-            // const saidas = await data.json();
-
-            // console.log(saidas);
-
-            //     message_saidas.innerHTML = saidas.message;
-            //     message_saidas.classList.add("message_saidas");
-            //     message_saidas.classList.remove("success", "warning", "error");
-            //     message_saidas.classList.add(`${saidas.type}`);
-
-        });
-
-        // $(".save-button").on("click", function(){
-        //     console.log($this);
-        // })
-
-        function verifyInputs(form) {
-            let areInputsFilled = true;
-
-            // Percorre todos os elementos de input, select e textarea do formulário
-            $(form).find('input, select, textarea').each(function() {
-                const value = $(this).val() ? $(this).val().trim() : '';
-                const isDisabled = $(this).is(':disabled');
-
-                // Verifica se o elemento está vazio ou desabilitado
-                console.log($(this));
-                console.log(value);
-                if ((value === '' || value === null) && !isDisabled) {
-                    areInputsFilled = false;
-                    return false; // Interrompe o loop
-                }
-            });
-
-            return areInputsFilled;
-        }
-    </script>
 
     <script>
         function exibirMensagemTemporaria(mensagem) {
@@ -396,7 +348,6 @@ $this->layout("_theme");
 
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
     <script src="<?= url('assets/app/js/teste.js') ?>"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 
 </body>
