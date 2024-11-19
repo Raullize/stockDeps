@@ -2,6 +2,7 @@
 
 namespace Source\App;
 
+use Smalot\PdfParser\Parser;
 use Dompdf\Dompdf;
 use League\Plates\Engine;
 use Source\Models\Categorias;
@@ -19,11 +20,11 @@ class App
 
     public function __construct()
     {
-        $this->view = new Engine(CONF_VIEW_APP,'php');
+        $this->view = new Engine(CONF_VIEW_APP, 'php');
         $this->estoqueFeatures = new EstoqueFeatures();
     }
 
-    public function inicio () : void 
+    public function inicio(): void
     {
         $cliente = new Clientes();
         $clientes = $cliente->selectAll();
@@ -37,68 +38,19 @@ class App
         $saidas = new Saidas();
         $saidas = $saidas->selectAll();
 
-        echo $this->view->render("inicio",[
+        echo $this->view->render("inicio", [
             "produtos" => $produtos,
             "categorias" => $categorias,
             "clientes" => $clientes,
             "saidas" => $saidas
         ]);
-
     }
 
-    public function estoqueTeste () : void 
+    public function cadastroFornecedor()
     {
-        $cliente = new Clientes();
-        $clientes = $cliente->selectAll();
-
-        $produto = new Produtos();
-        $produtos = $produto->selectAll();
-
-        $categoria = new Categorias();
-        $categorias = $categoria->selectAll();
-
-        $entradas = new Entradas();
-        $entradas = $entradas->selectAll();
-
-        $saidas = new Saidas();
-        $saidas = $saidas->selectAll();
-
-        echo $this->view->render("estoqueTeste",[
-            "produtos" => $produtos,
-            "categorias" => $categorias,
-            "clientes" => $clientes,
-            "entradas" => $entradas,
-            "saidas" => $saidas
-        ]);
-
+        echo $this->view->render("cadastroFornecedor");
     }
-
-    public function getProdutos() {
-        $produto = new Produtos();
-        echo json_encode($produto->selectAll());
-    }
-    
-    public function getCategorias() {
-        $categoria = new Categorias();
-        echo json_encode($categoria->selectAll());
-    }
-    
-    public function getClientes() {
-        $cliente = new Clientes();
-        echo json_encode($cliente->selectAll());
-    }
-    
-    public function getEntradas() {
-        $entradas = new Entradas();
-        echo json_encode($entradas->selectAll());
-    }
-    
-    public function getSaidas() {
-        $saidas = new Saidas();
-        echo json_encode($saidas->selectAll());
-    }
-
-    public function estoque () : void 
+    public function estoqueTeste(): void
     {
         $cliente = new Clientes();
         $clientes = $cliente->selectAll();
@@ -115,21 +67,46 @@ class App
         $saidas = new Saidas();
         $saidas = $saidas->selectAll();
 
-        echo $this->view->render("estoque",[
+        echo $this->view->render("estoqueTeste", [
             "produtos" => $produtos,
             "categorias" => $categorias,
             "clientes" => $clientes,
             "entradas" => $entradas,
             "saidas" => $saidas
         ]);
-
     }
 
-    public function estoqueCadastro (?array $data) : void 
+    public function estoque(): void
     {
-        if(!empty($data)){
+        $cliente = new Clientes();
+        $clientes = $cliente->selectAll();
 
-            if(in_array("", $data)){
+        $produto = new Produtos();
+        $produtos = $produto->selectAll();
+
+        $categoria = new Categorias();
+        $categorias = $categoria->selectAll();
+
+        $entradas = new Entradas();
+        $entradas = $entradas->selectAll();
+
+        $saidas = new Saidas();
+        $saidas = $saidas->selectAll();
+
+        echo $this->view->render("estoque", [
+            "produtos" => $produtos,
+            "categorias" => $categorias,
+            "clientes" => $clientes,
+            "entradas" => $entradas,
+            "saidas" => $saidas
+        ]);
+    }
+
+    public function estoqueCadastro(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: red'>Informe todos os campos para cadastrar!</div>",
                     "type" => "warning"
@@ -140,7 +117,7 @@ class App
 
             $produto = new Produtos();
 
-            if($produto->validateProdutos($data["nome"], $data["categoria"])){
+            if ($produto->validateProdutos($data["nome"], $data["categoria"])) {
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: red'>Produto já cadastrado!</div>",
                     "type" => "warning"
@@ -148,7 +125,7 @@ class App
                 echo json_encode($json);
                 return;
             }
-            
+
 
             $produto = new Produtos(
                 NULL,
@@ -158,7 +135,7 @@ class App
                 $data["descricao"]
             );
 
-            if($produto->insert()){
+            if ($produto->insert()) {
 
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: green'>Produto cadastrado com sucesso!</div>",
@@ -167,7 +144,6 @@ class App
 
                 echo json_encode($json);
                 return;
-
             } else {
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: red'>Produto não cadastrado!</div>",
@@ -177,14 +153,13 @@ class App
                 return;
             }
         }
-
     }
 
-    public function estoqueEntrada (?array $data) : void 
+    public function estoqueEntrada(?array $data): void
     {
-        if(!empty($data)){
+        if (!empty($data)) {
 
-            if(in_array("", $data)){
+            if (in_array("", $data)) {
                 $json = [
                     "message" => "<div style='color: red'>Informe todos os campos para dar entrada neste produto!</div>",
                     "type" => "warning"
@@ -193,15 +168,15 @@ class App
                 return;
             }
 
-                $entrada = new Entradas(
-                    NULL,
-                    $data["categoria"],
-                    $data["produto"],
-                    $data["quantidade"]
-                );
+            $entrada = new Entradas(
+                NULL,
+                $data["categoria"],
+                $data["produto"],
+                $data["quantidade"]
+            );
 
 
-            if($entrada->insert()){
+            if ($entrada->insert()) {
 
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: green'>Produtos adicionados com sucesso!</div>",
@@ -210,7 +185,6 @@ class App
 
                 echo json_encode($json);
                 return;
-
             } else {
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: red'>Produto não adicionado!</div>",
@@ -220,10 +194,9 @@ class App
                 return;
             }
         }
-
     }
 
-    public function estoqueSaidas (?array $data) : void 
+    public function estoqueSaidas(?array $data): void
     {
 
         $cliente = new Clientes();
@@ -237,9 +210,9 @@ class App
         );
 
 
-        if(!empty($data)){
+        if (!empty($data)) {
 
-            if(in_array("", $data)){
+            if (in_array("", $data)) {
                 $json = [
                     "message" => "<div style='color: red'>Informe todos os campos para dar saída neste produto!</div>",
                     "type" => "warning"
@@ -250,15 +223,15 @@ class App
 
             $cliente = new Clientes();
 
-                $saidas = new Saidas(
-                    NULL,
-                    $data["categoria"],
-                    $cliente->findByIdName($data["cliente"]),
-                    $data["produto"],
-                    $data["quantidade"]
-                );
+            $saidas = new Saidas(
+                NULL,
+                $data["categoria"],
+                $cliente->findByIdName($data["cliente"]),
+                $data["produto"],
+                $data["quantidade"]
+            );
 
-            if($saidas->insert()){
+            if ($saidas->insert()) {
                 $json = [
                     "message" => "<div style='margin-left: 25px; color: green'>Produtos retirados com sucesso!</div>",
                     "type" => "success"
@@ -274,25 +247,25 @@ class App
                 return;
             }
         }
-
     }
 
-
-    public function estoqueDeletar(?array $data){
+    public function estoqueDeletar(?array $data)
+    {
         $output = $this->estoqueFeatures->deleteRegister($data['table'], $data['id']);
         echo json_encode($output);
     }
 
-    public function estoqueAtualizar(?array $data){
+    public function estoqueAtualizar(?array $data)
+    {
         $output = $this->estoqueFeatures->updateRegister($data['table'], $data['id'], $data['quantidade'], $data['idProduto']);
         echo json_encode($output);
     }
 
-    public function cadastro (?array $data) : void 
+    public function cadastro(?array $data): void
     {
-        if(!empty($data)){
+        if (!empty($data)) {
 
-            if(in_array("", $data)){
+            if (in_array("", $data)) {
                 $json = [
                     "message" => "<div style='text-align: center; color: red'>Informe todos os campos para cadastrar!</div>",
                     "type" => "warning"
@@ -301,7 +274,7 @@ class App
                 return;
             }
 
-            if(!is_email($data["email"])){
+            if (!is_email($data["email"])) {
                 $json = [
                     "message" => "Informe um e-mail válido!",
                     "type" => "warning"
@@ -321,7 +294,7 @@ class App
                 $data["uf"]
             );
 
-            if($client->findByCpf($data["cpf"])){
+            if ($client->findByCpf($data["cpf"])) {
                 $json = [
                     "message" => "Cpf já cadastrado!",
                     "type" => "error"
@@ -330,7 +303,7 @@ class App
                 return;
             }
 
-            if($client->insert()){
+            if ($client->insert()) {
 
                 $json = [
                     "name" => $data["name"],
@@ -349,30 +322,27 @@ class App
                 return;
             }
         }
-        
+
         echo $this->view->render("cadastro");
     }
 
-    public function categorias () : void 
+    public function categorias(): void
     {
 
         $categoria = new Categorias();
         $categorias = $categoria->selectAll();
 
-        echo $this->view->render("categorias",[
+        echo $this->view->render("categorias", [
             "categorias" => $categorias
         ]);
-
     }
 
-    // categoriasInserir : Array -> JSON
-    // insere uma categoria no Banco de Dados e devolve um JSON de mensagem e um status
-    public function categoriasInserir (?array $data) : void 
+    public function categoriasInserir(?array $data): void
     {
 
-        if(!empty($data)){
+        if (!empty($data)) {
 
-            if(in_array("", $data)){
+            if (in_array("", $data)) {
                 $json = [
                     "message" => "<div style='text-align: center; color: red'>Informe todos os campos para cadastrar!</div>",
                     "type" => "warning"
@@ -381,82 +351,78 @@ class App
                 return;
             }
 
-        $categoria = new Categorias(
-            NULL,
-            $data["name"],
-            $data["description"]
-        );
+            $categoria = new Categorias(
+                NULL,
+                $data["name"],
+                $data["description"]
+            );
 
-        if($categoria->findByName($data["name"])){
-            $json = [
-                "message" => "Categoria já cadastrada!",
-                "type" => "error"
-            ];
-            echo json_encode($json);
-            return;
-        }
-        
-        if($categoria->insert()){
-
-            $json = [
-                "name" => $data["name"],
-                "description" => $data["description"],
-                "message" => "Categoria cadastrada com sucesso!",
-                "type" => "success"
-            ];
-            echo json_encode($json);
-            return;
-        } else {
-            $json = [
-                "message" => "Categoria não cadastrada!",
-                "type" => "error"
-            ];
-            echo json_encode($json);
-            return;
-        }
-    }
-}
-
-// categoriasDeletar : Array -> JSON
-// Deleta uma categoria no Banco de Dados e devolve um JSON de mensagem e um status
-public function categoriasDeletar (?array $data) : void 
-    {
-
-        if(!empty($data)){
-
-        $categoria = new Categorias();
-
-        if($categoria->findById($data["id"])){
-
-            if($categoria->delete($data["id"])){
+            if ($categoria->findByName($data["name"])) {
                 $json = [
-                    "message" => "Categoria excluída com sucesso!",
+                    "message" => "Categoria já cadastrada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            if ($categoria->insert()) {
+
+                $json = [
+                    "name" => $data["name"],
+                    "description" => $data["description"],
+                    "message" => "Categoria cadastrada com sucesso!",
                     "type" => "success"
                 ];
                 echo json_encode($json);
                 return;
             } else {
                 $json = [
-                    "message" => "Erro ao excluir!",
+                    "message" => "Categoria não cadastrada!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
                 return;
             }
-            
-        } else {
-            $json = [
-                "message" => "Categoria já excluída!",
-                "type" => "warning"
-            ];
-            echo json_encode($json);
-            return;
         }
-        
     }
-}
 
-    public function clientes () : void 
+    public function categoriasDeletar(?array $data): void
+    {
+
+        if (!empty($data)) {
+
+            $categoria = new Categorias();
+
+            if ($categoria->findById($data["id"])) {
+
+                if ($categoria->delete($data["id"])) {
+                    $json = [
+                        "message" => "Categoria excluída com sucesso!",
+                        "type" => "success"
+                    ];
+                    echo json_encode($json);
+                    return;
+                } else {
+                    $json = [
+                        "message" => "Erro ao excluir!",
+                        "type" => "error"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
+            } else {
+                $json = [
+                    "message" => "Categoria já excluída!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+    public function clientes(): void
     {
 
         $cliente = new Clientes();
@@ -465,25 +431,23 @@ public function categoriasDeletar (?array $data) : void
         echo $this->view->render("clientes", [
             "clientes" => $clientes
         ]);
-
     }
 
-    public function relatorio () : void 
+    public function relatorio(): void
     {
 
         echo $this->view->render("relatorio");
-
     }
 
-    public function relatorioClientes () : void
+    public function relatorioClientes(): void
     {
 
-    $cliente = new Clientes();
-    $clientes = $cliente->selectAll();
+        $cliente = new Clientes();
+        $clientes = $cliente->selectAll();
 
-    $clienteList = "";
-    foreach ($clientes as $cliente){
-        $clienteList .= "
+        $clienteList = "";
+        foreach ($clientes as $cliente) {
+            $clienteList .= "
             <tr>
                 <td>{$cliente->nome}</td>
                 <td>{$cliente->email}</td>
@@ -493,11 +457,11 @@ public function categoriasDeletar (?array $data) : void
                 <td>{$cliente->uf}</td>
             </tr>
         ";
-    }
+        }
 
-    $dompdf = new Dompdf();
+        $dompdf = new Dompdf();
 
-    $dompdf->loadHtml("<html>
+        $dompdf->loadHtml("<html>
     <body>
     <div>
         <h1>Relatório de Clientes</h1>
@@ -544,26 +508,25 @@ public function categoriasDeletar (?array $data) : void
     
     </html>");
 
-    // (Optional) Setup the paper size and orientation
-    $dompdf->setPaper('A4', 'portrait');
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
 
-    // Render the HTML as PDF
-    $dompdf->render();
+        // Render the HTML as PDF
+        $dompdf->render();
 
-    // Output the generated PDF to Browser
-    $dompdf->stream("relatório-clientes");
-
+        // Output the generated PDF to Browser
+        $dompdf->stream("relatório-clientes");
     }
 
-    public function relatorioProdutos () : void
+    public function relatorioProdutos(): void
     {
 
-    $produto = new Produtos();
-    $produtos = $produto->selectAll();
+        $produto = new Produtos();
+        $produtos = $produto->selectAll();
 
-    $produtoList = "";
-    foreach ($produtos as $produto){
-        $produtoList .= "
+        $produtoList = "";
+        foreach ($produtos as $produto) {
+            $produtoList .= "
             <tr>
                 <td>{$produto->nome}</td>
                 <td>{$produto->preco}</td>
@@ -571,11 +534,11 @@ public function categoriasDeletar (?array $data) : void
                 <td>{$produto->created_at}</td>
             </tr>
         ";
-    }
+        }
 
-    $dompdf = new Dompdf();
+        $dompdf = new Dompdf();
 
-    $dompdf->loadHtml("<html>
+        $dompdf->loadHtml("<html>
     <body>
     <div>
         <h1>Relatório de Produtos</h1>
@@ -620,18 +583,18 @@ public function categoriasDeletar (?array $data) : void
     
     </html>");
 
-    // (Optional) Setup the paper size and orientation
-    $dompdf->setPaper('A4', 'portrait');
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'portrait');
 
-    // Render the HTML as PDF
-    $dompdf->render();
+        // Render the HTML as PDF
+        $dompdf->render();
 
-    // Output the generated PDF to Browser
-    $dompdf->stream("relatório-produtos");
-
+        // Output the generated PDF to Browser
+        $dompdf->stream("relatório-produtos");
     }
 
-    public function getHistoricoCliente(?array $data){
+    public function getHistoricoCliente(?array $data)
+    {
         $cliente = new Clientes();
         $historico = $cliente->getHistoricoSaidas($data['idCliente']);
         $nomeCliente = $cliente->getDadosCliente($data['idCliente'])[0]['nome'];
@@ -640,4 +603,152 @@ public function categoriasDeletar (?array $data) : void
         echo json_encode($retorno);
     }
 
+    public function getProdutos()
+    {
+        $produto = new Produtos();
+        echo json_encode($produto->selectAll());
+    }
+
+    public function getCategorias()
+    {
+        $categoria = new Categorias();
+        echo json_encode($categoria->selectAll());
+    }
+
+    public function getClientes()
+    {
+        $cliente = new Clientes();
+        echo json_encode($cliente->selectAll());
+    }
+
+    public function getEntradas()
+    {
+        $entradas = new Entradas();
+        echo json_encode($entradas->selectAll());
+    }
+
+    public function getSaidas()
+    {
+        $saidas = new Saidas();
+        echo json_encode($saidas->selectAll());
+    }
+
+
+    public function uploadPdf(): void
+    {
+        echo $this->view->render("uploadPdf");
+    }
+
+    // Método para processar o PDF enviado
+    public function processarPdf(): void
+    {
+        // Verifica se a requisição é POST e se o arquivo foi enviado
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdf'])) {
+            $pdfFile = $_FILES['pdf'];
+
+            // Verifica se o upload do arquivo ocorreu sem erros
+            if ($pdfFile['error'] === UPLOAD_ERR_OK) {
+                // Define o diretório de uploads
+                $uploadDir = __DIR__ . '/uploads/';
+
+                // Cria o diretório de uploads, caso não exista
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+
+                // Define o caminho completo para o arquivo PDF
+                $pdfPath = $uploadDir . basename($pdfFile['name']);
+
+                // Move o arquivo PDF para o diretório de uploads
+                if (move_uploaded_file($pdfFile['tmp_name'], $pdfPath)) {
+                    // Processa o PDF
+                    $itens = $this->extrairItensDoPDF($pdfPath);
+
+                    // Exclui o arquivo PDF após o processamento (opcional)
+                    unlink($pdfPath);
+
+                    // Exibe os itens extraídos do PDF
+                    echo '<pre>';
+                    print_r($itens);
+                    echo '</pre>';
+                } else {
+                    echo "Erro ao salvar o arquivo PDF.";
+                }
+            } else {
+                echo "Erro no envio do arquivo PDF.";
+            }
+        }
+    }
+
+    // Função para processar e extrair os itens do PDF
+ // Caminho: Source/App/App.php
+
+// Função para processar e extrair os itens do PDF
+private function extrairItensDoPDF($pdfPath)
+{
+    $parser = new \Smalot\PdfParser\Parser();
+    $pdf = $parser->parseFile($pdfPath);
+
+    // Obtém o texto do PDF
+    $text = $pdf->getText();
+
+    // Verifica se o texto foi extraído corretamente
+    if (empty($text)) {
+        echo "Texto não extraído do PDF.<br>";
+        return [];
+    }
+
+    echo "<h3>Texto Completo do PDF:</h3>";
+    echo "<pre>" . htmlspecialchars($text) . "</pre>";
+
+    // Lista para armazenar os itens extraídos
+    $itens = [];
+
+    // Divide o texto em linhas
+    $linhas = explode("\n", $text);
+
+    echo "<h3>Linhas Extraídas:</h3>";
+    echo "<pre>";
+    print_r($linhas);
+    echo "</pre>";
+
+    // Percorre as linhas do texto e tenta aplicar o regex
+    foreach ($linhas as $linha) {
+        echo "<strong>Processando Linha:</strong> " . htmlspecialchars($linha) . "<br>";
+
+        // Regex para capturar Código, Descrição, NCM/SH, Unidade, Quantidade, Valor Unitário e Valor Total
+        // Captura:
+        // - Código: sequência numérica inicial
+        // - Descrição: Nome do produto (permitindo espaços e hífens)
+        // - NCM/SH: Sequência numérica após a descrição
+        // - Unidade: 1KG, POTE, etc.
+        // - Quantidade: Ex: 3,0000
+        // - Valor Unitário: Ex: 72,3500
+        // - Valor Total: Ex: 217,05
+        if (preg_match('/^(\d+)\s+([A-Za-z\s\-\(\),]+)\s+(\d+)\s+(\w+)\s+([\d,.]+)\s+([\d,.]+)\s+([\d,.]+)\b/', $linha, $matches)) {
+            $itens[] = [
+                'codigo' => trim($matches[1]),                        // Código do produto
+                'descricao' => trim($matches[2]),                     // Nome do produto
+                'ncm_sh' => trim($matches[3]),                        // NCM/SH
+                'unidade' => trim($matches[4]),                       // Unidade (ex: 1KG, POTE)
+                'quantidade' => (float)str_replace(',', '.', $matches[5]),  // Quantidade
+                'valor_unitario' => (float)str_replace(',', '.', $matches[6]), // Valor unitário
+                'valor_total' => (float)str_replace(',', '.', $matches[7])  // Valor total
+            ];
+            echo "<strong>Item capturado:</strong> ";
+            print_r($itens[count($itens) - 1]);
+            echo "<br>";
+        } else {
+            echo "<strong>Regex não aplicável para esta linha.</strong><br>";
+        }
+    }
+
+    // Exibe o array final
+    echo "<h3>Itens Extraídos:</h3>";
+    echo "<pre>";
+    print_r($itens);
+    echo "</pre>";
+
+    return $itens;
+}
 }

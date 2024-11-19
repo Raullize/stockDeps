@@ -23,60 +23,51 @@ async function fetchSaidas() {
   const saidas = await response.json();
 }
 
-async function loadDashboardData() {
-  try {
-      // Carrega os dados dos endpoints
-      const [produtosRes, categoriasRes, clientesRes, entradasRes, saidasRes] = await Promise.all([
-          fetch("/stock-deps/getProdutos"),
-          fetch("/stock-deps/getCategorias"),
-          fetch("/stock-deps/getClientes"),
-          fetch("/stock-deps/getEntradas"),
-          fetch("/stock-deps/getSaidas"),
-      ]);
+// Dados iniciais
+const lucroPorPeriodo = {
+  diario: [300, 400, 350],
+  semanal: [1200, 1350, 1500],
+  mensal: [5000, 7000, 6000],
+  anual: [70000, 85000, 95000],
+};
 
-      // Converte cada resposta para JSON
-      const [produtos, categorias, clientes, entradas, saidas] = await Promise.all([
-          produtosRes.json(),
-          categoriasRes.json(),
-          clientesRes.json(),
-          entradasRes.json(),
-          saidasRes.json(),
-      ]);
+const atualizarDashboard = (periodo) => {
+  const lucro = lucroPorPeriodo[periodo].reduce((acc, val) => acc + val, 0);
+  document.getElementById('lucro-total').innerText = `R$ ${lucro.toLocaleString('pt-BR')}`;
+  document.getElementById('periodo-lucro').innerText = periodo.charAt(0).toUpperCase() + periodo.slice(1);
+};
 
-      // Manipula os dados e trata undefined
-      const totalProdutos = produtos?.length || 0;
-      const totalCategorias = categorias?.length || 0;
-      const totalClientes = clientes?.length || 0;
-      const totalEntradas = entradas?.reduce((total, item) => total + item.valor, 0) || 0;
-      const totalSaidas = saidas?.reduce((total, item) => total + item.valor, 0) || 0;
+// Filtro de período
+document.getElementById('filtro-periodo').addEventListener('change', (e) => {
+  const periodo = e.target.value;
+  atualizarDashboard(periodo);
+});
 
-      // Atualiza o dashboard com os valores obtidos
-      document.getElementById("totalProdutos").textContent = totalProdutos;
-      document.getElementById("totalCategorias").textContent = totalCategorias;
-      document.getElementById("totalClientes").textContent = totalClientes;
-      document.getElementById("totalEntradas").textContent = `R$ ${totalEntradas.toFixed(2)}`;
-      document.getElementById("totalSaidas").textContent = `R$ ${totalSaidas.toFixed(2)}`;
-  } catch (error) {
-      console.error("Erro ao carregar os dados do dashboard:", error);
+// Gráfico de Lucro
+const ctxLucro = document.getElementById('chart-lucro').getContext('2d');
+new Chart(ctxLucro, {
+  type: 'line',
+  data: {
+    labels: ['Janeiro', 'Fevereiro', 'Março'],
+    datasets: [{
+      label: 'Lucro (R$)',
+      data: lucroPorPeriodo.mensal,
+      borderColor: '#007bff',
+      backgroundColor: 'rgba(0, 123, 255, 0.2)',
+    }]
+  },
+});
+
+// Gráfico de Categorias
+const ctxCategorias = document.getElementById('chart-categorias').getContext('2d');
+new Chart(ctxCategorias, {
+  type: 'doughnut',
+  data: {
+    labels: ['Farinhas', 'Castanhas', 'Sementes'],
+    datasets: [{
+      label: 'Produtos',
+      data: [40, 30, 20],
+      backgroundColor: ['#007bff', '#28a745', '#ffc107']
+    }]
   }
-}
-
-function atualizarLucro() {
-  const periodo = document.getElementById("lucroPeriodo").value;
-
-  let lucro = 0;
-  
-  if (periodo === "dia") {
-      lucro = 200;  
-  } else if (periodo === "semana") {
-      lucro = 1500;  
-  } else if (periodo === "mes") {
-      lucro = 6000;  
-  }
-  
-  document.getElementById("lucroPeriodoValor").textContent = `R$ ${lucro.toFixed(2)}`;
-}
-
-// Chama a função para carregar os dados quando a página carrega
-document.addEventListener("DOMContentLoaded", loadDashboardData);
-
+});

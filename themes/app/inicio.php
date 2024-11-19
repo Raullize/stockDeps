@@ -1,86 +1,115 @@
 <?php
 $this->layout("_theme");
-echo '<script>';
-echo 'var categorias = ' . json_encode($categorias) . ';';
-echo '</script>';
 
-echo '<script>';
-echo 'var produtos = ' . json_encode($produtos) . ';';
-echo '</script>';
-
-echo '<script>';
-echo 'var entradas = ' . json_encode($entradas) . ';';
-echo '</script>';
-
-echo '<script>';
-echo 'var saidas = ' . json_encode($saidas) . ';';
-echo '</script>';
-
-echo '<script>';
-echo 'var clientes = ' . json_encode($clientes) . ';';
-echo '</script>';
 ?>
 
 <link rel="stylesheet" href="<?= url('assets/app/css/home.css') ?>">
+<!-- FontAwesome (Ícones) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-<body onload="loadDashboardData()">
 
+<body>
 
-<div class="dashboard">
-    <h1>Painel de Controle - Visão Geral</h1>
-
-    <!-- Cards com Métricas Importantes -->
-    <div class="card-container">
-        <div class="card-custom">
-            <h2>Total de Produtos</h2>
-            <p id="totalProdutos">0</p>
-        </div>
-        <div class="card-custom">
-            <h2>Total de Categorias</h2>
-            <p id="totalCategorias">0</p>
-        </div>
-        <div class="card-custom">
-            <h2>Total de Clientes</h2>
-            <p id="totalClientes">0</p>
-        </div>
-        <div class="card-custom">
-            <h2>Entradas Totais</h2>
-            <p id="totalEntradas">R$ 0,00</p>
-        </div>
-        <div class="card-custom">
-            <h2>Saídas Totais</h2>
-            <p id="totalSaidas">R$ 0,00</p>
-        </div>
-        
-        <!-- Card de Lucro com Select -->
-        <div class="card-custom">
-            <h2>Lucro</h2>
-            <select class="lucro-select" id="lucroPeriodo" onchange="atualizarLucro()">
-                <option value="dia">Hoje</option>
-                <option value="semana">Última Semana</option>
-                <option value="mes">Último Mês</option>
-            </select>
-            <p id="lucroPeriodoValor">R$ 200,00</p>
+    <div class="container mt-5">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Dashboard</h1>
+            <button class="btn btn-primary btn-quick-action"><i class="fas fa-plus-circle"></i> Nova Ação</button>
         </div>
 
-        <div class="card-custom">
-            <h2>Vendas no Dia</h2>
-            <p id="vendasDia">R$ 0,00</p>
+        <!-- Cards -->
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Produtos</h5>
+                        <h3>145</h3>
+                        <p><i class="fas fa-box"></i> Atualizado hoje</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Produtos em Estoque</h5>
+                        <h3>120</h3>
+                        <p><i class="fas fa-check-circle"></i> Suficiente</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Estoque Baixo</h5>
+                        <h3>15</h3>
+                        <p><i class="fas fa-exclamation-triangle"></i> Repor itens</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-info">
+                    <div class="card-body">
+                        <h5 class="card-title">Lucro</h5>
+                        <h3 id="lucro-total">R$ 0,00</h3>
+                        <p><i class="fas fa-chart-line"></i> Período: <span id="periodo-lucro">Mensal</span></p>
+                    </div>
+                </div>
+                <label for="filtro-periodo" class="form-label mt-2">Alterar Período:</label>
+                <select id="filtro-periodo" class="form-select">
+                    <option value="diario">Diário</option>
+                    <option value="semanal">Semanal</option>
+                    <option value="mensal" selected>Mensal</option>
+                    <option value="anual">Anual</option>
+                    <option value="personalizado">Personalizado</option>
+                </select>
+            </div>
+        </div>
+
+
+        <!-- Gráficos -->
+        <div class="row mt-5 g-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Lucro por Período</h5>
+                        <div class="chart-container">
+                            <canvas id="chart-lucro"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Distribuição por Categorias</h5>
+                        <div class="chart-container">
+                            <canvas id="chart-categorias"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Produtos Mais Vendidos</h5>
+                        <ul class="list-group list-group-flush" id="produtos-mais-vendidos">
+                            <li class="list-group-item">Aveia em Flocos <span class="badge bg-success float-end">120</span></li>
+                            <li class="list-group-item">Castanha-do-Pará <span class="badge bg-success float-end">85</span></li>
+                            <li class="list-group-item">Farinha de Trigo Integral <span class="badge bg-success float-end">65</span></li>
+                            <li class="list-group-item">Mel Orgânico <span class="badge bg-success float-end">50</span></li>
+                            <li class="list-group-item">Óleo de Coco <span class="badge bg-success float-end">40</span></li>
+                            <li class="list-group-item">Chia <span class="badge bg-success float-end">30</span></li>
+                            <li class="list-group-item">Linhaça Dourada <span class="badge bg-success float-end">25</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Contêiner para Gráficos -->
-    <div class="chart-container">
-        <h2>Relatório de Vendas e Despesas</h2>
-        <div class="chart" id="chartVendas"></div>
-    </div>
-    <div class="chart-container">
-        <h2>Comparação de Entradas e Saídas</h2>
-        <div class="chart" id="chartEntradasSaidas"></div>
-    </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="<?= url('assets/app/js/home.js') ?>">
 
-
-  <script src="<?= url('assets/app/js/home.js') ?>"></script>
-  <script src="<?= url('assets/app/js/procurarClientes.js') ?>"></script>
+    </script>
 </body>

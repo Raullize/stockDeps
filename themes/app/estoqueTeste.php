@@ -16,7 +16,7 @@ $this->layout("_theme");
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
                         Adicionar Produto
                     </button>
-                    <button>Adicionar Categoria</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria" id="adicionarCategoriaBtn">Adicionar Categoria</button>
                     <button>Adicionar Notas</button>
                     <button class="btn btn-info" id="consultarEntradasBtn">Consultar Entradas</button>
                     <button class="btn btn-info" id="consultarSaidasBtn">Consultar Saídas</button>
@@ -86,6 +86,33 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
+
+    <!-- Modal Adicionar Categoria -->
+    <div class="modal fade" id="modalAdicionarCategoria" tabindex="-1" aria-labelledby="modalAdicionarCategoriaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAdicionarCategoriaLabel">Adicionar Categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nomeCategoriaAdicionar" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria">
+                    </div>
+                    <div class="mb-3">
+                        <label for="descricaoCategoriaAdicionar" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="descricaoCategoriaAdicionar" placeholder="Digite a descrição da categoria"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modal Editar Produto -->
     <div class="modal" id="modalEditar" tabindex="-1">
@@ -287,28 +314,28 @@ $this->layout("_theme");
 
     <!-- Modal Editar Saidas -->
     <div class="modal fade" id="modalEditarSaida" tabindex="-1" aria-labelledby="modalEditarSaidaLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarSaidaLabel">Editar Saída</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="formEditarSaida">
-                    <div class="mb-3">
-                        <label for="idProdutoSaida" class="form-label">ID Produto</label>
-                        <input type="number" class="form-control" id="idProdutoSaida" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="quantidadeSaida" class="form-label">Quantidade</label>
-                        <input type="number" class="form-control" id="quantidadeSaida" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                </form>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarSaidaLabel">Editar Saída</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarSaida">
+                        <div class="mb-3">
+                            <label for="idProdutoSaida" class="form-label">ID Produto</label>
+                            <input type="number" class="form-control" id="idProdutoSaida" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantidadeSaida" class="form-label">Quantidade</label>
+                            <input type="number" class="form-control" id="quantidadeSaida" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <script>

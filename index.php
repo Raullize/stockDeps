@@ -38,6 +38,11 @@ $route->get("/getClientes", "App:getClientes");
 $route->get("/getEntradas", "App:getEntradas");
 $route->get("/getSaidas", "App:getSaidas");
 
+
+$route->get("/uploadPdf", "App:uploadPdf");
+
+$route->post("/processarPdf", "App:processarPdf");
+
 $route->get("/estoqueTeste", "App:estoqueTeste");
 $route->get("/getProdutos", "App:getProdutos");
 $route->get("/getCategorias", "App:getCategorias");
@@ -61,6 +66,8 @@ $route->get("/pdf-r-v", "App:relatorioClientes");
 
 $route->get("/cadastro", "App:cadastro");
 $route->post("/cadastro", "App:cadastro");
+
+$route->get("/cadastroFornecedor", "App:cadastroFornecedor");
 
 //CRUD CATEGORIAS
 $route->get("/categorias", "App:categorias");
