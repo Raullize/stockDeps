@@ -4,7 +4,7 @@ $this->layout("_theme");
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
-<link rel="stylesheet" href="<?= url('assets/app/css/estoqueTeste.css') ?>">
+<link rel="stylesheet" href="<?= url('assets/app/css/estoque.css') ?>">
 
 <body>
 
