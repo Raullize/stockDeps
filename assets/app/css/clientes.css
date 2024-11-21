@@ -1,11 +1,11 @@
-.tabelaProdutos {
+.tabelaClientes {
   background-color: #f9f9f9;
   height: auto;
   overflow-x: auto;
   width: 100%;
 }
 
-.headerTabelaProdutos {
+.headerTabelaClientes {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,7 +14,7 @@
   border-radius: 5px;
 }
 
-.headerTabelaProdutos button {
+.headerTabelaClientes button {
   background-color: #007bff;
   color: #fff;
   border: none;
@@ -25,54 +25,50 @@
   transition: background-color 0.3s, transform 0.2s;
 }
 
-.headerTabelaProdutos button:hover {
+.headerTabelaClientes button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
 }
 
-.headerTabelaProdutos button:active {
+.headerTabelaClientes button:active {
   background-color: #004085;
   transform: scale(0.95);
 }
 
-.headerTabelaProdutos input[type="text"],
-.headerTabelaProdutos select {
+.headerTabelaClientes input[type="text"] {
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid #ced4da;
   border-radius: 5px;
+  width: 300px;
 }
 
-.headerTabelaProdutos select{
-  cursor: pointer;
-}
-
-.table {
+.tableClientes {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
 }
 
-.table th,
-.table td {
+.tableClientes th,
+.tableClientes td {
   text-align: center;
   vertical-align: middle;
   padding: 12px 15px;
 }
 
-.table th {
+.tableClientes th {
   background-color: #f2f2f2;
 }
 
-.table tr {
+.tableClientes tr {
   background-color: #f9f9f9;
 }
 
-.table td {
+.tableClientes td {
   padding: 12px 15px;
 }
 
-.table td .btn-group {
+.tableClientes td .btn-group {
   display: flex;
   justify-content: space-evenly;
   gap: 10px;
@@ -100,5 +96,5 @@ button:active {
 .btn-group {
   display: flex;
   justify-content: space-evenly;
-  gap: 10px;
+  gap: 20px;
 }

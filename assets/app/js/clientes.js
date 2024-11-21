@@ -1,119 +1,159 @@
+let clientes = [];
+let produtos = [];
+let saidas = [];
+let categorias = [];
 
-function criaCartaoCarrossel(clientes) {
-    return `
-    <div class="card d-flex flex-column">
-        <h3 my-3>${clientes.nome}</h3>
-        <p class="info-clientes mt-3"><strong>CPF:</strong> ${clientes.cpf}</p>
-        <p class="info-clientes mt-3"><strong>Email:</strong> ${clientes.email}</p>
-        <P class="info-clientes mt-3"><strong>Celular:</strong> ${clientes.celular}</P>
-        <p class="info-clientes mt-3"><strong>Cidade:</strong> ${clientes.cidade}</p>
-        <p class="info-clientes mt-3"><strong>Bairro:</strong> ${clientes.bairro}</p>
-        <p class="info-clientes mt-3"><strong>UF:</strong> ${clientes.uf}</p>    
-        <button idC='${clientes.id}' class="btn btn-danger  historico mt-2">Histórico</button>
-    </div>
-
-    `;
-}
-function criaCardBloco(clientes) {
-    return `
-    <div class="card-bloco d-flex flex-column justify-content-center col-9">
-        <div class="item-cartao col-md-12"><h3>${clientes.nome}</h3></div> 
-        <button class="btn btn-danger center historico m-4" idC='${clientes.id}'> 
-            Histórico
-        </button> 
-        <div class="d-flex flex-wrap">
-            <div class="flex-column col-md-4">
-                <p class="info-cliente-bloco"><strong>CPF:</strong> ${clientes.cpf}</p>
-                <p class="info-cliente-bloco"><strong>Email:</strong> ${clientes.email}</p>
-            </div>
-            <div class=" flex-column col-md-4">
-                <P class="info-cliente-bloco"><strong>Celular:</strong> ${clientes.celular}</P>
-                <p class="info-cliente-bloco"><strong>Cidade:</strong> ${clientes.cidade}</p>
-            </div>    
-            <div class="flex-column col-md-4">
-                <p class="info-cliente-bloco"><strong>Bairro:</strong> ${clientes.bairro}</p>
-                <p class="info-cliente-bloco"><strong>UF:</strong> ${clientes.uf}</p>
-            </div>
-        </div>
-    </div>
-
-    `;
+async function fetchProdutos() {
+    const response = await fetch('/stock-deps/getProdutos');
+    produtos = await response.json();
 }
 
-var botaoCarrosel = document.getElementById("checkCarrossel");
-var botaoBloco = document.getElementById("checkBloco");
+async function fetchCategorias() {
+    const response = await fetch('/stock-deps/getCategorias');
+    categorias = await response.json();
+}
 
-var divCarrossel = document.getElementById("carousel");
-var divBloco = document.getElementsByClassName("bloco")[0];
-
-document.addEventListener("DOMContentLoaded", function () {
-    function exibirCarrossel() {
-        divCarrossel.style.display = "block";
-        divBloco.style.display = "none";
-        divBloco.innerHTML = "";
+async function fetchClientes() {
+    const response = await fetch('/stock-deps/getClientes');
+    clientes = await response.json();
 
 
-        // Cria os cards do carrossel
-        clientes.forEach((cliente) => {
-            var cartao = criaCartaoCarrossel(cliente);
-            divCarrossel.innerHTML += cartao;
-        });
+    preencherTabelaClientes(clientes);
+}
 
-        // Inicializa o carrossel
-        $('#carousel').owlCarousel({
-            loop: true,
-            margin: 10,
-            nav: true,
-            dots: false,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: true
-                },
-                600: {
-                    items: 3,
-                    nav: false
-                },
-                1000: {
-                    items: 5,
-                    nav: true,
-                    loop: false
-                }
-            }
-        });
+async function fetchEntradas() {
+    const response = await fetch('/stock-deps/getEntradas');
+    const entradas = await response.json();
+}
 
-    }
+async function fetchSaidas() {
+    const response = await fetch('/stock-deps/getSaidas');
+    saidas = await response.json(); // Preenche a variável global saídas
+}
 
+function loadAllData() {
+    fetchProdutos();
+    fetchCategorias();
+    fetchClientes();
+    fetchEntradas();
+    fetchSaidas();
+}
 
-    // Exibe o carrossel por padrão
-    exibirCarrossel();
-})
-
-botaoCarrosel.addEventListener("change", function () {
-    if (botaoCarrosel.checked) {
-        divCarrossel.style.display = "block";
-        divBloco.style.display = "none";
-        divBloco.innerHTML = "";
-    } else {
-        divCarrossel.style.display = "none";
-        divBloco.style.display = "block";
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    loadAllData();
 });
 
-botaoBloco.addEventListener("change", function () {
-    if (botaoBloco.checked) {
-        divBloco.style.display = "block";
-        divCarrossel.style.display = "none";
+function preencherTabelaClientes(clientes) {
+    const tabela = document.querySelector("#tabelaClientes tbody"); // Seleciona o <tbody> da tabela
+    tabela.innerHTML = ""; // Limpa o conteúdo atual para evitar duplicações
 
-        if (divBloco.innerHTML === "") { // adiciona cards somente se a div estiver vazia
-            clientes.forEach(function (cliente) {
-                divBloco.innerHTML += criaCardBloco(cliente);
-            });
+    clientes.forEach(cliente => {
+        const linha = document.createElement("tr"); // Cria uma nova linha
+
+        // Preenche as colunas da linha
+        linha.innerHTML = `
+            <td>${cliente.id}</td>
+            <td>${cliente.nome}</td>
+            <td>${cliente.cpf}</td>
+            <td>${cliente.email}</td>
+            <td>${cliente.celular}</td>
+            <td>${cliente.cidade}</td>
+            <td>${cliente.bairro}</td>
+            <td>${cliente.uf}</td>
+            <td>
+                <div class="btn-group w-100 ">
+                    <button class="btn  text-light btn-info" onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
+                    <button class="btn  btn-danger" onclick="excluirCliente(${cliente.id})">Excluir</button>
+                    <button class="btn  btn-success" onclick="abrirModalHistorico(${cliente.id})">Histórico</button>
+                </div>
+            </td>
+        `;
+
+        tabela.appendChild(linha); // Adiciona a linha à tabela
+    });
+}
+
+document.getElementById("buscarCliente").addEventListener("input", function () {
+    const termo = this.value.toLowerCase();
+    const linhas = document.querySelectorAll("#tabelaClientes tbody tr");
+
+    linhas.forEach(linha => {
+        const nome = linha.cells[1].textContent.toLowerCase();
+        linha.style.display = nome.includes(termo) ? "" : "none";
+    });
+});
+
+function abrirModalEditarCliente(id) {
+    const cliente = clientes.find(c => c.id === id);
+    if (!cliente) {
+        alert("Cliente não encontrado");
+        return;
+    }
+    document.getElementById("editarNomeCliente").value = cliente.nome;
+    document.getElementById("editarEmailCliente").value = cliente.email;
+    document.getElementById("editarTelefoneCliente").value = cliente.celular;
+    document.getElementById("editarEnderecoCliente").value = cliente.endereco || "";
+
+    const modalEditar = new bootstrap.Modal(document.getElementById("modalEditarCliente"));
+    modalEditar.show();
+}
+
+function abrirModalHistorico(id) {
+    const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoCliente"));
+
+    document.getElementById("historicoCliente").textContent = `Carregando histórico do cliente ID ${id}...`;
+
+    const saidasCliente = saidas.filter(saida => saida.idClientes === id);
+
+    let htmlHistorico = '';
+    if (saidasCliente.length > 0) {
+        saidasCliente.forEach(saida => {
+            const produto = produtos.find(p => p.id === saida.idProdutos);
+            const categoria = categorias.find(c => c.id === saida.idCategoria);
+
+            htmlHistorico += `
+                <p><strong>Produto:</strong> ${produto ? produto.nome : 'Desconhecido'} <br>
+                <strong>Categoria:</strong> ${categoria ? categoria.nome : 'Desconhecida'} <br>
+                <strong>Quantidade:</strong> ${saida.quantidade} <br>
+                <strong>Data:</strong> ${new Date(saida.created_at).toLocaleDateString()}</p>
+            `;
+        });
+    } else {
+        htmlHistorico = '<p>Nenhuma saída registrada para este cliente.</p>';
+    }
+
+    document.getElementById("historicoCliente").innerHTML = htmlHistorico;
+
+    modalHistorico.show();
+}
+
+async function excluirCliente(id) {
+    const confirmar = confirm("Tem certeza que deseja excluir este cliente?");
+    if (confirmar) {
+        const response = await fetch(`/stock-deps/deleteCliente/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            alert("Cliente excluído com sucesso!");
+            fetchClientes(); 
+        } else {
+            alert("Erro ao excluir o cliente.");
         }
-    } else {
-        divBloco.style.display = "none";
-        divCarrossel.style.display = "block";
     }
-});
+}
 
+function formatarCPF(event) {
+    let cpf = event.target.value;
+    
+    // Remove qualquer caractere que não seja número
+    cpf = cpf.replace(/\D/g, '');
 
+    // Formata o CPF no padrão XXX.XXX.XXX-XX
+    if (cpf.length <= 11) {
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    }
+    
+    // Atualiza o valor do campo com o CPF formatado
+    event.target.value = cpf;
+}

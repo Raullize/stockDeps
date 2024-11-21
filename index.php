@@ -43,12 +43,6 @@ $route->get("/uploadPdf", "App:uploadPdf");
 
 $route->post("/processarPdf", "App:processarPdf");
 
-$route->get("/estoqueTeste", "App:estoqueTeste");
-$route->get("/getProdutos", "App:getProdutos");
-$route->get("/getCategorias", "App:getCategorias");
-$route->get("/getClientes", "App:getClientes");
-$route->get("/getEntradas", "App:getEntradas");
-$route->get("/getSaidas", "App:getSaidas");
 
 $route->get("/estoque", "App:estoque");
 $route->post("/estoque-cadastro", "App:estoqueCadastro");
@@ -64,10 +58,15 @@ $route->get("/pdf-r-p", "App:relatorioProdutos");
 $route->get("/pdf-r-c", "App:relatorioClientes");
 $route->get("/pdf-r-v", "App:relatorioClientes");
 
-$route->get("/cadastro", "App:cadastro");
+$route->get("/clientes", "App:clientes");
+$route->get("/getProdutos", "App:getProdutos");
+$route->get("/getCategorias", "App:getCategorias");
+$route->get("/getClientes", "App:getClientes");
+$route->get("/getEntradas", "App:getEntradas");
+$route->get("/getSaidas", "App:getSaidas");
 $route->post("/cadastro", "App:cadastro");
 
-$route->get("/cadastroFornecedor", "App:cadastroFornecedor");
+$route->get("/fornecedores", "App:fornecedores");
 
 //CRUD CATEGORIAS
 $route->get("/categorias", "App:categorias");

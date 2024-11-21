@@ -34,16 +34,16 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
           <li class="nav-item mx-1">
-            <a class="nav-link active" aria-current="page" href="<?= url('') ?>"><i class="bi bi-house-door-fill"></i> Início</a>
+            <a class="nav-link" aria-current="page" href="<?= url('') ?>"><i class="bi bi-house-door-fill"></i> Início</a>
           </li>
           <li class="nav-item mx-1">
             <a class="nav-link" href="<?= url('estoque') ?>"><i class="bi bi-box-seam"></i> Estoque</a>
           </li>
           <li class="nav-item mx-1">
-            <a class="nav-link" href="<?= url('cadastro') ?>"><i class="bi bi-person-plus-fill"></i> Clientes</a>
+            <a class="nav-link" href="<?= url('clientes') ?>"><i class="bi bi-person-plus-fill"></i> Clientes</a>
           </li>
           <li class="nav-item mx-1">
-            <a class="nav-link" href="<?= url('cadastroFornecedor') ?>"><i class="bi bi-truck"></i> Fornecedores</a>
+            <a class="nav-link" href="<?= url('fornecedores') ?>"><i class="bi bi-truck"></i> Fornecedores</a>
           </li>
           <li class="nav-item mx-1">
             <a class="nav-link" href="<?= url('relatorio') ?>"><i class="bi bi-bar-chart-line-fill"></i> Relatórios</a>

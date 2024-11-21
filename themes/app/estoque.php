@@ -8,8 +8,11 @@ $this->layout("_theme");
 
 <body>
 
+<h1 class="mt-2 text-center">
+        Produtos
+    </h1>
 
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-2">
         <div class="row justify-content-center">
             <div class="tabelaProdutos">
                 <div class="headerTabelaProdutos p-3">
@@ -59,7 +62,8 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarProdutoLabel">Adicionar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <form action="/">
+                    <div class="modal-body">
                     <div class="mb-3">
                         <label for="nomeProdutoAdicionar" class="form-label">Nome</label>
                         <input type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
@@ -83,6 +87,8 @@ $this->layout("_theme");
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                     <button type="button" class="btn btn-primary" id="salvarProduto">Salvar Produto</button>
                 </div>
+                </form>
+                
             </div>
         </div>
     </div>

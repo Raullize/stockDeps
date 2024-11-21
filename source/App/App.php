@@ -46,34 +46,9 @@ class App
         ]);
     }
 
-    public function cadastroFornecedor()
+    public function fornecedores()
     {
-        echo $this->view->render("cadastroFornecedor");
-    }
-    public function estoqueTeste(): void
-    {
-        $cliente = new Clientes();
-        $clientes = $cliente->selectAll();
-
-        $produto = new Produtos();
-        $produtos = $produto->selectAll();
-
-        $categoria = new Categorias();
-        $categorias = $categoria->selectAll();
-
-        $entradas = new Entradas();
-        $entradas = $entradas->selectAll();
-
-        $saidas = new Saidas();
-        $saidas = $saidas->selectAll();
-
-        echo $this->view->render("estoqueTeste", [
-            "produtos" => $produtos,
-            "categorias" => $categorias,
-            "clientes" => $clientes,
-            "entradas" => $entradas,
-            "saidas" => $saidas
-        ]);
+        echo $this->view->render("fornecedores");
     }
 
     public function estoque(): void
@@ -261,7 +236,7 @@ class App
         echo json_encode($output);
     }
 
-    public function cadastro(?array $data): void
+    public function clientes(?array $data): void
     {
         if (!empty($data)) {
 
@@ -323,7 +298,7 @@ class App
             }
         }
 
-        echo $this->view->render("cadastro");
+        echo $this->view->render("clientes");
     }
 
     public function categorias(): void
@@ -420,17 +395,6 @@ class App
                 return;
             }
         }
-    }
-
-    public function clientes(): void
-    {
-
-        $cliente = new Clientes();
-        $clientes = $cliente->selectAll();
-
-        echo $this->view->render("clientes", [
-            "clientes" => $clientes
-        ]);
     }
 
     public function relatorio(): void
@@ -681,74 +645,74 @@ class App
     }
 
     // Função para processar e extrair os itens do PDF
- // Caminho: Source/App/App.php
+    // Caminho: Source/App/App.php
 
-// Função para processar e extrair os itens do PDF
-private function extrairItensDoPDF($pdfPath)
-{
-    $parser = new \Smalot\PdfParser\Parser();
-    $pdf = $parser->parseFile($pdfPath);
+    // Função para processar e extrair os itens do PDF
+    private function extrairItensDoPDF($pdfPath)
+    {
+        $parser = new \Smalot\PdfParser\Parser();
+        $pdf = $parser->parseFile($pdfPath);
 
-    // Obtém o texto do PDF
-    $text = $pdf->getText();
+        // Obtém o texto do PDF
+        $text = $pdf->getText();
 
-    // Verifica se o texto foi extraído corretamente
-    if (empty($text)) {
-        echo "Texto não extraído do PDF.<br>";
-        return [];
-    }
-
-    echo "<h3>Texto Completo do PDF:</h3>";
-    echo "<pre>" . htmlspecialchars($text) . "</pre>";
-
-    // Lista para armazenar os itens extraídos
-    $itens = [];
-
-    // Divide o texto em linhas
-    $linhas = explode("\n", $text);
-
-    echo "<h3>Linhas Extraídas:</h3>";
-    echo "<pre>";
-    print_r($linhas);
-    echo "</pre>";
-
-    // Percorre as linhas do texto e tenta aplicar o regex
-    foreach ($linhas as $linha) {
-        echo "<strong>Processando Linha:</strong> " . htmlspecialchars($linha) . "<br>";
-
-        // Regex para capturar Código, Descrição, NCM/SH, Unidade, Quantidade, Valor Unitário e Valor Total
-        // Captura:
-        // - Código: sequência numérica inicial
-        // - Descrição: Nome do produto (permitindo espaços e hífens)
-        // - NCM/SH: Sequência numérica após a descrição
-        // - Unidade: 1KG, POTE, etc.
-        // - Quantidade: Ex: 3,0000
-        // - Valor Unitário: Ex: 72,3500
-        // - Valor Total: Ex: 217,05
-        if (preg_match('/^(\d+)\s+([A-Za-z\s\-\(\),]+)\s+(\d+)\s+(\w+)\s+([\d,.]+)\s+([\d,.]+)\s+([\d,.]+)\b/', $linha, $matches)) {
-            $itens[] = [
-                'codigo' => trim($matches[1]),                        // Código do produto
-                'descricao' => trim($matches[2]),                     // Nome do produto
-                'ncm_sh' => trim($matches[3]),                        // NCM/SH
-                'unidade' => trim($matches[4]),                       // Unidade (ex: 1KG, POTE)
-                'quantidade' => (float)str_replace(',', '.', $matches[5]),  // Quantidade
-                'valor_unitario' => (float)str_replace(',', '.', $matches[6]), // Valor unitário
-                'valor_total' => (float)str_replace(',', '.', $matches[7])  // Valor total
-            ];
-            echo "<strong>Item capturado:</strong> ";
-            print_r($itens[count($itens) - 1]);
-            echo "<br>";
-        } else {
-            echo "<strong>Regex não aplicável para esta linha.</strong><br>";
+        // Verifica se o texto foi extraído corretamente
+        if (empty($text)) {
+            echo "Texto não extraído do PDF.<br>";
+            return [];
         }
+
+        echo "<h3>Texto Completo do PDF:</h3>";
+        echo "<pre>" . htmlspecialchars($text) . "</pre>";
+
+        // Lista para armazenar os itens extraídos
+        $itens = [];
+
+        // Divide o texto em linhas
+        $linhas = explode("\n", $text);
+
+        echo "<h3>Linhas Extraídas:</h3>";
+        echo "<pre>";
+        print_r($linhas);
+        echo "</pre>";
+
+        // Percorre as linhas do texto e tenta aplicar o regex
+        foreach ($linhas as $linha) {
+            echo "<strong>Processando Linha:</strong> " . htmlspecialchars($linha) . "<br>";
+
+            // Regex para capturar Código, Descrição, NCM/SH, Unidade, Quantidade, Valor Unitário e Valor Total
+            // Captura:
+            // - Código: sequência numérica inicial
+            // - Descrição: Nome do produto (permitindo espaços e hífens)
+            // - NCM/SH: Sequência numérica após a descrição
+            // - Unidade: 1KG, POTE, etc.
+            // - Quantidade: Ex: 3,0000
+            // - Valor Unitário: Ex: 72,3500
+            // - Valor Total: Ex: 217,05
+            if (preg_match('/^(\d+)\s+([A-Za-z\s\-\(\),]+)\s+(\d+)\s+(\w+)\s+([\d,.]+)\s+([\d,.]+)\s+([\d,.]+)\b/', $linha, $matches)) {
+                $itens[] = [
+                    'codigo' => trim($matches[1]),                        // Código do produto
+                    'descricao' => trim($matches[2]),                     // Nome do produto
+                    'ncm_sh' => trim($matches[3]),                        // NCM/SH
+                    'unidade' => trim($matches[4]),                       // Unidade (ex: 1KG, POTE)
+                    'quantidade' => (float)str_replace(',', '.', $matches[5]),  // Quantidade
+                    'valor_unitario' => (float)str_replace(',', '.', $matches[6]), // Valor unitário
+                    'valor_total' => (float)str_replace(',', '.', $matches[7])  // Valor total
+                ];
+                echo "<strong>Item capturado:</strong> ";
+                print_r($itens[count($itens) - 1]);
+                echo "<br>";
+            } else {
+                echo "<strong>Regex não aplicável para esta linha.</strong><br>";
+            }
+        }
+
+        // Exibe o array final
+        echo "<h3>Itens Extraídos:</h3>";
+        echo "<pre>";
+        print_r($itens);
+        echo "</pre>";
+
+        return $itens;
     }
-
-    // Exibe o array final
-    echo "<h3>Itens Extraídos:</h3>";
-    echo "<pre>";
-    print_r($itens);
-    echo "</pre>";
-
-    return $itens;
-}
 }

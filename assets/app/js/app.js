@@ -38,83 +38,67 @@ function loadAllData() {
     fetchSaidas();
 }
 
-function preencherTabelaProdutos(produtos) {
-    console.log(produtos)
+const preencherTabelaProdutos = produtos => {
     const corpoTabela = document.getElementById("corpoTabela");
     corpoTabela.innerHTML = '';
 
     produtos.forEach(produto => {
         const tr = document.createElement('tr');
-        const tdId = document.createElement('td');
-        tdId.textContent = produto.id;
-        tr.appendChild(tdId);
+        
+        // Desestruturação para mapear as propriedades
+        const { id, nome, descricao, preco } = produto;
+        const dados = [id, nome, descricao, parseFloat(preco).toFixed(2), 100, "Disponível"];
 
-        const tdNome = document.createElement('td');
-        tdNome.textContent = produto.nome;
-        tr.appendChild(tdNome);
+        // Criação de células de dados de forma compacta
+        tr.append(...dados.map(dado => {
+            const td = document.createElement('td');
+            td.textContent = dado;
+            return td;
+        }));
 
-        const tdDescricao = document.createElement('td');
-        tdDescricao.textContent = produto.descricao;
-        tr.appendChild(tdDescricao);
-
-        const tdPreco = document.createElement('td');
-        tdPreco.textContent = parseFloat(produto.preco).toFixed(2);
-        tr.appendChild(tdPreco);
-
-        const tdQuantidade = document.createElement('td');
-        tdQuantidade.textContent = "100";
-        tr.appendChild(tdQuantidade);
-
-        const tdStatus = document.createElement('td');
-        tdStatus.textContent = "Disponível";
-        tr.appendChild(tdStatus);
-
-        const tdAcoes = document.createElement('td');
-        tdAcoes.setAttribute('colspan', '2');
-
-        const btnGroup = document.createElement('div');
-        btnGroup.classList.add('btn-group', 'w-100');
-
-        const btnEditar = document.createElement('button');
-        btnEditar.classList.add('btn', 'btn-primary');
-        btnEditar.textContent = 'Editar';
-        btnEditar.onclick = function () {
-            document.getElementById('nomeProduto').value = produto.nome;
-            document.getElementById('descricaoProduto').value = produto.descricao;
-            document.getElementById('precoProduto').value = parseFloat(produto.preco).toFixed(2);
-            new bootstrap.Modal(document.getElementById('modalEditar')).show();
-        };
-        btnGroup.appendChild(btnEditar);
-
-        const btnExcluir = document.createElement('button');
-        btnExcluir.classList.add('btn', 'btn-danger');
-        btnExcluir.textContent = 'Excluir';
-        btnExcluir.onclick = function () {
-            new bootstrap.Modal(document.getElementById('modalExcluir')).show();
-        };
-        btnGroup.appendChild(btnExcluir);
-
-        const btnEntrada = document.createElement('button');
-        btnEntrada.classList.add('btn', 'btn-success');
-        btnEntrada.textContent = 'Adicionar Entrada';
-        btnEntrada.onclick = function () {
-            new bootstrap.Modal(document.getElementById('modalEntrada')).show();
-        };
-        btnGroup.appendChild(btnEntrada);
-
-        const btnSaida = document.createElement('button');
-        btnSaida.classList.add('btn', 'btn-warning');
-        btnSaida.textContent = 'Adicionar Saída';
-        btnSaida.onclick = function () {
-            new bootstrap.Modal(document.getElementById('modalSaida')).show();
-        };
-        btnGroup.appendChild(btnSaida);
-
-        tdAcoes.appendChild(btnGroup);
-        tr.appendChild(tdAcoes);
+        // Botões de ação em um único passo
+        tr.appendChild(createButtonGroup(produto));
         corpoTabela.appendChild(tr);
     });
-}
+};
+
+const createButtonGroup = produto => {
+    const actions = [
+        { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto) },
+        { text: 'Excluir', class: 'btn-danger', action: () => openModal('Excluir', produto) },
+        { text: 'Adicionar Entrada', class: 'btn-success', action: openModalEntrada },
+        { text: 'Adicionar Saída', class: 'btn-warning', action: openModalSaida }
+    ];
+
+    const btnGroup = document.createElement('div');
+    btnGroup.classList.add('btn-group', 'w-100');
+    actions.forEach(({ text, class: btnClass, action }) => {
+        const btn = document.createElement('button');
+        btn.classList.add('btn', btnClass);
+        btn.textContent = text;
+        btn.onclick = action;
+        btnGroup.appendChild(btn);
+    });
+
+    const tdAcoes = document.createElement('td');
+    tdAcoes.colSpan = 2;
+    tdAcoes.appendChild(btnGroup);
+    return tdAcoes;
+};
+
+const openModal = (tipo, produto) => {
+    const modalId = tipo === 'Editar' ? 'modalEditar' : 'modalExcluir';
+    if (tipo === 'Editar') {
+        document.getElementById('nomeProduto').value = produto.nome;
+        document.getElementById('descricaoProduto').value = produto.descricao;
+        document.getElementById('precoProduto').value = parseFloat(produto.preco).toFixed(2);
+    }
+    new bootstrap.Modal(document.getElementById(modalId)).show();
+};
+
+const openModalEntrada = () => new bootstrap.Modal(document.getElementById('modalEntrada')).show();
+const openModalSaida = () => new bootstrap.Modal(document.getElementById('modalSaida')).show();
+
 
 function preencherTabelaEntradas(entradas) {
     const corpoTabelaEntradas = document.getElementById("corpoTabelaEntradas");
@@ -362,44 +346,7 @@ document.getElementById("categoria").addEventListener("change", function () {
     alterarTabelaPorCategoriaSelecionada(produtos);
 });
 
-async function loadDashboardData() {
-    const produtos = await fetchProdutos();
-    const categorias = await fetchCategorias();
-    const entradas = await fetchEntradas();
-    const saidas = await fetchSaidas();
 
-    // Atualizar valores nos cards
-    document.getElementById('totalProdutos').textContent = produtos.length;
-    document.getElementById('totalCategorias').textContent = categorias.length;
-    document.getElementById('totalEntradas').textContent = entradas.length;
-    document.getElementById('totalSaidas').textContent = saidas.length;
-
-    // Preencher tabela de produtos recentes
-    const produtosRecente = document.getElementById('produtosRecente');
-    produtos.slice(-5).forEach(produto => {  // Exibe os últimos 5 produtos
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-        <td>${produto.id}</td>
-        <td>${produto.nome}</td>
-        <td>${parseFloat(produto.preco).toFixed(2)}</td>
-        <td>${categorias.find(c => c.id === produto.idCategoria).nome}</td>
-      `;
-        produtosRecente.appendChild(tr);
-    });
-
-    // Preencher tabela de entradas recentes
-    const entradasRecentes = document.getElementById('entradasRecentes');
-    entradas.slice(-5).forEach(entrada => {  // Exibe as últimas 5 entradas
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-        <td>${entrada.id}</td>
-        <td>${produtos.find(p => p.id === entrada.idProdutos).nome}</td>
-        <td>${entrada.quantidade}</td>
-        <td>${new Date(entrada.created_at).toLocaleDateString()}</td>
-      `;
-        entradasRecentes.appendChild(tr);
-    });
-}
 
 
 window.onload = loadAllData;
