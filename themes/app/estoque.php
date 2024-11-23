@@ -390,7 +390,6 @@ $this->layout("_theme");
     </div>
 
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
-    <script src="<?= url('assets/app/js/teste.js') ?>"></script>
     <script src="<?= url('assets/app/js/formsBackEnd.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 
