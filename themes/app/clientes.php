@@ -91,7 +91,11 @@ $this->layout("_theme");
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="editarNomeCliente" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="editarNomeCliente" required>
+                            <input type="text" class="form-control" id="editarNomeCliente">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarCpfCliente" class="form-label">CPF</label>
+                            <input type="text" class="form-control" id="editarCpfCliente">
                         </div>
                         <div class="mb-3">
                             <label for="editarTelefoneCliente" class="form-label">Celular</label>

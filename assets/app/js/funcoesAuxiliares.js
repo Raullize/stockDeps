@@ -1,6 +1,5 @@
 /* exibirMensagemTemporariaErro: EXIBE UMA MENSAGEM DE ERRO TEMPORARIA NA 
                                  TELA DO USUARIO */
-
 function exibirMensagemTemporariaErro(mensagem) {
     // Cria o elemento da mensagem
     const elementoMensagem = $('<div>')
@@ -110,7 +109,7 @@ function verifyInputs(form) {
     let areInputsFilled = true;
 
     // Percorre todos os elementos de input, select e textarea do formulário
-    $(form).find('input, select, textarea').each(function() {
+    $(form).find('input, select, textarea').each(function () {
         const value = $(this).val() ? $(this).val().trim() : '';
         const isDisabled = $(this).is(':disabled');
 
@@ -122,4 +121,25 @@ function verifyInputs(form) {
     });
 
     return areInputsFilled;
+}
+
+function formatarPreco(input) {
+
+    let valor = input.value.replace(/\D/g, "");
+
+    valor = valor.replace(/^0+/, "") || "0";
+
+    valor = valor.substring(0, 11);
+
+    const centavos = valor.slice(-2).padStart(2, "0");
+    const inteiros = valor.slice(0, -2);
+
+    const inteirosFormatados = inteiros
+        .split("")
+        .reverse()
+        .reduce((acc, num, i) => {
+            return num + (i && i % 3 === 0 ? "." : "") + acc;
+        }, "");
+
+    input.value = `R$ ${inteirosFormatados || "0"},${centavos}`;
 }

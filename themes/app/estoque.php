@@ -8,7 +8,7 @@ $this->layout("_theme");
 
 <body>
 
-<h1 class="mt-2 text-center">
+    <h1 class="mt-2 text-center">
         Produtos
     </h1>
 
@@ -65,31 +65,42 @@ $this->layout("_theme");
 
                 <form id="produto-cadastro" name="produto-cadastro" method="post">
                     <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nomeProdutoAdicionar" class="form-label">Nome</label>
-                        <input name="nome" type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
+                        <div class="mb-3">
+                            <label for="nomeProdutoAdicionar" class="form-label">Nome</label>
+                            <input name="nome" type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricaoProdutoAdicionar" class="form-label">Descrição</label>
+                            <textarea name="descricao" class="form-control" id="descricaoProdutoAdicionar" placeholder="Digite a descrição do produto"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoriaProdutoAdicionar" class="form-label">Categoria</label>
+                            <select name="categoria" class="form-control" id="categoriaProdutoAdicionar">
+                                <!-- As categorias serão preenchidas dinamicamente -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precoSaidaProdutoAdicionar" class="form-label">Preço para Saídas</label>
+                            <input
+                                name="preco"
+                                type="text"
+                                class="form-control"
+                                id="precoSaidaProdutoAdicionar"
+                                placeholder="R$ 0,00"
+                                oninput="formatarPreco(this)">
+                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fotoProdutoAdicionar" class="form-label">Foto do Produto</label>
+                            <input type="file" id="fotoProdutoAdicionar" class="form-control" accept="image/*">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="descricaoProdutoAdicionar" class="form-label">Descrição</label>
-                        <textarea name="descricao" class="form-control" id="descricaoProdutoAdicionar" placeholder="Digite a descrição do produto"></textarea>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarProduto">Salvar Produto</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="categoriaProdutoAdicionar" class="form-label">Categoria</label>
-                        <select name="categoria" class="form-control" id="categoriaProdutoAdicionar">
-                            <!-- As categorias serão preenchidas dinamicamente -->
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="precoSaidaProdutoAdicionar" class="form-label">Preço para Saídas</label>
-                        <input name="preco" type="number" step="0.01" class="form-control" id="precoSaidaProdutoAdicionar" placeholder="Digite o preço para saídas">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary" id="salvarProduto">Salvar Produto</button>
-                </div>
                 </form>
-                
+
             </div>
         </div>
     </div>
@@ -104,20 +115,20 @@ $this->layout("_theme");
                 </div>
 
                 <form id="categoria-cadastro" name="categoria-cadastro" method="post">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nomeCategoriaAdicionar" class="form-label">Nome</label>
-                        <input name="nome" type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nomeCategoriaAdicionar" class="form-label">Nome</label>
+                            <input name="nome" type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricaoCategoriaAdicionar" class="form-label">Descrição</label>
+                            <textarea name="descricao" class="form-control" id="descricaoCategoriaAdicionar" placeholder="Digite a descrição da categoria"></textarea>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="descricaoCategoriaAdicionar" class="form-label">Descrição</label>
-                        <textarea name="descricao" class="form-control" id="descricaoCategoriaAdicionar" placeholder="Digite a descrição da categoria"></textarea>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
-                </div>
                 </form>
 
             </div>
@@ -144,7 +155,23 @@ $this->layout("_theme");
                     </div>
                     <div class="mb-3">
                         <label for="precoProduto" class="form-label">Preço</label>
-                        <input type="number" id="precoProduto" class="form-control" step="0.01">
+                        <input
+                                name="preco"
+                                type="text"
+                                class="form-control"
+                                id="precoProduto"
+                                placeholder="R$ 0,00"
+                                oninput="formatarPreco(this)">
+                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="quantidadeProduto" class="form-label">Quantidade</label>
+                        <input type="text" id="quantidadeProduto" class="form-control" step="0.01">
+                    </div>
+                    <!-- Campo para adicionar foto do produto -->
+                    <div class="mb-3">
+                        <label for="fotoProduto" class="form-label">Foto do Produto</label>
+                        <input type="file" id="fotoProduto" class="form-control" accept="image/*">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -193,7 +220,14 @@ $this->layout("_theme");
                     </div>
                     <div class="mb-3">
                         <label for="precoEntrada" class="form-label">Preço</label>
-                        <input type="number" step="0.01" class="form-control" id="precoEntrada" placeholder="Digite o preço">
+                        <input
+                                name="preco"
+                                type="text"
+                                class="form-control"
+                                id="precoEntrada"
+                                placeholder="R$ 0,00"
+                                oninput="formatarPreco(this)">
+                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -223,7 +257,14 @@ $this->layout("_theme");
                     </div>
                     <div class="mb-3">
                         <label for="precoSaida" class="form-label">Preço</label>
-                        <input type="number" step="0.01" class="form-control" id="precoSaida" placeholder="Digite o preço">
+                        <input
+                                name="preco"
+                                type="text"
+                                class="form-control"
+                                id="precoSaida"
+                                placeholder="R$ 0,00"
+                                oninput="formatarPreco(this)">
+                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                     </div>
                 </div>
                 <div class="modal-footer">

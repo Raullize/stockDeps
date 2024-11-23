@@ -11,7 +11,7 @@
   <!-- CSS only -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0"></script>
   <!-- FONT AWESOME PAGE CATEGORIES -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -56,7 +56,7 @@
   </nav>
 
 
-
+  <script src="<?= url('assets/app/js/cleave.js') ?>"></script>
 </body>
 
 </html>

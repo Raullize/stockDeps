@@ -44,7 +44,7 @@ const preencherTabelaProdutos = produtos => {
 
     produtos.forEach(produto => {
         const tr = document.createElement('tr');
-        
+
         // Desestruturação para mapear as propriedades
         const { id, nome, descricao, preco } = produto;
         const dados = [id, nome, descricao, parseFloat(preco).toFixed(2), 100, "Disponível"];
@@ -267,6 +267,15 @@ function preencherCategorias(categorias) {
     const selectElement = document.getElementById('categoria');
     const selectElementModal = document.getElementById('categoriaProdutoAdicionar');
 
+
+    const optionAll = document.createElement('option');
+    optionAll.value = 'todas'; 
+    optionAll.textContent = 'Todas';
+
+    selectElement.appendChild(optionAll);
+    selectElementModal.appendChild(optionAll.cloneNode(true));  
+
+    // Preencher as opções de categorias
     categorias.forEach(categoria => {
         const option = document.createElement('option');
         option.value = categoria.id;

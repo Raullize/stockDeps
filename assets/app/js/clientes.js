@@ -80,12 +80,14 @@ document.getElementById("buscarCliente").addEventListener("input", function () {
 });
 
 function abrirModalEditarCliente(id) {
+    console.log(clientes)
     const cliente = clientes.find(c => c.id === id);
     if (!cliente) {
         alert("Cliente não encontrado");
         return;
     }
     document.getElementById("editarNomeCliente").value = cliente.nome;
+    document.getElementById("editarCpfCliente").value = cliente.cpf;
     document.getElementById("editarTelefoneCliente").value = cliente.celular;
 
     const modalEditar = new bootstrap.Modal(document.getElementById("modalEditarCliente"));
