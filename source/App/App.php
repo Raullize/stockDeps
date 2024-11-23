@@ -573,6 +573,7 @@ class App
         echo json_encode($cliente->selectAll());
     }
 
+
     public function getEntradas()
     {
         $entradas = new Entradas();
