@@ -62,30 +62,30 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarProdutoLabel">Adicionar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="/">
+                <form id="produto-cadastro" name="produto-cadastro" method="post">
                     <div class="modal-body">
                     <div class="mb-3">
                         <label for="nomeProdutoAdicionar" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
+                        <input name="nome" type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
                     </div>
                     <div class="mb-3">
                         <label for="descricaoProdutoAdicionar" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="descricaoProdutoAdicionar" placeholder="Digite a descrição do produto"></textarea>
+                        <textarea name="descricao" class="form-control" id="descricaoProdutoAdicionar" placeholder="Digite a descrição do produto"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="categoriaProdutoAdicionar" class="form-label">Categoria</label>
-                        <select class="form-control" id="categoriaProdutoAdicionar">
+                        <select name="categoria" class="form-control" id="categoriaProdutoAdicionar">
                             <!-- As categorias serão preenchidas dinamicamente -->
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="precoSaidaProdutoAdicionar" class="form-label">Preço para Saídas</label>
-                        <input type="number" step="0.01" class="form-control" id="precoSaidaProdutoAdicionar" placeholder="Digite o preço para saídas">
+                        <input name="preco" type="number" step="0.01" class="form-control" id="precoSaidaProdutoAdicionar" placeholder="Digite o preço para saídas">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="salvarProduto">Salvar Produto</button>
+                    <button type="submit" class="btn btn-primary" id="salvarProduto">Salvar Produto</button>
                 </div>
                 </form>
                 
@@ -343,44 +343,9 @@ $this->layout("_theme");
         </div>
     </div>
 
-
-    <script>
-        function exibirMensagemTemporaria(mensagem) {
-            // Cria o elemento da mensagem
-            const elementoMensagem = $('<div>')
-                .css({
-                    position: 'absolute',
-                    top: '25%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    background: '#FF4C4C',
-                    color: 'white',
-                    padding: '10px',
-                    borderRadius: '5px',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
-                    zIndex: '9999', // Adiciona o z-index desejado
-                    display: 'none' // Inicia oculto
-                })
-                .text(mensagem);
-
-            // Adiciona o elemento à página
-            $('body').append(elementoMensagem);
-
-            // Animação de aparecimento suave
-            elementoMensagem.fadeIn(400);
-
-            // Define um temporizador para remover o elemento após 15 segundos
-            setTimeout(() => {
-                elementoMensagem.fadeOut(400, () => {
-                    elementoMensagem.remove();
-                });
-            }, 2500);
-        }
-    </script>
-
-
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
     <script src="<?= url('assets/app/js/teste.js') ?>"></script>
-
+    <script src="<?= url('assets/app/js/formsEstoque.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 
 </body>

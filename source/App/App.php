@@ -77,7 +77,7 @@ class App
         ]);
     }
 
-    public function estoqueCadastro(?array $data): void
+    public function estoquePc(?array $data): void
     {
         if (!empty($data)) {
 

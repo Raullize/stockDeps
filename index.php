@@ -45,7 +45,7 @@ $route->post("/processarPdf", "App:processarPdf");
 
 
 $route->get("/estoque", "App:estoque");
-$route->post("/estoque-cadastro", "App:estoqueCadastro");
+$route->post("/estoque-pc", "App:estoquePc");
 $route->post("/estoque-entrada", "App:estoqueEntrada");
 $route->post("/estoque-saidas", "App:estoqueSaidas");
 $route->post("/estoque-deletar", "App:estoqueDeletar");
