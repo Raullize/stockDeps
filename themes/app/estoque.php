@@ -62,6 +62,7 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarProdutoLabel">Adicionar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <form id="produto-cadastro" name="produto-cadastro" method="post">
                     <div class="modal-body">
                     <div class="mb-3">
@@ -101,20 +102,24 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarCategoriaLabel">Adicionar Categoria</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
+                <form id="categoria-cadastro" name="categoria-cadastro" method="post">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="nomeCategoriaAdicionar" class="form-label">Nome</label>
-                        <input type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria">
+                        <input name="nome" type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria">
                     </div>
                     <div class="mb-3">
                         <label for="descricaoCategoriaAdicionar" class="form-label">Descrição</label>
-                        <textarea class="form-control" id="descricaoCategoriaAdicionar" placeholder="Digite a descrição da categoria"></textarea>
+                        <textarea name="descricao" class="form-control" id="descricaoCategoriaAdicionar" placeholder="Digite a descrição da categoria"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
+                    <button type="submit" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
                 </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -345,7 +350,7 @@ $this->layout("_theme");
 
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
     <script src="<?= url('assets/app/js/teste.js') ?>"></script>
-    <script src="<?= url('assets/app/js/formsEstoque.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/formsBackEnd.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 
 </body>

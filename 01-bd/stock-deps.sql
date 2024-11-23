@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS `stock-deps` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE IF NOT EXISTS `stock-deps`;
 USE `stock-deps`;
 
 -- Tabela de categorias
@@ -11,13 +11,6 @@ CREATE TABLE `categorias` (
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO `categorias` (`id`, `nome`, `descricao`) VALUES 
-    (10, 'Lava Roupas', 'Produtos para lavagem de roupas e tecidos.'),
-    (20, 'Lava Louças', 'Produtos para lavagem de louças e utensílios de cozinha.'),
-    (30, 'Lava Carro', 'Produtos para lavagem de veículos.'),
-    (40, 'Limpeza de Ambiente', 'Produtos para limpeza e aromatização de ambientes.'),
-    (50, 'Outros', 'Outros produtos de limpeza.');
 
 -- Tabela de produtos
 DROP TABLE IF EXISTS `produtos`;
@@ -37,36 +30,16 @@ CREATE TABLE `produtos` (
     CONSTRAINT `fk_produtos_categorias` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Tabela de endereços
-DROP TABLE IF EXISTS `enderecos`;
-CREATE TABLE `enderecos` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `logradouro` varchar(255) NOT NULL,
-    `numero` varchar(10) NOT NULL,
-    `complemento` varchar(255) DEFAULT NULL,
-    `bairro` varchar(50) NOT NULL,
-    `cidade` varchar(50) NOT NULL,
-    `uf` varchar(2) NOT NULL,
-    `cep` varchar(9) NOT NULL,
-    `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 -- Tabela de clientes
 DROP TABLE IF EXISTS `clientes`;
 CREATE TABLE `clientes` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nome` varchar(255) NOT NULL,
     `cpf` varchar(14) NOT NULL,
-    `email` varchar(255) NOT NULL,
     `celular` varchar(14) NOT NULL,
-    `idEndereco` int(11) NOT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-    PRIMARY KEY (`id`),
-    KEY `fk_clientes_endereco_idx` (`idEndereco`),
-    CONSTRAINT `fk_clientes_endereco` FOREIGN KEY (`idEndereco`) REFERENCES `enderecos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de fornecedores
@@ -77,12 +50,15 @@ CREATE TABLE `fornecedores` (
     `cnpj` varchar(18) NOT NULL,
     `email` varchar(255) NOT NULL,
     `telefone` varchar(15) NOT NULL,
-    `idEndereco` int(11) NOT NULL,
+    `endereco` varchar(255) NOT NULL,
+    `bairro` varchar(50) NOT NULL,
+    `complemento` varchar(255) DEFAULT NULL,
+    `municipio` varchar(50) NOT NULL,
+    `cep` varchar(9) NOT NULL,
+    `uf` varchar(2) NOT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-    PRIMARY KEY (`id`),
-    KEY `fk_fornecedores_endereco_idx` (`idEndereco`),
-    CONSTRAINT `fk_fornecedores_endereco` FOREIGN KEY (`idEndereco`) REFERENCES `enderecos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de entradas

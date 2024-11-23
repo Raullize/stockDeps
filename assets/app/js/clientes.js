@@ -55,11 +55,7 @@ function preencherTabelaClientes(clientes) {
             <td>${cliente.id}</td>
             <td>${cliente.nome}</td>
             <td>${cliente.cpf}</td>
-            <td>${cliente.email}</td>
             <td>${cliente.celular}</td>
-            <td>${cliente.cidade}</td>
-            <td>${cliente.bairro}</td>
-            <td>${cliente.uf}</td>
             <td>
                 <div class="btn-group w-100 ">
                     <button class="btn  text-light btn-info" onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
@@ -90,9 +86,7 @@ function abrirModalEditarCliente(id) {
         return;
     }
     document.getElementById("editarNomeCliente").value = cliente.nome;
-    document.getElementById("editarEmailCliente").value = cliente.email;
     document.getElementById("editarTelefoneCliente").value = cliente.celular;
-    document.getElementById("editarEnderecoCliente").value = cliente.endereco || "";
 
     const modalEditar = new bootstrap.Modal(document.getElementById("modalEditarCliente"));
     modalEditar.show();

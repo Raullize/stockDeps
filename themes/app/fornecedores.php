@@ -70,8 +70,6 @@ $this->layout("_theme");
                         <label for="telefoneFornecedor" class="form-label">Telefone</label>
                         <input type="text" class="form-control" id="telefoneFornecedor" placeholder="Digite o telefone do fornecedor" required>
                     </div>
-                    <hr>
-                    <h5>Endereço do Fornecedor</h5>
                     <div class="mb-3">
                         <label for="cidadeFornecedor" class="form-label">Cidade</label>
                         <input type="text" class="form-control" id="cidadeFornecedor" placeholder="Digite a cidade" required>

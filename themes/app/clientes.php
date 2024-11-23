@@ -3,6 +3,7 @@ $this->layout("_theme");
 
 ?>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/clientes.css') ?>">
 
 <body>
@@ -29,11 +30,7 @@ $this->layout("_theme");
                             <th>ID</th>
                             <th>Nome</th>
                             <th>CPF</th>
-                            <th>Email</th>
                             <th>Celular</th>
-                            <th>Cidade</th>
-                            <th>Bairro</th>
-                            <th>UF</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -55,41 +52,19 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarClienteLabel">Adicionar Cliente</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="formAdicionarCliente">
+                <form id="cadastro-clientes" name="cadastro-clientes" method="post">
                     <div class="modal-body">
-                        <!-- Primeira parte: Dados do Cliente -->
                         <div class="mb-3">
                             <label for="nomeCliente" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nomeCliente" placeholder="Digite o nome do cliente" required>
+                            <input name="nome" type="text" class="form-control" id="nomeCliente" placeholder="Digite o nome do cliente">
                         </div>
                         <div class="mb-3">
                             <label for="cpfCliente" class="form-label">CPF</label>
-                            <input type="text" class="form-control" id="cpfCliente" placeholder="Digite o CPF do cliente" required maxlength="14" oninput="formatarCPF(event)">
+                            <input name="cpf" type="text" class="form-control" id="cpfCliente" placeholder="Digite o CPF do cliente" maxlength="14" oninput="formatarCPF(event)">
                         </div>
                         <div class="mb-3">
-                            <label for="emailCliente" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="emailCliente" placeholder="Digite o email do cliente" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="telefoneCliente" class="form-label">Telefone</label>
-                            <input type="text" class="form-control" id="telefoneCliente" placeholder="Digite o telefone do cliente" required>
-                        </div>
-
-                        <hr> <!-- Separador entre os dois formulários -->
-
-                        <!-- Segunda parte: Endereço do Cliente -->
-                        <h5>Endereço do Cliente</h5>
-                        <div class="mb-3">
-                            <label for="logradouroCliente" class="form-label">Logradouro</label>
-                            <input type="text" class="form-control" id="logradouroCliente" placeholder="Digite o logradouro" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="numeroCliente" class="form-label">Número</label>
-                            <input type="text" class="form-control" id="numeroCliente" placeholder="Digite o número" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="cidadeCliente" class="form-label">Cidade</label>
-                            <input type="text" class="form-control" id="cidadeCliente" placeholder="Digite a cidade" required>
+                            <label for="telefoneCliente" class="form-label">Celular</label>
+                            <input name="celular" type="text" class="form-control" id="telefoneCliente" placeholder="Digite o celular do cliente">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -119,16 +94,8 @@ $this->layout("_theme");
                             <input type="text" class="form-control" id="editarNomeCliente" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editarEmailCliente" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="editarEmailCliente" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editarTelefoneCliente" class="form-label">Telefone</label>
+                            <label for="editarTelefoneCliente" class="form-label">Celular</label>
                             <input type="text" class="form-control" id="editarTelefoneCliente">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editarEnderecoCliente" class="form-label">Endereço</label>
-                            <textarea class="form-control" id="editarEnderecoCliente"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -158,8 +125,8 @@ $this->layout("_theme");
     </div>
 
     <script src="<?= url('assets/app/js/clientes.js') ?>" defer></script>
-
-
+    <script src="<?= url('assets/app/js/formsBackEnd.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 
 </body>
 

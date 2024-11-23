@@ -9,31 +9,19 @@ class Clientes
     private $id;
     private $nome;
     private $cpf;
-    private $email;
     private $celular;
-    private $cidade;
-    private $bairro;
-    private $uf;
 
     public function __construct(
         int $id = NULL,
         string $nome = NULL,
         string $cpf = NULL,
-        string $email = NULL,
-        string $celular = NULL,
-        string $cidade= NULL,
-        string $bairro = NULL,
-        string $uf = NULL
+        string $celular = NULL
     )
     {
         $this->id = $id;
         $this->nome = $nome;
         $this->cpf = $cpf;
-        $this->email = $email;
         $this->celular = $celular;
-        $this->cidade = $cidade;
-        $this->bairro = $bairro;
-        $this->uf = $uf;
     }
 
     /**
@@ -87,22 +75,6 @@ class Clientes
     /**
      * @return string|null
      */
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string|null $email
-     */
-    public function setEmail(?string $email): void
-    {
-        $this->email = $email;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getCelular(): ?string
     {
         return $this->celular;
@@ -114,53 +86,6 @@ class Clientes
     public function setCelular(?string $celular): void
     {
         $this->celular = $celular;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getCidade(): ?string
-    {
-        return $this->cidade;
-    }
-
-    /**
-     * @param string|null $cidade
-     */
-    public function setCidade(?string $cidade): void
-    {
-        $this->cidade = $cidade;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBairro(): ?string
-    {
-        return $this->bairro;
-    }
-
-    /**
-     * @param mixed $bairro
-     */
-    public function setBairro($bairro): void
-    {
-        $this->bairro = $bairro;
-    }
-
-
-
-    public function getUf(): ?string
-    {
-        return $this->uf;
-    }
-
-   /**
-     * @param mixed $uf
-     */
-    public function setUf($uf): void
-    {
-        $this->uf = $uf;
     }
 
     public function selectAll ()
@@ -266,18 +191,14 @@ class Clientes
 
     public function insert() 
     {
-        $query = "INSERT INTO clientes (nome, cpf, email, celular, cidade, bairro, uf) 
-                  VALUES (:nome, :cpf, :email, :celular, :cidade, :bairro, :uf)";
+        $query = "INSERT INTO clientes (nome, cpf, celular) 
+                  VALUES (:nome, :cpf, :celular)";
 
         $stmt = Connect::getInstance()->prepare($query);
 
         $stmt->bindParam(":nome", $this->nome);
         $stmt->bindParam(":cpf", $this->cpf);
-        $stmt->bindValue(":email", $this->email);
         $stmt->bindParam(":celular",$this->celular);
-        $stmt->bindParam(":cidade",$this->cidade);
-        $stmt->bindParam(":bairro",$this->bairro);
-        $stmt->bindParam(":uf",$this->uf);
 
         $stmt->execute();
 

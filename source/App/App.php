@@ -46,10 +46,6 @@ class App
         ]);
     }
 
-    public function fornecedores()
-    {
-        echo $this->view->render("fornecedores");
-    }
 
     public function estoque(): void
     {
@@ -77,14 +73,24 @@ class App
         ]);
     }
 
+    public function fornecedores()
+    {
+        echo $this->view->render("fornecedores");
+    }
+
+    public function clientes()
+    {
+        echo $this->view->render("clientes");
+    }
+
     public function estoquePc(?array $data): void
     {
         if (!empty($data)) {
 
             if (in_array("", $data)) {
                 $json = [
-                    "message" => "<div style='margin-left: 25px; color: red'>Informe todos os campos para cadastrar!</div>",
-                    "type" => "warning"
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
                 ];
                 echo json_encode($json);
                 return;
@@ -94,13 +100,12 @@ class App
 
             if ($produto->validateProdutos($data["nome"], $data["categoria"])) {
                 $json = [
-                    "message" => "<div style='margin-left: 25px; color: red'>Produto já cadastrado!</div>",
+                    "message" => "Produto já cadastrado!",
                     "type" => "warning"
                 ];
                 echo json_encode($json);
                 return;
             }
-
 
             $produto = new Produtos(
                 NULL,
@@ -113,15 +118,19 @@ class App
             if ($produto->insert()) {
 
                 $json = [
-                    "message" => "<div style='margin-left: 25px; color: green'>Produto cadastrado com sucesso!</div>",
+                    "nome" => $data["nome"],
+                    "categoria" => $data["categoria"],
+                    "preco" => $data["preco"],
+                    "descricao" => $data["descricao"],
+                    "message" => "Cliente cadastrado com sucesso!",
                     "type" => "success"
                 ];
-
                 echo json_encode($json);
                 return;
+
             } else {
                 $json = [
-                    "message" => "<div style='margin-left: 25px; color: red'>Produto não cadastrado!</div>",
+                    "message" => "Produto não cadastrado!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
@@ -129,6 +138,93 @@ class App
             }
         }
     }
+
+
+    public function estoqueCc(?array $data): void
+    {
+
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $categoria = new Categorias(
+                NULL,
+                $data["nome"],
+                $data["descricao"]
+            );
+
+            if ($categoria->findByName($data["nome"])) {
+                $json = [
+                    "message" => "Categoria já cadastrada!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            if ($categoria->insert()) {
+
+                $json = [
+                    "nome" => $data["nome"],
+                    "descricao" => $data["descricao"],
+                    "message" => "Categoria cadastrada com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Categoria não cadastrada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+    public function categoriasDeletar(?array $data): void
+    {
+
+        if (!empty($data)) {
+
+            $categoria = new Categorias();
+
+            if ($categoria->findById($data["id"])) {
+
+                if ($categoria->delete($data["id"])) {
+                    $json = [
+                        "message" => "Categoria excluída com sucesso!",
+                        "type" => "success"
+                    ];
+                    echo json_encode($json);
+                    return;
+                } else {
+                    $json = [
+                        "message" => "Erro ao excluir!",
+                        "type" => "error"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
+            } else {
+                $json = [
+                    "message" => "Categoria já excluída!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
 
     public function estoqueEntrada(?array $data): void
     {
@@ -236,23 +332,14 @@ class App
         echo json_encode($output);
     }
 
-    public function clientes(?array $data): void
+    public function cadastroClientes(?array $data): void
     {
         if (!empty($data)) {
 
             if (in_array("", $data)) {
                 $json = [
-                    "message" => "<div style='text-align: center; color: red'>Informe todos os campos para cadastrar!</div>",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            if (!is_email($data["email"])) {
-                $json = [
-                    "message" => "Informe um e-mail válido!",
-                    "type" => "warning"
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
                 ];
                 echo json_encode($json);
                 return;
@@ -260,19 +347,15 @@ class App
 
             $client = new Clientes(
                 NULL,
-                $data["name"],
+                $data["nome"],
                 $data["cpf"],
-                $data["email"],
-                $data["celular"],
-                $data["cidade"],
-                $data["bairro"],
-                $data["uf"]
+                $data["celular"]
             );
 
             if ($client->findByCpf($data["cpf"])) {
                 $json = [
                     "message" => "Cpf já cadastrado!",
-                    "type" => "error"
+                    "type" => "warning"
                 ];
                 echo json_encode($json);
                 return;
@@ -281,8 +364,8 @@ class App
             if ($client->insert()) {
 
                 $json = [
-                    "name" => $data["name"],
-                    "email" => $data["email"],
+                    "nome" => $data["nome"],
+                    "cpf" => $data["cpf"],
                     "message" => "Cliente cadastrado com sucesso!",
                     "type" => "success"
                 ];
@@ -301,102 +384,7 @@ class App
         echo $this->view->render("clientes");
     }
 
-    public function categorias(): void
-    {
-
-        $categoria = new Categorias();
-        $categorias = $categoria->selectAll();
-
-        echo $this->view->render("categorias", [
-            "categorias" => $categorias
-        ]);
-    }
-
-    public function categoriasInserir(?array $data): void
-    {
-
-        if (!empty($data)) {
-
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "<div style='text-align: center; color: red'>Informe todos os campos para cadastrar!</div>",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $categoria = new Categorias(
-                NULL,
-                $data["name"],
-                $data["description"]
-            );
-
-            if ($categoria->findByName($data["name"])) {
-                $json = [
-                    "message" => "Categoria já cadastrada!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            if ($categoria->insert()) {
-
-                $json = [
-                    "name" => $data["name"],
-                    "description" => $data["description"],
-                    "message" => "Categoria cadastrada com sucesso!",
-                    "type" => "success"
-                ];
-                echo json_encode($json);
-                return;
-            } else {
-                $json = [
-                    "message" => "Categoria não cadastrada!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-        }
-    }
-
-    public function categoriasDeletar(?array $data): void
-    {
-
-        if (!empty($data)) {
-
-            $categoria = new Categorias();
-
-            if ($categoria->findById($data["id"])) {
-
-                if ($categoria->delete($data["id"])) {
-                    $json = [
-                        "message" => "Categoria excluída com sucesso!",
-                        "type" => "success"
-                    ];
-                    echo json_encode($json);
-                    return;
-                } else {
-                    $json = [
-                        "message" => "Erro ao excluir!",
-                        "type" => "error"
-                    ];
-                    echo json_encode($json);
-                    return;
-                }
-            } else {
-                $json = [
-                    "message" => "Categoria já excluída!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-        }
-    }
-
+    
     public function relatorio(): void
     {
 

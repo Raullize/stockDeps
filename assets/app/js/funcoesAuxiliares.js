@@ -33,6 +33,41 @@ function exibirMensagemTemporariaErro(mensagem) {
     }, 2500);
 }
 
+/* exibirMensagemTemporariaErro: EXIBE UMA MENSAGEM DE AVISO TEMPORARIA NA 
+                                 TELA DO USUARIO */
+
+function exibirMensagemTemporariaAviso(mensagem) {
+    // Cria o elemento da mensagem
+    const elementoMensagem = $('<div>')
+        .css({
+            position: 'absolute',
+            top: '25%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            background: 'rgb(255, 193, 7)',
+            color: 'white',
+            padding: '10px',
+            borderRadius: '5px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+            zIndex: '9999', // Adiciona o z-index desejado
+            display: 'none' // Inicia oculto
+        })
+        .text(mensagem);
+
+    // Adiciona o elemento à página
+    $('body').append(elementoMensagem);
+
+    // Animação de aparecimento suave
+    elementoMensagem.fadeIn(400);
+
+    // Define um temporizador para remover o elemento após 15 segundos
+    setTimeout(() => {
+        elementoMensagem.fadeOut(400, () => {
+            elementoMensagem.remove();
+        });
+    }, 2500);
+}
+
 /* exibirMensagemTemporariaSucesso: EXIBE UMA MENSAGEM DE SUCESSO TEMPORARIA NA 
                                     TELA DO USUARIO */
 
@@ -80,8 +115,6 @@ function verifyInputs(form) {
         const isDisabled = $(this).is(':disabled');
 
         // Verifica se o elemento está vazio ou desabilitado
-        console.log($(this));
-        console.log(value);
         if ((value === '' || value === null) && !isDisabled) {
             areInputsFilled = false;
             return false; // Interrompe o loop
