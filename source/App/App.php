@@ -8,6 +8,7 @@ use League\Plates\Engine;
 use Source\Models\Categorias;
 use Source\Models\Clientes;
 use Source\Models\Entradas;
+use Source\Models\Fornecedores;
 use Source\Models\Produtos;
 use Source\Models\Saidas;
 use Source\Models\EstoqueFeatures;
@@ -122,7 +123,7 @@ class App
                     "categoria" => $data["categoria"],
                     "preco" => $data["preco"],
                     "descricao" => $data["descricao"],
-                    "message" => "Cliente cadastrado com sucesso!",
+                    "message" => "Produto cadastrado com sucesso!",
                     "type" => "success"
                 ];
                 echo json_encode($json);
@@ -188,6 +189,117 @@ class App
                 return;
             }
         }
+    }
+
+    public function cadastroClientes(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $client = new Clientes(
+                NULL,
+                $data["nome"],
+                $data["cpf"],
+                $data["celular"]
+            );
+
+            if ($client->findByCpf($data["cpf"])) {
+                $json = [
+                    "message" => "Cliente já cadastrado!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            if ($client->insert()) {
+
+                $json = [
+                    "nome" => $data["nome"],
+                    "cpf" => $data["cpf"],
+                    "message" => "Cliente cadastrado com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Cliente não cadastrado!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+
+        echo $this->view->render("clientes");
+    }
+
+    public function cadastroFornecedores(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $fornecedor = new Fornecedores(
+                NULL,
+                $data["nome"],
+                $data["cnpj"],
+                $data["email"],
+                $data["telefone"],
+                $data["endereco"],
+                $data["bairro"],
+                $data["complemento"],
+                $data["municipio"],
+                $data["cep"],
+                $data["uf"]
+            );
+
+            if ($fornecedor->findByCnpj($data["cnpj"])) {
+                $json = [
+                    "message" => "Fornecedor já cadastrado!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            if ($fornecedor->insert()) {
+
+                $json = [
+                    "nome" => $data["nome"],
+                    "cnpj" => $data["cnpj"],
+                    "message" => "Fornecedor cadastrado com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Fornecedor não cadastrado!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+
+        echo $this->view->render("fornecedores");
     }
 
     public function categoriasDeletar(?array $data): void
@@ -330,58 +442,6 @@ class App
     {
         $output = $this->estoqueFeatures->updateRegister($data['table'], $data['id'], $data['quantidade'], $data['idProduto']);
         echo json_encode($output);
-    }
-
-    public function cadastroClientes(?array $data): void
-    {
-        if (!empty($data)) {
-
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "Informe todos os campos para cadastrar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $client = new Clientes(
-                NULL,
-                $data["nome"],
-                $data["cpf"],
-                $data["celular"]
-            );
-
-            if ($client->findByCpf($data["cpf"])) {
-                $json = [
-                    "message" => "Cpf já cadastrado!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            if ($client->insert()) {
-
-                $json = [
-                    "nome" => $data["nome"],
-                    "cpf" => $data["cpf"],
-                    "message" => "Cliente cadastrado com sucesso!",
-                    "type" => "success"
-                ];
-                echo json_encode($json);
-                return;
-            } else {
-                $json = [
-                    "message" => "Cliente não cadastrado!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-        }
-
-        echo $this->view->render("clientes");
     }
 
     
@@ -573,6 +633,11 @@ class App
         echo json_encode($cliente->selectAll());
     }
 
+    public function getFornecedores()
+    {
+        $fornecedores = new Fornecedores();
+        echo json_encode($fornecedores->selectAll());
+    }
 
     public function getEntradas()
     {

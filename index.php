@@ -41,8 +41,10 @@ $route->get("/relatorio", "App:relatorio");
 $route->get("/getProdutos", "App:getProdutos");
 $route->get("/getCategorias", "App:getCategorias");
 $route->get("/getClientes", "App:getClientes");
+$route->get("/getFornecedores", "App:getFornecedores");
 $route->get("/getEntradas", "App:getEntradas");
 $route->get("/getSaidas", "App:getSaidas");
+
 
 /* ROTAS GET:POST DE TRATAMENTO DE DADOS DA NOTA FISCAL .PDF */
 
@@ -63,6 +65,9 @@ $route->post("/estoque-atualizar", "App:estoqueAtualizar");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE CLIENTES MODO:POST */
 $route->post("/cadastro-clientes", "App:cadastroClientes");
+
+/* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE FORNECEDORES MODO:POST */
+$route->post("/cadastro-fornecedores", "App:cadastroFornecedores");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AOS RELATORIOS MODO:GET*/
 

@@ -11,29 +11,22 @@ form_pc.on("submit", function(e) {
         data: serializedData,
         dataType: "json",
         success: function(response) {
-            const areInputsFilled = verifyInputs(form_pc);
-
-            if (!areInputsFilled) {
-                console.log(response);
-                exibirMensagemTemporariaErro('Preencha todos os elementos do formulário!');
-                return;
-            }
 
             if (response.type == 'error') {
                 console.log(response);
-                exibirMensagemTemporariaErro('Erro ao cadastrar, tente novamente!');
+                exibirMensagemTemporariaErro(response.message);
                 return;
             }
 
             if (response.type == 'warning') {
                 console.log(response);
-                exibirMensagemTemporariaAviso('Produto já está cadastrado!');
+                exibirMensagemTemporariaAviso(response.message);
                 return;
             }
 
             if (response.type == 'success') {
                 console.log(response);
-                exibirMensagemTemporariaSucesso('Produto cadastrado com sucesso!');
+                exibirMensagemTemporariaSucesso(response.message);
                 return;
             }
 
@@ -55,29 +48,22 @@ form_cc.on("submit", function(e) {
         data: serializedData,
         dataType: "json",
         success: function(response) {
-            const areInputsFilled = verifyInputs(form_cc);
-
-            if (!areInputsFilled) {
-                console.log(response);
-                exibirMensagemTemporariaErro('Preencha todos os elementos do formulário!');
-                return;
-            }
-
+            
             if (response.type == 'error') {
                 console.log(response);
-                exibirMensagemTemporariaErro('Erro ao cadastrar, tente novamente!');
+                exibirMensagemTemporariaErro(response.message);
                 return;
             }
 
             if (response.type == 'warning') {
                 console.log(response);
-                exibirMensagemTemporariaAviso('Categoria já cadastrada!');
+                exibirMensagemTemporariaAviso(response.message);
                 return;
             }
 
             if (response.type == 'success') {
                 console.log(response);
-                exibirMensagemTemporariaSucesso('Categoria cadastrada com sucesso!');
+                exibirMensagemTemporariaSucesso(response.message);
                 return;
             }
 
@@ -98,29 +84,59 @@ form_cadastro_clientes.on("submit", function(e) {
         data: serializedData,
         dataType: "json",
         success: function(response) {
-            const areInputsFilled = verifyInputs(form_cadastro_clientes);
-
-            if (!areInputsFilled) {
-                console.log(response);
-                exibirMensagemTemporariaErro('Preencha todos os elementos do formulário!');
-                return;
-            }
-
+           
             if (response.type == 'error') {
                 console.log(response);
-                exibirMensagemTemporariaErro('Erro ao cadastrar, tente novamente!');
+                exibirMensagemTemporariaErro(response.message);
                 return;
             }
 
             if (response.type == 'warning') {
                 console.log(response);
-                exibirMensagemTemporariaAviso('Cliente já cadastrada!');
+                exibirMensagemTemporariaAviso(response.message);
                 return;
             }
 
             if (response.type == 'success') {
                 console.log(response);
-                exibirMensagemTemporariaSucesso('Cliente cadastrado com sucesso!');
+                exibirMensagemTemporariaSucesso(response.message);
+                return;
+            }
+
+        }
+    });
+});
+
+
+const form_cadastro_fornecedores = $("#formAdicionarFornecedor");
+
+form_cadastro_fornecedores.on("submit", function(e) {
+    e.preventDefault();
+
+    const serializedData = form_cadastro_fornecedores.serialize();
+    
+    $.ajax({
+        type: "POST",
+        url: "/stock-deps/cadastro-fornecedores",
+        data: serializedData,
+        dataType: "json",
+        success: function(response) {
+           
+            if (response.type == 'error') {
+                console.log(response);
+                exibirMensagemTemporariaErro(response.message);
+                return;
+            }
+
+            if (response.type == 'warning') {
+                console.log(response);
+                exibirMensagemTemporariaAviso(response.message);
+                return;
+            }
+
+            if (response.type == 'success') {
+                console.log(response);
+                exibirMensagemTemporariaSucesso(response.message);
                 return;
             }
 

@@ -2,6 +2,7 @@
 $this->layout("_theme");
 ?>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/fornecedores.css') ?>">
 
 <body>
@@ -30,7 +31,7 @@ $this->layout("_theme");
                             <th>CNPJ</th>
                             <th>Email</th>
                             <th>Telefone</th>
-                            <th>Cidade</th>
+                            <th>Municipio</th>
                             <th>Bairro</th>
                             <th>UF</th>
                             <th>Ações</th>
@@ -57,49 +58,73 @@ $this->layout("_theme");
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="nomeFornecedor" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="nomeFornecedor" placeholder="Digite o nome do fornecedor" required>
+                            <input name="nome" type="text" class="form-control" id="nomeFornecedor" placeholder="Digite o nome do fornecedor">
                         </div>
                         <div class="mb-3">
                             <label for="cnpjFornecedor" class="form-label">CNPJ</label>
-                            <input type="text" class="form-control" id="cnpjFornecedor" placeholder="Digite o CNPJ do fornecedor" required>
+                            <input name="cnpj" type="text" class="form-control" id="cnpjFornecedor" placeholder="Digite o CNPJ do fornecedor">
                         </div>
                         <div class="mb-3">
                             <label for="emailFornecedor" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="emailFornecedor" placeholder="Digite o email do fornecedor" required>
+                            <input name="email" type="email" class="form-control" id="emailFornecedor" placeholder="Digite o email do fornecedor">
                         </div>
                         <div class="mb-3">
                             <label for="telefoneFornecedor" class="form-label">Telefone</label>
-                            <input type="text" class="form-control" id="telefoneFornecedor" placeholder="Digite o telefone do fornecedor" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="cidadeFornecedor" class="form-label">Cidade</label>
-                            <input type="text" class="form-control" id="cidadeFornecedor" placeholder="Digite a cidade" required>
+                            <input name="telefone" type="text" class="form-control" id="telefoneFornecedor" placeholder="Digite o telefone do fornecedor">
                         </div>
                         <div class="mb-3">
                             <label for="endereco" class="form-label">Endereço</label>
-                            <input type="text" class="form-control" id="endereco" placeholder="Digite o endereço" required>
+                            <input name="endereco" type="text" class="form-control" id="endereco" placeholder="Digite o endereço">
                         </div>
                         <div class="mb-3">
                             <label for="bairroFornecedor" class="form-label">Bairro</label>
-                            <input type="text" class="form-control" id="bairroFornecedor" placeholder="Digite o bairro" required>
+                            <input name="bairro" type="text" class="form-control" id="bairroFornecedor" placeholder="Digite o bairro">
                         </div>
                         <div class="mb-3">
                             <label for="complementoFornecedor" class="form-label">Complemento</label>
-                            <input type="text" class="form-control" id="complementoFornecedor" placeholder="Digite o complemento" required>
+                            <input name="complemento" type="text" class="form-control" id="complementoFornecedor" placeholder="Digite o complemento">
                         </div>
                         <div class="mb-3">
                             <label for="municipioFornecedor" class="form-label">Municipio</label>
-                            <input type="text" class="form-control" id="municipioFornecedor" placeholder="Digite o municipio" required>
+                            <input name="municipio" type="text" class="form-control" id="municipioFornecedor" placeholder="Digite o municipio">
                         </div>
                         <div class="mb-3">
                             <label for="cepFornecedor" class="form-label">CEP</label>
-                            <input type="number" class="form-control" id="cepFornecedor" placeholder="Digite o CEP" required>
+                            <input name="cep" type="number" class="form-control" id="cepFornecedor" placeholder="Digite o CEP">
                         </div>
                         <div class="mb-3">
-                            <label for="ufFornecedor" class="form-label">UF</label>
-                            <input type="number" class="form-control" id="ufFornecedor" placeholder="Digite a UF" required>
+                        <label for="ufFornecedor" class="form-label">UF</label>
+                            <select name="uf" class="form-control" id="ufFornecedor" placeholder="Digite a UF">
+                            <option value="" disabled selected>Selecione o estado</option>
+                            <option value="AC">Acre (AC)</option>
+                            <option value="AL">Alagoas (AL)</option>
+                            <option value="AP">Amapá (AP)</option>
+                            <option value="AM">Amazonas (AM)</option>
+                            <option value="BA">Bahia (BA)</option>
+                            <option value="CE">Ceará (CE)</option>
+                            <option value="DF">Distrito Federal (DF)</option>
+                            <option value="ES">Espírito Santo (ES)</option>
+                            <option value="GO">Goiás (GO)</option>
+                            <option value="MA">Maranhão (MA)</option>
+                            <option value="MT">Mato Grosso (MT)</option>
+                            <option value="MS">Mato Grosso do Sul (MS)</option>
+                            <option value="MG">Minas Gerais (MG)</option>
+                            <option value="PA">Pará (PA)</option>
+                            <option value="PB">Paraíba (PB)</option>
+                            <option value="PR">Paraná (PR)</option>
+                            <option value="PE">Pernambuco (PE)</option>
+                            <option value="PI">Piauí (PI)</option>
+                            <option value="RJ">Rio de Janeiro (RJ)</option>
+                            <option value="RN">Rio Grande do Norte (RN)</option>
+                            <option value="RS">Rio Grande do Sul (RS)</option>
+                            <option value="RO">Rondônia (RO)</option>
+                            <option value="RR">Roraima (RR)</option>
+                            <option value="SC">Santa Catarina (SC)</option>
+                            <option value="SP">São Paulo (SP)</option>
+                            <option value="SE">Sergipe (SE)</option>
+                            <option value="TO">Tocantins (TO)</option>
+                            </select>
                         </div>
-                    
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -152,6 +177,8 @@ $this->layout("_theme");
 
 
     <script src="<?= url('assets/app/js/fornecedores.js') ?>" defer></script>
+    <script src="<?= url('assets/app/js/formsBackEnd.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 </body>
 
 </html>

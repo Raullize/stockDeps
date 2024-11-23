@@ -47,7 +47,7 @@ const preencherTabelaProdutos = produtos => {
 
         // Desestruturação para mapear as propriedades
         const { id, nome, descricao, preco } = produto;
-        const dados = [id, nome, descricao, parseFloat(preco).toFixed(2), 100, "Disponível"];
+        const dados = [id, nome, descricao, preco, 100, "Disponível"];
 
         // Criação de células de dados de forma compacta
         tr.append(...dados.map(dado => {
@@ -263,19 +263,25 @@ function alterarTabelaPorCategoriaSelecionada(produtos) {
     preencherTabelaProdutos(produtosFiltrados);
 }
 
-function preencherCategorias(categorias) {
+function preencherCategorias(categorias, callbackMostrarProdutos) {
     const selectElement = document.getElementById('categoria');
     const selectElementModal = document.getElementById('categoriaProdutoAdicionar');
 
-
+    // Adiciona a opção "Todas" no select principal
     const optionAll = document.createElement('option');
-    optionAll.value = 'todas'; 
+    optionAll.value = 'todas'; // Valor para identificar a exibição de todos os produtos
     optionAll.textContent = 'Todas';
-
     selectElement.appendChild(optionAll);
-    selectElementModal.appendChild(optionAll.cloneNode(true));  
 
-    // Preencher as opções de categorias
+    // Adiciona o placeholder "Selecione a categoria" no modal select
+    const placeholderModal = document.createElement('option');
+    placeholderModal.value = ''; // Valor vazio para validação
+    placeholderModal.textContent = 'Selecione a categoria';
+    placeholderModal.disabled = true;
+    placeholderModal.selected = true;
+    selectElementModal.appendChild(placeholderModal);
+
+    // Preenche as opções de categorias no select principal
     categorias.forEach(categoria => {
         const option = document.createElement('option');
         option.value = categoria.id;
@@ -283,11 +289,23 @@ function preencherCategorias(categorias) {
         selectElement.appendChild(option);
     });
 
+    // Preenche as opções de categorias no modal select
     categorias.forEach(categoria => {
         const option = document.createElement('option');
         option.value = categoria.id;
         option.textContent = categoria.nome;
         selectElementModal.appendChild(option);
+    });
+
+    // Adiciona um evento para filtrar produtos
+    selectElement.addEventListener('change', function () {
+        const selectedValue = this.value;
+
+        if (selectedValue === 'todas') {
+            callbackMostrarProdutos(); // Exibe todos os produtos
+        } else {
+            callbackMostrarProdutos(selectedValue); // Exibe produtos da categoria selecionada
+        }
     });
 }
 
