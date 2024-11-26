@@ -47,7 +47,11 @@ const preencherTabelaProdutos = produtos => {
 
         // Desestruturação para mapear as propriedades
         const { id, nome, descricao, preco } = produto;
-        const dados = [id, nome, descricao, preco, 100, "Disponível"];
+        const precoFormatado = preco.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+        const dados = [id, nome, descricao, precoFormatado, 100, "Disponível"];
 
         // Criação de células de dados de forma compacta
         tr.append(...dados.map(dado => {

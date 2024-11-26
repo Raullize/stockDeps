@@ -18,7 +18,7 @@ CREATE TABLE `produtos` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `idCategoria` int(11) NOT NULL,
     `nome` varchar(255) NOT NULL,
-    `preco` varchar(11) NOT NULL,
+    `preco` float NOT NULL,
     `descricao` text NOT NULL,
     `quantidade` int(11) NOT NULL DEFAULT 0,
     `status` tinyint(1) NOT NULL DEFAULT 1,

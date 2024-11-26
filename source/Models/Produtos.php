@@ -16,7 +16,7 @@ class Produtos
         int $id = NULL,
         int $idCategoria = NULL,
         string $nome = NULL,
-        string $preco = NULL,
+        float $preco = NULL,
         string $descricao = NULL
     )
     {
@@ -78,7 +78,7 @@ class Produtos
     /**
      * @return string|null
      */
-    public function getPreco(): ?string
+    public function getPreco(): ?float
     {
         return $this->preco;
     }
@@ -86,7 +86,7 @@ class Produtos
     /**
      * @param string|null $preco
      */
-    public function setPreco(?string $preco): void
+    public function setPreco(?float $preco): void
     {
         $this->preco = $preco;
     }

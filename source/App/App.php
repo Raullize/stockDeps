@@ -97,6 +97,13 @@ class App
                 return;
             }
 
+            $newpreco = $data["preco"];
+
+            $newpreco = str_replace('R$', '', $newpreco);
+            $newpreco = str_replace(',', '.', $newpreco);
+
+            $precoFloat = (float)$newpreco;
+
             $produto = new Produtos();
 
             if ($produto->validateProdutos($data["nome"], $data["categoria"])) {
@@ -112,7 +119,7 @@ class App
                 NULL,
                 $data["categoria"],
                 $data["nome"],
-                $data["preco"],
+                $precoFloat,
                 $data["descricao"]
             );
 
@@ -121,7 +128,7 @@ class App
                 $json = [
                     "nome" => $data["nome"],
                     "categoria" => $data["categoria"],
-                    "preco" => $data["preco"],
+                    "preco" => $precoFloat,
                     "descricao" => $data["descricao"],
                     "message" => "Produto cadastrado com sucesso!",
                     "type" => "success"
