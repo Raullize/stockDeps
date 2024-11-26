@@ -1,5 +1,4 @@
 .tabelaProdutos {
-  background-color: #f9f9f9;
   height: auto;
   overflow-x: auto;
   width: 100%;
@@ -60,13 +59,6 @@
   padding: 12px 15px;
 }
 
-.table th {
-  background-color: #f2f2f2;
-}
-
-.table tr {
-  background-color: #f9f9f9;
-}
 
 .table td {
   padding: 12px 15px;

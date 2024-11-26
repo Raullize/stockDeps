@@ -9,11 +9,21 @@ async function fetchCategorias() {
     const response = await fetch('/stock-deps/getCategorias');
     categorias = await response.json();
     preencherCategorias(categorias);
+
 }
 
 async function fetchClientes() {
     const response = await fetch('/stock-deps/getClientes');
     const clientes = await response.json();
+    preencherClientes(clientes);
+    console.log(clientes)
+}
+
+async function fetchFornecedores() {
+    const response = await fetch('/stock-deps/getFornecedores');
+    const fornecedores = await response.json();
+    preencherFornecedores(fornecedores);
+    console.log(fornecedores)
 }
 
 async function fetchEntradas() {
@@ -34,18 +44,18 @@ function loadAllData() {
     fetchProdutos();
     fetchCategorias();
     fetchClientes();
+    fetchFornecedores();
     fetchEntradas();
     fetchSaidas();
 }
 
-const preencherTabelaProdutos = produtos => {
+function preencherTabelaProdutos(produtos) {
     const corpoTabela = document.getElementById("corpoTabela");
     corpoTabela.innerHTML = '';
 
     produtos.forEach(produto => {
         const tr = document.createElement('tr');
 
-        // Desestruturação para mapear as propriedades
         const { id, nome, descricao, preco } = produto;
         const precoFormatado = preco.toLocaleString('pt-BR', {
             style: 'currency',
@@ -53,56 +63,16 @@ const preencherTabelaProdutos = produtos => {
         });
         const dados = [id, nome, descricao, precoFormatado, 100, "Disponível"];
 
-        // Criação de células de dados de forma compacta
         tr.append(...dados.map(dado => {
             const td = document.createElement('td');
             td.textContent = dado;
             return td;
         }));
 
-        // Botões de ação em um único passo
         tr.appendChild(createButtonGroup(produto));
         corpoTabela.appendChild(tr);
     });
 };
-
-const createButtonGroup = produto => {
-    const actions = [
-        { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto) },
-        { text: 'Excluir', class: 'btn-danger', action: () => openModal('Excluir', produto) },
-        { text: 'Adicionar Entrada', class: 'btn-success', action: openModalEntrada },
-        { text: 'Adicionar Saída', class: 'btn-warning', action: openModalSaida }
-    ];
-
-    const btnGroup = document.createElement('div');
-    btnGroup.classList.add('btn-group', 'w-100');
-    actions.forEach(({ text, class: btnClass, action }) => {
-        const btn = document.createElement('button');
-        btn.classList.add('btn', btnClass);
-        btn.textContent = text;
-        btn.onclick = action;
-        btnGroup.appendChild(btn);
-    });
-
-    const tdAcoes = document.createElement('td');
-    tdAcoes.colSpan = 2;
-    tdAcoes.appendChild(btnGroup);
-    return tdAcoes;
-};
-
-const openModal = (tipo, produto) => {
-    const modalId = tipo === 'Editar' ? 'modalEditar' : 'modalExcluir';
-    if (tipo === 'Editar') {
-        document.getElementById('nomeProduto').value = produto.nome;
-        document.getElementById('descricaoProduto').value = produto.descricao;
-        document.getElementById('precoProduto').value = parseFloat(produto.preco).toFixed(2);
-    }
-    new bootstrap.Modal(document.getElementById(modalId)).show();
-};
-
-const openModalEntrada = () => new bootstrap.Modal(document.getElementById('modalEntrada')).show();
-const openModalSaida = () => new bootstrap.Modal(document.getElementById('modalSaida')).show();
-
 
 function preencherTabelaEntradas(entradas) {
     const corpoTabelaEntradas = document.getElementById("corpoTabelaEntradas");
@@ -313,6 +283,90 @@ function preencherCategorias(categorias, callbackMostrarProdutos) {
     });
 }
 
+function preencherFornecedores(fornecedores) {
+    const input = document.getElementById('fornecedor');
+    const lista = document.getElementById('fornecedor-lista');
+
+    input.addEventListener('input', () => {
+        const query = input.value.toLowerCase();
+        lista.innerHTML = '';
+
+        const fornecedoresFiltrados = fornecedores.filter(fornecedor =>
+            fornecedor.nome.toLowerCase().includes(query)
+        );
+
+        if (fornecedoresFiltrados.length > 0) {
+            lista.style.display = 'block';
+            fornecedoresFiltrados.forEach(fornecedor => {
+                const item = document.createElement('button');
+                item.classList.add('list-group-item', 'list-group-item-action');
+                item.textContent = fornecedor.nome; 
+                item.addEventListener('click', () => {
+                    input.value = fornecedor.nome; 
+                    lista.style.display = 'none';
+                });
+                lista.appendChild(item);
+            });
+        } else {
+            lista.style.display = 'none';
+        }
+    });
+
+    input.addEventListener('blur', () => {
+        setTimeout(() => {
+            lista.style.display = 'none';
+        }, 200);
+    });
+
+    input.addEventListener('focus', () => {
+        if (input.value.trim() !== '') {
+            lista.style.display = 'block';
+        }
+    });
+}
+
+function preencherClientes(clientes) {
+    const input = document.getElementById('cliente');
+    const lista = document.getElementById('clientes-lista');
+
+    input.addEventListener('input', () => {
+        const query = input.value.toLowerCase();
+        lista.innerHTML = '';
+
+        const clientesFiltrados = clientes.filter(cliente =>
+            cliente.nome.toLowerCase().includes(query)
+        );
+
+        if (clientesFiltrados.length > 0) {
+            lista.style.display = 'block';
+            clientesFiltrados.forEach(cliente => {
+                const item = document.createElement('button');
+                item.classList.add('list-group-item', 'list-group-item-action');
+                item.textContent = cliente.nome; 
+                item.addEventListener('click', () => {
+                    input.value = cliente.nome; 
+                    lista.style.display = 'none';
+                });
+                lista.appendChild(item);
+            });
+        } else {
+            lista.style.display = 'none';
+        }
+    });
+
+    input.addEventListener('blur', () => {
+        setTimeout(() => {
+            lista.style.display = 'none';
+        }, 200);
+    });
+
+    input.addEventListener('focus', () => {
+        if (input.value.trim() !== '') {
+            lista.style.display = 'block';
+        }
+    });
+}
+
 function abrirModalAdicionarProduto() {
     const modalAdicionarProduto = new bootstrap.Modal(document.getElementById('modalAdicionarProduto'));
     modalAdicionarProduto.show();
@@ -329,7 +383,6 @@ function abrirModalEditarEntrada(entrada) {
         const idProduto = document.getElementById('idProdutoEntrada').value;
         const quantidade = document.getElementById('quantidadeEntrada').value;
 
-        // Adicione aqui a lógica para salvar os dados editados
         alert(`Entrada Editada: Produto ID ${idProduto}, Quantidade ${quantidade}`);
         modalEditarEntrada.hide();
     };
@@ -346,7 +399,6 @@ function abrirModalEditarSaida(saida) {
         const idProduto = document.getElementById('idProdutoSaida').value;
         const quantidade = document.getElementById('quantidadeSaida').value;
 
-        // Adicione aqui a lógica para salvar os dados editados
         alert(`Saída Editada: Produto ID ${idProduto}, Quantidade ${quantidade}`);
         modalEditarSaida.hide();
     };
@@ -378,6 +430,45 @@ document.getElementById("categoria").addEventListener("change", function () {
 });
 
 
+function createButtonGroup(produto) {
+    const actions = [
+        { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto) },
+        { text: 'Excluir', class: 'btn-danger', action: () => openModal('Excluir', produto) },
+        { text: 'Adicionar Entrada', class: 'btn-success', action: openModalEntrada },
+        { text: 'Adicionar Saída', class: 'btn-warning', action: openModalSaida }
+    ];
 
+    const btnGroup = document.createElement('div');
+    btnGroup.classList.add('btn-group', 'w-100');
+    actions.forEach(({ text, class: btnClass, action }) => {
+        const btn = document.createElement('button');
+        btn.classList.add('btn', btnClass);
+        btn.textContent = text;
+        btn.onclick = action;
+        btnGroup.appendChild(btn);
+    });
+
+    const tdAcoes = document.createElement('td');
+    tdAcoes.colSpan = 2;
+    tdAcoes.appendChild(btnGroup);
+    return tdAcoes;
+};
+
+function openModal(tipo, produto) {
+    const modalId = tipo === 'Editar' ? 'modalEditar' : 'modalExcluir';
+    if (tipo === 'Editar') {
+        document.getElementById('nomeProduto').value = produto.nome;
+        document.getElementById('descricaoProduto').value = produto.descricao;
+        document.getElementById('precoProduto').value = parseFloat(produto.preco).toFixed(2);
+    }
+    new bootstrap.Modal(document.getElementById(modalId)).show();
+};
+
+function openModalEntrada() {
+    new bootstrap.Modal(document.getElementById('modalEntrada')).show();
+}
+function openModalSaida() {
+    new bootstrap.Modal(document.getElementById('modalSaida')).show();
+}
 
 window.onload = loadAllData;

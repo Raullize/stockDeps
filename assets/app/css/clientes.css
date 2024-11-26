@@ -43,32 +43,36 @@
   width: 300px;
 }
 
-.tableClientes {
+.tabelaClientes {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
 }
 
-.tableClientes th,
-.tableClientes td {
+.table tr{
+  background-color: #f2f2f2;
+}
+
+.table th,
+.table td {
   text-align: center;
   vertical-align: middle;
   padding: 12px 15px;
 }
 
-.tableClientes th {
+.table tr {
   background-color: #f2f2f2;
 }
 
-.tableClientes tr {
+.table tr {
   background-color: #f9f9f9;
 }
 
-.tableClientes td {
+.table td {
   padding: 12px 15px;
 }
 
-.tableClientes td .btn-group {
+.table td .btn-group {
   display: flex;
   justify-content: space-evenly;
   gap: 10px;

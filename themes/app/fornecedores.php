@@ -23,7 +23,7 @@ $this->layout("_theme");
                         <input type="text" name="buscarFornecedor" id="buscarFornecedor" placeholder="Procurar fornecedor" class="form-control">
                     </div>
                 </div>
-                <table id="tabelaFornecedores" class="table">
+                <table id="tabelaFornecedores" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>

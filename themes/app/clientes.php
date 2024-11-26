@@ -24,7 +24,7 @@ $this->layout("_theme");
                         <input type="text" name="buscarCliente" id="buscarCliente" placeholder="Procurar cliente" class="form-control">
                     </div>
                 </div>
-                <table id="tabelaClientes" class="table">
+                <table id="tabelaClientes" class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -75,9 +75,6 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
-
-
-
 
     <!-- Modal Editar Cliente -->
     <div class="modal fade" id="modalEditarCliente" tabindex="-1" aria-labelledby="modalEditarClienteLabel" aria-hidden="true">

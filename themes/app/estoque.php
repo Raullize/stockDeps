@@ -156,13 +156,13 @@ $this->layout("_theme");
                     <div class="mb-3">
                         <label for="precoProduto" class="form-label">Preço</label>
                         <input
-                                name="preco"
-                                type="text"
-                                class="form-control"
-                                id="precoProduto"
-                                placeholder="R$ 0,00"
-                                oninput="formatarPreco(this)">
-                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                            name="preco"
+                            type="text"
+                            class="form-control"
+                            id="precoProduto"
+                            placeholder="R$ 0,00"
+                            oninput="formatarPreco(this)">
+                        <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                     </div>
                     <div class="mb-3">
                         <label for="quantidadeProduto" class="form-label">Quantidade</label>
@@ -213,6 +213,7 @@ $this->layout("_theme");
                     <div class="mb-3">
                         <label for="fornecedor" class="form-label">Fornecedor</label>
                         <input type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
+                        <div class="list-group mt-2" id="fornecedor-lista" style="display: none;"></div>
                     </div>
                     <div class="mb-3">
                         <label for="quantidade" class="form-label">Quantidade</label>
@@ -221,13 +222,13 @@ $this->layout("_theme");
                     <div class="mb-3">
                         <label for="precoEntrada" class="form-label">Preço</label>
                         <input
-                                name="preco"
-                                type="text"
-                                class="form-control"
-                                id="precoEntrada"
-                                placeholder="R$ 0,00"
-                                oninput="formatarPreco(this)">
-                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                            name="preco"
+                            type="text"
+                            class="form-control"
+                            id="precoEntrada"
+                            placeholder="R$ 0,00"
+                            oninput="formatarPreco(this)">
+                        <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -250,6 +251,7 @@ $this->layout("_theme");
                     <div class="mb-3">
                         <label for="cliente" class="form-label">Cliente</label>
                         <input type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
+                        <div class="list-group mt-2" id="clientes-lista" style="display: none;"></div>
                     </div>
                     <div class="mb-3">
                         <label for="quantidadeSaida" class="form-label">Quantidade</label>
@@ -258,13 +260,13 @@ $this->layout("_theme");
                     <div class="mb-3">
                         <label for="precoSaida" class="form-label">Preço</label>
                         <input
-                                name="preco"
-                                type="text"
-                                class="form-control"
-                                id="precoSaida"
-                                placeholder="R$ 0,00"
-                                oninput="formatarPreco(this)">
-                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                            name="preco"
+                            type="text"
+                            class="form-control"
+                            id="precoSaida"
+                            placeholder="R$ 0,00"
+                            oninput="formatarPreco(this)">
+                        <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                     </div>
                 </div>
                 <div class="modal-footer">
