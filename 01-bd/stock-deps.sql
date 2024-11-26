@@ -65,19 +65,17 @@ CREATE TABLE `fornecedores` (
 DROP TABLE IF EXISTS `entradas`;
 CREATE TABLE `entradas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `idCategoria` int(11) NOT NULL,
-    `idProdutos` int(11) NOT NULL,
     `idFornecedor` int(11) NOT NULL,
+    `idProdutos` int(11) NOT NULL,
     `quantidade` int(11) NOT NULL,
+    `preco` float NOT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
-    KEY `fk_entradas_categoria_idx` (`idCategoria`),
-    CONSTRAINT `fk_entradas_categoria` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    KEY `fk_entradas_produtos_idx` (`idProdutos`),
-    CONSTRAINT `fk_entradas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     KEY `fk_entradas_fornecedor_idx` (`idFornecedor`),
-    CONSTRAINT `fk_entradas_fornecedor` FOREIGN KEY (`idFornecedor`) REFERENCES `fornecedores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_entradas_fornecedor` FOREIGN KEY (`idFornecedor`) REFERENCES `fornecedores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    KEY `fk_entradas_produtos_idx` (`idProdutos`),
+    CONSTRAINT `fk_entradas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de saídas
