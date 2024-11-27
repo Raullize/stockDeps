@@ -10,18 +10,21 @@ class Entradas
     private $idFornecedor;
     private $idProdutos;
     private $quantidade;
+    private $preco;
 
     public function __construct(
         int $id = NULL,
         int $idFornecedor = NULL,
         int $idProdutos = NULL,
-        int $quantidade = NULL
+        int $quantidade = NULL,
+        float $preco = NULL
     )
     {
         $this->id = $id;
         $this->idFornecedor = $idFornecedor;
         $this->idProdutos = $idProdutos;
         $this->quantidade = $quantidade;
+        $this->preco = $preco;
     }
 
     /**
@@ -76,6 +79,26 @@ class Entradas
     {
         $this->quantidade = $quantidade;
     }
+    
+    /**
+     * Get the value of preco
+     */ 
+    public function getPreco()
+    {
+        return $this->preco;
+    }
+
+    /**
+     * Set the value of preco
+     *
+     * @return  self
+     */ 
+    public function setPreco($preco)
+    {
+        $this->preco = $preco;
+
+        return $this;
+    }
 
     public function selectAll ()
     {
@@ -92,11 +115,12 @@ class Entradas
 
     public function insert() : bool
     {
-        $query = "INSERT INTO entradas (idFornecedor, idProdutos, quantidade) VALUES (:idFornecedor, :idProdutos, :quantidade)";
+        $query = "INSERT INTO entradas (idFornecedor, idProdutos, quantidade, preco) VALUES (:idFornecedor, :idProdutos, :quantidade, :preco)";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":idFornecedor", $this->idFornecedor);
         $stmt->bindParam(":idProdutos", $this->idProdutos);
-        $stmt->bindValue(":quantidade", $this->quantidade);
+        $stmt->bindParam(":quantidade", $this->quantidade);
+        $stmt->bindParam(":preco", $this->preco);
         $stmt->execute();
         return true;
     }

@@ -211,6 +211,13 @@ class App
                 return;
             }
 
+            $newpreco = $data["preco"];
+
+            $newpreco = str_replace('R$', '', $newpreco);
+            $newpreco = str_replace(',', '.', $newpreco);
+
+            $precoFloat = (float)$newpreco;
+
             $fornecedor = new Fornecedores();
             $idFonecedor = $fornecedor->findByIdName($data["nome"]);
 
@@ -218,7 +225,8 @@ class App
                 NULL,
                 $idFonecedor,
                 $data["produtoId"],
-                $data["quantidade"]
+                $data["quantidade"],
+                $precoFloat
             );
 
             if ($entradas->insert()) {
@@ -228,6 +236,7 @@ class App
                     "idFornecedor" => $idFonecedor,
                     "idProdutos" => $data["produtoId"],
                     "quantidade" => $data["quantidade"],
+                    "preco" => $data["preco"],
                     "message" => "Entrada cadastrada com sucesso!",
                     "type" => "success"
                 ];

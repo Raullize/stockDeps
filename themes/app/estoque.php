@@ -261,7 +261,7 @@ $this->layout("_theme");
                             type="text"
                             class="form-control"
                             id="precoEntrada"
-                            placeholder="R$ 0,00"
+                            value="R$ 0,00"
                             oninput="formatarPreco(this)">
                         <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                     </div>

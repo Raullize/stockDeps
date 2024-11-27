@@ -78,6 +78,11 @@ function preencherTabelaEntradas(entradas) {
     const corpoTabelaEntradas = document.getElementById("corpoTabelaEntradas");
     corpoTabelaEntradas.innerHTML = '';
 
+    const precoFormatado = preco.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
+
     entradas.forEach(entrada => {
         const tr = document.createElement('tr');
 
