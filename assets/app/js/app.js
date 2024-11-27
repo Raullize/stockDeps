@@ -81,6 +81,19 @@ function preencherTabelaEntradas(entradas, produtos) {
         return;
     }
 
+    if (entradas.length === 0) {
+        const alertaMensagem = document.createElement('div');
+        alertaMensagem.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show');
+        alertaMensagem.setAttribute('role', 'alert');
+        alertaMensagem.innerHTML = `
+            <strong>Informação:</strong> Nenhuma entrada encontrada.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.body.appendChild(alertaMensagem);  // Adiciona o alerta ao corpo da página
+
+        return;
+    }
+
     const corpoTabelaEntradas = document.getElementById("corpoTabelaEntradas");
     corpoTabelaEntradas.innerHTML = '';
 
@@ -141,6 +154,19 @@ function preencherTabelaEntradas(entradas, produtos) {
 function preencherTabelaSaidas(saidas,produtos) {
     const corpoTabelaSaidas = document.getElementById("corpoTabelaSaidas");
     corpoTabelaSaidas.innerHTML = '';
+
+    if (saidas.length === 0) {
+        const alertaMensagem = document.createElement('div');
+        alertaMensagem.classList.add('alert', 'alert-info', 'alert-dismissible', 'fade', 'show');
+        alertaMensagem.setAttribute('role', 'alert');
+        alertaMensagem.innerHTML = `
+            <strong>Informação:</strong> Nenhuma saida encontrada.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        document.body.appendChild(alertaMensagem);  // Adiciona o alerta ao corpo da página
+
+        return;
+    }
 
     saidas.forEach(saida => {
         const tr = document.createElement('tr');
