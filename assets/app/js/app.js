@@ -303,7 +303,7 @@ function preencherFornecedores(fornecedores) {
         if (fornecedoresFiltrados.length > 0) {
             lista.style.display = 'block';
             fornecedoresFiltrados.forEach(fornecedor => {
-                const item = document.createElement('button');
+                const item = document.createElement('div');
                 item.classList.add('list-group-item', 'list-group-item-action');
                 item.textContent = fornecedor.nome;
                 item.addEventListener('click', () => {
@@ -350,7 +350,7 @@ function preencherClientes(clientes) {
         if (clientesFiltrados.length > 0) {
             lista.style.display = 'block';
             clientesFiltrados.forEach(cliente => {
-                const item = document.createElement('button');
+                const item = document.createElement('div');
                 item.classList.add('list-group-item', 'list-group-item-action');
                 item.textContent = cliente.nome; 
                 item.addEventListener('click', () => {
