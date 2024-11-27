@@ -4,6 +4,7 @@ async function fetchFornecedores() {
     const response = await fetch('/stock-deps/getFornecedores');
     fornecedores = await response.json();
     preencherTabelaFornecedores(fornecedores);
+    console.log(fornecedores)
 }
 
 function preencherTabelaFornecedores(fornecedores) {
@@ -22,7 +23,7 @@ function preencherTabelaFornecedores(fornecedores) {
             <td>${fornecedor.uf}</td>
             <td>
                 <div class="btn-group">
-                    <button class="btn btn-primary" onclick="editarFornecedor(${fornecedor.id})">Editar</button>
+                    <button class="btn btn-primary" onclick="editarFornecedor(${fornecedor.id})" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" id="editarFornecedorBtn">Editar</button>
                     <button class="btn btn-success" onclick="verHistoricoFornecedor(${fornecedor.id})">Histórico</button>
                     <button class="btn btn-danger" onclick="excluirFornecedor(${fornecedor.id})">Excluir</button>
                 </div>
@@ -32,23 +33,41 @@ function preencherTabelaFornecedores(fornecedores) {
     });
 }
 
+document.getElementById("buscarFornecedor").addEventListener("input", function () {
+    const termo = this.value.toLowerCase();
+    const linhas = document.querySelectorAll("#tabelaFornecedores tbody tr");
+
+    linhas.forEach(linha => {
+        const nome = linha.cells[1].textContent.toLowerCase();
+        linha.style.display = nome.includes(termo) ? "" : "none";
+    });
+});
+
+
 function editarFornecedor(id) {
-    const fornecedor = fornecedores.find(f => f.id === id);
+    if (!fornecedores || fornecedores.length === 0) {
+        console.error("O array de fornecedores está vazio ou não foi carregado.");
+        return;
+    }
+    const fornecedor = fornecedores.find(fornecedor => fornecedor.id === id);
     if (fornecedor) {
         document.getElementById("editarFornecedorId").value = fornecedor.id;
         document.getElementById("editarFornecedorNome").value = fornecedor.nome;
         document.getElementById("editarFornecedorCnpj").value = fornecedor.cnpj;
         document.getElementById("editarFornecedorEmail").value = fornecedor.email;
         document.getElementById("editarFornecedorTelefone").value = fornecedor.telefone;
-        document.getElementById("editarFornecedorCidade").value = fornecedor.cidade;
-        document.getElementById("editarFornecedorBairro").value = fornecedor.bairro;
-        document.getElementById("editarFornecedorUf").value = fornecedor.uf;
+        document.getElementById("editarFornecedorEndereco").value = fornecedor.endereco;
+        document.getElementById("editarFornecedorMunicipio").value = fornecedor.municipio || "";
+        document.getElementById("editarFornecedorCep").value = fornecedor.cep || "";
+        document.getElementById("editarUfFornecedor").value = fornecedor.uf || "";
 
-        abrirModal();
+        abrirModal()
+    } else {
+        console.error("Fornecedor não encontrado.");
     }
 }
 
-function verHistoricoFornecedor(id) {
+function verHistoricoFornecedor(id, fornecedores) {
     window.location.href = `/stock-deps/historicoFornecedor/${id}`;
 }
 

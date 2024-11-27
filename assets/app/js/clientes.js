@@ -16,8 +16,6 @@ async function fetchCategorias() {
 async function fetchClientes() {
     const response = await fetch('/stock-deps/getClientes');
     clientes = await response.json();
-
-
     preencherTabelaClientes(clientes);
 }
 
