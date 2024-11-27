@@ -330,7 +330,6 @@ function preencherFornecedores(fornecedores) {
     });
 }
 
-
 function preencherClientes(clientes) {
     const input = document.getElementById('cliente');
     const lista = document.getElementById('clientes-lista');
@@ -440,15 +439,14 @@ document.getElementById("categoria").addEventListener("change", function () {
     alterarTabelaPorCategoriaSelecionada(produtos);
 });
 
-
 function createButtonGroup(produto) {
     const actions = [
-        { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto) },
-        { text: 'Excluir', class: 'btn-danger', action: () => openModal('Excluir', produto) },
-        { text: 'Adicionar Entrada', class: 'btn-success', action: openModalEntrada },
-        { text: 'Adicionar Saída', class: 'btn-warning', action: openModalSaida }
+        { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto, produto.id) },
+        { text: 'Excluir', class: 'btn-danger', action: () => openModal('Excluir', produto.id) },
+        { text: 'Adicionar Entrada', class: 'btn-success', action: () => openModalEntrada(produto.id) },
+        { text: 'Adicionar Saída', class: 'btn-warning', action: () => openModalSaida(produto.id) }
     ];
-
+    console.log(produto.id)
     const btnGroup = document.createElement('div');
     btnGroup.classList.add('btn-group', 'w-100');
     actions.forEach(({ text, class: btnClass, action }) => {
@@ -475,10 +473,12 @@ function openModal(tipo, produto) {
     new bootstrap.Modal(document.getElementById(modalId)).show();
 };
 
-function openModalEntrada() {
+function openModalEntrada(id) {
+    console.log(id)
     new bootstrap.Modal(document.getElementById('modalEntrada')).show();
 }
-function openModalSaida() {
+function openModalSaida(id) {
+    console.log(id)
     new bootstrap.Modal(document.getElementById('modalSaida')).show();
 }
 
