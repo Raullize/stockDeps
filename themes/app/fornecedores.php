@@ -19,8 +19,8 @@ $this->layout("_theme");
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarFornecedor" id="adicionarFornecedorBtn">
                         Adicionar Fornecedor
                     </button>
-                    <div>
-                        <label for="buscarFornecedor" class="text-light px-2">Procurar fornecedor:</label>
+                    <div class="d-flex ">
+                        <label for="buscarFornecedor" class="p-2">Procurar fornecedor:</label>
                         <input type="text" name="buscarFornecedor" id="buscarFornecedor" placeholder="Procurar fornecedor" class="form-control">
                     </div>
                 </div>
