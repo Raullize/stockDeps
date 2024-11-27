@@ -9,7 +9,7 @@ $this->layout("_theme");
 
   
 
-    <div class="container-fluid mt-2">
+    <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="tabelaFornecedores">
             <h1 class="text-center p-4">

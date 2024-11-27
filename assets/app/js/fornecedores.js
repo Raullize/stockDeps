@@ -22,7 +22,7 @@ function preencherTabelaFornecedores(fornecedores) {
             <td>${fornecedor.uf}</td>
             <td>
                 <div class="btn-group">
-                    <button class="btn btn-info" onclick="editarFornecedor(${fornecedor.id})">Editar</button>
+                    <button class="btn btn-primary" onclick="editarFornecedor(${fornecedor.id})">Editar</button>
                     <button class="btn btn-success" onclick="verHistoricoFornecedor(${fornecedor.id})">Histórico</button>
                     <button class="btn btn-danger" onclick="excluirFornecedor(${fornecedor.id})">Excluir</button>
                 </div>
