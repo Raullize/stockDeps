@@ -7,13 +7,14 @@ $this->layout("_theme");
 
 <body>
 
-    <h1 class="mt-2 text-center">
-        Fornecedores
-    </h1>
+  
 
     <div class="container-fluid mt-2">
         <div class="row justify-content-center">
             <div class="tabelaFornecedores">
+            <h1 class="text-center p-4">
+                    Fornecedores
+                </h1>
                 <div class="headerTabelaFornecedores p-3">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarFornecedor" id="adicionarFornecedorBtn">
                         Adicionar Fornecedor

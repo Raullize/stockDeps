@@ -8,13 +8,14 @@ $this->layout("_theme");
 
 <body>
 
-    <h1 class="mt-2 text-center">
-        Produtos
-    </h1>
+
 
     <div class="container-fluid mt-2">
         <div class="row justify-content-center">
             <div class="tabelaProdutos">
+                <h1 class="p-4 text-center">
+                    Produtos
+                </h1>
                 <div class="headerTabelaProdutos p-3">
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
                         Adicionar Produto
