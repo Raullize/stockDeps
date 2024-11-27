@@ -253,6 +253,65 @@ class App
         }
     }
 
+    public function estoqueSc(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "nome" => $data["nome"],
+                    "idProdutos" => $data["produtoId"],
+                    "quantidade" => $data["quantidade"],
+                    "preco" => $data["preco"],
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $newpreco = $data["preco"];
+
+            $newpreco = str_replace('R$', '', $newpreco);
+            $newpreco = str_replace(',', '.', $newpreco);
+
+            $precoFloat = (float)$newpreco;
+
+            $cliente = new Clientes();
+            $idCliente = $cliente->findByIdName($data["nome"]);
+
+            $saidas = new Saidas(
+                NULL,
+                $idCliente,
+                $data["produtoId"],
+                $data["quantidade"],
+                $precoFloat
+            );
+
+            if ($saidas->insert()) {
+
+                $json = [
+                    "nome" => $data["nome"],
+                    "idCliente" => $idCliente,
+                    "idProdutos" => $data["produtoId"],
+                    "quantidade" => $data["quantidade"],
+                    "preco" => $data["preco"],
+                    "message" => "Saída cadastrada com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Saída não cadastrada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
     public function cadastroClientes(?array $data): void
     {
         if (!empty($data)) {

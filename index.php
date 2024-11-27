@@ -56,6 +56,7 @@ $route->post("/processarPdf", "App:processarPdf");
 $route->post("/estoque-pc", "App:estoquePc");
 $route->post("/estoque-cc", "App:estoqueCc");
 $route->post("/estoque-ec", "App:estoqueEc");
+$route->post("/estoque-sc", "App:estoqueSc");
 
 /* ATUALIZAR TODAS ABAIXO */
 $route->post("/categorias-deletar", "App:categoriasDeletar");

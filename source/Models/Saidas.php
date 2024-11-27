@@ -7,24 +7,24 @@ use Source\Core\Connect;
 class Saidas
 {
     private $id;
-    private $idCategoria;
     private $idClientes;
     private $idProdutos;
     private $quantidade;
+    private $preco;
 
     public function __construct(
         int $id = NULL,
-        int $idCategoria = NULL,
         string $idClientes = NULL,
         string $idProdutos = NULL,
-        string $quantidade = NULL
+        string $quantidade = NULL,
+        float $preco = NULL
     )
     {
         $this->id = $id;
-        $this->idCategoria = $idCategoria;
         $this->idClientes = $idClientes;
         $this->idProdutos = $idProdutos;
         $this->quantidade = $quantidade;
+        $this->preco = $preco;
     }
 
     /**
@@ -41,22 +41,6 @@ class Saidas
     public function setId(?int $id): void
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getIdCategoria(): ?int
-    {
-        return $this->idCategoria;
-    }
-
-    /**
-     * @param string|null $name
-     */
-    public function setIdCategoria(?int $idCategoria): void
-    {
-        $this->idCategoria = $idCategoria;
     }
 
     /**
@@ -105,6 +89,26 @@ class Saidas
     public function setQuantidade(?string $quantidade): void
     {
         $this->quantidade = $quantidade;
+    }
+
+    /**
+     * Get the value of preco
+     */ 
+    public function getPreco()
+    {
+        return $this->preco;
+    }
+
+    /**
+     * Set the value of preco
+     *
+     * @return  self
+     */ 
+    public function setPreco($preco)
+    {
+        $this->preco = $preco;
+
+        return $this;
     }
 
     public function selectAll ()

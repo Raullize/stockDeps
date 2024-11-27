@@ -82,15 +82,13 @@ CREATE TABLE `entradas` (
 DROP TABLE IF EXISTS `saidas`;
 CREATE TABLE `saidas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `idCategoria` int(11) NOT NULL,
     `idClientes` int(11) NOT NULL,
     `idProdutos` int(11) NOT NULL,
     `quantidade` int(11) NOT NULL,
+    `preco` float NOT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
-    KEY `fk_saidas_categorias_idx` (`idCategoria`),
-    CONSTRAINT `fk_saidas_categorias` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     KEY `fk_saidas_clientes_idx` (`idClientes`),
     CONSTRAINT `fk_saidas_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
     KEY `fk_saidas_produtos_idx` (`idProdutos`),

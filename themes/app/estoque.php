@@ -244,7 +244,7 @@ $this->layout("_theme");
                 </div>
                 <form id="entrada-cadastro" name="entrada-cadastro" method="post">
                 <div class="modal-body">
-                        <input type="hidden" id="produtoId" name="produtoId" value="">
+                        <input name="produtoId" type="hidden" id="produtoId" value="">
                     <div class="mb-3">
                         <label for="fornecedor" class="form-label">Fornecedor</label>
                         <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
@@ -283,15 +283,17 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalSaidaLabel">Adicionar Saída</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form id="saida-cadastro" name="saida-cadastro" method="post">
                 <div class="modal-body">
+                        <input name="produtoId" type="hidden" id="produtoId" value="">
                     <div class="mb-3">
                         <label for="cliente" class="form-label">Cliente</label>
-                        <input type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
+                        <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
                         <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
                     </div>
                     <div class="mb-3">
                         <label for="quantidadeSaida" class="form-label">Quantidade</label>
-                        <input type="number" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
+                        <input name="quantidade" type="number" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
                     </div>
                     <div class="mb-3">
                         <label for="precoSaida" class="form-label">Preço</label>
@@ -300,15 +302,16 @@ $this->layout("_theme");
                             type="text"
                             class="form-control"
                             id="precoSaida"
-                            placeholder="R$ 0,00"
+                            value="R$ 0,00"
                             oninput="formatarPreco(this)">
                         <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="salvarSaida">Salvar Saída</button>
+                    <button type="submit" class="btn btn-primary" id="salvarSaida">Salvar Saída</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
