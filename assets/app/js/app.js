@@ -1,6 +1,7 @@
 async function fetchProdutos() {
     const response = await fetch('/stock-deps/getProdutos');
     produtos = await response.json();
+    console.log(produtos)
     preencherTabelaProdutos(produtos);
     buscarProduto(produtos);
 }
@@ -74,14 +75,14 @@ function preencherTabelaProdutos(produtos) {
     });
 };
 
-function preencherTabelaEntradas(entradas) {
+function preencherTabelaEntradas(entradas, produtos) {
+    if (!Array.isArray(produtos) || !Array.isArray(entradas)) {
+        console.error("Entradas ou produtos não são arrays válidos.");
+        return;
+    }
+
     const corpoTabelaEntradas = document.getElementById("corpoTabelaEntradas");
     corpoTabelaEntradas.innerHTML = '';
-
-    const precoFormatado = preco.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    });
 
     entradas.forEach(entrada => {
         const tr = document.createElement('tr');
@@ -90,13 +91,22 @@ function preencherTabelaEntradas(entradas) {
         tdId.textContent = entrada.id;
         tr.appendChild(tdId);
 
-        const tdIdProduto = document.createElement('td');
-        tdIdProduto.textContent = entrada.idProdutos;
-        tr.appendChild(tdIdProduto);
+        const tdNomeProduto = document.createElement('td');
+        const produto = produtos.find(p => p.id === entrada.idProdutos);
+        tdNomeProduto.textContent = produto ? produto.nome : "Produto não encontrado";
+        tr.appendChild(tdNomeProduto);
 
         const tdQuantidade = document.createElement('td');
         tdQuantidade.textContent = entrada.quantidade;
         tr.appendChild(tdQuantidade);
+
+        const tdPreco = document.createElement('td');
+        const precoFormatado = entrada.preco.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+        tdPreco.textContent = precoFormatado;
+        tr.appendChild(tdPreco);
 
         const tdCriadoEm = document.createElement('td');
         tdCriadoEm.textContent = entrada.created_at;
@@ -128,8 +138,7 @@ function preencherTabelaEntradas(entradas) {
         corpoTabelaEntradas.appendChild(tr);
     });
 }
-
-function preencherTabelaSaidas(saidas) {
+function preencherTabelaSaidas(saidas,produtos) {
     const corpoTabelaSaidas = document.getElementById("corpoTabelaSaidas");
     corpoTabelaSaidas.innerHTML = '';
 
@@ -140,9 +149,10 @@ function preencherTabelaSaidas(saidas) {
         tdId.textContent = saida.id;
         tr.appendChild(tdId);
 
-        const tdIdProduto = document.createElement('td');
-        tdIdProduto.textContent = saida.idProdutos;
-        tr.appendChild(tdIdProduto);
+        const tdNomeProduto = document.createElement('td');
+        const produto = produtos.find(p => p.id === saida.idProdutos);
+        tdNomeProduto.textContent = produto ? produto.nome : "Produto não encontrado";
+        tr.appendChild(tdNomeProduto);
 
         const tdQuantidade = document.createElement('td');
         tdQuantidade.textContent = saida.quantidade;
@@ -194,36 +204,48 @@ function buscarProduto(produtos) {
     });
 }
 
-function buscarEntrada(entradas) {
+function buscarEntrada(entradas, produtos) {
     const inputBuscarEntradas = document.getElementById('buscarEntradas');
 
     inputBuscarEntradas.addEventListener('input', function () {
         const termoBusca = inputBuscarEntradas.value.toLowerCase();
 
-        const entradasFiltradas = entradas.filter(entrada =>
-            entrada.id.toString().includes(termoBusca) ||
-            entrada.idProdutos.toString().includes(termoBusca)
-        );
+        const entradasFiltradas = entradas.filter(entrada => {
+            // Verifica se o termo de busca está no ID ou no nome do produto
+            const produto = produtos.find(p => p.id === entrada.idProdutos);
+            const nomeProduto = produto ? produto.nome.toLowerCase() : "";
 
-        preencherTabelaEntradas(entradasFiltradas);
+            return (
+                entrada.id.toString().includes(termoBusca) ||
+                entrada.idProdutos.toString().includes(termoBusca) ||
+                nomeProduto.includes(termoBusca)
+            );
+        });
+
+        preencherTabelaEntradas(entradasFiltradas, produtos);
     });
 }
 
-function buscarSaida(saidas) {
+function buscarSaida(saidas, produtos) {
     const inputBuscarSaidas = document.getElementById('buscarSaidas');
 
     inputBuscarSaidas.addEventListener('input', function () {
         const termoBusca = inputBuscarSaidas.value.toLowerCase();
 
-        const saidasFiltradas = saidas.filter(saida =>
-            saida.id.toString().includes(termoBusca) ||
-            saida.idProdutos.toString().includes(termoBusca)
-        );
+        const saidasFiltradas = saidas.filter(saida => {
+            const produto = produtos.find(p => p.id === saida.idProdutos);
+            const nomeProduto = produto ? produto.nome.toLowerCase() : "";
 
-        preencherTabelaSaidas(saidasFiltradas);
+            return (
+                saida.id.toString().includes(termoBusca) ||
+                saida.idProdutos.toString().includes(termoBusca) ||
+                nomeProduto.includes(termoBusca)
+            );
+        });
+
+        preencherTabelaSaidas(saidasFiltradas, produtos);
     });
 }
-
 function alterarTabelaPorCategoriaSelecionada(produtos) {
     const categoriaSelecionada = document.getElementById("categoria").value;
     const categoriaSelecionadaNumero = Number(categoriaSelecionada);
@@ -357,9 +379,9 @@ function preencherClientes(clientes) {
             clientesFiltrados.forEach(cliente => {
                 const item = document.createElement('div');
                 item.classList.add('list-group-item', 'list-group-item-action');
-                item.textContent = cliente.nome; 
+                item.textContent = cliente.nome;
                 item.addEventListener('click', () => {
-                    input.value = cliente.nome; 
+                    input.value = cliente.nome;
                     lista.style.display = 'none';
                 });
                 lista.appendChild(item);
@@ -423,8 +445,8 @@ document.getElementById("consultarEntradasBtn").addEventListener("click", async 
     const response = await fetch('/stock-deps/getEntradas');
     const entradas = await response.json();
 
-    preencherTabelaEntradas(entradas);
-    buscarEntrada(entradas);
+    preencherTabelaEntradas(entradas,produtos);
+    buscarEntrada(entradas,produtos);
 
     const modalEntradas = new bootstrap.Modal(document.getElementById('modalEntradas'));
     modalEntradas.show();
@@ -434,7 +456,7 @@ document.getElementById("consultarSaidasBtn").addEventListener("click", async fu
     const response = await fetch('/stock-deps/getSaidas');
     const saidas = await response.json();
 
-    preencherTabelaSaidas(saidas);
+    preencherTabelaSaidas(saidas,produtos);
 
     const modalSaidas = new bootstrap.Modal(document.getElementById('modalSaidas'));
     modalSaidas.show();

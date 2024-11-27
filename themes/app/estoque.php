@@ -330,8 +330,9 @@ $this->layout("_theme");
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>ID Produto</th>
+                                <th>Nome</th>
                                 <th>Quantidade</th>
+                                <th>Preço</th>
                                 <th>Criado Em</th>
                                 <th>Ações</th>
                             </tr>
@@ -387,8 +388,9 @@ $this->layout("_theme");
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>ID Produto</th>
+                                <th>Nome/th>
                                 <th>Quantidade</th>
+                                <th>Preço</th>
                                 <th>Criado Em</th>
                                 <th>Ações</th>
                             </tr>
