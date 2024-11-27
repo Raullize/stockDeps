@@ -21,7 +21,9 @@ $this->layout("_theme");
                         Adicionar Produto
                     </button>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria" id="adicionarCategoriaBtn">Adicionar Categoria</button>
-                    <button>Adicionar Notas</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarDANFE">
+                        Adicionar Notas
+                    </button>
                     <button class="btn btn-info" id="consultarEntradasBtn">Consultar Entradas</button>
                     <button class="btn btn-info" id="consultarSaidasBtn">Consultar Saídas</button>
                     <div>
@@ -197,6 +199,36 @@ $this->layout("_theme");
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-danger" id="confirmarExcluir">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Adicionar Nota -->
+    <div class="modal" id="modalAdicionarDANFE" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Adicionar Nota DANFE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="numeroNota" class="form-label">Número da Nota</label>
+                        <input type="text" id="numeroNota" class="form-control" placeholder="Digite o número da nota">
+                    </div>
+                    <div class="mb-3">
+                        <label for="dataEmissao" class="form-label">Data de Emissão</label>
+                        <input type="date" id="dataEmissao" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="arquivoNota" class="form-label">Upload de Nota (PDF)</label>
+                        <input type="file" id="arquivoNota" class="form-control" accept=".pdf">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Adicionar Nota</button>
                 </div>
             </div>
         </div>

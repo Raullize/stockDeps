@@ -446,7 +446,7 @@ function createButtonGroup(produto) {
         { text: 'Adicionar Entrada', class: 'btn-success', action: () => openModalEntrada(produto.id) },
         { text: 'Adicionar Saída', class: 'btn-warning', action: () => openModalSaida(produto.id) }
     ];
-    console.log(produto.id)
+
     const btnGroup = document.createElement('div');
     btnGroup.classList.add('btn-group', 'w-100');
     actions.forEach(({ text, class: btnClass, action }) => {
