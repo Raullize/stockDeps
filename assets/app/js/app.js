@@ -288,8 +288,13 @@ function preencherFornecedores(fornecedores) {
     const lista = document.getElementById('fornecedor-lista');
 
     input.addEventListener('input', () => {
-        const query = input.value.toLowerCase();
+        const query = input.value.toLowerCase().trim();
         lista.innerHTML = '';
+
+        if (query === '') {
+            lista.style.display = 'none';
+            return;
+        }
 
         const fornecedoresFiltrados = fornecedores.filter(fornecedor =>
             fornecedor.nome.toLowerCase().includes(query)
@@ -300,9 +305,9 @@ function preencherFornecedores(fornecedores) {
             fornecedoresFiltrados.forEach(fornecedor => {
                 const item = document.createElement('button');
                 item.classList.add('list-group-item', 'list-group-item-action');
-                item.textContent = fornecedor.nome; 
+                item.textContent = fornecedor.nome;
                 item.addEventListener('click', () => {
-                    input.value = fornecedor.nome; 
+                    input.value = fornecedor.nome;
                     lista.style.display = 'none';
                 });
                 lista.appendChild(item);
@@ -325,6 +330,7 @@ function preencherFornecedores(fornecedores) {
     });
 }
 
+
 function preencherClientes(clientes) {
     const input = document.getElementById('cliente');
     const lista = document.getElementById('clientes-lista');
@@ -332,6 +338,11 @@ function preencherClientes(clientes) {
     input.addEventListener('input', () => {
         const query = input.value.toLowerCase();
         lista.innerHTML = '';
+
+        if (query === '') {
+            lista.style.display = 'none';
+            return;
+        }
 
         const clientesFiltrados = clientes.filter(cliente =>
             cliente.nome.toLowerCase().includes(query)

@@ -214,7 +214,7 @@ $this->layout("_theme");
                     <div class="mb-3">
                         <label for="fornecedor" class="form-label">Fornecedor</label>
                         <input type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
-                        <div class="list-group mt-2" id="fornecedor-lista" style="display: none;"></div>
+                        <div class="list-group mt-0 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1000;"></div>
                     </div>
                     <div class="mb-3">
                         <label for="quantidade" class="form-label">Quantidade</label>
@@ -252,7 +252,7 @@ $this->layout("_theme");
                     <div class="mb-3">
                         <label for="cliente" class="form-label">Cliente</label>
                         <input type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
-                        <div class="list-group mt-2" id="clientes-lista" style="display: none;"></div>
+                        <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
                     </div>
                     <div class="mb-3">
                         <label for="quantidadeSaida" class="form-label">Quantidade</label>

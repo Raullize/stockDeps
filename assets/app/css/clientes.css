@@ -43,6 +43,11 @@
   width: 300px;
 }
 
+#tabelaClientes {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
 
 .table tr{
   background-color: #f2f2f2;
