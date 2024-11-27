@@ -71,6 +71,42 @@ form_cc.on("submit", function(e) {
     });
 });
 
+const form_ec = $("#entrada-cadastro");
+
+form_ec.on("submit", function(e) {
+    e.preventDefault();
+
+    const serializedData = form_ec.serialize();
+    
+    $.ajax({
+        type: "POST",
+        url: "/stock-deps/estoque-ec",
+        data: serializedData,
+        dataType: "json",
+        success: function(response) {
+
+            if (response.type == 'error') {
+                console.log(response);
+                exibirMensagemTemporariaErro(response.message);
+                return;
+            }
+
+            if (response.type == 'warning') {
+                console.log(response);
+                exibirMensagemTemporariaAviso(response.message);
+                return;
+            }
+
+            if (response.type == 'success') {
+                console.log(response);
+                exibirMensagemTemporariaSucesso(response.message);
+                return;
+            }
+
+        }
+    });
+});
+
 const form_cadastro_clientes = $("#cadastro-clientes");
 
 form_cadastro_clientes.on("submit", function(e) {

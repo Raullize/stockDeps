@@ -7,19 +7,19 @@ use Source\Core\Connect;
 class Entradas
 {
     private $id;
-    private $idCategoria;
+    private $idFornecedor;
     private $idProdutos;
     private $quantidade;
 
     public function __construct(
         int $id = NULL,
-        int $idCategoria = NULL,
+        int $idFornecedor = NULL,
         int $idProdutos = NULL,
         int $quantidade = NULL
     )
     {
         $this->id = $id;
-        $this->idCategoria = $idCategoria;
+        $this->idFornecedor = $idFornecedor;
         $this->idProdutos = $idProdutos;
         $this->quantidade = $quantidade;
     }
@@ -43,18 +43,7 @@ class Entradas
     /**
      * @return string|null
      */
-    public function getIdCategoria()
-    {
-        return $this->idCategoria;
-    }
 
-    /**
-     * @param string|null $name
-     */
-    public function setIdCategoria($idCategoria): void
-    {
-        $this->idCategoria = $idCategoria;
-    }
 
     /**
      * @return string|null
@@ -103,9 +92,9 @@ class Entradas
 
     public function insert() : bool
     {
-        $query = "INSERT INTO entradas (idCategoria, idProdutos, quantidade) VALUES (:idCategoria, :idProdutos, :quantidade)";
+        $query = "INSERT INTO entradas (idFornecedor, idProdutos, quantidade) VALUES (:idFornecedor, :idProdutos, :quantidade)";
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":idCategoria", $this->idCategoria);
+        $stmt->bindParam(":idFornecedor", $this->idFornecedor);
         $stmt->bindParam(":idProdutos", $this->idProdutos);
         $stmt->bindValue(":quantidade", $this->quantidade);
         $stmt->execute();

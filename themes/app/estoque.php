@@ -210,15 +210,17 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalEntradaLabel">Adicionar Entrada</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form id="entrada-cadastro" name="entrada-cadastro" method="post">
                 <div class="modal-body">
+                        <input type="hidden" id="produtoId" name="produtoId" value="">
                     <div class="mb-3">
                         <label for="fornecedor" class="form-label">Fornecedor</label>
-                        <input type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
+                        <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
                         <div class="list-group mt-0 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1000;"></div>
                     </div>
                     <div class="mb-3">
                         <label for="quantidade" class="form-label">Quantidade</label>
-                        <input type="number" class="form-control" id="quantidade" placeholder="Digite a quantidade">
+                        <input name="quantidade" type="number" class="form-control" id="quantidade" placeholder="Digite a quantidade">
                     </div>
                     <div class="mb-3">
                         <label for="precoEntrada" class="form-label">Preço</label>
@@ -234,8 +236,9 @@ $this->layout("_theme");
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="salvarEntrada">Salvar Entrada</button>
+                    <button type="submit" class="btn btn-primary" id="salvarEntrada">Salvar Entrada</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>

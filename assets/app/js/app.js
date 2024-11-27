@@ -474,7 +474,9 @@ function openModal(tipo, produto) {
 };
 
 function openModalEntrada(id) {
-    console.log(id)
+    const inputProdutoId = document.getElementById('produtoId');
+
+    inputProdutoId.value = id;
     new bootstrap.Modal(document.getElementById('modalEntrada')).show();
 }
 function openModalSaida(id) {

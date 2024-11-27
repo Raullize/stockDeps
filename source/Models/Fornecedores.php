@@ -260,7 +260,7 @@ class Fornecedores
 
 public function findByIdName($nome) 
 {
-    $query = "SELECT * FROM clientes WHERE nome = :nome";
+    $query = "SELECT * FROM fornecedores WHERE nome = :nome";
     $stmt = Connect::getInstance()->prepare($query);
     $stmt->bindParam(":nome", $nome);
     $stmt->execute();
@@ -268,8 +268,8 @@ public function findByIdName($nome)
     if($stmt->rowCount() == 0){
         return false;
     } else {
-        $cliente = $stmt->fetch();
-        return $cliente->id;
+        $fornecedor = $stmt->fetch();
+        return $fornecedor->id;
     }
 }
 
