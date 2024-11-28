@@ -51,8 +51,6 @@ CREATE TABLE `fornecedores` (
     `email` varchar(255) NOT NULL,
     `telefone` varchar(15) NOT NULL,
     `endereco` varchar(255) NOT NULL,
-    `bairro` varchar(50) NOT NULL,
-    `complemento` varchar(255) DEFAULT NULL,
     `municipio` varchar(50) NOT NULL,
     `cep` varchar(9) NOT NULL,
     `uf` varchar(2) NOT NULL,

@@ -12,8 +12,6 @@ class Fornecedores
     private $email;
     private $telefone;
     private $endereco;
-    private $bairro;
-    private $complemento;
     private $municipio;
     private $cep;
     private $uf;
@@ -25,8 +23,6 @@ class Fornecedores
         string $email = NULL,
         string $telefone = NULL,
         string $endereco = NULL,
-        string $bairro = NULL,
-        string $complemento = NULL, 
         string $municipio = NULL,
         string $cep = NULL,
         string $uf = NULL
@@ -38,8 +34,6 @@ class Fornecedores
         $this->email = $email;
         $this->telefone = $telefone;
         $this->endereco = $endereco;
-        $this->bairro = $bairro;
-        $this->complemento = $complemento;
         $this->municipio = $municipio;
         $this->cep = $cep;
         $this->uf = $uf;
@@ -157,49 +151,6 @@ class Fornecedores
         return $this;
     }
 
-    /**
-     * Get the value of bairro
-     */ 
-    public function getBairro()
-    {
-        return $this->bairro;
-    }
-
-    /**
-     * Set the value of bairro
-     *
-     * @return  self
-     */ 
-    public function setBairro($bairro)
-    {
-        $this->bairro = $bairro;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of complemento
-     */ 
-    public function getComplemento()
-    {
-        return $this->complemento;
-    }
-
-    /**
-     * Set the value of complemento
-     *
-     * @return  self
-     */ 
-    public function setComplemento($complemento)
-    {
-        $this->complemento = $complemento;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of municipio
-     */ 
     public function getMunicipio()
     {
         return $this->municipio;
@@ -210,6 +161,7 @@ class Fornecedores
      *
      * @return  self
      */ 
+
     public function setMunicipio($municipio)
     {
         $this->municipio = $municipio;
@@ -220,6 +172,7 @@ class Fornecedores
     /**
      * Get the value of cep
      */ 
+
     public function getCep()
     {
         return $this->cep;
@@ -230,6 +183,7 @@ class Fornecedores
      *
      * @return  self
      */ 
+
     public function setCep($cep)
     {
         $this->cep = $cep;
@@ -240,6 +194,7 @@ class Fornecedores
     /**
      * Get the value of uf
      */ 
+
     public function getUf()
     {
         return $this->uf;
@@ -250,13 +205,13 @@ class Fornecedores
      *
      * @return  self
      */ 
+
     public function setUf($uf)
     {
         $this->uf = $uf;
 
         return $this;
     }
-
 
 public function findByIdName($nome) 
 {
@@ -334,8 +289,8 @@ public function update()
 
 public function insert() 
 {
-    $query = "INSERT INTO fornecedores (nome, cnpj, email, telefone, endereco, bairro, complemento, municipio, cep, uf) 
-              VALUES (:nome, :cnpj, :email, :telefone, :endereco, :bairro, :complemento, :municipio, :cep, :uf)";
+    $query = "INSERT INTO fornecedores (nome, cnpj, email, telefone, endereco, municipio, cep, uf) 
+              VALUES (:nome, :cnpj, :email, :telefone, :endereco, :municipio, :cep, :uf)";
 
     $stmt = Connect::getInstance()->prepare($query);
 
@@ -344,8 +299,6 @@ public function insert()
     $stmt->bindParam(":email",$this->email);
     $stmt->bindParam(":telefone",$this->telefone);
     $stmt->bindParam(":endereco",$this->endereco);
-    $stmt->bindParam(":bairro",$this->bairro);
-    $stmt->bindParam(":complemento",$this->complemento);
     $stmt->bindParam(":municipio",$this->municipio);
     $stmt->bindParam(":cep",$this->cep);
     $stmt->bindParam(":uf",$this->uf);

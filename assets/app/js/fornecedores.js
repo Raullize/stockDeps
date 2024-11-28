@@ -18,8 +18,9 @@ function preencherTabelaFornecedores(fornecedores) {
             <td>${fornecedor.cnpj}</td>
             <td>${fornecedor.email}</td>
             <td>${fornecedor.telefone}</td>
+            <td>${fornecedor.endereco}</td>
             <td>${fornecedor.municipio}</td>
-            <td>${fornecedor.bairro}</td>
+            <td>${fornecedor.cep}</td>
             <td>${fornecedor.uf}</td>
             <td>
                 <div class="btn-group">

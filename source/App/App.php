@@ -384,8 +384,6 @@ class App
                 $data["email"],
                 $data["telefone"],
                 $data["endereco"],
-                $data["bairro"],
-                $data["complemento"],
                 $data["municipio"],
                 $data["cep"],
                 $data["uf"]

@@ -32,8 +32,9 @@ $this->layout("_theme");
                             <th>CNPJ</th>
                             <th>Email</th>
                             <th>Telefone</th>
+                            <th>Endereço</th>
                             <th>Municipio</th>
-                            <th>Bairro</th>
+                            <th>CEP</th>
                             <th>UF</th>
                             <th>Ações</th>
                         </tr>
