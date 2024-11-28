@@ -244,6 +244,9 @@ class App
 
             if ($entradas->insert()) {
 
+                $produto = new Produtos();
+                $produto->somaQuantidadeProdutos($data["produtoId"], $data["quantidade"]);
+
                 $json = [
                     "nome" => $data["nome"],
                     "idFornecedor" => $idFonecedor,

@@ -148,6 +148,17 @@ class Produtos
         return true;
     }
 
+    public function somaQuantidadeProdutos(int $idProduto, int $quantidade) : void
+    {
+        $query = "UPDATE produtos SET quantidade = quantidade + :quantidade WHERE id = :idProduto";
+
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(":quantidade", $quantidade);
+        $stmt->bindParam(":idProduto", $idProduto);
+        $stmt->execute();
+    }
+
+
     public function validate (string $email, string $password) : bool
     {
         $query = "SELECT * FROM users WHERE email LIKE :email";
