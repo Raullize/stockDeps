@@ -100,7 +100,7 @@ class Entradas
         return $this;
     }
 
-    public function selectAll ()
+    public function selectAll (): array|bool
     {
         $query = "SELECT * FROM entradas";
         $stmt = Connect::getInstance()->prepare($query);
@@ -112,6 +112,23 @@ class Entradas
             return $stmt->fetchAll();
         }
     }
+
+    public function delete($idProduto)
+    {
+        $query = "DELETE FROM entradas WHERE idProdutos = :idProdutos";
+
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(":idProdutos", $idProduto);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 0) {
+            return false;  
+        } else {
+            return true;  
+        }
+    }
+
 
     public function insert() : bool
     {

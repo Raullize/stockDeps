@@ -1,12 +1,12 @@
-const form_pe = $("#produto-excluir");
-form_pe.on("submit", function(e) {
+const form_pd = $("#produto-excluir");
+form_pd.on("submit", function(e) {
     e.preventDefault();
 
-    const serializedData = form_pe.serialize();
+    const serializedData = form_pd.serialize();
     
     $.ajax({
         type: "POST",
-        url: "/stock-deps/estoque-pe",
+        url: "/stock-deps/estoque-pd",
         data: serializedData,
         dataType: "json",
         success: function(response) {
@@ -25,7 +25,14 @@ form_pe.on("submit", function(e) {
 
             if (response.type == 'success') {
                 console.log(response);
+                
+                const modalExcluir = bootstrap.Modal.getInstance(document.getElementById('modalExcluir'));
+                modalExcluir.hide();
+
                 exibirMensagemTemporariaSucesso(response.message);
+
+                preencherTabelaEntradas(response.entradas, response.produtos);
+                preencherTabelaSaidas(response.saidas, response.produtos);
                 preencherTabelaProdutos(response.produtos);
                 return;
             }

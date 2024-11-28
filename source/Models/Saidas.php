@@ -138,19 +138,20 @@ class Saidas
         return true;
     }
     
-    /*
-
-    public function getArray() : array
+    public function delete($idProduto)
     {
-        return ["user" => [
-            "id" => $this->getId(),
-            "name" => $this->getName(),
-            "email" => $this->getEmail(),
-            "document" => $this->getDocument(),
-            "photo" => $this->getPhoto()
-        ]];
-    }
+        $query = "DELETE FROM saidas WHERE idProdutos = :idProdutos";
 
-    */
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(":idProdutos", $idProduto);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 0) {
+            return false;  
+        } else {
+            return true;  
+        }
+    }
 
 }
