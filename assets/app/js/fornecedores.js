@@ -25,8 +25,8 @@ function preencherTabelaFornecedores(fornecedores) {
             <td>
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="editarFornecedor(${fornecedor.id})" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" id="editarFornecedorBtn">Editar</button>
-                    <button class="btn btn-success" onclick="verHistoricoFornecedor(${fornecedor.id})">Histórico</button>
                     <button class="btn btn-danger" onclick="excluirFornecedor(${fornecedor.id})">Excluir</button>
+                     <button class="btn btn-success" onclick="verHistoricoFornecedor(${fornecedor.id})">Histórico</button>
                 </div>
             </td>
         `;
