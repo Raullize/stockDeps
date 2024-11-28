@@ -194,14 +194,14 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <form id="produto-excluir" name="produto-excluir" method="post">
-                <div class="modal-body">
-                    <p>Tem certeza de que deseja excluir este produto?</p>
-                    <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-danger" id="confirmarExcluir">Excluir</button>
-                </div>
+                    <div class="modal-body">
+                        <p>Tem certeza de que deseja excluir este produto?</p>
+                        <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger" id="confirmarExcluir">Excluir</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -246,33 +246,33 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="entrada-cadastro" name="entrada-cadastro" method="post">
-                <div class="modal-body">
+                    <div class="modal-body">
                         <input name="produtoId" type="hidden" id="produtoId" value=""> <!-- Campo oculto para armazenar o id -->
-                    <div class="mb-3">
-                        <label for="fornecedor" class="form-label">Fornecedor</label>
-                        <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
-                        <div class="list-group mt-0 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1000;"></div>
+                        <div class="mb-3">
+                            <label for="fornecedor" class="form-label">Fornecedor</label>
+                            <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
+                            <div class="list-group mt-0 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1000;"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="quantidade" class="form-label">Quantidade</label>
+                            <input name="quantidade" type="number" class="form-control" id="quantidade" placeholder="Digite a quantidade">
+                        </div>
+                        <div class="mb-3">
+                            <label for="precoEntrada" class="form-label">Preço</label>
+                            <input
+                                name="preco"
+                                type="text"
+                                class="form-control"
+                                id="precoEntrada"
+                                value="R$ 0,00"
+                                oninput="formatarPreco(this)">
+                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="quantidade" class="form-label">Quantidade</label>
-                        <input name="quantidade" type="number" class="form-control" id="quantidade" placeholder="Digite a quantidade">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarEntrada">Salvar Entrada</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="precoEntrada" class="form-label">Preço</label>
-                        <input
-                            name="preco"
-                            type="text"
-                            class="form-control"
-                            id="precoEntrada"
-                            value="R$ 0,00"
-                            oninput="formatarPreco(this)">
-                        <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary" id="salvarEntrada">Salvar Entrada</button>
-                </div>
                 </form>
             </div>
         </div>
@@ -287,34 +287,49 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="saida-cadastro" name="saida-cadastro" method="post">
-                <div class="modal-body">
+                    <div class="modal-body">
                         <input name="produtoId2" type="hidden" id="produtoId2" value=""> <!-- Campo oculto para armazenar o id -->
-                    <div class="mb-3">
-                        <label for="cliente" class="form-label">Cliente</label>
-                        <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
-                        <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
+
+                        <!-- Campo Cliente -->
+                        <div class="mb-3">
+                            <label for="cliente" class="form-label">Cliente</label>
+                            <div class="d-flex align-items-center justify-content-center" style="min-height: 100%;">
+                                <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
+                            </div> <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
+                            <div class="form-check m-3">
+                                <input class="form-check-input" type="checkbox" id="clienteNaoCadastrado" name="clienteNaoCadastrado">
+                                <label class="form-check-label" for="clienteNaoCadastrado">Cliente não cadastrado</label>
+                            </div>
+                           
+                        </div>
+
+                        <!-- Campo Quantidade -->
+                        <div class="mb-3">
+                            <label for="quantidadeSaida" class="form-label">Quantidade</label>
+                            <input name="quantidade" type="number" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
+                        </div>
+
+                        <!-- Campo Preço -->
+                        <div class="mb-3">
+                            <label for="precoSaida" class="form-label">Preço</label>
+                            <input
+                                name="preco"
+                                type="text"
+                                class="form-control"
+                                id="precoSaida"
+                                value="R$ 0,00"
+                                oninput="formatarPreco(this)">
+                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="quantidadeSaida" class="form-label">Quantidade</label>
-                        <input name="quantidade" type="number" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
+
+                    <!-- Botões -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarSaida">Salvar Saída</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="precoSaida" class="form-label">Preço</label>
-                        <input
-                            name="preco"
-                            type="text"
-                            class="form-control"
-                            id="precoSaida"
-                            value="R$ 0,00"
-                            oninput="formatarPreco(this)">
-                        <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary" id="salvarSaida">Salvar Saída</button>
-                </div>
                 </form>
+
             </div>
         </div>
     </div>

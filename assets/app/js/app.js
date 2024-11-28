@@ -518,6 +518,13 @@ document.getElementById("categoria").addEventListener("change", function () {
     alterarTabelaPorCategoriaSelecionada(produtos);
 });
 
+document.getElementById('clienteNaoCadastrado').addEventListener('change', function () {
+    const clienteInput = document.getElementById('cliente');
+    clienteInput.disabled = this.checked; // Desabilita se o checkbox estiver marcado
+    clienteInput.value = this.checked ? '' : clienteInput.value; // Limpa o campo quando desabilitado
+});
+
+
 function createButtonGroup(produto) {
     const actions = [
         { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto, produto.id) },
