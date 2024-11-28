@@ -181,4 +181,20 @@ class Produtos
         $stmt->bindParam(":idProduto", $idProduto);
         $stmt->execute();
     }
+
+    public function delete($id)
+    {
+        $query = "DELETE FROM produtos WHERE id = :id";
+
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(":id", $id);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }

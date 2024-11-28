@@ -161,8 +161,10 @@ function preencherTabelaEntradas(entradas, produtos) {
 }
 
 function preencherTabelaSaidas(saidas,produtos) {
-    const corpoTabelaSaidas = document.getElementById("corpoTabelaSaidas");
-    corpoTabelaSaidas.innerHTML = '';
+    if (!Array.isArray(produtos) || !Array.isArray(saidas)) {
+        console.error("Saídas ou produtos não são arrays válidos.");
+        return;
+    }
 
     if (saidas.length === 0) {
         const alertaMensagem = document.createElement('div');
@@ -176,6 +178,9 @@ function preencherTabelaSaidas(saidas,produtos) {
 
         return;
     }
+
+    const corpoTabelaSaidas = document.getElementById("corpoTabelaSaidas");
+    corpoTabelaSaidas.innerHTML = '';
 
     saidas.forEach(saida => {
         const tr = document.createElement('tr');

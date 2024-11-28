@@ -155,7 +155,7 @@ class App
         }
     }
 
-    public function estoquePe(?array $data): void
+    public function estoquePd(?array $data): void
     {
         if (!empty($data)) {
 
@@ -168,56 +168,28 @@ class App
                 return;
             }
 
-            $newpreco = $data["preco"];
+            $entradas = new Entradas();
+            $entradas->delete($data["idProdutoExcluir"]);
 
-            // Remove o símbolo de moeda 'R$'
-            $newpreco = str_replace('R$', '', $newpreco);
-
-            // Remove os pontos (separadores de milhar)
-            $newpreco = str_replace('.', '', $newpreco);
-
-            // Substitui a vírgula decimal por um ponto
-            $newpreco = str_replace(',', '.', $newpreco);
-
-            // Converte para float
-            $precoFloat = (float)$newpreco;
-
-            $produto = new Produtos();
-
-            if ($produto->validateProdutos($data["nome"], $data["categoria"])) {
+            $saidas = new Saidas();
+            $saidas->delete($data["idProdutoExcluir"]);
+            
+            $produtos = new Produtos();
+            $produtoDeletado = $produtos->delete($data["idProdutoExcluir"]);
+            
+            if ($produtoDeletado) {
                 $json = [
-                    "message" => "Produto já cadastrado!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $produto = new Produtos(
-                NULL,
-                $data["categoria"],
-                $data["nome"],
-                $data["descricao"],
-                $precoFloat
-            );
-
-            if ($produto->insert()) {
-
-                $json = [
-                    "produtos" => $produto->selectAll(),
-                    "nome" => $data["nome"],
-                    "categoria" => $data["categoria"],
-                    "preco" => $precoFloat,
-                    "descricao" => $data["descricao"],
-                    "message" => "Produto cadastrado com sucesso!",
+                    "entradas" => $entradas->selectAll(),
+                    "saidas" => $saidas->selectAll(),
+                    "produtos" => $produtos->selectAll(),
+                    "message" => "Produto deletado com sucesso!",
                     "type" => "success"
                 ];
                 echo json_encode($json);
                 return;
-
             } else {
                 $json = [
-                    "message" => "Produto não cadastrado!",
+                    "message" => "Produto não deletado!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
