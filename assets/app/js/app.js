@@ -57,12 +57,24 @@ function preencherTabelaProdutos(produtos) {
     produtos.forEach(produto => {
         const tr = document.createElement('tr');
 
-        const { id, nome, descricao, preco } = produto;
+        const { id, nome, descricao, preco, quantidade, status_produto } = produto;
         const precoFormatado = preco.toLocaleString('pt-BR', {
             style: 'currency',
             currency: 'BRL'
         });
-        const dados = [id, nome, descricao, precoFormatado, 100, "Disponível"];
+
+        let status_produto_now;
+        switch (status_produto) {
+            case 0:
+                status_produto_now = "Indisponível";
+                break;
+            
+            case 1:
+                status_produto_now = "Disponível";
+                break;
+        }
+
+        const dados = [id, nome, descricao, precoFormatado, quantidade, status_produto_now];
 
         tr.append(...dados.map(dado => {
             const td = document.createElement('td');

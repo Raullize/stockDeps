@@ -126,8 +126,8 @@ class App
                 NULL,
                 $data["categoria"],
                 $data["nome"],
-                $precoFloat,
-                $data["descricao"]
+                $data["descricao"],
+                $precoFloat
             );
 
             if ($produto->insert()) {

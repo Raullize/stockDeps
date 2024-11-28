@@ -9,22 +9,22 @@ class Produtos
     private $id;
     private $idCategoria;
     private $nome;
-    private $preco;
     private $descricao;
+    private $preco;
 
     public function __construct(
         int $id = NULL,
         int $idCategoria = NULL,
         string $nome = NULL,
-        float $preco = NULL,
-        string $descricao = NULL
+        string $descricao = NULL,
+        float $preco = NULL
     )
     {
         $this->id = $id;
         $this->idCategoria = $idCategoria;
         $this->nome = $nome;
-        $this->preco = $preco;
         $this->descricao = $descricao;
+        $this->preco = $preco;
     }
 
     /**
@@ -107,6 +107,7 @@ class Produtos
         $this->descricao = $descricao;
     }
 
+   
     public function selectAll ()
     {
         $query = "SELECT * FROM produtos";
@@ -136,12 +137,13 @@ class Produtos
 
     public function insert() : bool
     {
-        $query = "INSERT INTO produtos (idCategoria, nome, preco, descricao) VALUES (:idCategoria, :nome, :preco, :descricao)";
+        $query = "INSERT INTO produtos (idCategoria, nome, descricao, preco) 
+                    VALUES (:idCategoria, :nome, :descricao, :preco)";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":idCategoria", $this->idCategoria);
         $stmt->bindParam(":nome", $this->nome);
-        $stmt->bindParam(":preco", $this->preco);
         $stmt->bindValue(":descricao", $this->descricao);
+        $stmt->bindParam(":preco", $this->preco);
         $stmt->execute();
         return true;
     }
@@ -192,5 +194,4 @@ class Produtos
             "photo" => $this->getPhoto()
         ]];
     }
-
 }
