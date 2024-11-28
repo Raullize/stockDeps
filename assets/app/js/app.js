@@ -151,6 +151,7 @@ function preencherTabelaEntradas(entradas, produtos) {
         corpoTabelaEntradas.appendChild(tr);
     });
 }
+
 function preencherTabelaSaidas(saidas,produtos) {
     const corpoTabelaSaidas = document.getElementById("corpoTabelaSaidas");
     corpoTabelaSaidas.innerHTML = '';
@@ -272,6 +273,7 @@ function buscarSaida(saidas, produtos) {
         preencherTabelaSaidas(saidasFiltradas, produtos);
     });
 }
+
 function alterarTabelaPorCategoriaSelecionada(produtos) {
     const categoriaSelecionada = document.getElementById("categoria").value;
     const categoriaSelecionadaNumero = Number(categoriaSelecionada);
@@ -532,8 +534,9 @@ function openModalEntrada(id) {
     inputProdutoId.value = id;
     new bootstrap.Modal(document.getElementById('modalEntrada')).show();
 }
+
 function openModalSaida(id) {
-    const inputProdutoId = document.getElementById('produtoId');
+    const inputProdutoId = document.getElementById('produtoId2');
 
     inputProdutoId.value = id;
     new bootstrap.Modal(document.getElementById('modalSaida')).show();

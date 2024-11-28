@@ -260,7 +260,7 @@ class App
             if (in_array("", $data)) {
                 $json = [
                     "nome" => $data["nome"],
-                    "idProdutos" => $data["produtoId"],
+                    "idProdutos" => $data["produtoId2"],
                     "quantidade" => $data["quantidade"],
                     "preco" => $data["preco"],
                     "message" => "Informe todos os campos para cadastrar!",
@@ -283,7 +283,7 @@ class App
             $saidas = new Saidas(
                 NULL,
                 $idCliente,
-                $data["produtoId"],
+                $data["produtoId2"],
                 $data["quantidade"],
                 $precoFloat
             );
@@ -293,7 +293,7 @@ class App
                 $json = [
                     "nome" => $data["nome"],
                     "idCliente" => $idCliente,
-                    "idProdutos" => $data["produtoId"],
+                    "idProdutos" => $data["produtoId2"],
                     "quantidade" => $data["quantidade"],
                     "preco" => $data["preco"],
                     "message" => "Saída cadastrada com sucesso!",

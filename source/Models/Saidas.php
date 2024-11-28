@@ -14,9 +14,9 @@ class Saidas
 
     public function __construct(
         int $id = NULL,
-        string $idClientes = NULL,
-        string $idProdutos = NULL,
-        string $quantidade = NULL,
+        int $idClientes = NULL,
+        int $idProdutos = NULL,
+        int $quantidade = NULL,
         float $preco = NULL
     )
     {
@@ -46,7 +46,7 @@ class Saidas
     /**
      * @return string|null
      */
-    public function getIdClientes(): ?string
+    public function getIdClientes(): ?int
     {
         return $this->idClientes;
     }
@@ -54,7 +54,7 @@ class Saidas
     /**
      * @param string|null $name
      */
-    public function setIdClientes(?string $idClientes): void
+    public function setIdClientes(?int $idClientes): void
     {
         $this->idClientes = $idClientes;
     }
@@ -62,7 +62,7 @@ class Saidas
     /**
      * @return string|null
      */
-    public function getIdProdutos(): ?string
+    public function getIdProdutos(): ?int
     {
         return $this->idProdutos;
     }
@@ -70,7 +70,7 @@ class Saidas
     /**
      * @param string|null $idProdutos
      */
-    public function setIdProdutos(?string $idProdutos): void
+    public function setIdProdutos(?int $idProdutos): void
     {
         $this->idProdutos = $idProdutos;
     }
@@ -78,7 +78,7 @@ class Saidas
     /**
      * @return string|null
      */
-    public function getQuantidade(): ?string
+    public function getQuantidade(): ?int
     {
         return $this->quantidade;
     }
@@ -86,7 +86,7 @@ class Saidas
     /**
      * @param string|null $quantidade
      */
-    public function setQuantidade(?string $quantidade): void
+    public function setQuantidade(?int $quantidade): void
     {
         $this->quantidade = $quantidade;
     }
@@ -126,32 +126,15 @@ class Saidas
 
     public function insert()
     {
-        $output = array();
 
-        $queryVefifyQtd = "SELECT (COALESCE(totalE,0) - COALESCE(totalS,0)) AS sobra
-        FROM( SELECT SUM(e.quantidade) AS totalE  FROM entradas e WHERE e.idProdutos = :idProdutos ) AS subconsultaE,
-        ( SELECT SUM(s.quantidade) AS totalS FROM saidas s WHERE s.idProdutos = :idProdutos
-        ) AS subconsultaS;
-        ";
-        $stmt = Connect::getInstance()->prepare($queryVefifyQtd);
-        $stmt->bindParam(":idProdutos", $this->idProdutos);
-        $stmt->execute();
-        $result = $stmt->fetch();        
-
-        if($this->quantidade > $result->sobra){
-            $output['error'] = "Quantidade insuficiente para retirada";
-            return false  ;
-        }
-
-        $query = "INSERT INTO saidas (idCategoria, idClientes, idProdutos, quantidade) VALUES (:idCategoria, :idClientes, :idProdutos, :quantidade)";
+        $query = "INSERT INTO saidas (idClientes, idProdutos, quantidade, preco) 
+                    VALUES (:idClientes, :idProdutos, :quantidade, :preco)";
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":idCategoria", $this->idCategoria);
         $stmt->bindParam(":idClientes", $this->idClientes);
         $stmt->bindParam(":idProdutos", $this->idProdutos);
-        $stmt->bindValue(":quantidade", $this->quantidade);
+        $stmt->bindParam(":quantidade", $this->quantidade);
+        $stmt->bindParam(":preco", $this->preco);
         $stmt->execute();
-
-        $output['success'] = "Saída inserida com sucesso";
         return true;
     }
     

@@ -115,7 +115,8 @@ class Entradas
 
     public function insert() : bool
     {
-        $query = "INSERT INTO entradas (idFornecedor, idProdutos, quantidade, preco) VALUES (:idFornecedor, :idProdutos, :quantidade, :preco)";
+        $query = "INSERT INTO entradas (idFornecedor, idProdutos, quantidade, preco) 
+                    VALUES (:idFornecedor, :idProdutos, :quantidade, :preco)";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":idFornecedor", $this->idFornecedor);
         $stmt->bindParam(":idProdutos", $this->idProdutos);

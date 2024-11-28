@@ -285,7 +285,7 @@ $this->layout("_theme");
                 </div>
                 <form id="saida-cadastro" name="saida-cadastro" method="post">
                 <div class="modal-body">
-                        <input name="produtoId" type="hidden" id="produtoId" value="">
+                        <input name="produtoId2" type="hidden" id="produtoId2" value="">
                     <div class="mb-3">
                         <label for="cliente" class="form-label">Cliente</label>
                         <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
@@ -391,7 +391,7 @@ $this->layout("_theme");
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nome/th>
+                                <th>Nome</th>
                                 <th>Quantidade</th>
                                 <th>Preço</th>
                                 <th>Criado Em</th>
