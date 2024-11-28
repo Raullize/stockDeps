@@ -193,13 +193,16 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalExcluirLabel">Excluir Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
+                <form id="produto-excluir" name="produto-excluir" method="post">
                 <div class="modal-body">
                     <p>Tem certeza de que deseja excluir este produto?</p>
+                    <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmarExcluir">Excluir</button>
+                    <button type="submit" class="btn btn-danger" id="confirmarExcluir">Excluir</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -244,7 +247,7 @@ $this->layout("_theme");
                 </div>
                 <form id="entrada-cadastro" name="entrada-cadastro" method="post">
                 <div class="modal-body">
-                        <input name="produtoId" type="hidden" id="produtoId" value="">
+                        <input name="produtoId" type="hidden" id="produtoId" value=""> <!-- Campo oculto para armazenar o id -->
                     <div class="mb-3">
                         <label for="fornecedor" class="form-label">Fornecedor</label>
                         <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
@@ -285,7 +288,7 @@ $this->layout("_theme");
                 </div>
                 <form id="saida-cadastro" name="saida-cadastro" method="post">
                 <div class="modal-body">
-                        <input name="produtoId2" type="hidden" id="produtoId2" value="">
+                        <input name="produtoId2" type="hidden" id="produtoId2" value=""> <!-- Campo oculto para armazenar o id -->
                     <div class="mb-3">
                         <label for="cliente" class="form-label">Cliente</label>
                         <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
@@ -433,7 +436,8 @@ $this->layout("_theme");
     </div>
 
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
-    <script src="<?= url('assets/app/js/formsBackEnd.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 
 </body>

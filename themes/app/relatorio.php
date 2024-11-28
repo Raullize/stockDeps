@@ -19,7 +19,4 @@ $this->layout("_theme");
     <a href="<?= url("pdf-r-p") ?>" class="btn btn-primary">Baixar</a>
   </div>
 </div>
-
-
-
 </div>

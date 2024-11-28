@@ -58,6 +58,13 @@ $route->post("/estoque-cc", "App:estoqueCc");
 $route->post("/estoque-ec", "App:estoqueEc");
 $route->post("/estoque-sc", "App:estoqueSc");
 
+$route->post("/estoque-pe", "App:estoquePe");
+/*
+$route->post("/estoque-cc", "App:estoqueCc");
+$route->post("/estoque-ec", "App:estoqueEc");
+$route->post("/estoque-sc", "App:estoqueSc");
+*/
+
 /* ATUALIZAR TODAS ABAIXO */
 $route->post("/categorias-deletar", "App:categoriasDeletar");
 $route->post("/estoque-entrada", "App:estoqueEntrada");

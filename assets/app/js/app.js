@@ -537,13 +537,18 @@ function createButtonGroup(produto) {
     return tdAcoes;
 };
 
-function openModal(tipo, produto) {
+function openModal(tipo, id) {
     const modalId = tipo === 'Editar' ? 'modalEditar' : 'modalExcluir';
     if (tipo === 'Editar') {
-        document.getElementById('nomeProduto').value = produto.nome;
-        document.getElementById('descricaoProduto').value = produto.descricao;
-        document.getElementById('precoProduto').value = parseFloat(produto.preco).toFixed(2);
+        document.getElementById('nomeProduto').value = id.nome;
+        document.getElementById('descricaoProduto').value = id.descricao;
+        document.getElementById('precoProduto').value = parseFloat(id.preco).toFixed(2);
     }
+
+    if (tipo === 'Excluir') {
+        document.getElementById('idProdutoExcluir').value = id;
+    }
+
     new bootstrap.Modal(document.getElementById(modalId)).show();
 };
 
