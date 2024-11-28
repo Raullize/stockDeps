@@ -4,7 +4,7 @@ function exibirMensagemTemporariaErro(mensagem) {
     // Cria o elemento da mensagem
     const elementoMensagem = $('<div>')
         .css({
-            position: 'absolute',
+            position: 'fixed',
             top: '25%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -39,7 +39,7 @@ function exibirMensagemTemporariaAviso(mensagem) {
     // Cria o elemento da mensagem
     const elementoMensagem = $('<div>')
         .css({
-            position: 'absolute',
+            position: 'fixed',
             top: '25%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
@@ -74,7 +74,7 @@ function exibirMensagemTemporariaSucesso(mensagem) {
     // Cria o elemento da mensagem
     const elementoMensagem = $('<div>')
         .css({
-            position: 'absolute',
+            position: 'fixed',
             top: '25%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
