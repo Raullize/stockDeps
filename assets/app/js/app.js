@@ -185,6 +185,10 @@ function preencherTabelaSaidas(saidas,produtos) {
         tdQuantidade.textContent = saida.quantidade;
         tr.appendChild(tdQuantidade);
 
+        const tdPreco = document.createElement('td');
+        tdPreco.textContent = saida.preco;
+        tr.appendChild(tdPreco);
+
         const tdCriadoEm = document.createElement('td');
         tdCriadoEm.textContent = saida.created_at;
         tr.appendChild(tdCriadoEm);
