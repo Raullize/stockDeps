@@ -99,9 +99,16 @@ class App
 
             $newpreco = $data["preco"];
 
+            // Remove o símbolo de moeda 'R$'
             $newpreco = str_replace('R$', '', $newpreco);
+
+            // Remove os pontos (separadores de milhar)
+            $newpreco = str_replace('.', '', $newpreco);
+
+            // Substitui a vírgula decimal por um ponto
             $newpreco = str_replace(',', '.', $newpreco);
 
+            // Converte para float
             $precoFloat = (float)$newpreco;
 
             $produto = new Produtos();
@@ -146,7 +153,6 @@ class App
             }
         }
     }
-
 
     public function estoqueCc(?array $data): void
     {
@@ -213,9 +219,16 @@ class App
 
             $newpreco = $data["preco"];
 
+            // Remove o símbolo de moeda 'R$'
             $newpreco = str_replace('R$', '', $newpreco);
+
+            // Remove os pontos (separadores de milhar)
+            $newpreco = str_replace('.', '', $newpreco);
+
+            // Substitui a vírgula decimal por um ponto
             $newpreco = str_replace(',', '.', $newpreco);
 
+            // Converte para float
             $precoFloat = (float)$newpreco;
 
             $fornecedor = new Fornecedores();
@@ -272,9 +285,16 @@ class App
 
             $newpreco = $data["preco"];
 
+            // Remove o símbolo de moeda 'R$'
             $newpreco = str_replace('R$', '', $newpreco);
+
+            // Remove os pontos (separadores de milhar)
+            $newpreco = str_replace('.', '', $newpreco);
+
+            // Substitui a vírgula decimal por um ponto
             $newpreco = str_replace(',', '.', $newpreco);
 
+            // Converte para float
             $precoFloat = (float)$newpreco;
 
             $cliente = new Clientes();

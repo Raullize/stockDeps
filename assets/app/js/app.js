@@ -186,7 +186,11 @@ function preencherTabelaSaidas(saidas,produtos) {
         tr.appendChild(tdQuantidade);
 
         const tdPreco = document.createElement('td');
-        tdPreco.textContent = saida.preco;
+        const precoFormatado = saida.preco.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+        tdPreco.textContent = precoFormatado;
         tr.appendChild(tdPreco);
 
         const tdCriadoEm = document.createElement('td');
