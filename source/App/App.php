@@ -236,6 +236,15 @@ class App
             $fornecedor = new Fornecedores();
             $idFonecedor = $fornecedor->findByIdName($data["nome"]);
 
+            if($idFonecedor == false){
+                $json = [
+                    "message" => "Fornecedor não encontrado!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
             $entradas = new Entradas(
                 NULL,
                 $idFonecedor,
@@ -307,6 +316,20 @@ class App
             $cliente = new Clientes();
             $idCliente = $cliente->findByIdName($data["nome"]);
 
+            $produto = new Produtos();
+            $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
+
+            if ($quantidadeProduto < $data["quantidade"]){
+                $json = [
+                    "quantidadeProduto" => $quantidadeProduto,
+                    "quantidade" => $data["quantidade"],
+                    "message" => "Quantidade inválida!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
             $saidas = new Saidas(
                 NULL,
                 $idCliente,
@@ -317,11 +340,11 @@ class App
 
             if ($saidas->insert()) {
 
-                $produtos = new Produtos();
+                $produto->subtraiQuantidadeProdutos($data["produtoId2"], $data["quantidade"]);
 
                 $json = [
                     "saidas" => $saidas->selectAll(),
-                    "produtos" => $produtos->selectAll(),
+                    "produtos" => $produto->selectAll(),
                     "nome" => $data["nome"],
                     "idCliente" => $idCliente,
                     "idProdutos" => $data["produtoId2"],

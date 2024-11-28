@@ -88,7 +88,7 @@ class Clientes
         $this->celular = $celular;
     }
 
-    public function selectAll ()
+    public function selectAll (): array|bool
     {
         $query = "SELECT * FROM clientes";
         $stmt = Connect::getInstance()->prepare($query);
@@ -101,7 +101,7 @@ class Clientes
         }
     }
 
-    public function findByIdName($nome) 
+    public function findByIdName($nome): mixed 
     {
         $query = "SELECT * FROM clientes WHERE nome = :nome";
         $stmt = Connect::getInstance()->prepare($query);
@@ -130,7 +130,8 @@ class Clientes
         }
     }
 
-    public function getHistoricoSaidas($idCliente){
+    public function getHistoricoSaidas($idCliente): array|string
+    {
         $query = "SELECT p.nome AS nomeProduto, c.nome as nomeCategoria, s.quantidade, s.created_at FROM saidas s JOIN produtos p ON s.idProdutos = p.id 
         JOIN categorias c ON s.idCategoria = c.id WHERE s.idClientes = :idCliente;";
          $stmt = Connect::getInstance()->prepare($query);
@@ -148,7 +149,8 @@ class Clientes
         return $resultados;
     }
 
-    public function getDadosCliente($idCliente){
+    public function getDadosCliente($idCliente): array|string
+    {
         $query = "SELECT * FROM clientes WHERE id = :idCliente;";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":idCliente", $idCliente);
@@ -189,7 +191,7 @@ class Clientes
 */
     /*finalizar a insert*/
 
-    public function insert() 
+    public function insert(): bool 
     {
         $query = "INSERT INTO clientes (nome, cpf, celular) 
                   VALUES (:nome, :cpf, :celular)";

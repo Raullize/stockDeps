@@ -135,6 +135,20 @@ class Produtos
         }
     }
 
+    public function getQuantidadeById($id): mixed
+    {
+        $query = "SELECT * FROM produtos WHERE id = :id";
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
+        if($stmt->rowCount() == 1){
+            $produto = $stmt->fetch();
+            return $produto->quantidade;
+        } else {
+            return false;
+        }
+    }
+
     public function insert() : bool
     {
         $query = "INSERT INTO produtos (idCategoria, nome, descricao, preco) 
@@ -158,51 +172,13 @@ class Produtos
         $stmt->execute();
     }
 
-
-    public function validate (string $email, string $password) : bool
+    public function subtraiQuantidadeProdutos(int $idProduto, int $quantidade) : void
     {
-        $query = "SELECT * FROM users WHERE email LIKE :email";
+        $query = "UPDATE produtos SET quantidade = quantidade - :quantidade WHERE id = :idProduto";
+
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":quantidade", $quantidade);
+        $stmt->bindParam(":idProduto", $idProduto);
         $stmt->execute();
-
-        if($stmt->rowCount() == 0){
-            $this->message = "Usuário e/ou Senha não cadastrados!";
-            return false;
-        } else {
-            $user = $stmt->fetch();
-            if(!password_verify($password, $user->password)){
-                $this->message = "Usuário e/ou Senha não cadastrados!";
-                return false;
-            }
-        }
-
-        $this->id = $user->id;
-        $this->name = $user->name;
-        $this->email = $user->email;
-        $this->document = $user->document;
-        $this->message = "Usuário Autorizado, redirect to APP!";
-
-        $arrayUser = [
-            "id" => $this->id,
-            "name" => $this->name,
-            "email" => $this->email,
-            "photo" => $this->photo,
-        ];
-
-        $_SESSION["user"] = $arrayUser;
-        setcookie("user","Logado",time()+60*60,"/");
-        return true;
-    }
-
-    public function getArray() : array
-    {
-        return ["user" => [
-            "id" => $this->getId(),
-            "name" => $this->getName(),
-            "email" => $this->getEmail(),
-            "document" => $this->getDocument(),
-            "photo" => $this->getPhoto()
-        ]];
     }
 }
