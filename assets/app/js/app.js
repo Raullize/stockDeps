@@ -57,24 +57,20 @@ function preencherTabelaProdutos(produtos) {
     produtos.forEach(produto => {
         const tr = document.createElement('tr');
 
-        const { id, nome, descricao, preco, quantidade, status_produto } = produto;
+        const { id, nome, descricao, preco, quantidade} = produto;
         const precoFormatado = preco.toLocaleString('pt-BR', {
             style: 'currency',
             currency: 'BRL'
         });
 
-        let status_produto_now;
-        switch (status_produto) {
-            case 0:
-                status_produto_now = "Indisponível";
-                break;
-            
-            case 1:
-                status_produto_now = "Disponível";
-                break;
+        let status;
+        if (quantidade > 0) {
+            status = "Disponível";
+        } else {
+            status = "Indisponível";
         }
 
-        const dados = [id, nome, descricao, precoFormatado, quantidade, status_produto_now];
+        const dados = [id, nome, descricao, precoFormatado, quantidade, status];
 
         tr.append(...dados.map(dado => {
             const td = document.createElement('td');
@@ -316,6 +312,10 @@ function preencherCategorias(categorias, callbackMostrarProdutos) {
     const selectElement = document.getElementById('categoria');
     const selectElementModal = document.getElementById('categoriaProdutoAdicionar');
 
+    // Limpar as opções existentes nos selects antes de adicionar novas
+    selectElement.innerHTML = '';
+    selectElementModal.innerHTML = '';
+
     // Adiciona a opção "Todas" no select principal
     const optionAll = document.createElement('option');
     optionAll.value = 'todas'; // Valor para identificar a exibição de todos os produtos
@@ -330,20 +330,19 @@ function preencherCategorias(categorias, callbackMostrarProdutos) {
     placeholderModal.selected = true;
     selectElementModal.appendChild(placeholderModal);
 
-    // Preenche as opções de categorias no select principal
+    // Preenche as opções de categorias no select principal e no modal
     categorias.forEach(categoria => {
-        const option = document.createElement('option');
-        option.value = categoria.id;
-        option.textContent = categoria.nome;
-        selectElement.appendChild(option);
-    });
+        // Para o select principal
+        const optionPrincipal = document.createElement('option');
+        optionPrincipal.value = categoria.id;
+        optionPrincipal.textContent = categoria.nome;
+        selectElement.appendChild(optionPrincipal);
 
-    // Preenche as opções de categorias no modal select
-    categorias.forEach(categoria => {
-        const option = document.createElement('option');
-        option.value = categoria.id;
-        option.textContent = categoria.nome;
-        selectElementModal.appendChild(option);
+        // Para o select do modal
+        const optionModal = document.createElement('option');
+        optionModal.value = categoria.id;
+        optionModal.textContent = categoria.nome;
+        selectElementModal.appendChild(optionModal);
     });
 
     // Adiciona um evento para filtrar produtos

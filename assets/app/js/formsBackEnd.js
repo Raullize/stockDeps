@@ -1,5 +1,4 @@
 const form_pc = $("#produto-cadastro");
-
 form_pc.on("submit", function(e) {
     e.preventDefault();
 
@@ -27,6 +26,7 @@ form_pc.on("submit", function(e) {
             if (response.type == 'success') {
                 console.log(response);
                 exibirMensagemTemporariaSucesso(response.message);
+                preencherTabelaProdutos(response.produtos);
                 return;
             }
 
@@ -34,9 +34,7 @@ form_pc.on("submit", function(e) {
     });
 });
 
-
 const form_cc = $("#categoria-cadastro");
-
 form_cc.on("submit", function(e) {
     e.preventDefault();
 
@@ -64,6 +62,7 @@ form_cc.on("submit", function(e) {
             if (response.type == 'success') {
                 console.log(response);
                 exibirMensagemTemporariaSucesso(response.message);
+                preencherCategorias(response.categorias);
                 return;
             }
 
@@ -72,7 +71,6 @@ form_cc.on("submit", function(e) {
 });
 
 const form_ec = $("#entrada-cadastro");
-
 form_ec.on("submit", function(e) {
     e.preventDefault();
 
@@ -100,6 +98,8 @@ form_ec.on("submit", function(e) {
             if (response.type == 'success') {
                 console.log(response);
                 exibirMensagemTemporariaSucesso(response.message);
+                preencherTabelaEntradas(response.entradas, response.produtos);
+                preencherTabelaProdutos(response.produtos);
                 return;
             }
 
@@ -108,7 +108,6 @@ form_ec.on("submit", function(e) {
 });
 
 const form_sc = $("#saida-cadastro");
-
 form_sc.on("submit", function(e) {
     e.preventDefault();
 
@@ -136,6 +135,8 @@ form_sc.on("submit", function(e) {
             if (response.type == 'success') {
                 console.log(response);
                 exibirMensagemTemporariaSucesso(response.message);
+                preencherTabelaSaidas(response.saidas, response.produtos);
+                preencherTabelaProdutos(response.produtos);
                 return;
             }
 
@@ -144,7 +145,6 @@ form_sc.on("submit", function(e) {
 });
 
 const form_cadastro_clientes = $("#cadastro-clientes");
-
 form_cadastro_clientes.on("submit", function(e) {
     e.preventDefault();
 
@@ -172,6 +172,7 @@ form_cadastro_clientes.on("submit", function(e) {
             if (response.type == 'success') {
                 console.log(response);
                 exibirMensagemTemporariaSucesso(response.message);
+                preencherTabelaClientes(response.clientes);
                 return;
             }
 
@@ -181,7 +182,6 @@ form_cadastro_clientes.on("submit", function(e) {
 
 
 const form_cadastro_fornecedores = $("#formAdicionarFornecedor");
-
 form_cadastro_fornecedores.on("submit", function(e) {
     e.preventDefault();
 
@@ -209,6 +209,7 @@ form_cadastro_fornecedores.on("submit", function(e) {
             if (response.type == 'success') {
                 console.log(response);
                 exibirMensagemTemporariaSucesso(response.message);
+                preencherTabelaFornecedores(response.fornecedores);
                 return;
             }
 

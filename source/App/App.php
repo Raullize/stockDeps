@@ -133,6 +133,7 @@ class App
             if ($produto->insert()) {
 
                 $json = [
+                    "produtos" => $produto->selectAll(),
                     "nome" => $data["nome"],
                     "categoria" => $data["categoria"],
                     "preco" => $precoFloat,
@@ -186,6 +187,7 @@ class App
             if ($categoria->insert()) {
 
                 $json = [
+                    "categorias" => $categoria->selectAll(),
                     "nome" => $data["nome"],
                     "descricao" => $data["descricao"],
                     "message" => "Categoria cadastrada com sucesso!",
@@ -248,6 +250,8 @@ class App
                 $produto->somaQuantidadeProdutos($data["produtoId"], $data["quantidade"]);
 
                 $json = [
+                    "entradas" => $entradas->selectAll(),
+                    "produtos" => $produto->selectAll(),
                     "nome" => $data["nome"],
                     "idFornecedor" => $idFonecedor,
                     "idProdutos" => $data["produtoId"],
@@ -313,7 +317,11 @@ class App
 
             if ($saidas->insert()) {
 
+                $produtos = new Produtos();
+
                 $json = [
+                    "saidas" => $saidas->selectAll(),
+                    "produtos" => $produtos->selectAll(),
                     "nome" => $data["nome"],
                     "idCliente" => $idCliente,
                     "idProdutos" => $data["produtoId2"],
@@ -367,6 +375,7 @@ class App
             if ($client->insert()) {
 
                 $json = [
+                    "clientes" => $client->selectAll(),
                     "nome" => $data["nome"],
                     "cpf" => $data["cpf"],
                     "message" => "Cliente cadastrado com sucesso!",
@@ -424,6 +433,7 @@ class App
             if ($fornecedor->insert()) {
 
                 $json = [
+                    "fornecedores" => $fornecedor->selectAll(),
                     "nome" => $data["nome"],
                     "cnpj" => $data["cnpj"],
                     "message" => "Fornecedor cadastrado com sucesso!",

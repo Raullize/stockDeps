@@ -21,7 +21,6 @@ CREATE TABLE `produtos` (
     `descricao` text NOT NULL,
     `preco` float NOT NULL,
     `quantidade` int(11) NOT NULL DEFAULT 0,
-    `status_produto` tinyint(1) NOT NULL DEFAULT 0,
     `imagem` varchar(255) DEFAULT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
