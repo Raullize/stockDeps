@@ -522,9 +522,20 @@ document.getElementById("categoria").addEventListener("change", function () {
 
 document.getElementById('clienteNaoCadastrado').addEventListener('change', function () {
     const clienteInput = document.getElementById('cliente');
-    clienteInput.disabled = this.checked; // Desabilita se o checkbox estiver marcado
-    clienteInput.value = this.checked ? '' : clienteInput.value; // Limpa o campo quando desabilitado
+    const nomeHidden = document.getElementById('nomeHidden');
+    
+    if (this.checked) {
+        clienteInput.disabled = true;
+        clienteInput.value = ''; // Limpa o campo quando desabilitado
+        nomeHidden.value = 'null'; // Define o valor oculto como vazio
+    } else {
+        clienteInput.disabled = false;
+        nomeHidden.value = clienteInput.value; // Atualiza o campo oculto com o valor do input
+    }
+
+    console.log(clienteInput.value);
 });
+
 
 
 function createButtonGroup(produto) {

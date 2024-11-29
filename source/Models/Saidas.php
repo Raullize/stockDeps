@@ -13,11 +13,11 @@ class Saidas
     private $preco;
 
     public function __construct(
-        int $id = NULL,
-        int $idClientes = NULL,
-        int $idProdutos = NULL,
-        int $quantidade = NULL,
-        float $preco = NULL
+        ?int $id = NULL,
+        ?int $idClientes = NULL,
+        ?int $idProdutos = NULL,
+        ?int $quantidade = NULL,
+        ?float $preco = NULL
     )
     {
         $this->id = $id;
@@ -130,7 +130,13 @@ class Saidas
         $query = "INSERT INTO saidas (idClientes, idProdutos, quantidade, preco) 
                     VALUES (:idClientes, :idProdutos, :quantidade, :preco)";
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":idClientes", $this->idClientes);
+
+        // Verifica se idClientes é null para não passar um valor inválido
+        if ($this->idClientes == null) {
+            $stmt->bindValue(":idClientes", null); // Passa explicitamente NULL
+        } else {
+            $stmt->bindValue(":idClientes", $this->idClientes); // Passa como inteiro
+        }
         $stmt->bindParam(":idProdutos", $this->idProdutos);
         $stmt->bindParam(":quantidade", $this->quantidade);
         $stmt->bindParam(":preco", $this->preco);

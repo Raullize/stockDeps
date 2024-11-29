@@ -47,7 +47,6 @@ class App
         ]);
     }
 
-
     public function estoque(): void
     {
         $cliente = new Clientes();
@@ -359,6 +358,10 @@ class App
             $cliente = new Clientes();
             $idCliente = $cliente->findByIdName($data["nome"]);
 
+            if($idCliente == false){
+                $idCliente = $data["nome"];
+            }
+
             $produto = new Produtos();
             $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
 
@@ -380,6 +383,17 @@ class App
                 $data["quantidade"],
                 $precoFloat
             );
+
+            $json = [
+                "nome" => $idCliente,
+                "idProdutos" => $data["produtoId2"],
+                "quantidade" => $data["quantidade"],
+                "preco" => $data["preco"],
+                "message" => "Informe todos os campos para cadastrar!",
+                "type" => "error"
+            ];
+            echo json_encode($json);
+            return;
 
             if ($saidas->insert()) {
 

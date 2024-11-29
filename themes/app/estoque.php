@@ -295,9 +295,10 @@ $this->layout("_theme");
                             <label for="cliente" class="form-label">Cliente</label>
                             <div class="d-flex align-items-center justify-content-center" style="min-height: 100%;">
                                 <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
+                                <input type="hidden" id="nomeHidden" name="nome" value=""> <!-- Campo oculto para enviar o valor -->
                             </div> <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
                             <div class="form-check m-3">
-                                <input class="form-check-input" type="checkbox" id="clienteNaoCadastrado" name="clienteNaoCadastrado">
+                                <input class="form-check-input" type="checkbox" id="clienteNaoCadastrado">
                                 <label class="form-check-label" for="clienteNaoCadastrado">Cliente não cadastrado</label>
                             </div>
                            

@@ -79,7 +79,7 @@ CREATE TABLE `entradas` (
 DROP TABLE IF EXISTS `saidas`;
 CREATE TABLE `saidas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `idClientes` int(11) NOT NULL,
+    `idClientes` int(11) DEFAULT NULL,  -- Permite NULL
     `idProdutos` int(11) NOT NULL,
     `quantidade` int(11) NOT NULL,
     `preco` float NOT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE `saidas` (
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
     KEY `fk_saidas_clientes_idx` (`idClientes`),
-    CONSTRAINT `fk_saidas_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_saidas_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,  -- Ajuste para permitir NULL
     KEY `fk_saidas_produtos_idx` (`idProdutos`),
     CONSTRAINT `fk_saidas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
