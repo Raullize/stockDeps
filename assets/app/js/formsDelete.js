@@ -6,7 +6,7 @@ form_pd.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: "/stock-deps/estoque-pd",
+        url: `${BASE_URL}/estoque-pd`,
         data: serializedData,
         dataType: "json",
         success: function(response) {

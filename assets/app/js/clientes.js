@@ -1,31 +1,33 @@
+const BASE_URL = '/stockDeps';
+
 let clientes = [];
 let produtos = [];
 let saidas = [];
 let categorias = [];
 
 async function fetchProdutos() {
-    const response = await fetch('/stock-deps/getProdutos');
+    const response = await fetch(`${BASE_URL}/getProdutos`);
     produtos = await response.json();
 }
 
 async function fetchCategorias() {
-    const response = await fetch('/stock-deps/getCategorias');
+    const response = await fetch(`${BASE_URL}/getCategorias`);
     categorias = await response.json();
 }
 
 async function fetchClientes() {
-    const response = await fetch('/stock-deps/getClientes');
+    const response = await fetch(`${BASE_URL}/getClientes`);
     clientes = await response.json();
     preencherTabelaClientes(clientes);
 }
 
 async function fetchEntradas() {
-    const response = await fetch('/stock-deps/getEntradas');
+    const response = await fetch(`${BASE_URL}/getEntradas`);
     const entradas = await response.json();
 }
 
 async function fetchSaidas() {
-    const response = await fetch('/stock-deps/getSaidas');
+    const response = await fetch(`${BASE_URL}/getSaidas`);
     saidas = await response.json(); // Preenche a variável global saídas
 }
 
@@ -124,7 +126,7 @@ function abrirModalHistorico(id) {
 async function excluirCliente(id) {
     const confirmar = confirm("Tem certeza que deseja excluir este cliente?");
     if (confirmar) {
-        const response = await fetch(`/stock-deps/deleteCliente/${id}`, {
+        const response = await fetch(`${BASE_URL}/deleteCliente/${id}`, {
             method: 'DELETE',
         });
 

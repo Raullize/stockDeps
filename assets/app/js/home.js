@@ -1,25 +1,27 @@
+const BASE_URL = '/stockDeps';
+
 async function fetchProdutos() {
-  const response = await fetch('/stock-deps/getProdutos');
+  const response = await fetch(`${BASE_URL}/getProdutos`);
   produtos = await response.json();
 }
 
 async function fetchCategorias() {
-  const response = await fetch('/stock-deps/getCategorias');
+  const response = await fetch(`${BASE_URL}/getCategorias`);
   categorias = await response.json();
 }
 
 async function fetchClientes() {
-  const response = await fetch('/stock-deps/getClientes');
+  const response = await fetch(`${BASE_URL}/getClientes`);
   const clientes = await response.json();
 }
 
 async function fetchEntradas() {
-  const response = await fetch('/stock-deps/getEntradas');
+  const response = await fetch(`${BASE_URL}/getEntradas`);
   const entradas = await response.json();
 }
 
 async function fetchSaidas() {
-  const response = await fetch('/stock-deps/getSaidas');
+  const response = await fetch(`${BASE_URL}/getSaidas`);
   const saidas = await response.json();
 }
 

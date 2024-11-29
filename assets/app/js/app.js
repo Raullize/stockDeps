@@ -1,5 +1,7 @@
+const BASE_URL = '/stockDeps';
+
 async function fetchProdutos() {
-    const response = await fetch('/stock-deps/getProdutos');
+    const response = await fetch(`${BASE_URL}/getProdutos`);
     produtos = await response.json();
     console.log(produtos)
     preencherTabelaProdutos(produtos);
@@ -7,35 +9,35 @@ async function fetchProdutos() {
 }
 
 async function fetchCategorias() {
-    const response = await fetch('/stock-deps/getCategorias');
+    const response = await fetch(`${BASE_URL}/getCategorias`);
     categorias = await response.json();
     preencherCategorias(categorias);
 
 }
 
 async function fetchClientes() {
-    const response = await fetch('/stock-deps/getClientes');
+    const response = await fetch(`${BASE_URL}/getClientes`);
     const clientes = await response.json();
     preencherClientes(clientes);
     console.log(clientes)
 }
 
 async function fetchFornecedores() {
-    const response = await fetch('/stock-deps/getFornecedores');
+    const response = await fetch(`${BASE_URL}/getFornecedores`);
     const fornecedores = await response.json();
     preencherFornecedores(fornecedores);
     console.log(fornecedores)
 }
 
 async function fetchEntradas() {
-    const response = await fetch('/stock-deps/getEntradas');
+    const response = await fetch(`${BASE_URL}/getEntradas`);
     const entradas = await response.json();
     buscarEntrada(entradas)
     console.log(entradas)
 }
 
 async function fetchSaidas() {
-    const response = await fetch('/stock-deps/getSaidas');
+    const response = await fetch(`${BASE_URL}/getSaidas`);
     const saidas = await response.json();
     buscarSaida(saidas);
     console.log(saidas)
@@ -494,7 +496,7 @@ function abrirModalEditarSaida(saida) {
 }
 
 document.getElementById("consultarEntradasBtn").addEventListener("click", async function () {
-    const response = await fetch('/stock-deps/getEntradas');
+    const response = await fetch(`${BASE_URL}/getEntradas`);
     const entradas = await response.json();
 
     preencherTabelaEntradas(entradas,produtos);
@@ -505,7 +507,7 @@ document.getElementById("consultarEntradasBtn").addEventListener("click", async 
 });
 
 document.getElementById("consultarSaidasBtn").addEventListener("click", async function () {
-    const response = await fetch('/stock-deps/getSaidas');
+    const response = await fetch(`${BASE_URL}/getSaidas`);
     const saidas = await response.json();
 
     preencherTabelaSaidas(saidas,produtos);

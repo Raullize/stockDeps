@@ -1,7 +1,9 @@
+const BASE_URL = '/stockDeps';
+
 let fornecedores = [];
 
 async function fetchFornecedores() {
-    const response = await fetch('/stock-deps/getFornecedores');
+    const response = await fetch(`${BASE_URL}/getFornecedores`);
     fornecedores = await response.json();
     preencherTabelaFornecedores(fornecedores);
     console.log(fornecedores)
@@ -69,7 +71,7 @@ function editarFornecedor(id) {
 }
 
 function verHistoricoFornecedor(id, fornecedores) {
-    window.location.href = `/stock-deps/historicoFornecedor/${id}`;
+    window.location.href = `${BASE_URL}/historicoFornecedor/${id}`;
 }
 
 function abrirModal() {
@@ -96,7 +98,7 @@ document.getElementById("formEditarFornecedor").addEventListener("submit", async
 
     const fornecedorAtualizado = { id, nome, cnpj, email, telefone, cidade, bairro, uf };
 
-    const response = await fetch('/stock-deps/atualizarFornecedor', {
+    const response = await fetch(`${BASE_URL}/atualizarFornecedor`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fornecedorAtualizado)

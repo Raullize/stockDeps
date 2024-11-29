@@ -6,7 +6,7 @@ form_pc.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: "/stock-deps/estoque-pc",
+        url: `${BASE_URL}/estoque-pc`,
         data: serializedData,
         dataType: "json",
         success: function(response) {
@@ -42,7 +42,7 @@ form_cc.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: "/stock-deps/estoque-cc",
+        url: `${BASE_URL}/estoque-cc`,
         data: serializedData,
         dataType: "json",
         success: function(response) {
@@ -78,7 +78,7 @@ form_ec.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: "/stock-deps/estoque-ec",
+        url: `${BASE_URL}/estoque-ec`,
         data: serializedData,
         dataType: "json",
         success: function(response) {
@@ -115,7 +115,7 @@ form_sc.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: "/stock-deps/estoque-sc",
+        url: `${BASE_URL}/estoque-sc`,
         data: serializedData,
         dataType: "json",
         success: function(response) {
@@ -152,7 +152,7 @@ form_cadastro_clientes.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: "/stock-deps/cadastro-clientes",
+        url: `${BASE_URL}/cadastro-clientes`,
         data: serializedData,
         dataType: "json",
         success: function(response) {
@@ -189,7 +189,7 @@ form_cadastro_fornecedores.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: "/stock-deps/cadastro-fornecedores",
+        url: `${BASE_URL}/cadastro-fornecedores`,
         data: serializedData,
         dataType: "json",
         success: function(response) {

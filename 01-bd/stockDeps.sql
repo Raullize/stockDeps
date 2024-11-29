@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS `stock-deps`;
-USE `stock-deps`;
+CREATE DATABASE IF NOT EXISTS `stockDeps`;
+USE `stockDeps`;
 
 -- Tabela de categorias
 DROP TABLE IF EXISTS `categorias`;
