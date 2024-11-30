@@ -328,7 +328,7 @@ class App
     {
         if (!empty($data)) {
 
-            if (in_array("", $data)) {
+            if (($data["produtoId2"] && $data["quantidade"] && $data["preco"]) == null) {
                 $json = [
                     "nome" => $data["nome"],
                     "idProdutos" => $data["produtoId2"],
@@ -359,7 +359,7 @@ class App
             $idCliente = $cliente->findByIdName($data["nome"]);
 
             if($idCliente == false){
-                $idCliente = $data["nome"];
+                $idCliente = null;
             }
 
             $produto = new Produtos();
@@ -383,17 +383,6 @@ class App
                 $data["quantidade"],
                 $precoFloat
             );
-
-            $json = [
-                "nome" => $idCliente,
-                "idProdutos" => $data["produtoId2"],
-                "quantidade" => $data["quantidade"],
-                "preco" => $data["preco"],
-                "message" => "Informe todos os campos para cadastrar!",
-                "type" => "error"
-            ];
-            echo json_encode($json);
-            return;
 
             if ($saidas->insert()) {
 

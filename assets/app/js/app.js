@@ -522,15 +522,12 @@ document.getElementById("categoria").addEventListener("change", function () {
 
 document.getElementById('clienteNaoCadastrado').addEventListener('change', function () {
     const clienteInput = document.getElementById('cliente');
-    const nomeHidden = document.getElementById('nomeHidden');
     
     if (this.checked) {
-        clienteInput.disabled = true;
-        clienteInput.value = ''; // Limpa o campo quando desabilitado
-        nomeHidden.value = 'null'; // Define o valor oculto como vazio
+        clienteInput.readOnly = true;  // Torna o campo somente leitura
+        clienteInput.value = null; // Defina o valor desejado
     } else {
-        clienteInput.disabled = false;
-        nomeHidden.value = clienteInput.value; // Atualiza o campo oculto com o valor do input
+        clienteInput.readOnly = false; // Atualiza o campo oculto com o valor do input
     }
 
     console.log(clienteInput.value);
