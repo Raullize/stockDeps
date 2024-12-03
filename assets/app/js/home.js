@@ -72,7 +72,7 @@ function atualizarCaixas(produtos, entradas, saidas) {
   const totalEntradas = entradas.length;
   const totalSaidas = saidas.length;
 
-  // Atualiza as caixas com as informações
+
   document.querySelector(".card-title + h3").textContent = totalProdutos;
   document.querySelector(".bg-success h3").textContent = produtosEmEstoque;
   document.querySelector(".bg-warning h3").textContent = estoqueBaixo;
@@ -178,47 +178,46 @@ function atualizarGraficoCategorias(categorias) {
 async function calcularLucro() {
   const periodo = document.getElementById('periodo').value;
 
-  // Filtra as transações com base no período selecionado
+
   const entradasFiltradas = filtrarPorPeriodo(entradas, periodo);
   const saidasFiltradas = filtrarPorPeriodo(saidas, periodo);
 
-  // Calcula o lucro bruto e líquido
+
   const lucroBruto = calcularLucroBruto(entradasFiltradas, saidasFiltradas);
   const lucroLiquido = calcularLucroLiquido(entradasFiltradas, saidasFiltradas);
 
-  // Atualiza as caixas com os valores
+
   document.getElementById('lucro-bruto').textContent = `R$ ${lucroBruto.toFixed(2)}`;
   document.getElementById('lucro-liquido').textContent = `R$ ${lucroLiquido.toFixed(2)}`;
 }
 
-// Função para filtrar as entradas e saídas com base no período
+
 function filtrarPorPeriodo(transacoes, periodo) {
   const agora = new Date();
   let dataLimite;
 
   switch (periodo) {
       case 'dia':
-          dataLimite = new Date(agora.setDate(agora.getDate() - 1)); // 1 dia atrás
+          dataLimite = new Date(agora.setDate(agora.getDate() - 1)); 
           break;
       case 'semana':
-          dataLimite = new Date(agora.setDate(agora.getDate() - 7)); // 7 dias atrás
+          dataLimite = new Date(agora.setDate(agora.getDate() - 7)); 
           break;
       case 'mes':
-          dataLimite = new Date(agora.setMonth(agora.getMonth() - 1)); // 1 mês atrás
+          dataLimite = new Date(agora.setMonth(agora.getMonth() - 1)); 
           break;
       case 'ano':
-          dataLimite = new Date(agora.setFullYear(agora.getFullYear() - 1)); // 1 ano atrás
+          dataLimite = new Date(agora.setFullYear(agora.getFullYear() - 1)); 
           break;
       default:
-          return transacoes; // Sem filtro, retorna todas
+          return transacoes; 
   }
 
   return transacoes.filter(transacao => new Date(transacao.data) >= dataLimite);
 }
 
-// Função para calcular o Lucro Bruto
+
 function calcularLucroBruto(saidas) {
-  // Calcular o total das saídas
   const totalSaidas = saidas.reduce((total, saida) => {
     const preco = parseFloat(saida.preco) || 0;
     const quantidade = parseInt(saida.quantidade) || 0;
@@ -229,18 +228,16 @@ function calcularLucroBruto(saidas) {
 }
 
 function calcularLucroLiquido(entradas, saidas) {
-  // Calcular o lucro bruto (total das saídas)
+
   const lucroBruto = calcularLucroBruto(saidas);
 
-  // Calcular o total das entradas
   const totalEntradas = entradas.reduce((total, entrada) => {
     const preco = parseFloat(entrada.preco) || 0;
     const quantidade = parseInt(entrada.quantidade) || 0;
     return total + (preco * quantidade);
   }, 0);
 
-  // O lucro líquido é a diferença entre total de entradas e o total das saídas
-  return totalEntradas - lucroBruto;
+  return lucroBruto - totalEntradas;
 }
 
 

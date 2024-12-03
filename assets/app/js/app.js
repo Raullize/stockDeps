@@ -81,7 +81,6 @@ function preencherTabelaProdutos(produtosPaginados) {
     });
 }
 
-// Função para mostrar a página atual de produtos
 function mostrarPagina(pagina) {
     paginaAtual = pagina;
     const inicio = (pagina - 1) * itensPorPagina;
@@ -91,7 +90,6 @@ function mostrarPagina(pagina) {
     atualizarPaginacao();
 }
 
-// Função para atualizar os botões de paginação com limite de páginas exibidas
 function atualizarPaginacao() {
     const totalPaginas = Math.ceil(produtos.length / itensPorPagina);
     const pagination = document.getElementById('pagination');
@@ -635,7 +633,7 @@ function openModalEntrada(id) {
 }
 
 function openModalSaida(id) {
-    const inputProdutoId = document.getElementById('produtoId2');
+    const inputProdutoId = document.getElementById('produtoId');
 
     inputProdutoId.value = id;
     new bootstrap.Modal(document.getElementById('modalSaida')).show();

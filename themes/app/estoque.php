@@ -141,7 +141,6 @@ $this->layout("_theme");
         </div>
     </div>
 
-
     <!-- Modal Editar Produto -->
     <div class="modal" id="modalEditar" tabindex="-1">
         <div class="modal-dialog">
