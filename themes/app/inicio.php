@@ -91,19 +91,57 @@ $this->layout("_theme");
         </div>
 
         <!-- Gráficos -->
-        <div class="row mt-5 g-4">
+        <div class="row mt-5 mb-5 d-flex align-items-stretch">
             <div class="col-md-5">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Lucro por Período</h5>
-                        <div class="chart-container">
-                            <canvas id="chart-lucro"></canvas>
+
+                        <!-- Filtro para selecionar o período -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <label for="periodo" class="form-label">Selecione o Período</label>
+                                <select id="periodo" class="form-select" onchange="calcularLucro()">
+                                    <option value="total">Total</option>
+                                    <option value="dia">Dia</option>
+                                    <option value="semana">Semana</option>
+                                    <option value="mes">Mês</option>
+                                    <option value="ano">Ano</option>
+                                </select>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" onclick="calcularLucro()">Calcular</button>
+                            </div>
+                        </div>
+
+                        <!-- Exibindo Lucro Bruto e Lucro Líquido -->
+                        <div class="row">
+                            <!-- Caixa de Lucro Bruto -->
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Lucro Bruto</h5>
+                                        <h3 id="lucro-bruto">R$ 0,00</h3> <!-- Exibirá o lucro bruto -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Caixa de Lucro Líquido -->
+                            <div class="col-md-6">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Lucro Líquido</h5>
+                                        <h3 id="lucro-liquido">R$ 0,00</h3> <!-- Exibirá o lucro líquido -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-3">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Distribuição por Categorias</h5>
                         <div class="chart-container">
@@ -112,8 +150,9 @@ $this->layout("_theme");
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Produtos Mais Vendidos</h5>
                         <ul class="list-group list-group-flush" id="produtos-mais-vendidos">
@@ -123,6 +162,7 @@ $this->layout("_theme");
                 </div>
             </div>
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

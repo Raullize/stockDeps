@@ -16,29 +16,31 @@ async function fetchProdutos() {
 async function fetchEntradas() {
   const response = await fetch(`${BASE_URL}/getEntradas`);
   entradas = await response.json();  // Defina a variável `entradas` no escopo global
-  console.log(entradas);  // Exibe as entradas no console
+  console.log(entradas); 
+  calcularLucro(entradas, saidas);
 }
 
 async function fetchSaidas() {
   const response = await fetch(`${BASE_URL}/getSaidas`);
-  saidas = await response.json();  // Defina a variável `saidas` no escopo global
+  saidas = await response.json(); 
+  calcularLucro(entradas, saidas);
 }
 
 async function fetchCategorias() {
   const response = await fetch(`${BASE_URL}/getCategorias`);
-  categorias = await response.json();  // Defina a variável `categorias` no escopo global
+  categorias = await response.json();
   atualizarGraficoCategorias(categorias);
 }
 
 async function fetchClientes() {
   const response = await fetch(`${BASE_URL}/getClientes`);
-  clientes = await response.json();  // Defina a variável `clientes` no escopo global
+  clientes = await response.json();
   preencherClientes(clientes);
 }
 
 async function fetchFornecedores() {
   const response = await fetch(`${BASE_URL}/getFornecedores`);
-  fornecedores = await response.json();  // Defina a variável `fornecedores` no escopo global
+  fornecedores = await response.json();
   preencherFornecedores(fornecedores);
 }
 
@@ -49,7 +51,7 @@ async function loadDashboardData() {
   await fetchCategorias();
   await fetchClientes();
   await fetchFornecedores();
-  atualizarCaixas(produtos, entradas, saidas);  // Passando entradas e saidas
+  atualizarCaixas(produtos, entradas, saidas);
   atualizarProdutosMaisVendidos();
   atualizarGraficoCategorias(categorias);
 }
@@ -173,6 +175,64 @@ function atualizarGraficoCategorias(categorias) {
   });
 }
 
+async function calcularLucro() {
+  const periodo = document.getElementById('periodo').value;
+
+  // Filtra as transações com base no período selecionado
+  const entradasFiltradas = filtrarPorPeriodo(entradas, periodo);
+  const saidasFiltradas = filtrarPorPeriodo(saidas, periodo);
+
+  // Calcula o lucro bruto e líquido
+  const lucroBruto = calcularLucroBruto(entradasFiltradas, saidasFiltradas);
+  const lucroLiquido = calcularLucroLiquido(entradasFiltradas, saidasFiltradas);
+
+  // Atualiza as caixas com os valores
+  document.getElementById('lucro-bruto').textContent = `R$ ${lucroBruto.toFixed(2)}`;
+  document.getElementById('lucro-liquido').textContent = `R$ ${lucroLiquido.toFixed(2)}`;
+}
+
+// Função para filtrar as entradas e saídas com base no período
+function filtrarPorPeriodo(transacoes, periodo) {
+  const agora = new Date();
+  let dataLimite;
+
+  switch (periodo) {
+      case 'dia':
+          dataLimite = new Date(agora.setDate(agora.getDate() - 1)); // 1 dia atrás
+          break;
+      case 'semana':
+          dataLimite = new Date(agora.setDate(agora.getDate() - 7)); // 7 dias atrás
+          break;
+      case 'mes':
+          dataLimite = new Date(agora.setMonth(agora.getMonth() - 1)); // 1 mês atrás
+          break;
+      case 'ano':
+          dataLimite = new Date(agora.setFullYear(agora.getFullYear() - 1)); // 1 ano atrás
+          break;
+      default:
+          return transacoes; // Sem filtro, retorna todas
+  }
+
+  return transacoes.filter(transacao => new Date(transacao.data) >= dataLimite);
+}
+
+// Função para calcular o Lucro Bruto
+function calcularLucroBruto(entradas, saidas) {
+  const totalEntradas = entradas.reduce((total, entrada) => total + (entrada.preco * entrada.quantidade), 0);
+  const totalSaidas = saidas.reduce((total, saida) => total + (saida.preco * saida.quantidade), 0);
+  return totalEntradas - totalSaidas;
+}
+
+// Função para calcular o Lucro Líquido
+function calcularLucroLiquido(entradas, saidas) {
+  // Exemplo de custo fixo ou outras despesas
+  const despesasFixas = 5000; // Exemplo, substitua conforme necessário
+  const lucroBruto = calcularLucroBruto(entradas, saidas);
+  return lucroBruto - despesasFixas; // Subtrai despesas fixas do lucro bruto
+}
+
+// Chama a função de calcular lucro quando a página carregar
 window.onload = async () => {
-  await loadDashboardData();
+  await loadDashboardData(); // Carrega os dados das entradas e saídas
+  calcularLucro(); // Calcula o lucro inicial
 };
