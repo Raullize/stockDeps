@@ -34,6 +34,8 @@ form_pd.on("submit", function(e) {
                 preencherTabelaEntradas(response.entradas, response.produtos);
                 preencherTabelaSaidas(response.saidas, response.produtos);
                 preencherTabelaProdutos(response.produtos);
+                produtos = response.produtos;
+                mostrarPagina(paginaAtual);
                 return;
             }
 

@@ -53,6 +53,9 @@ $this->layout("_theme");
                 </table>
             </div>
         </div>
+        <nav>
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+    </nav>
     </div>
 
     <!-- MODAIS -->

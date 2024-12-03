@@ -1,10 +1,14 @@
 const BASE_URL = '/stockDeps';
+const itensPorPagina = 5;
+const maxBotoesPaginacao = 5; // Limite de botões de página exibidos
+let paginaAtual = 1;
+let produtos = [];
 
 async function fetchProdutos() {
     const response = await fetch(`${BASE_URL}/getProdutos`);
     produtos = await response.json();
     console.log(produtos)
-    preencherTabelaProdutos(produtos);
+    mostrarPagina(paginaAtual);
     buscarProduto(produtos);
 }
 
@@ -42,7 +46,6 @@ async function fetchSaidas() {
     buscarSaida(saidas);
     console.log(saidas)
 }
-
 function loadAllData() {
     fetchProdutos();
     fetchCategorias();
@@ -52,26 +55,20 @@ function loadAllData() {
     fetchSaidas();
 }
 
-function preencherTabelaProdutos(produtos) {
+function preencherTabelaProdutos(produtosPaginados) {
     const corpoTabela = document.getElementById("corpoTabela");
     corpoTabela.innerHTML = '';
 
-    produtos.forEach(produto => {
+    produtosPaginados.forEach(produto => {
         const tr = document.createElement('tr');
+        const { id, nome, descricao, preco, quantidade } = produto;
 
-        const { id, nome, descricao, preco, quantidade} = produto;
         const precoFormatado = preco.toLocaleString('pt-BR', {
             style: 'currency',
             currency: 'BRL'
         });
 
-        let status;
-        if (quantidade > 0) {
-            status = "Disponível";
-        } else {
-            status = "Indisponível";
-        }
-
+        let status = quantidade > 0 ? "Disponível" : "Indisponível";
         const dados = [id, nome, descricao, precoFormatado, quantidade, status];
 
         tr.append(...dados.map(dado => {
@@ -83,7 +80,64 @@ function preencherTabelaProdutos(produtos) {
         tr.appendChild(createButtonGroup(produto));
         corpoTabela.appendChild(tr);
     });
-};
+}
+
+// Função para mostrar a página atual de produtos
+function mostrarPagina(pagina) {
+    paginaAtual = pagina;
+    const inicio = (pagina - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+    const produtosPaginados = produtos.slice(inicio, fim);
+    preencherTabelaProdutos(produtosPaginados);
+    atualizarPaginacao();
+}
+
+// Função para atualizar os botões de paginação com limite de páginas exibidas
+function atualizarPaginacao() {
+    const totalPaginas = Math.ceil(produtos.length / itensPorPagina);
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+
+    const paginaInicial = Math.max(1, paginaAtual - Math.floor(maxBotoesPaginacao / 2));
+    const paginaFinal = Math.min(totalPaginas, paginaInicial + maxBotoesPaginacao - 1);
+
+    if (paginaAtual > 1) {
+        const liPrev = document.createElement('li');
+        liPrev.classList.add('page-item');
+        const aPrev = document.createElement('a');
+        aPrev.classList.add('page-link');
+        aPrev.textContent = `Anterior`;
+        aPrev.onclick = () => mostrarPagina(paginaAtual - 1);
+        liPrev.appendChild(aPrev);
+        pagination.appendChild(liPrev);
+    }
+
+    for (let i = paginaInicial; i <= paginaFinal; i++) {
+        const li = document.createElement('li');
+        li.classList.add('page-item');
+        if (i === paginaAtual) {
+            li.classList.add('active');
+        }
+
+        const a = document.createElement('a');
+        a.classList.add('page-link');
+        a.textContent = i;
+        a.onclick = () => mostrarPagina(i);
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
+
+    if (paginaAtual < totalPaginas) {
+        const liNext = document.createElement('li');
+        liNext.classList.add('page-item');
+        const aNext = document.createElement('a');
+        aNext.classList.add('page-link');
+        aNext.textContent = `Próximo`;
+        aNext.onclick = () => mostrarPagina(paginaAtual + 1);
+        liNext.appendChild(aNext);
+        pagination.appendChild(liNext);
+    }
+}
 
 function preencherTabelaEntradas(entradas, produtos) {
     if (!Array.isArray(produtos) || !Array.isArray(entradas)) {
@@ -162,7 +216,7 @@ function preencherTabelaEntradas(entradas, produtos) {
     });
 }
 
-function preencherTabelaSaidas(saidas,produtos) {
+function preencherTabelaSaidas(saidas, produtos) {
     if (!Array.isArray(produtos) || !Array.isArray(saidas)) {
         console.error("Saídas ou produtos não são arrays válidos.");
         return;
@@ -245,12 +299,14 @@ function buscarProduto(produtos) {
     inputBuscarProduto.addEventListener('input', function () {
         const termoBusca = inputBuscarProduto.value.toLowerCase();
 
+        // Filtra os produtos com base no termo de busca
         const produtosFiltrados = produtos.filter(produto =>
             produto.nome.toLowerCase().includes(termoBusca) ||
             produto.descricao.toLowerCase().includes(termoBusca)
         );
 
-        preencherTabelaProdutos(produtosFiltrados);
+        // Atualiza a lista de produtos com os produtos filtrados
+        mostrarPagina(1, produtosFiltrados);  // Começa sempre da página 1
     });
 }
 
@@ -499,8 +555,8 @@ document.getElementById("consultarEntradasBtn").addEventListener("click", async 
     const response = await fetch(`${BASE_URL}/getEntradas`);
     const entradas = await response.json();
 
-    preencherTabelaEntradas(entradas,produtos);
-    buscarEntrada(entradas,produtos);
+    preencherTabelaEntradas(entradas, produtos);
+    buscarEntrada(entradas, produtos);
 
     const modalEntradas = new bootstrap.Modal(document.getElementById('modalEntradas'));
     modalEntradas.show();
@@ -510,7 +566,7 @@ document.getElementById("consultarSaidasBtn").addEventListener("click", async fu
     const response = await fetch(`${BASE_URL}/getSaidas`);
     const saidas = await response.json();
 
-    preencherTabelaSaidas(saidas,produtos);
+    preencherTabelaSaidas(saidas, produtos);
 
     const modalSaidas = new bootstrap.Modal(document.getElementById('modalSaidas'));
     modalSaidas.show();
@@ -522,7 +578,7 @@ document.getElementById("categoria").addEventListener("change", function () {
 
 document.getElementById('clienteNaoCadastrado').addEventListener('change', function () {
     const clienteInput = document.getElementById('cliente');
-    
+
     if (this.checked) {
         clienteInput.readOnly = true;  // Torna o campo somente leitura
         clienteInput.value = null; // Defina o valor desejado
@@ -532,8 +588,6 @@ document.getElementById('clienteNaoCadastrado').addEventListener('change', funct
 
     console.log(clienteInput.value);
 });
-
-
 
 function createButtonGroup(produto) {
     const actions = [

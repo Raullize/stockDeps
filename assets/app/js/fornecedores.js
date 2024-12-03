@@ -1,18 +1,21 @@
 const BASE_URL = '/stockDeps';
 
+const itensPorPaginaFornecedores = 7;
+const maxBotoesPaginacaoFornecedores = 5;
+let paginaAtualFornecedores = 1;
 let fornecedores = [];
 
 async function fetchFornecedores() {
     const response = await fetch(`${BASE_URL}/getFornecedores`);
     fornecedores = await response.json();
-    preencherTabelaFornecedores(fornecedores);
-    console.log(fornecedores)
+    mostrarPaginaFornecedores(paginaAtualFornecedores);
+    buscarFornecedor(fornecedores); // Inicializa a busca com a lista de fornecedores
 }
 
-function preencherTabelaFornecedores(fornecedores) {
+function preencherTabelaFornecedores(fornecedoresPaginados) {
     const tabela = document.querySelector("#tabelaFornecedores tbody");
     tabela.innerHTML = "";
-    fornecedores.forEach(fornecedor => {
+    fornecedoresPaginados.forEach(fornecedor => {
         const linha = document.createElement("tr");
         linha.innerHTML = `
             <td>${fornecedor.id}</td>
@@ -28,7 +31,7 @@ function preencherTabelaFornecedores(fornecedores) {
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="editarFornecedor(${fornecedor.id})" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" id="editarFornecedorBtn">Editar</button>
                     <button class="btn btn-danger" onclick="excluirFornecedor(${fornecedor.id})">Excluir</button>
-                     <button class="btn btn-success" onclick="verHistoricoFornecedor(${fornecedor.id})">Histórico</button>
+                    <button class="btn btn-success" onclick="verHistoricoFornecedor(${fornecedor.id})">Histórico</button>
                 </div>
             </td>
         `;
@@ -36,15 +39,76 @@ function preencherTabelaFornecedores(fornecedores) {
     });
 }
 
-document.getElementById("buscarFornecedor").addEventListener("input", function () {
-    const termo = this.value.toLowerCase();
-    const linhas = document.querySelectorAll("#tabelaFornecedores tbody tr");
+// Função para exibir a página de fornecedores atual
+function mostrarPaginaFornecedores(pagina, listaFornecedores = fornecedores) {
+    paginaAtualFornecedores = pagina;
+    const inicio = (pagina - 1) * itensPorPaginaFornecedores;
+    const fim = inicio + itensPorPaginaFornecedores;
+    const fornecedoresPaginados = listaFornecedores.slice(inicio, fim);
+    preencherTabelaFornecedores(fornecedoresPaginados);
+    atualizarPaginacaoFornecedores(listaFornecedores);
+}
 
-    linhas.forEach(linha => {
-        const nome = linha.cells[1].textContent.toLowerCase();
-        linha.style.display = nome.includes(termo) ? "" : "none";
+// Função para atualizar os botões de paginação
+function atualizarPaginacaoFornecedores(listaFornecedores = fornecedores) {
+    const totalPaginas = Math.ceil(listaFornecedores.length / itensPorPaginaFornecedores);
+    const pagination = document.getElementById('paginationFornecedores');
+    pagination.innerHTML = '';
+
+    const maxLeft = Math.max(paginaAtualFornecedores - Math.floor(maxBotoesPaginacaoFornecedores / 2), 1);
+    const maxRight = Math.min(maxLeft + maxBotoesPaginacaoFornecedores - 1, totalPaginas);
+
+    // Botão "Anterior"
+    if (paginaAtualFornecedores > 1) {
+        const prevLi = document.createElement('li');
+        prevLi.classList.add('page-item');
+        prevLi.innerHTML = `<a class="page-link" href="#">Anterior</a>`;
+        prevLi.onclick = () => mostrarPaginaFornecedores(paginaAtualFornecedores - 1);
+        pagination.appendChild(prevLi);
+    }
+
+    for (let i = maxLeft; i <= maxRight; i++) {
+        const li = document.createElement('li');
+        li.classList.add('page-item');
+        if (i === paginaAtualFornecedores) {
+            li.classList.add('active');
+        }
+
+        const a = document.createElement('a');
+        a.classList.add('page-link');
+        a.textContent = i;
+        a.onclick = () => mostrarPaginaFornecedores(i);
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
+
+    // Botão "Próximo"
+    if (paginaAtualFornecedores < totalPaginas) {
+        const nextLi = document.createElement('li');
+        nextLi.classList.add('page-item');
+        nextLi.innerHTML = `<a class="page-link" href="#">Próximo</a>`;
+        nextLi.onclick = () => mostrarPaginaFornecedores(paginaAtualFornecedores + 1);
+        pagination.appendChild(nextLi);
+    }
+}
+
+// Função para buscar fornecedores com base no nome
+function buscarFornecedor(fornecedores) {
+    const inputBuscarFornecedor = document.getElementById('buscarFornecedor');
+
+    inputBuscarFornecedor.addEventListener('input', function () {
+        const termoBusca = inputBuscarFornecedor.value.toLowerCase();
+
+        // Filtra os fornecedores com base no termo de busca
+        const fornecedoresFiltrados = fornecedores.filter(fornecedor =>
+            fornecedor.nome.toLowerCase().includes(termoBusca) ||
+            fornecedor.cnpj.toLowerCase().includes(termoBusca)
+        );
+
+        // Mostra a primeira página da lista filtrada
+        mostrarPaginaFornecedores(1, fornecedoresFiltrados);
     });
-});
+}
 
 
 function editarFornecedor(id) {

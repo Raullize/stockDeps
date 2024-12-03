@@ -1,5 +1,9 @@
 const BASE_URL = '/stockDeps';
 
+const itensPorPaginaClientes = 8;
+const maxBotoesPaginacaoClientes = 5;
+let paginaAtualClientes = 1;
+
 let clientes = [];
 let produtos = [];
 let saidas = [];
@@ -18,7 +22,8 @@ async function fetchCategorias() {
 async function fetchClientes() {
     const response = await fetch(`${BASE_URL}/getClientes`);
     clientes = await response.json();
-    preencherTabelaClientes(clientes);
+    mostrarPaginaClientes(paginaAtualClientes);
+    buscarCliente(clientes)
 }
 
 async function fetchEntradas() {
@@ -43,41 +48,98 @@ document.addEventListener("DOMContentLoaded", () => {
     loadAllData();
 });
 
-function preencherTabelaClientes(clientes) {
-    const tabela = document.querySelector("#tabelaClientes tbody"); // Seleciona o <tbody> da tabela
-    tabela.innerHTML = ""; // Limpa o conteúdo atual para evitar duplicações
+function preencherTabelaClientes(clientesPaginados) {
+    const tabela = document.querySelector("#tabelaClientes tbody");
+    tabela.innerHTML = ""; // Limpa a tabela
 
-    clientes.forEach(cliente => {
-        const linha = document.createElement("tr"); // Cria uma nova linha
-
-        // Preenche as colunas da linha
+    clientesPaginados.forEach(cliente => {
+        const linha = document.createElement("tr");
         linha.innerHTML = `
             <td>${cliente.id}</td>
             <td>${cliente.nome}</td>
             <td>${cliente.cpf}</td>
             <td>${cliente.celular}</td>
             <td>
-                <div class="btn-group w-100 ">
-                    <button class="btn  text-light btn-primary" onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
-                    <button class="btn  btn-danger" onclick="excluirCliente(${cliente.id})">Excluir</button>
-                    <button class="btn  btn-success" onclick="abrirModalHistorico(${cliente.id})">Histórico</button>
+                <div class="btn-group w-100">
+                    <button class="btn btn-primary text-light" onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
+                    <button class="btn btn-danger" onclick="excluirCliente(${cliente.id})">Excluir</button>
+                    <button class="btn btn-success" onclick="abrirModalHistorico(${cliente.id})">Histórico</button>
                 </div>
             </td>
         `;
-
-        tabela.appendChild(linha); // Adiciona a linha à tabela
+        tabela.appendChild(linha);
     });
 }
 
-document.getElementById("buscarCliente").addEventListener("input", function () {
-    const termo = this.value.toLowerCase();
-    const linhas = document.querySelectorAll("#tabelaClientes tbody tr");
+function mostrarPaginaClientes(pagina, listaClientes = clientes) {
+    paginaAtualClientes = pagina;
+    const inicio = (pagina - 1) * itensPorPaginaClientes;
+    const fim = inicio + itensPorPaginaClientes;
+    const clientesPaginados = listaClientes.slice(inicio, fim);
+    preencherTabelaClientes(clientesPaginados);
+    atualizarPaginacaoClientes(listaClientes);
+}
 
-    linhas.forEach(linha => {
-        const nome = linha.cells[1].textContent.toLowerCase();
-        linha.style.display = nome.includes(termo) ? "" : "none";
+function atualizarPaginacaoClientes(listaClientes = clientes) {
+    const totalPaginas = Math.ceil(listaClientes.length / itensPorPaginaClientes);
+    const pagination = document.getElementById('paginationClientes');
+    pagination.innerHTML = '';
+
+    const maxLeft = Math.max(paginaAtualClientes - Math.floor(maxBotoesPaginacaoClientes / 2), 1);
+    const maxRight = Math.min(maxLeft + maxBotoesPaginacaoClientes - 1, totalPaginas);
+
+    // Botão "Anterior"
+    if (paginaAtualClientes > 1) {
+        const prevLi = document.createElement('li');
+        prevLi.classList.add('page-item');
+        prevLi.innerHTML = `<a class="page-link" href="#">Anterior</a>`;
+        prevLi.onclick = () => mostrarPaginaClientes(paginaAtualClientes - 1);
+        pagination.appendChild(prevLi);
+    }
+
+    for (let i = maxLeft; i <= maxRight; i++) {
+        const li = document.createElement('li');
+        li.classList.add('page-item');
+        if (i === paginaAtualClientes) {
+            li.classList.add('active');
+        }
+
+        const a = document.createElement('a');
+        a.classList.add('page-link');
+        a.textContent = i;
+        a.onclick = () => mostrarPaginaClientes(i);
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
+
+    // Botão "Próximo"
+    if (paginaAtualClientes < totalPaginas) {
+        const nextLi = document.createElement('li');
+        nextLi.classList.add('page-item');
+        nextLi.innerHTML = `<a class="page-link" href="#">Próximo</a>`;
+        nextLi.onclick = () => mostrarPaginaClientes(paginaAtualClientes + 1);
+        pagination.appendChild(nextLi);
+    }
+}
+
+
+
+function buscarCliente(clientes) {
+    const inputBuscarCliente = document.getElementById('buscarCliente');
+
+    inputBuscarCliente.addEventListener('input', function () {
+        const termoBusca = inputBuscarCliente.value.toLowerCase();
+
+        // Filtra os clientes com base no termo de busca
+        const clientesFiltrados = clientes.filter(cliente =>
+            cliente.nome.toLowerCase().includes(termoBusca) ||
+            cliente.cpf.toLowerCase().includes(termoBusca)
+        );
+
+        // Atualiza a exibição com a lista filtrada
+        mostrarPaginaClientes(1, clientesFiltrados); // Mostra a página 1 dos clientes filtrados
     });
-});
+}
 
 function abrirModalEditarCliente(id) {
     console.log(clientes)
@@ -132,7 +194,7 @@ async function excluirCliente(id) {
 
         if (response.ok) {
             alert("Cliente excluído com sucesso!");
-            fetchClientes(); 
+            fetchClientes();
         } else {
             alert("Erro ao excluir o cliente.");
         }
@@ -141,7 +203,7 @@ async function excluirCliente(id) {
 
 function formatarCPF(event) {
     let cpf = event.target.value;
-    
+
     // Remove qualquer caractere que não seja número
     cpf = cpf.replace(/\D/g, '');
 
@@ -149,7 +211,7 @@ function formatarCPF(event) {
     if (cpf.length <= 11) {
         cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
     }
-    
+
     // Atualiza o valor do campo com o CPF formatado
     event.target.value = cpf;
 }
