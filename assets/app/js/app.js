@@ -16,7 +16,6 @@ async function fetchCategorias() {
     const response = await fetch(`${BASE_URL}/getCategorias`);
     categorias = await response.json();
     preencherCategorias(categorias);
-
 }
 
 async function fetchClientes() {
