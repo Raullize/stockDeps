@@ -217,22 +217,34 @@ function filtrarPorPeriodo(transacoes, periodo) {
 }
 
 // Função para calcular o Lucro Bruto
-function calcularLucroBruto(entradas, saidas) {
-  const totalEntradas = entradas.reduce((total, entrada) => total + (entrada.preco * entrada.quantidade), 0);
-  const totalSaidas = saidas.reduce((total, saida) => total + (saida.preco * saida.quantidade), 0);
-  return totalEntradas - totalSaidas;
+function calcularLucroBruto(saidas) {
+  // Calcular o total das saídas
+  const totalSaidas = saidas.reduce((total, saida) => {
+    const preco = parseFloat(saida.preco) || 0;
+    const quantidade = parseInt(saida.quantidade) || 0;
+    return total + (preco * quantidade);
+  }, 0);
+
+  return totalSaidas;
 }
 
-// Função para calcular o Lucro Líquido
 function calcularLucroLiquido(entradas, saidas) {
-  // Exemplo de custo fixo ou outras despesas
-  const despesasFixas = 5000; // Exemplo, substitua conforme necessário
-  const lucroBruto = calcularLucroBruto(entradas, saidas);
-  return lucroBruto - despesasFixas; // Subtrai despesas fixas do lucro bruto
+  // Calcular o lucro bruto (total das saídas)
+  const lucroBruto = calcularLucroBruto(saidas);
+
+  // Calcular o total das entradas
+  const totalEntradas = entradas.reduce((total, entrada) => {
+    const preco = parseFloat(entrada.preco) || 0;
+    const quantidade = parseInt(entrada.quantidade) || 0;
+    return total + (preco * quantidade);
+  }, 0);
+
+  // O lucro líquido é a diferença entre total de entradas e o total das saídas
+  return totalEntradas - lucroBruto;
 }
 
-// Chama a função de calcular lucro quando a página carregar
+
 window.onload = async () => {
-  await loadDashboardData(); // Carrega os dados das entradas e saídas
-  calcularLucro(); // Calcula o lucro inicial
+  await loadDashboardData();
+  calcularLucro(); 
 };
