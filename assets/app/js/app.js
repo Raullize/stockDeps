@@ -633,7 +633,7 @@ function openModalEntrada(id) {
 }
 
 function openModalSaida(id) {
-    const inputProdutoId = document.getElementById('produtoId');
+    const inputProdutoId = document.getElementById('produtoId2');
 
     inputProdutoId.value = id;
     new bootstrap.Modal(document.getElementById('modalSaida')).show();
