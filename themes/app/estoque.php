@@ -1,15 +1,11 @@
 <?php
 $this->layout("_theme");
-
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/estoque.css') ?>">
 
 <body>
-
-
-
     <div class="container-fluid mt-2">
         <div class="row justify-content-center">
             <div class="tabelaProdutos">
@@ -106,7 +102,6 @@ $this->layout("_theme");
                         <button type="submit" class="btn btn-primary" id="salvarProduto">Salvar Produto</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -119,7 +114,6 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarCategoriaLabel">Adicionar Categoria</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <form id="categoria-cadastro" name="categoria-cadastro" method="post">
                     <div class="modal-body">
                         <div class="mb-3">
@@ -136,7 +130,6 @@ $this->layout("_theme");
                         <button type="submit" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -291,7 +284,6 @@ $this->layout("_theme");
                 <form id="saida-cadastro" name="saida-cadastro" method="post">
                     <div class="modal-body">
                         <input name="produtoId2" type="hidden" id="produtoId2" value=""> <!-- Campo oculto para armazenar o id -->
-
                         <!-- Campo Cliente -->
                         <div class="mb-3">
                             <label for="cliente" class="form-label">Cliente</label>
@@ -303,13 +295,11 @@ $this->layout("_theme");
                                 <label class="form-check-label" for="clienteNaoCadastrado">Cliente não cadastrado</label>
                             </div>
                         </div>
-
                         <!-- Campo Quantidade -->
                         <div class="mb-3">
                             <label for="quantidadeSaida" class="form-label">Quantidade</label>
                             <input name="quantidade" type="number" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
                         </div>
-
                         <!-- Campo Preço -->
                         <div class="mb-3">
                             <label for="precoSaida" class="form-label">Preço</label>
@@ -323,14 +313,12 @@ $this->layout("_theme");
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                     </div>
-
                     <!-- Botões -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         <button type="submit" class="btn btn-primary" id="salvarSaida">Salvar Saída</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -450,10 +438,8 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
-
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
-
 </body>

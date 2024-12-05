@@ -5,26 +5,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
   <link rel="stylesheet" href="<?= url('assets/app/css/globals.css') ?>">
-
   <!-- CSS only -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <!-- FONT AWESOME PAGE CATEGORIES -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
   <title>Stock Deps</title>
 </head>
 
 <body>
-
-
   <nav class="navbar navbar-expand-lg  shadow-sm">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="<?= url('') ?>">
-
         <span class="fw-bold brand">Stock Deps</span>
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,18 +42,11 @@
             <a class="nav-link" href="<?= url('relatorio') ?>"><i class="bi bi-bar-chart-line-fill"></i> Relatórios</a>
           </li>
         </ul>
-
-
       </div>
     </div>
   </nav>
-
-
 </body>
-
 </html>
 <?php
-
 echo $this->section("content");
-
 ?>

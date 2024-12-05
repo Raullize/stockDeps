@@ -13,7 +13,6 @@ use Source\Models\Produtos;
 use Source\Models\Saidas;
 use Source\Models\EstoqueFeatures;
 
-
 class App
 {
     private $view;

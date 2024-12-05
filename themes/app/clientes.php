@@ -1,17 +1,12 @@
 <?php
 $this->layout("_theme");
-
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/clientes.css') ?>">
 
 <body>
-
-
-
     <div class="container-fluid">
-
         <div class="row justify-content-center">
             <div class="tabelaClientes">
                 <h1 class="text-center p-4">
@@ -45,11 +40,8 @@ $this->layout("_theme");
         <nav>
                 <ul class="pagination justify-content-center" id="paginationClientes"></ul>
             </nav>
-
     </div>
-
     <!-- MODAIS -->
-
     <!-- Modal Adicionar Cliente -->
     <div class="modal fade" id="modalAdicionarCliente" tabindex="-1" aria-labelledby="modalAdicionarClienteLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg"> <!-- Aumentando a largura do modal -->
@@ -134,7 +126,5 @@ $this->layout("_theme");
     <script src="<?= url('assets/app/js/clientes.js') ?>" defer></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
-
 </body>
-
 </html>

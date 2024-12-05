@@ -7,13 +7,11 @@ $this->layout("_theme");
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <body>
-
     <div class="container mt-3">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Dashboard</h1>
         </div>
-
         <!-- Cards -->
         <div class="row g-4">
             <div class="col-md-3">
@@ -96,7 +94,6 @@ $this->layout("_theme");
                 <div class="card h-100">
                     <div class="card-body">
                         <h5 class="card-title">Lucro por Período</h5>
-
                         <!-- Filtro para selecionar o período -->
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div>
@@ -113,7 +110,6 @@ $this->layout("_theme");
                                 <button class="btn btn-primary" onclick="calcularLucro()">Calcular</button>
                             </div>
                         </div>
-
                         <!-- Exibindo Lucro Bruto e Lucro Líquido -->
                         <div class="row">
                             <!-- Caixa de Lucro Bruto -->
@@ -125,7 +121,6 @@ $this->layout("_theme");
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Caixa de Lucro Líquido -->
                             <div class="col-md-6">
                                 <div class="card h-100">
@@ -139,7 +134,6 @@ $this->layout("_theme");
                     </div>
                 </div>
             </div>
-
             <div class="col-md-3">
                 <div class="card h-100">
                     <div class="card-body">
@@ -150,7 +144,6 @@ $this->layout("_theme");
                     </div>
                 </div>
             </div>
-
             <div class="col-md-4">
                 <div class="card h-100">
                     <div class="card-body">
@@ -162,7 +155,6 @@ $this->layout("_theme");
                 </div>
             </div>
         </div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

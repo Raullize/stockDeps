@@ -6,9 +6,6 @@ $this->layout("_theme");
 <link rel="stylesheet" href="<?= url('assets/app/css/fornecedores.css') ?>">
 
 <body>
-
-
-
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="tabelaFornecedores">
@@ -58,7 +55,6 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarFornecedorLabel">Adicionar Fornecedor</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <form id="formAdicionarFornecedor">
                     <div class="modal-body">
                         <div class="mb-3">
@@ -131,7 +127,6 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="modalEditarFornecedor" tabindex="-1" aria-labelledby="modalEditarFornecedorLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -139,7 +134,6 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarFornecedorLabel">Editar Fornecedor</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <form id="formEditarFornecedor" class="p-3">
                     <input type="hidden" id="editarFornecedorId">
                     <div class="mb-3">
@@ -204,7 +198,6 @@ $this->layout("_theme");
                         </select>
                     </div>
                 </form>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                     <button type="button" class="btn btn-primary" id="btnSalvarEdicao">Editar</button>
@@ -213,12 +206,8 @@ $this->layout("_theme");
         </div>
     </div>
 
-
-
-
     <script src="<?= url('assets/app/js/fornecedores.js') ?>" defer></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 </body>
-
 </html>
