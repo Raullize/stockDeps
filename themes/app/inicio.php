@@ -18,27 +18,27 @@ $this->layout("_theme");
         <div class="row g-4">
             <div class="col-md-3">
                 <div class="card text-center text-white bg-primary box-hover">
-                    <div class="card-body">
+                    <div class="card-body statistic-cards">
                         <h5 class="card-title">Total de Produtos</h5>
-                        <h3>145</h3>
+                        <h3 id="total-produtos">0</h3>
                         <p><i class="fas fa-box"></i> Atualizado hoje</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card text-center text-white bg-success box-hover">
-                    <div class="card-body">
+                    <div class="card-body statistic-cards">
                         <h5 class="card-title">Produtos em Estoque</h5>
-                        <h3></h3>
+                        <h3 id="produtos-estoque">0</h3>
                         <p><i class="fas fa-check-circle"></i> Suficiente</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card text-center text-white bg-warning box-hover">
-                    <div class="card-body">
+                    <div class="card-body statistic-cards">
                         <h5 class="card-title">Estoque Baixo</h5>
-                        <h3>15</h3>
+                        <h3 id="estoque-baixo">0</h3>
                         <p><i class="fas fa-exclamation-triangle"></i> Repor itens</p>
                     </div>
                 </div>
@@ -47,7 +47,7 @@ $this->layout("_theme");
                 <div class="card text-center text-white bg-danger box-hover">
                     <div class="card-body">
                         <h5 class="card-title">Produtos Sem Estoque</h5>
-                        <h3>0</h3>
+                        <h3 id="produtos-sem-estoque">0</h3>
                         <p><i class="fas fa-times-circle"></i> Reabasteça urgentemente</p>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ $this->layout("_theme");
                 <div class="card text-center text-white bg-dark box-hover">
                     <div class="card-body">
                         <h5 class="card-title">Total de Clientes</h5>
-                        <h3 id="total-clientes"></h3>
+                        <h3 id="total-clientes">0</h3>
                         <p><i class="fas fa-users"></i> Base ativa</p>
                     </div>
                 </div>
@@ -65,7 +65,7 @@ $this->layout("_theme");
                 <div class="card text-center text-white bg-secondary box-hover">
                     <div class="card-body">
                         <h5 class="card-title">Total de Fornecedores</h5>
-                        <h3 id="total-fornecedores"></h3>
+                        <h3 id="total-fornecedores">0</h3>
                         <p><i class="fas fa-truck"></i> Fornecedores ativos</p>
                     </div>
                 </div>
@@ -74,7 +74,7 @@ $this->layout("_theme");
                 <div class="card text-center text-white bg-info box-hover">
                     <div class="card-body">
                         <h5 class="card-title">Total de Entradas</h5>
-                        <h3 id="total-entradas"></h3>
+                        <h3 id="total-entradas">0</h3>
                         <p><i class="fas fa-arrow-circle-up"></i> Entradas registradas</p>
                     </div>
                 </div>
@@ -83,7 +83,7 @@ $this->layout("_theme");
                 <div class="card text-center bg-light box-hover">
                     <div class="card-body">
                         <h5 class="card-title">Total de Saídas</h5>
-                        <h3 id="total-saidas"></h3>
+                        <h3 id="total-saidas">0</h3>
                         <p><i class="fas fa-arrow-circle-down"></i> Saídas registradas</p>
                     </div>
                 </div>

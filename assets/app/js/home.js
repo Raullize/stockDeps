@@ -57,20 +57,23 @@ async function loadDashboardData() {
 }
 
 function preencherClientes(clientes) {
-  document.getElementById('total-clientes').textContent = clientes.length;
+  const totalClientes = clientes.length || 0; // Garante que será 0 se o array estiver vazio
+  document.getElementById('total-clientes').textContent = totalClientes;
 }
 
 function preencherFornecedores(fornecedores) {
-  document.getElementById('total-fornecedores').textContent = fornecedores.length;
+  const totalFornecedores = fornecedores.length || 0; // Garante que será 0 se o array estiver vazio
+  document.getElementById('total-fornecedores').textContent = totalFornecedores;
 }
+
 
 function atualizarCaixas(produtos, entradas, saidas) {
   const totalProdutos = produtos.length;
   const produtosEmEstoque = produtos.filter(produto => produto.quantidade > 0).length;
   const estoqueBaixo = produtos.filter(produto => produto.quantidade > 0 && produto.quantidade < 5).length;
   const semEstoque = produtos.filter(produto => produto.quantidade === 0).length;
-  const totalEntradas = entradas.length;
-  const totalSaidas = saidas.length;
+  const totalEntradas = entradas.length || 0;
+  const totalSaidas = saidas.length || 0;
 
 
   document.querySelector(".card-title + h3").textContent = totalProdutos;
