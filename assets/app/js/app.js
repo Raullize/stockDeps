@@ -1,5 +1,5 @@
 const BASE_URL = '/stockDeps';
-const itensPorPagina = 5;
+const itensPorPagina = 8;
 const maxBotoesPaginacao = 5; // Limite de botões de página exibidos
 let paginaAtual = 1;
 let produtos = [];
@@ -53,6 +53,7 @@ function loadAllData() {
     fetchEntradas();
     fetchSaidas();
 }
+
 
 function preencherTabelaProdutos(produtosPaginados) {
     const corpoTabela = document.getElementById("corpoTabela");

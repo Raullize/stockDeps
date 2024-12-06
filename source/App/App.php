@@ -2,7 +2,6 @@
 
 namespace Source\App;
 
-use Smalot\PdfParser\Parser;
 use Dompdf\Dompdf;
 use League\Plates\Engine;
 use Source\Models\Categorias;
@@ -12,6 +11,7 @@ use Source\Models\Fornecedores;
 use Source\Models\Produtos;
 use Source\Models\Saidas;
 use Source\Models\EstoqueFeatures;
+use PDO;
 
 class App
 {
@@ -141,7 +141,6 @@ class App
                 ];
                 echo json_encode($json);
                 return;
-
             } else {
                 $json = [
                     "message" => "Produto não cadastrado!",
@@ -171,10 +170,10 @@ class App
 
             $saidas = new Saidas();
             $saidas->delete($data["idProdutoExcluir"]);
-            
+
             $produtos = new Produtos();
             $produtoDeletado = $produtos->delete($data["idProdutoExcluir"]);
-            
+
             if ($produtoDeletado) {
                 $json = [
                     "entradas" => $entradas->selectAll(),
@@ -277,7 +276,7 @@ class App
             $fornecedor = new Fornecedores();
             $idFonecedor = $fornecedor->findByIdName($data["nome"]);
 
-            if($idFonecedor == false){
+            if ($idFonecedor == false) {
                 $json = [
                     "message" => "Fornecedor não encontrado!",
                     "type" => "warning"
@@ -357,14 +356,14 @@ class App
             $cliente = new Clientes();
             $idCliente = $cliente->findByIdName($data["nome"]);
 
-            if($idCliente == false){
+            if ($idCliente == false) {
                 $idCliente = null;
             }
 
             $produto = new Produtos();
             $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
 
-            if ($quantidadeProduto < $data["quantidade"]){
+            if ($quantidadeProduto < $data["quantidade"]) {
                 $json = [
                     "quantidadeProduto" => $quantidadeProduto,
                     "quantidade" => $data["quantidade"],
@@ -587,7 +586,7 @@ class App
         echo json_encode($output);
     }
 
-    
+
     public function relatorio(): void
     {
 
@@ -794,121 +793,143 @@ class App
         echo json_encode($saidas->selectAll());
     }
 
-    public function uploadPdf(): void
+    public function processarXmlNota($request)
     {
-        echo $this->view->render("uploadPdf");
+        $pdo = \Source\Core\Connect::getInstance();
+
+        if (!isset($_FILES['arquivoNota']) || $_FILES['arquivoNota']['error'] != UPLOAD_ERR_OK) {
+            echo json_encode(['error' => 'Erro no upload do arquivo XML']);
+            return;
+        }
+
+        $xmlPath = $_FILES['arquivoNota']['tmp_name'];
+        $xmlContent = file_get_contents($xmlPath);
+        $xml = simplexml_load_string($xmlContent);
+
+        if (!$xml) {
+            echo json_encode(['error' => 'Arquivo XML inválido']);
+            return;
+        }
+
+        $namespaces = $xml->getNamespaces(true);
+        $xml->registerXPathNamespace('nfe', $namespaces['']);
+
+        $emit = $xml->xpath('//nfe:emit')[0];
+        $fornecedor = [
+            'CNPJ' => (string)($emit->CNPJ ?? ''),
+            'Nome' => (string)($emit->xNome ?? ''),
+            'Endereco' => (string)($emit->enderEmit->xLgr ?? ''),
+            'Municipio' => (string)($emit->enderEmit->xMun ?? ''),
+            'CEP' => (string)($emit->enderEmit->CEP ?? ''),
+            'UF' => (string)($emit->enderEmit->UF ?? ''),
+            'Telefone' => (string)($emit->enderEmit->fone ?? ''),
+        ];
+
+        $produtos = [];
+        foreach ($xml->xpath('//nfe:det') as $det) {
+            $prod = $det->prod;
+            $produtos[] = [
+                'Descrição' => (string)($prod->xProd ?? ''),
+                'Quantidade' => (float)($prod->qCom ?? 0),
+                'Valor Unitário' => (float)($prod->vUnCom ?? 0),
+            ];
+        }
+
+        $this->cadastrarNota($fornecedor, $produtos);
+        echo "Nota processada com sucesso!";
     }
 
-    // Método para processar o PDF enviado
-    public function processarPdf(): void
+
+    public function cadastrarNota(array $fornecedorData, array $produtosData): void
     {
-        // Verifica se a requisição é POST e se o arquivo foi enviado
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['pdf'])) {
-            $pdfFile = $_FILES['pdf'];
+        $pdo = \Source\Core\Connect::getInstance();
+        var_dump($fornecedorData, $produtosData);
 
-            // Verifica se o upload do arquivo ocorreu sem erros
-            if ($pdfFile['error'] === UPLOAD_ERR_OK) {
-                // Define o diretório de uploads
-                $uploadDir = __DIR__ . '/uploads/';
+        try {
+            // Inicia a transação
+            $pdo->beginTransaction();
 
-                // Cria o diretório de uploads, caso não exista
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
+            // Verifica se o fornecedor já existe
+            $queryFornecedor = "SELECT id FROM fornecedores WHERE cnpj = :cnpj LIMIT 1";
+            $stmtFornecedor = $pdo->prepare($queryFornecedor);
+            $stmtFornecedor->execute(['cnpj' => $fornecedorData['CNPJ']]);
+            $fornecedorId = $stmtFornecedor->fetchColumn();
 
-                // Define o caminho completo para o arquivo PDF
-                $pdfPath = $uploadDir . basename($pdfFile['name']);
+            if (!$fornecedorId) {
+                // Cadastra o fornecedor
+                $queryInsertFornecedor = "
+                INSERT INTO fornecedores (nome, cnpj, telefone, endereco, municipio, cep, uf, created_at) 
+                VALUES (:nome, :cnpj, :telefone, :endereco, :municipio, :cep, :uf, NOW())
+            ";
+                $stmtInsertFornecedor = $pdo->prepare($queryInsertFornecedor);
+                $stmtInsertFornecedor->execute([
+                    'nome' => $fornecedorData['Nome'],
+                    'cnpj' => $fornecedorData['CNPJ'],
+                    'telefone' => $fornecedorData['Telefone'],
+                    'endereco' => $fornecedorData['Endereco'], // Acessando diretamente
+                    'municipio' => $fornecedorData['Municipio'], // Acessando diretamente
+                    'cep' => $fornecedorData['CEP'], // Acessando diretamente
+                    'uf' => $fornecedorData['UF'],
+                ]);
+                $fornecedorId = $pdo->lastInsertId();
+            }
 
-                // Move o arquivo PDF para o diretório de uploads
-                if (move_uploaded_file($pdfFile['tmp_name'], $pdfPath)) {
-                    // Processa o PDF
-                    $itens = $this->extrairItensDoPDF($pdfPath);
+            // Processa cada produto
+            foreach ($produtosData as $produto) {
+                // Verifica se o produto já existe
+                $queryProduto = "SELECT id FROM produtos WHERE nome = :nome LIMIT 1";
+                $stmtProduto = $pdo->prepare($queryProduto);
+                $stmtProduto->execute(['nome' => $produto['Descrição']]);
+                $produtoId = $stmtProduto->fetchColumn();
 
-                    // Exclui o arquivo PDF após o processamento (opcional)
-                    unlink($pdfPath);
-
-                    // Exibe os itens extraídos do PDF
-                    echo '<pre>';
-                    print_r($itens);
-                    echo '</pre>';
+                if (!$produtoId) {
+                    // Cadastra o produto
+                    $queryInsertProduto = "
+                    INSERT INTO produtos (idCategoria, nome, descricao, preco, quantidade, created_at)
+                    VALUES (:idCategoria, :nome, :descricao, :preco, :quantidade, NOW())
+                ";
+                    $stmtInsertProduto = $pdo->prepare($queryInsertProduto);
+                    $stmtInsertProduto->execute([
+                        'idCategoria' => 1, // Substitua por lógica para associar a categoria, se necessário
+                        'nome' => $produto['Descrição'],
+                        'descricao' => $produto['Descrição'],
+                        'preco' => $produto['Valor Unitário'],
+                        'quantidade' => $produto['Quantidade'],
+                    ]);
+                    $produtoId = $pdo->lastInsertId();
                 } else {
-                    echo "Erro ao salvar o arquivo PDF.";
+                    // Atualiza a quantidade existente
+                    $queryUpdateQuantidade = "
+                    UPDATE produtos SET quantidade = quantidade + :quantidade WHERE id = :id
+                ";
+                    $stmtUpdateQuantidade = $pdo->prepare($queryUpdateQuantidade);
+                    $stmtUpdateQuantidade->execute([
+                        'quantidade' => $produto['Quantidade'],
+                        'id' => $produtoId,
+                    ]);
                 }
-            } else {
-                echo "Erro no envio do arquivo PDF.";
+
+                // Cadastra a entrada
+                $queryInsertEntrada = "
+                INSERT INTO entradas (idFornecedor, idProdutos, quantidade, preco, created_at)
+                VALUES (:idFornecedor, :idProdutos, :quantidade, :preco, NOW())
+            ";
+                $stmtInsertEntrada = $pdo->prepare($queryInsertEntrada);
+                $stmtInsertEntrada->execute([
+                    'idFornecedor' => $fornecedorId,
+                    'idProdutos' => $produtoId,
+                    'quantidade' => $produto['Quantidade'],
+                    'preco' => $produto['Valor Unitário'],
+                ]);
             }
+
+            // Finaliza a transação
+            $pdo->commit();
+            echo "Nota processada com sucesso!";
+        } catch (\Exception $e) {
+            $pdo->rollBack();
+            echo "Erro ao processar a nota: " . $e->getMessage();
         }
-    }
-
-    // Função para processar e extrair os itens do PDF
-    // Caminho: Source/App/App.php
-    // Função para processar e extrair os itens do PDF
-
-    private function extrairItensDoPDF($pdfPath)
-    {
-        $parser = new \Smalot\PdfParser\Parser();
-        $pdf = $parser->parseFile($pdfPath);
-
-        // Obtém o texto do PDF
-        $text = $pdf->getText();
-
-        // Verifica se o texto foi extraído corretamente
-        if (empty($text)) {
-            echo "Texto não extraído do PDF.<br>";
-            return [];
-        }
-
-        echo "<h3>Texto Completo do PDF:</h3>";
-        echo "<pre>" . htmlspecialchars($text) . "</pre>";
-
-        // Lista para armazenar os itens extraídos
-        $itens = [];
-
-        // Divide o texto em linhas
-        $linhas = explode("\n", $text);
-
-        echo "<h3>Linhas Extraídas:</h3>";
-        echo "<pre>";
-        print_r($linhas);
-        echo "</pre>";
-
-        // Percorre as linhas do texto e tenta aplicar o regex
-        foreach ($linhas as $linha) {
-            echo "<strong>Processando Linha:</strong> " . htmlspecialchars($linha) . "<br>";
-
-            // Regex para capturar Código, Descrição, NCM/SH, Unidade, Quantidade, Valor Unitário e Valor Total
-            // Captura:
-            // - Código: sequência numérica inicial
-            // - Descrição: Nome do produto (permitindo espaços e hífens)
-            // - NCM/SH: Sequência numérica após a descrição
-            // - Unidade: 1KG, POTE, etc.
-            // - Quantidade: Ex: 3,0000
-            // - Valor Unitário: Ex: 72,3500
-            // - Valor Total: Ex: 217,05
-            if (preg_match('/^(\d+)\s+([A-Za-z\s\-\(\),]+)\s+(\d+)\s+(\w+)\s+([\d,.]+)\s+([\d,.]+)\s+([\d,.]+)\b/', $linha, $matches)) {
-                $itens[] = [
-                    'codigo' => trim($matches[1]),                        // Código do produto
-                    'descricao' => trim($matches[2]),                     // Nome do produto
-                    'ncm_sh' => trim($matches[3]),                        // NCM/SH
-                    'unidade' => trim($matches[4]),                       // Unidade (ex: 1KG, POTE)
-                    'quantidade' => (float)str_replace(',', '.', $matches[5]),  // Quantidade
-                    'valor_unitario' => (float)str_replace(',', '.', $matches[6]), // Valor unitário
-                    'valor_total' => (float)str_replace(',', '.', $matches[7])  // Valor total
-                ];
-                echo "<strong>Item capturado:</strong> ";
-                print_r($itens[count($itens) - 1]);
-                echo "<br>";
-            } else {
-                echo "<strong>Regex não aplicável para esta linha.</strong><br>";
-            }
-        }
-
-        // Exibe o array final
-        echo "<h3>Itens Extraídos:</h3>";
-        echo "<pre>";
-        print_r($itens);
-        echo "</pre>";
-
-        return $itens;
+        // var_dump($fornecedorData, $produtosData);
     }
 }

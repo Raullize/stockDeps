@@ -181,14 +181,14 @@ function atualizarGraficoCategorias(categorias) {
 async function calcularLucro() {
   const periodo = document.getElementById('periodo').value;
 
-
   const entradasFiltradas = filtrarPorPeriodo(entradas, periodo);
   const saidasFiltradas = filtrarPorPeriodo(saidas, periodo);
 
+  // Lucro bruto depende apenas de saídas
+  const lucroBruto = calcularLucroBruto(saidasFiltradas);
 
-  const lucroBruto = calcularLucroBruto(entradasFiltradas, saidasFiltradas);
+  // Lucro líquido = lucro bruto - custos (entradas)
   const lucroLiquido = calcularLucroLiquido(entradasFiltradas, saidasFiltradas);
-
 
   document.getElementById('lucro-bruto').textContent = `R$ ${lucroBruto.toFixed(2)}`;
   document.getElementById('lucro-liquido').textContent = `R$ ${lucroLiquido.toFixed(2)}`;
@@ -221,17 +221,15 @@ function filtrarPorPeriodo(transacoes, periodo) {
 
 
 function calcularLucroBruto(saidas) {
-  const totalSaidas = saidas.reduce((total, saida) => {
+  if (saidas.length === 0) return 0; // Sem vendas, lucro bruto é zero
+  return saidas.reduce((total, saida) => {
     const preco = parseFloat(saida.preco) || 0;
     const quantidade = parseInt(saida.quantidade) || 0;
     return total + (preco * quantidade);
   }, 0);
-
-  return totalSaidas;
 }
 
 function calcularLucroLiquido(entradas, saidas) {
-
   const lucroBruto = calcularLucroBruto(saidas);
 
   const totalEntradas = entradas.reduce((total, entrada) => {
@@ -240,9 +238,8 @@ function calcularLucroLiquido(entradas, saidas) {
     return total + (preco * quantidade);
   }, 0);
 
-  return lucroBruto - totalEntradas;
+  return lucroBruto - totalEntradas; // Receita - Custo
 }
-
 
 window.onload = async () => {
   await loadDashboardData();

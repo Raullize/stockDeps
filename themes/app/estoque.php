@@ -202,32 +202,34 @@ $this->layout("_theme");
         </div>
     </div>
 
-    <!-- Modal Adicionar Nota -->
-    <div class="modal" id="modalAdicionarDANFE" tabindex="-1">
+   <!-- Modal Adicionar Nota -->
+   <div class="modal" id="modalAdicionarDANFE" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Adicionar Nota DANFE</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="numeroNota" class="form-label">Número da Nota</label>
-                        <input type="text" id="numeroNota" class="form-control" placeholder="Digite o número da nota">
+                <form action="processarXmlNota" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="numeroNota" class="form-label">Número da Nota</label>
+                            <input type="text" id="numeroNota" class="form-control" placeholder="Digite o número da nota">
+                        </div>
+                        <div class="mb-3">
+                            <label for="dataEmissao" class="form-label">Data de Emissão</label>
+                            <input type="date" id="dataEmissao" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="arquivoNota" class="form-label">Upload de Nota (XML)</label>
+                            <input type="file" id="arquivoNota" name="arquivoNota" class="form-control" accept=".xml">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="dataEmissao" class="form-label">Data de Emissão</label>
-                        <input type="date" id="dataEmissao" class="form-control">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Adicionar Nota</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="arquivoNota" class="form-label">Upload de Nota (PDF)</label>
-                        <input type="file" id="arquivoNota" class="form-control" accept=".pdf">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Adicionar Nota</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>

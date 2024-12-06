@@ -48,8 +48,8 @@ $route->get("/getSaidas", "App:getSaidas");
 
 /* ROTAS GET:POST DE TRATAMENTO DE DADOS DA NOTA FISCAL .PDF */
 
-$route->get("/uploadPdf", "App:uploadPdf");
-$route->post("/processarPdf", "App:processarPdf");
+
+$route->post("/processarXmlNota", "App:processarXmlNota");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE ESTOQUE MODO:POST */
 

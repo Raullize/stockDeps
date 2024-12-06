@@ -224,3 +224,26 @@ form_cadastro_fornecedores.on("submit", function (e) {
         }
     });
 });
+
+const form = document.querySelector('form[action="processarXmlNota"]');
+form.removeEventListener('submit', handleFormSubmit); // Remove listener duplicado, se houver
+form.addEventListener('submit', handleFormSubmit);    // Adiciona o listener apenas uma vez
+
+function handleFormSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('processarXmlNota', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.text())
+        .then(result => {
+            alert("Nota processada com sucesso!");
+            window.location.reload(); // Recarrega a página após o sucesso
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert("Ocorreu um erro ao processar a nota.");
+        });
+}
