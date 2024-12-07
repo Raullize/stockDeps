@@ -197,4 +197,32 @@ class Produtos
             return true;
         }
     }
+
+    public function update($id, $nome, $descricao, $preco)
+    {
+        // Query de atualização
+        $query = "UPDATE produtos 
+                SET nome = :nome, descricao = :descricao, preco = :preco 
+                WHERE id = :id";
+
+        // Prepara a conexão
+        $stmt = Connect::getInstance()->prepare($query);
+
+        // Liga os parâmetros aos valores
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":nome", $nome);
+        $stmt->bindParam(":descricao", $descricao);
+        $stmt->bindParam(":preco", $preco);
+
+        // Executa a query
+        $stmt->execute();
+
+        // Retorna se houve alterações
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

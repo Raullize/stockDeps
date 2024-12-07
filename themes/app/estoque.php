@@ -142,14 +142,16 @@ $this->layout("_theme");
                     <h5 class="modal-title">Editar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form id="produto-update" name="produto-update" method="post">
                 <div class="modal-body">
+                        <input type="hidden" name="idProdutoUpdate" id="idProdutoUpdate">
                     <div class="mb-3">
                         <label for="nomeProduto" class="form-label">Nome</label>
-                        <input type="text" id="nomeProduto" class="form-control">
+                        <input name="nome" type="text" id="nomeProduto" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="descricaoProduto" class="form-label">Descrição</label>
-                        <textarea id="descricaoProduto" class="form-control"></textarea>
+                        <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="precoProduto" class="form-label">Preço</label>
@@ -162,10 +164,6 @@ $this->layout("_theme");
                             oninput="formatarPreco(this)">
                         <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                     </div>
-                    <div class="mb-3">
-                        <label for="quantidadeProduto" class="form-label">Quantidade</label>
-                        <input type="text" id="quantidadeProduto" class="form-control" step="0.01">
-                    </div>
                     <!-- Campo para adicionar foto do produto -->
                     <div class="mb-3">
                         <label for="fotoProduto" class="form-label">Foto do Produto</label>
@@ -174,8 +172,9 @@ $this->layout("_theme");
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary">Salvar Alterações</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                 </div>
+               </form>
             </div>
         </div>
     </div>
@@ -190,7 +189,8 @@ $this->layout("_theme");
                 </div>
                 <form id="produto-excluir" name="produto-excluir" method="post">
                     <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir este produto?</p>
+                        <p>Tem certeza de que deseja excluir este produto? 
+                            Ao confirmar, todas as entradas e saídas relacionadas a ele também serão removidas.</p>
                         <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
                     <div class="modal-footer">
@@ -443,5 +443,6 @@ $this->layout("_theme");
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 </body>
