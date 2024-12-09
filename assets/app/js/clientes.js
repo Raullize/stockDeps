@@ -62,7 +62,7 @@ function preencherTabelaClientes(clientesPaginados) {
             <td>
                 <div class="btn-group w-100">
                     <button class="btn btn-primary text-light" onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
-                    <button class="btn btn-danger" onclick="excluirCliente(${cliente.id})">Excluir</button>
+                    <button class="btn btn-danger" onclick="openModalExcluir(${cliente.id})">Excluir</button>
                     <button class="btn btn-success" onclick="abrirModalHistorico(${cliente.id})">Histórico</button>
                 </div>
             </td>
@@ -199,6 +199,10 @@ async function excluirCliente(id) {
             alert("Erro ao excluir o cliente.");
         }
     }
+}
+
+function openModalExcluir(){
+    new bootstrap.Modal(document.getElementById('modalExcluir')).show();
 }
 
 function formatarCPF(event) {

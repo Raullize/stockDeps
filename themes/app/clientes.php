@@ -16,7 +16,7 @@ $this->layout("_theme");
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarCliente" id="adicionarClienteBtn">
                         Adicionar Cliente
                     </button>
-                    <div class="d-flex"> 
+                    <div class="d-flex">
                         <label for="buscarCliente" class="p-2">Procurar cliente:</label>
                         <input type="text" name="buscarCliente" id="buscarCliente" placeholder="Procurar cliente" class="form-control">
                     </div>
@@ -38,8 +38,8 @@ $this->layout("_theme");
             </div>
         </div>
         <nav>
-                <ul class="pagination justify-content-center" id="paginationClientes"></ul>
-            </nav>
+            <ul class="pagination justify-content-center" id="paginationClientes"></ul>
+        </nav>
     </div>
     <!-- MODAIS -->
     <!-- Modal Adicionar Cliente -->
@@ -106,6 +106,28 @@ $this->layout("_theme");
         </div>
     </div>
 
+    <!-- Modal Excluir -->
+    <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalExcluirLabel">Excluir Produto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="produto-excluir" name="produto-excluir" method="post">
+                    <div class="modal-body">
+                        <p>Tem certeza de que deseja excluir este cliente?</p>
+                        <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger" id="confirmarExcluir">Excluir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modalHistoricoCliente" tabindex="-1" aria-labelledby="modalHistoricoClienteLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -127,4 +149,5 @@ $this->layout("_theme");
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 </body>
+
 </html>

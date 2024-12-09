@@ -4,12 +4,37 @@ const itensPorPaginaFornecedores = 7;
 const maxBotoesPaginacaoFornecedores = 5;
 let paginaAtualFornecedores = 1;
 let fornecedores = [];
+let entradas = [];
 
+
+async function fetchProdutos() {
+    const response = await fetch(`${BASE_URL}/getProdutos`);
+    produtos = await response.json();
+}
+
+async function fetchCategorias() {
+    const response = await fetch(`${BASE_URL}/getCategorias`);
+    categorias = await response.json();
+}
+
+async function fetchClientes() {
+    const response = await fetch(`${BASE_URL}/getClientes`);
+    clientes = await response.json();
+}
+async function fetchSaidas() {
+    const response = await fetch(`${BASE_URL}/getSaidas`);
+    saidas = await response.json(); // Preenche a variável global saídas
+}
 async function fetchFornecedores() {
     const response = await fetch(`${BASE_URL}/getFornecedores`);
     fornecedores = await response.json();
     mostrarPaginaFornecedores(paginaAtualFornecedores);
     buscarFornecedor(fornecedores); // Inicializa a busca com a lista de fornecedores
+}
+
+async function fetchEntradas() {
+    const response = await fetch(`${BASE_URL}/getEntradas`);
+    entradas = await response.json(); // Preenche a variável global saídas
 }
 
 function preencherTabelaFornecedores(fornecedoresPaginados) {
@@ -30,8 +55,8 @@ function preencherTabelaFornecedores(fornecedoresPaginados) {
             <td>
                 <div class="btn-group">
                     <button class="btn btn-primary" onclick="editarFornecedor(${fornecedor.id})" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" id="editarFornecedorBtn">Editar</button>
-                    <button class="btn btn-danger" onclick="excluirFornecedor(${fornecedor.id})">Excluir</button>
-                    <button class="btn btn-success" onclick="verHistoricoFornecedor(${fornecedor.id})">Histórico</button>
+                    <button class="btn btn-danger" onclick="openModalExcluir(${fornecedor.id})">Excluir</button>
+                    <button class="btn btn-success" onclick="abrirModalHistorico(${fornecedor.id})">Histórico</button>
                 </div>
             </td>
         `;
@@ -177,4 +202,48 @@ document.getElementById("formEditarFornecedor").addEventListener("submit", async
     }
 });
 
-document.addEventListener("DOMContentLoaded", fetchFornecedores);
+function openModalExcluir(){
+    new bootstrap.Modal(document.getElementById('modalExcluir')).show();
+}
+function abrirModalHistorico(id) {
+    const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoFornecedor"));
+
+    document.getElementById("historicoFornecedor").textContent = `Carregando histórico do fornecedor ID ${id}...`;
+
+    const entradasFornecedor = entradas.filter(entrada => entrada.idFornecedor === id);
+
+    let htmlHistorico = '';
+    if (entradasFornecedor.length > 0) {
+        entradasFornecedor.forEach(entrada => {
+            const produto = produtos.find(p => p.id === entrada.idProdutos);
+            const categoria = categorias.find(c => c.id === entrada.idCategoria);
+
+            htmlHistorico += `
+                <p><strong>Produto:</strong> ${produto ? produto.nome : 'Desconhecido'} <br>
+                <strong>Categoria:</strong> ${categoria ? categoria.nome : 'Desconhecida'} <br>
+                <strong>Quantidade:</strong> ${entrada.quantidade} <br>
+                <strong>preço:</strong> ${entrada.preco} <br>
+                <strong>Data:</strong> ${new Date(entrada.created_at).toLocaleDateString()}</p>
+            `;
+        });
+    } else {
+        htmlHistorico = '<p>Nenhuma entrada registrada para este Fornecedor.</p>';
+    }
+
+    document.getElementById("historicoFornecedor").innerHTML = htmlHistorico;
+
+    modalHistorico.show();
+}
+
+function loadAllData() {
+    fetchProdutos();
+    fetchCategorias();
+    fetchClientes();
+    fetchFornecedores();
+    fetchEntradas();
+    fetchSaidas();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadAllData();
+});
