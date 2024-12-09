@@ -82,6 +82,12 @@ class App
         echo $this->view->render("clientes");
     }
 
+
+
+
+
+    /* CRUD COMPLETO PRODUTO */
+
     public function estoquePc(?array $data): void
     {
         if (!empty($data)) {
@@ -195,6 +201,52 @@ class App
         }
     }
 
+    public function estoquePu(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para atualizar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $entradas = new Entradas();
+            $saidas = new Saidas();
+            $produtos = new Produtos();
+            $produtoAtualizado = $produtos->update($data["idProdutoUpdate"], $data["nome"],
+                                            $data["descricao"], $data["preco"]);
+
+            if ($produtoAtualizado) {
+                $json = [
+                    "entradas" => $entradas->selectAll(),
+                    "saidas" => $saidas->selectAll(),
+                    "produtos" => $produtos->selectAll(),
+                    "message" => "Produto deletado com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Produto não atualizado!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+
+
+
+
+    /*------------ CR CATEGORIA, falta UD ------------*/
+
     public function estoqueCc(?array $data): void
     {
 
@@ -245,6 +297,8 @@ class App
             }
         }
     }
+
+    /*------------ CR ENTRADAS, falta UD ------------*/
 
     public function estoqueEc(?array $data): void
     {
@@ -321,6 +375,8 @@ class App
             }
         }
     }
+
+    /*------------ CR SAÍDAS, falta UD ------------*/
 
     public function estoqueSc(?array $data): void
     {
@@ -410,6 +466,8 @@ class App
         }
     }
 
+    /*------------ CR CLIENTES, falta UD ------------*/
+
     public function cadastroClientes(?array $data): void
     {
         if (!empty($data)) {
@@ -462,6 +520,8 @@ class App
 
         echo $this->view->render("clientes");
     }
+
+    /*------------ CR FORNECEDORES, falta UD ------------*/
 
     public function cadastroFornecedores(?array $data): void
     {
@@ -585,7 +645,6 @@ class App
         $output = $this->estoqueFeatures->updateRegister($data['table'], $data['id'], $data['quantidade'], $data['idProduto']);
         echo json_encode($output);
     }
-
 
     public function relatorio(): void
     {
@@ -838,7 +897,6 @@ class App
         $this->cadastrarNota($fornecedor, $produtos);
         echo "Nota processada com sucesso!";
     }
-
 
     public function cadastrarNota(array $fornecedorData, array $produtosData): void
     {

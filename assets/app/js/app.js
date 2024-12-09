@@ -45,6 +45,7 @@ async function fetchSaidas() {
     buscarSaida(saidas);
     console.log(saidas)
 }
+
 function loadAllData() {
     fetchProdutos();
     fetchCategorias();
@@ -53,7 +54,6 @@ function loadAllData() {
     fetchEntradas();
     fetchSaidas();
 }
-
 
 function preencherTabelaProdutos(produtosPaginados) {
     const corpoTabela = document.getElementById("corpoTabela");
@@ -611,16 +611,17 @@ function createButtonGroup(produto) {
     return tdAcoes;
 };
 
-function openModal(tipo, id) {
+function openModal(tipo, produto) {
     const modalId = tipo === 'Editar' ? 'modalEditar' : 'modalExcluir';
     if (tipo === 'Editar') {
-        document.getElementById('nomeProduto').value = id.nome;
-        document.getElementById('descricaoProduto').value = id.descricao;
-        document.getElementById('precoProduto').value = parseFloat(id.preco).toFixed(2);
+        document.getElementById('idProdutoUpdate').value = produto.id;
+        document.getElementById('nomeProduto').value = produto.nome;
+        document.getElementById('descricaoProduto').value = produto.descricao;
+        document.getElementById('precoProduto').value = parseFloat(produto.preco).toFixed(2);
     }
 
     if (tipo === 'Excluir') {
-        document.getElementById('idProdutoExcluir').value = id;
+        document.getElementById('idProdutoExcluir').value = produto;
     }
 
     new bootstrap.Modal(document.getElementById(modalId)).show();
