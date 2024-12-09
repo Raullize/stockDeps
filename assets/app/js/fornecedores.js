@@ -247,3 +247,56 @@ function loadAllData() {
 document.addEventListener("DOMContentLoaded", () => {
     loadAllData();
 });
+
+
+let ordemAtualFornecedores = {
+    coluna: null,
+    crescente: true
+};
+
+// Função para ordenar a tabela de fornecedores
+function ordenarTabelaFornecedores(coluna, idSeta) {
+    if (ordemAtualFornecedores.coluna === coluna) {
+        ordemAtualFornecedores.crescente = !ordemAtualFornecedores.crescente;
+    } else {
+        ordemAtualFornecedores.coluna = coluna;
+        ordemAtualFornecedores.crescente = true;
+    }
+
+    // Atualizar setas
+    document.querySelectorAll(".seta").forEach(seta => (seta.textContent = "⬍"));
+    const setaAtual = document.getElementById(idSeta);
+    setaAtual.textContent = ordemAtualFornecedores.crescente ? "⬆" : "⬇";
+
+    // Ordenar os fornecedores
+    const fornecedoresOrdenados = [...fornecedores].sort((a, b) => {
+        let valorA = a[coluna];
+        let valorB = b[coluna];
+
+        // Se for uma string, converter para minúscula para comparar corretamente
+        if (typeof valorA === "string") {
+            valorA = valorA.toLowerCase();
+            valorB = valorB.toLowerCase();
+        }
+
+        // Comparar de acordo com a ordem crescente ou decrescente
+        if (ordemAtualFornecedores.crescente) {
+            return valorA > valorB ? 1 : valorA < valorB ? -1 : 0;
+        } else {
+            return valorA < valorB ? 1 : valorA > valorB ? -1 : 0;
+        }
+    });
+
+    mostrarPaginaFornecedores(1, fornecedoresOrdenados); // Atualiza a tabela com os dados ordenados
+}
+
+// Adicionando eventos de clique para ordenar as colunas de fornecedores
+document.getElementById("ordenarIdFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("id", "setaIdFornecedor"));
+document.getElementById("ordenarNomeFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("nome", "setaNomeFornecedor"));
+document.getElementById("ordenarCnpjFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("cnpj", "setaCnpjFornecedor"));
+document.getElementById("ordenarEmailFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("email", "setaEmailFornecedor"));
+document.getElementById("ordenarTelefoneFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("telefone", "setaTelefoneFornecedor"));
+document.getElementById("ordenarEnderecoFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("endereco", "setaEnderecoFornecedor"));
+document.getElementById("ordenarMunicipioFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("municipio", "setaMunicipioFornecedor"));
+document.getElementById("ordenarCepFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("cep", "setaCepFornecedor"));
+document.getElementById("ordenarUfFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("uf", "setaUfFornecedor"));

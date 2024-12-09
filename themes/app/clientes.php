@@ -24,10 +24,10 @@ $this->layout("_theme");
                 <table id="tabelaClientes" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>CPF</th>
-                            <th>Celular</th>
+                            <th id="ordenarCodigoCliente">ID <span class="seta" id="setaCodigoCliente">⬍</span></th>
+                            <th id="ordenarNomeCliente">Nome <span class="seta" id="setaNomeCliente">⬍</span></th>
+                            <th id="ordenarCpfCliente">CPF</th>
+                            <th id="ordenarCelularCliente">Celular</th>
                             <th>Ações</th>
                         </tr>
                     </thead>

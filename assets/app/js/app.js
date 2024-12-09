@@ -136,6 +136,7 @@ function mostrarPaginaSaidas(pagina) {
 
     configurarPaginacao(saidasFiltradas.length, mostrarPaginaSaidas, '#paginacaoSaidas', pagina);
 }
+
 function filtrarEntradasPorData() {
     const dataFiltro = document.querySelector('#filtroDataEntrada').value;
     if (!dataFiltro) return; // Não faz nada se o campo de data estiver vazio

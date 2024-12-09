@@ -24,6 +24,7 @@ async function fetchClientes() {
     clientes = await response.json();
     mostrarPaginaClientes(paginaAtualClientes);
     buscarCliente(clientes)
+    ordenarTabelaClientes('nome', 'setaNomeCliente');
 }
 
 async function fetchEntradas() {
@@ -122,8 +123,6 @@ function atualizarPaginacaoClientes(listaClientes = clientes) {
     }
 }
 
-
-
 function buscarCliente(clientes) {
     const inputBuscarCliente = document.getElementById('buscarCliente');
 
@@ -219,3 +218,49 @@ function formatarCPF(event) {
     // Atualiza o valor do campo com o CPF formatado
     event.target.value = cpf;
 }
+
+let ordemAtualClientes = {
+    coluna: null,
+    crescente: true
+};
+
+// Função para ordenar a tabela de clientes
+function ordenarTabelaClientes(coluna, idSeta) {
+    if (ordemAtualClientes.coluna === coluna) {
+        ordemAtualClientes.crescente = !ordemAtualClientes.crescente;
+    } else {
+        ordemAtualClientes.coluna = coluna;
+        ordemAtualClientes.crescente = true;
+    }
+
+    // Atualizar setas
+    document.querySelectorAll(".seta").forEach(seta => (seta.textContent = "⬍"));
+    const setaAtual = document.getElementById(idSeta);
+    setaAtual.textContent = ordemAtualClientes.crescente ? "⬆" : "⬇";
+
+    // Ordenar os clientes
+    const clientesOrdenados = [...clientes].sort((a, b) => {
+        let valorA = a[coluna];
+        let valorB = b[coluna];
+
+        // Se for uma string, converter para minúscula para comparar corretamente
+        if (typeof valorA === "string") {
+            valorA = valorA.toLowerCase();
+            valorB = valorB.toLowerCase();
+        }
+
+        // Comparar de acordo com a ordem crescente ou decrescente
+        if (ordemAtualClientes.crescente) {
+            return valorA > valorB ? 1 : valorA < valorB ? -1 : 0;
+        } else {
+            return valorA < valorB ? 1 : valorA > valorB ? -1 : 0;
+        }
+    });
+
+    preencherTabelaClientes(clientesOrdenados); // Atualiza a tabela com os dados ordenados
+    atualizarPaginacaoClientes(clientesOrdenados); // Atualiza a paginação
+}
+
+// Adicionando eventos de clique para ordenar as colunas
+document.getElementById("ordenarCodigoCliente").addEventListener("click", () => ordenarTabelaClientes("id", "setaCodigoCliente"));
+document.getElementById("ordenarNomeCliente").addEventListener("click", () => ordenarTabelaClientes("nome", "setaNomeCliente"));

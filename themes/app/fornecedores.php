@@ -24,15 +24,15 @@ $this->layout("_theme");
                 <table id="tabelaFornecedores" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>CNPJ</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                            <th>Endereço</th>
-                            <th>Municipio</th>
-                            <th>CEP</th>
-                            <th>UF</th>
+                            <th id="ordenarIdFornecedor">ID <span class="seta" id="setaIdFornecedor">⬍</span></th>
+                            <th id="ordenarNomeFornecedor">Nome <span class="seta" id="setaNomeFornecedor">⬍</span></th>
+                            <th id="ordenarCnpjFornecedor">CNPJ <span class="seta" id="setaCnpjFornecedor">⬍</span></th>
+                            <th id="ordenarEmailFornecedor">Email <span class="seta" id="setaEmailFornecedor">⬍</span></th>
+                            <th id="ordenarTelefoneFornecedor">Telefone <span class="seta" id="setaTelefoneFornecedor">⬍</span></th>
+                            <th id="ordenarEnderecoFornecedor">Endereço <span class="seta" id="setaEnderecoFornecedor">⬍</span></th>
+                            <th id="ordenarMunicipioFornecedor">Município <span class="seta" id="setaMunicipioFornecedor">⬍</span></th>
+                            <th id="ordenarCepFornecedor">CEP <span class="seta" id="setaCepFornecedor">⬍</span></th>
+                            <th id="ordenarUfFornecedor">UF <span class="seta" id="setaUfFornecedor">⬍</span></th>
                             <th>Ações</th>
                         </tr>
                     </thead>

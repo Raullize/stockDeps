@@ -98,3 +98,16 @@ button:active {
   gap: 20px;
 }
   
+
+
+.seta {
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 14px;
+  color: gray;
+}
+
+.seta:hover {
+  color: black;
+}
+
