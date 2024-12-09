@@ -6,6 +6,7 @@ $this->layout("_theme");
 <link rel="stylesheet" href="<?= url('assets/app/css/estoque.css') ?>">
 
 <body>
+
     <div class="container-fluid mt-2">
         <div class="row justify-content-center">
             <div class="tabelaProdutos">
@@ -34,11 +35,11 @@ $this->layout("_theme");
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Descrição</th>
-                            <th>Preço</th>
-                            <th>Quantidade</th>
+                            <th id="ordenarCodigo">Código <span class="seta" id="setaCodigo">⬍</span></th>
+                            <th id="ordenarNome">Nome <span class="seta" id="setaNome">⬍</span></th>
+                            <th id="ordenarDescricao">Descrição <span class="seta" id="setaDescricao">⬍</span></th>
+                            <th id="ordenarPreco">Preço <span class="seta" id="setaPreco">⬍</span></th>
+                            <th id="ordenarQuantidade">Quantidade <span class="seta" id="setaQuantidade">⬍</span></th>
                             <th>Status</th>
                             <th class="text-center" colspan="2">Ações</th>
                         </tr>
@@ -50,8 +51,8 @@ $this->layout("_theme");
             </div>
         </div>
         <nav>
-        <ul class="pagination justify-content-center" id="pagination"></ul>
-    </nav>
+            <ul class="pagination justify-content-center" id="pagination"></ul>
+        </nav>
     </div>
 
     <!-- MODAIS -->
@@ -143,38 +144,38 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="produto-update" name="produto-update" method="post">
-                <div class="modal-body">
+                    <div class="modal-body">
                         <input type="hidden" name="idProdutoUpdate" id="idProdutoUpdate">
-                    <div class="mb-3">
-                        <label for="nomeProduto" class="form-label">Nome</label>
-                        <input name="nome" type="text" id="nomeProduto" class="form-control">
+                        <div class="mb-3">
+                            <label for="nomeProduto" class="form-label">Nome</label>
+                            <input name="nome" type="text" id="nomeProduto" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricaoProduto" class="form-label">Descrição</label>
+                            <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precoProduto" class="form-label">Preço</label>
+                            <input
+                                name="preco"
+                                type="text"
+                                class="form-control"
+                                id="precoProduto"
+                                placeholder="R$ 0,00"
+                                oninput="formatarPreco(this)">
+                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                        </div>
+                        <!-- Campo para adicionar foto do produto -->
+                        <div class="mb-3">
+                            <label for="fotoProduto" class="form-label">Foto do Produto</label>
+                            <input type="file" id="fotoProduto" class="form-control" accept="image/*">
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="descricaoProduto" class="form-label">Descrição</label>
-                        <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                     </div>
-                    <div class="mb-3">
-                        <label for="precoProduto" class="form-label">Preço</label>
-                        <input
-                            name="preco"
-                            type="text"
-                            class="form-control"
-                            id="precoProduto"
-                            placeholder="R$ 0,00"
-                            oninput="formatarPreco(this)">
-                        <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
-                    </div>
-                    <!-- Campo para adicionar foto do produto -->
-                    <div class="mb-3">
-                        <label for="fotoProduto" class="form-label">Foto do Produto</label>
-                        <input type="file" id="fotoProduto" class="form-control" accept="image/*">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                </div>
-               </form>
+                </form>
             </div>
         </div>
     </div>
@@ -189,7 +190,7 @@ $this->layout("_theme");
                 </div>
                 <form id="produto-excluir" name="produto-excluir" method="post">
                     <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir este produto? 
+                        <p>Tem certeza de que deseja excluir este produto?
                             Ao confirmar, todas as entradas e saídas relacionadas a ele também serão removidas.</p>
                         <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
@@ -202,8 +203,8 @@ $this->layout("_theme");
         </div>
     </div>
 
-   <!-- Modal Adicionar Nota -->
-   <div class="modal" id="modalAdicionarDANFE" tabindex="-1">
+    <!-- Modal Adicionar Nota -->
+    <div class="modal" id="modalAdicionarDANFE" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -291,7 +292,8 @@ $this->layout("_theme");
                             <label for="cliente" class="form-label">Cliente</label>
                             <div class="d-flex align-items-center justify-content-center" style="min-height: 100%;">
                                 <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
-                            </div> <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
+                            </div>
+                            <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
                             <div class="form-check m-3">
                                 <input class="form-check-input" type="checkbox" id="clienteNaoCadastrado">
                                 <label class="form-check-label" for="clienteNaoCadastrado">Cliente não cadastrado</label>
@@ -325,34 +327,40 @@ $this->layout("_theme");
         </div>
     </div>
 
-    <!-- Modal Consultar Entradas-->
-    <div class="modal fade" id="modalEntradas" tabindex="-1" aria-labelledby="modalEntradasLabel" aria-hidden="true">
+
+    <!-- Modal de Entradas -->
+    <div class="modal fade" id="entradasModal" tabindex="-1" aria-labelledby="entradasModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEntradasLabel">Consultar Entradas</h5>
+                    <h5 class="modal-title" id="entradasModalLabel">Entradas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <label for="buscarEntradas" class="text-light px-2">Procurar entrada:</label>
-                        <input type="text" id="buscarEntradas" placeholder="Procurar entrada" class="form-control">
-                    </div>
-                    <table class="table table-bordered table-striped mt-3">
+                    <label for="filtroDataEntrada">
+                        <h5>Filtre pelo dia da entrada:</h5>
+                    </label>
+                    <input type="date" id="filtroDataEntrada" onchange="filtrarEntradasPorData()" />
+                    <table class="table table-striped" id="tabelaEntradas">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nome</th>
+                                <th>Fornecedor</th>
+                                <th>Produto</th>
                                 <th>Quantidade</th>
                                 <th>Preço</th>
-                                <th>Criado Em</th>
-                                <th>Ações</th>
+                                <th>Data</th>
+                                <th colspan="2">Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="corpoTabelaEntradas">
-                            <!-- Entradas serão preenchidas dinamicamente -->
-                        </tbody>
+                        <tbody></tbody>
                     </table>
+                    <!-- Navegação de Paginação para Saídas -->
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center" id="paginacaoEntradas">
+                            <!-- Botões de Paginação serão gerados aqui -->
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -367,56 +375,74 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formEditarEntrada">
+                    <form>
+                        <!-- Nome do Produto -->
                         <div class="mb-3">
-                            <label for="idProdutoEntrada" class="form-label">ID Produto</label>
-                            <input type="number" class="form-control" id="idProdutoEntrada" required>
+                            <label for="entradaProduto" class="form-label">Produto</label>
+                            <input type="text" class="form-control" id="entradaProduto" readonly>
                         </div>
+
+                        <!-- Quantidade -->
                         <div class="mb-3">
-                            <label for="quantidadeEntrada" class="form-label">Quantidade</label>
-                            <input type="number" class="form-control" id="quantidadeEntrada" required>
+                            <label for="entradaQuantidade" class="form-label">Quantidade</label>
+                            <input type="number" class="form-control" id="entradaQuantidade" min="0">
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+
+                        <!-- Preço -->
+                        <div class="mb-3">
+                            <label for="entradaPreco" class="form-label">Preço</label>
+                            <input type="number" class="form-control" id="entradaPreco" min="0" step="0.01">
+                        </div>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarEdicaoEntrada()">Salvar alterações</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal Consultar Saidas -->
-    <div class="modal fade" id="modalSaidas" tabindex="-1" aria-labelledby="modalSaidasLabel" aria-hidden="true">
+    <!-- Modal de Saídas -->
+    <div class="modal fade" id="saidasModal" tabindex="-1" aria-labelledby="saidasModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalSaidasLabel">Consultar Saídas</h5>
+                    <h5 class="modal-title" id="saidasModalLabel">Saídas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <label for="buscarSaidas" class="text-light px-2">Procurar saída:</label>
-                        <input type="text" id="buscarSaidas" placeholder="Procurar saída" class="form-control">
-                    </div>
-                    <table class="table table-bordered table-striped mt-3">
+                    <label for="filtroDataSaida">
+                        <h5>Filtre pelo dia da saída:</h5>
+                    </label>
+                    <input type="date" id="filtroDataSaida" onchange="filtrarSaidasPorData()" />
+                    <table class="table table-striped" id="tabelaSaidas">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nome</th>
+                                <th>Cliente</th>
+                                <th>Produto</th>
                                 <th>Quantidade</th>
                                 <th>Preço</th>
-                                <th>Criado Em</th>
-                                <th>Ações</th>
+                                <th>Data</th>
+                                <th colspan="2">Ações</th>
                             </tr>
                         </thead>
-                        <tbody id="corpoTabelaSaidas">
-                            <!-- Saídas serão preenchidas dinamicamente -->
-                        </tbody>
+                        <tbody></tbody>
                     </table>
+                    <!-- Navegação de Paginação para Saídas -->
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center" id="paginacaoSaidas">
+                            <!-- Botões de Paginação serão gerados aqui -->
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Modal Editar Saidas -->
+
     <div class="modal fade" id="modalEditarSaida" tabindex="-1" aria-labelledby="modalEditarSaidaLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -425,21 +451,82 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formEditarSaida">
+                    <form>
+                        <!-- Nome do Produto (Somente leitura) -->
                         <div class="mb-3">
-                            <label for="idProdutoSaida" class="form-label">ID Produto</label>
-                            <input type="number" class="form-control" id="idProdutoSaida" required>
+                            <label for="saidaProduto" class="form-label">Produto</label>
+                            <input type="text" class="form-control" id="saidaProduto" readonly> <!-- readonly torna o campo não editável -->
                         </div>
+
+                        <!-- Quantidade -->
                         <div class="mb-3">
-                            <label for="quantidadeSaida" class="form-label">Quantidade</label>
-                            <input type="number" class="form-control" id="quantidadeSaida" required>
+                            <label for="saidaQuantidade" class="form-label">Quantidade</label>
+                            <input type="number" class="form-control" id="saidaQuantidade" min="0">
                         </div>
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+
+                        <!-- Preço -->
+                        <div class="mb-3">
+                            <label for="saidaPreco" class="form-label">Preço</label>
+                            <input type="number" class="form-control" id="saidaPreco" min="0" step="0.01">
+                        </div>
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" onclick="salvarEdicaoSaida()">Salvar alterações</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal Excluir Entrada -->
+    <div class="modal fade" id="modalExcluirEntrada" tabindex="-1" aria-labelledby="modalExcluirEntradaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalExcluirEntradaLabel">Excluir Entrada</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="entrada-excluir" method="post">
+                    <div class="modal-body">
+                        <p>Tem certeza de que deseja excluir esta entrada?
+                            Ao confirmar, todas as saídas relacionadas a ela também serão removidas.</p>
+                        <input type="hidden" id="idEntradaExcluir" name="idEntradaExcluir"> <!-- Campo oculto para armazenar o id -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Excluir Saída -->
+    <div class="modal fade" id="modalExcluirSaida" tabindex="-1" aria-labelledby="modalExcluirSaidaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalExcluirSaidaLabel">Excluir Saída</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="saida-excluir" method="post">
+                    <div class="modal-body">
+                        <p>Tem certeza de que deseja excluir esta saída?
+                            Ao confirmar, todas as entradas relacionadas a ela também serão removidas.</p>
+                        <input type="hidden" id="idSaidaExcluir" name="idSaidaExcluir"> <!-- Campo oculto para armazenar o id -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>

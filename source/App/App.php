@@ -217,8 +217,12 @@ class App
             $entradas = new Entradas();
             $saidas = new Saidas();
             $produtos = new Produtos();
-            $produtoAtualizado = $produtos->update($data["idProdutoUpdate"], $data["nome"],
-                                            $data["descricao"], $data["preco"]);
+            $produtoAtualizado = $produtos->update(
+                $data["idProdutoUpdate"],
+                $data["nome"],
+                $data["descricao"],
+                $data["preco"]
+            );
 
             if ($produtoAtualizado) {
                 $json = [
@@ -851,6 +855,28 @@ class App
         $saidas = new Saidas();
         echo json_encode($saidas->selectAll());
     }
+
+    // public function buscarPorDataEntrada($dataInicio, $dataFim)
+    // {
+    //     $entradas = (new Entradas())->find(
+    //         "created_at BETWEEN :inicio AND :fim",
+    //         "inicio={$dataInicio}&fim={$dataFim}"
+    //     )->fetch(true);
+
+    //     echo json_encode($entradas);
+    // }
+
+    // // SaidasController.php
+    // public function buscarPorDataSaida($dataInicio, $dataFim)
+    // {
+    //     $saidas = (new Saidas())->find(
+    //         "created_at BETWEEN :inicio AND :fim",
+    //         "inicio={$dataInicio}&fim={$dataFim}"
+    //     )->fetch(true);
+
+    //     echo json_encode($saidas);
+    // }
+
 
     public function processarXmlNota($request)
     {
