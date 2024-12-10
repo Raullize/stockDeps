@@ -179,44 +179,10 @@ function atualizarGraficoCategorias(categorias) {
 }
 
 async function calcularLucro() {
-  const periodo = document.getElementById('periodo').value;
-
-  const entradasFiltradas = filtrarPorPeriodo(entradas, periodo);
-  const saidasFiltradas = filtrarPorPeriodo(saidas, periodo);
-
-  // Lucro bruto depende apenas de saídas
-  const lucroBruto = calcularLucroBruto(saidasFiltradas);
-
-  // Lucro líquido = lucro bruto - custos (entradas)
-  const lucroLiquido = calcularLucroLiquido(entradasFiltradas, saidasFiltradas);
-
+  const lucroBruto = calcularLucroBruto(saidas);
+  const lucroLiquido = calcularLucroLiquido(entradas, saidas);
   document.getElementById('lucro-bruto').textContent = `R$ ${lucroBruto.toFixed(2)}`;
   document.getElementById('lucro-liquido').textContent = `R$ ${lucroLiquido.toFixed(2)}`;
-}
-
-
-function filtrarPorPeriodo(transacoes, periodo) {
-  const agora = new Date();
-  let dataLimite;
-
-  switch (periodo) {
-      case 'dia':
-          dataLimite = new Date(agora.setDate(agora.getDate() - 1)); 
-          break;
-      case 'semana':
-          dataLimite = new Date(agora.setDate(agora.getDate() - 7)); 
-          break;
-      case 'mes':
-          dataLimite = new Date(agora.setMonth(agora.getMonth() - 1)); 
-          break;
-      case 'ano':
-          dataLimite = new Date(agora.setFullYear(agora.getFullYear() - 1)); 
-          break;
-      default:
-          return transacoes; 
-  }
-
-  return transacoes.filter(transacao => new Date(transacao.data) >= dataLimite);
 }
 
 
@@ -241,7 +207,67 @@ function calcularLucroLiquido(entradas, saidas) {
   return lucroBruto - totalEntradas; // Receita - Custo
 }
 
+function calcularLucroPorPeriodo(periodo) {
+  const now = new Date(); // Data atual
+
+  // Define o intervalo com base no período selecionado
+  let dataInicio = new Date();
+  switch (periodo) {
+    case 'dia':
+      dataInicio.setDate(now.getDate() - 1); // Último dia
+      break;
+    case 'tresDias':
+      dataInicio.setDate(now.getDate() - 3); // Últimos 3 dias
+      break;
+    case 'semana':
+      dataInicio.setDate(now.getDate() - 7); // Última semana
+      break;
+    case 'duasSemanas':
+      dataInicio.setDate(now.getDate() - 14); // Últimas 2 semanas
+      break;
+    case 'mes':
+      dataInicio.setMonth(now.getMonth() - 1); // Último mês
+      break;
+    case 'trimestre':
+      dataInicio.setMonth(now.getMonth() - 3); // Último trimestre
+      break;
+    case 'semestre':
+      dataInicio.setMonth(now.getMonth() - 6); // Último semestre
+      break;
+    case 'ano':
+      dataInicio.setFullYear(now.getFullYear() - 1); // Último ano
+      break;
+    default:
+      dataInicio = null; // Período total
+  }
+
+  // Converte strings de `created_at` para objetos Date e filtra os dados
+  const entradasFiltradas = dataInicio
+    ? entradas.filter((entrada) => new Date(entrada.created_at) >= dataInicio)
+    : entradas;
+
+  const saidasFiltradas = dataInicio
+    ? saidas.filter((saida) => new Date(saida.created_at) >= dataInicio)
+    : saidas;
+
+  // Recalcula os lucros com os dados filtrados
+  const lucroBruto = calcularLucroBruto(saidasFiltradas);
+  const lucroLiquido = calcularLucroLiquido(entradasFiltradas, saidasFiltradas);
+
+  // Atualiza os valores no HTML
+  document.getElementById('lucro-bruto').textContent = `R$ ${lucroBruto.toFixed(2)}`;
+  document.getElementById('lucro-liquido').textContent = `R$ ${lucroLiquido.toFixed(2)}`;
+}
+
+// Adiciona o evento ao seletor de período
+document.getElementById('periodo').addEventListener('change', (event) => {
+  const periodo = event.target.value;
+  calcularLucroPorPeriodo(periodo);
+});
+
+// Chamada inicial para calcular com o período "total"
 window.onload = async () => {
   await loadDashboardData();
-  calcularLucro(); 
+  calcularLucroPorPeriodo('total'); // Exibe lucro total ao carregar a página
 };
+
