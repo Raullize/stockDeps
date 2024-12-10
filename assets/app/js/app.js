@@ -7,7 +7,7 @@ let clientes = [];
 let fornecedores = [];
 let entradas = [];
 let saidas = [];
-
+let categorias = []
 let paginaAtualEntradas = 1;
 let paginaAtualSaidas = 1;
 let entradasFiltradas = [];
@@ -21,10 +21,10 @@ async function fetchProdutos() {
     buscarProduto(produtos);
     mostrarPagina(paginaAtual, produtos); // Passa os produtos para mostrar a página
 }
-
 async function fetchCategorias() {
     const response = await fetch(`${BASE_URL}/getCategorias`);
     categorias = await response.json();
+    console.log(categorias)
     preencherCategorias(categorias, () => alterarTabelaPorCategoriaSelecionada());
 }
 async function fetchClientes() {
@@ -33,14 +33,12 @@ async function fetchClientes() {
     preencherClientes(clientes);
     console.log(clientes);
 }
-
 async function fetchFornecedores() {
     const response = await fetch(`${BASE_URL}/getFornecedores`);
     fornecedores = await response.json();
     preencherFornecedores(fornecedores);
     console.log(fornecedores);
 }
-
 async function fetchEntradas() {
     const response = await fetch(`${BASE_URL}/getEntradas`);
     entradas = await response.json();
@@ -48,7 +46,6 @@ async function fetchEntradas() {
     entradasFiltradas = [...entradas]; // Inicializa as filtradas
     mostrarPaginaEntradas(paginaAtualEntradas);
 }
-
 async function fetchSaidas() {
     const response = await fetch(`${BASE_URL}/getSaidas`);
     saidas = await response.json();
@@ -161,7 +158,6 @@ function filtrarSaidasPorData() {
     mostrarPaginaSaidas(1); // Reinicia na página 1
 }
 
-// Função para configurar a paginação
 function configurarPaginacao(totalItens, callback, seletorPaginacao, paginaAtual) {
     const totalPaginas = Math.ceil(totalItens / itensPorPagina);
     const paginacaoContainer = document.querySelector(seletorPaginacao);
@@ -252,13 +248,13 @@ function excluirEntrada(id) {
 function editarSaida(id) {
     const saida = saidas.find(s => s.id === id); // Encontre a saída pelo ID
     const produto = produtos.find(p => p.id === saida.idProdutos); // Encontre o produto correspondente à saída
-    
+
     if (saida) {
         // Preencher os campos no modal
         document.getElementById('saidaProduto').value = produto.nome; // Nome do produto (não editável)
         document.getElementById('saidaQuantidade').value = saida.quantidade; // Quantidade
         document.getElementById('saidaPreco').value = saida.preco; // Preço
-        
+
         // Abrir o modal de edição sem fechar o modal anterior
         const modalEditarSaida = new bootstrap.Modal(document.getElementById('modalEditarSaida'), {
             backdrop: 'static', // Não fecha o modal de consulta ao abrir o de editar
@@ -286,7 +282,6 @@ function excluirSaida(id) {
     };
     $('#modalExcluirSaida').modal('show');
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     // Pega os botões e associa o evento de clique
@@ -441,10 +436,12 @@ function ordenarProdutos(produtos) {
 function preencherCategorias(categorias, callbackMostrarProdutos) {
     const selectElement = document.getElementById('categoria');
     const selectElementModal = document.getElementById('categoriaProdutoAdicionar');
+    const selectElementEditar = document.getElementById('categoriaProdutoEditar');
 
     // Limpar as opções existentes nos selects antes de adicionar novas
     selectElement.innerHTML = '';
     selectElementModal.innerHTML = '';
+    selectElementEditar.innerHTML = '';
 
     // Adiciona a opção "Todas" no select principal
     const optionAll = document.createElement('option');
@@ -473,6 +470,11 @@ function preencherCategorias(categorias, callbackMostrarProdutos) {
         optionModal.value = categoria.id;
         optionModal.textContent = categoria.nome;
         selectElementModal.appendChild(optionModal);
+
+        const optionEditar = document.createElement('option');
+        optionEditar.value = categoria.id;
+        optionEditar.textContent = categoria.nome;
+        selectElementEditar.appendChild(optionEditar);
     });
 }
 
@@ -626,7 +628,7 @@ document.getElementById('clienteNaoCadastrado').addEventListener('change', funct
 
 function createButtonGroup(produto) {
     const actions = [
-        { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto, produto.id) },
+        { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto, produto.id, categorias) },
         { text: 'Excluir', class: 'btn-danger', action: () => openModal('Excluir', produto.id) },
         { text: 'Adicionar Entrada', class: 'btn-success', action: () => openModalEntrada(produto.id) },
         { text: 'Adicionar Saída', class: 'btn-warning', action: () => openModalSaida(produto.id) }
@@ -655,15 +657,39 @@ function openModal(tipo, produto) {
         document.getElementById('nomeProduto').value = produto.nome;
         document.getElementById('descricaoProduto').value = produto.descricao;
         document.getElementById('precoProduto').value = parseFloat(produto.preco).toFixed(2);
+
+        const categoria = categorias.find(categoria => categoria.id === produto.idCategoria);
+
+        // Garantir que as opções de categoria estejam sendo carregadas no select
+        const categoriaSelect = document.getElementById('categoriaProdutoEditar');
+        categoriaSelect.innerHTML = ''; // Limpar opções anteriores
+
+        // Adicionar uma opção padrão "Selecione uma categoria"
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Selecione uma categoria';
+        categoriaSelect.appendChild(defaultOption);
+
+        // Preencher as opções com as categorias disponíveis
+        categorias.forEach(categoria => {
+            const option = document.createElement('option');
+            option.value = categoria.id;
+            option.textContent = categoria.nome;
+            categoriaSelect.appendChild(option);
+        });
+
+        // Agora, definimos o valor selecionado como o id da categoria
+        if (categoria) {
+            categoriaSelect.value = categoria.id;
+        }
     }
 
     if (tipo === 'Excluir') {
-        document.getElementById('idProdutoExcluir').value = produto;
+        document.getElementById('idProdutoExcluir').value = produto.id;
     }
 
     new bootstrap.Modal(document.getElementById(modalId)).show();
 };
-
 function openModalEntrada(id) {
     const inputProdutoId = document.getElementById('produtoId');
 

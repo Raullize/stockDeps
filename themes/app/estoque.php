@@ -155,6 +155,12 @@ $this->layout("_theme");
                             <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
                         </div>
                         <div class="mb-3">
+                            <label for="categoriaProdutoEditar" class="form-label">Categoria</label>
+                            <select name="categoria" class="form-control" id="categoriaProdutoEditar">
+                                <!-- As categorias serão preenchidas dinamicamente -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="precoProduto" class="form-label">Preço</label>
                             <input
                                 name="preco"
