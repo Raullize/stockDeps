@@ -3,6 +3,7 @@ $this->layout("_theme");
 ?>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/jquery.inputmask.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/clientes.css') ?>">
 
 <body>

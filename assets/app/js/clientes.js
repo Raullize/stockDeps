@@ -264,3 +264,7 @@ function ordenarTabelaClientes(coluna, idSeta) {
 // Adicionando eventos de clique para ordenar as colunas
 document.getElementById("ordenarCodigoCliente").addEventListener("click", () => ordenarTabelaClientes("id", "setaCodigoCliente"));
 document.getElementById("ordenarNomeCliente").addEventListener("click", () => ordenarTabelaClientes("nome", "setaNomeCliente"));
+
+$(document).ready(function() {
+    $("#cpfCliente").inputmask("999.999.999-99"); // Máscara para CPF
+});

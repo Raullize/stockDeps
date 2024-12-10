@@ -82,7 +82,10 @@ class App
         echo $this->view->render("clientes");
     }
 
-
+    public function login()
+    {
+        echo $this->view->render("login");
+    }
 
 
 

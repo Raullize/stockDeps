@@ -63,7 +63,7 @@ $this->layout("_theme");
                         </div>
                         <div class="mb-3">
                             <label for="cnpjFornecedor" class="form-label">CNPJ</label>
-                            <input name="cnpj" type="text" class="form-control" id="cnpjFornecedor" placeholder="Digite o CNPJ do fornecedor">
+                            <input name="cnpj" type="text" class="form-control" id="cnpjFornecedor" maxlength="16" placeholder="Digite o CNPJ do fornecedor" oninput="formatarCNPJ(event)">
                         </div>
                         <div class="mb-3">
                             <label for="emailFornecedor" class="form-label">Email</label>

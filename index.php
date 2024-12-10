@@ -37,6 +37,7 @@ $route->get("/fornecedores", "App:fornecedores");
 $route->get("/relatorio", "App:relatorio");
 
 /* ROTAS MODO:GET TRATAMENTO DE VARIAVEIS (MIGUEL) */
+$route->get("/login", "App:login");
 
 $route->get("/getProdutos", "App:getProdutos");
 $route->get("/getCategorias", "App:getCategorias");

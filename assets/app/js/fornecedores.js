@@ -300,3 +300,18 @@ document.getElementById("ordenarEnderecoFornecedor").addEventListener("click", (
 document.getElementById("ordenarMunicipioFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("municipio", "setaMunicipioFornecedor"));
 document.getElementById("ordenarCepFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("cep", "setaCepFornecedor"));
 document.getElementById("ordenarUfFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("uf", "setaUfFornecedor"));
+
+function formatarCNPJ(event) {
+    let cnpj = event.target.value;
+
+    // Remove qualquer caractere que não seja número
+    cnpj = cnpj.replace(/\D/g, '');
+
+    // Formata o CNPJ no padrão XX.XXX.XXX/XXXX-XX
+    if (cnpj.length <= 14) {
+        cnpj = cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+    }
+
+    // Atualiza o valor do campo com o CNPJ formatado
+    event.target.value = cnpj;
+}
