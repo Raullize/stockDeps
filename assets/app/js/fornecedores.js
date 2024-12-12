@@ -216,18 +216,18 @@ function abrirModalHistorico(id) {
     if (entradasFornecedor.length > 0) {
         entradasFornecedor.forEach(entrada => {
             const produto = produtos.find(p => p.id === entrada.idProdutos);
-            const categoria = categorias.find(c => c.id === entrada.idCategoria);
+            const categoria = produto ? categorias.find(c => c.id === produto.idCategoria) : null;
 
             htmlHistorico += `
                 <p><strong>Produto:</strong> ${produto ? produto.nome : 'Desconhecido'} <br>
                 <strong>Categoria:</strong> ${categoria ? categoria.nome : 'Desconhecida'} <br>
                 <strong>Quantidade:</strong> ${entrada.quantidade} <br>
-                <strong>preço:</strong> ${entrada.preco} <br>
+                <strong>Preço:</strong> ${entrada.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <br>
                 <strong>Data:</strong> ${new Date(entrada.created_at).toLocaleDateString()}</p>
             `;
         });
     } else {
-        htmlHistorico = '<p>Nenhuma entrada registrada para este Fornecedor.</p>';
+        htmlHistorico = '<p>Nenhuma entrada registrada para este fornecedor.</p>';
     }
 
     document.getElementById("historicoFornecedor").innerHTML = htmlHistorico;

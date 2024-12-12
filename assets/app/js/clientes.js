@@ -35,6 +35,7 @@ async function fetchEntradas() {
 async function fetchSaidas() {
     const response = await fetch(`${BASE_URL}/getSaidas`);
     saidas = await response.json(); // Preenche a variável global saídas
+    console.log(saidas)
 }
 
 function loadAllData() {
@@ -154,7 +155,6 @@ function abrirModalEditarCliente(id) {
     const modalEditar = new bootstrap.Modal(document.getElementById("modalEditarCliente"));
     modalEditar.show();
 }
-
 function abrirModalHistorico(id) {
     const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoCliente"));
 
@@ -166,12 +166,13 @@ function abrirModalHistorico(id) {
     if (saidasCliente.length > 0) {
         saidasCliente.forEach(saida => {
             const produto = produtos.find(p => p.id === saida.idProdutos);
-            const categoria = categorias.find(c => c.id === saida.idCategoria);
+            const categoria = produto ? categorias.find(c => c.id === produto.idCategoria) : null;
 
             htmlHistorico += `
                 <p><strong>Produto:</strong> ${produto ? produto.nome : 'Desconhecido'} <br>
                 <strong>Categoria:</strong> ${categoria ? categoria.nome : 'Desconhecida'} <br>
                 <strong>Quantidade:</strong> ${saida.quantidade} <br>
+                <strong>Preço:</strong> ${saida.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <br>
                 <strong>Data:</strong> ${new Date(saida.created_at).toLocaleDateString()}</p>
             `;
         });
@@ -264,7 +265,3 @@ function ordenarTabelaClientes(coluna, idSeta) {
 // Adicionando eventos de clique para ordenar as colunas
 document.getElementById("ordenarCodigoCliente").addEventListener("click", () => ordenarTabelaClientes("id", "setaCodigoCliente"));
 document.getElementById("ordenarNomeCliente").addEventListener("click", () => ordenarTabelaClientes("nome", "setaNomeCliente"));
-
-$(document).ready(function() {
-    $("#cpfCliente").inputmask("999.999.999-99"); // Máscara para CPF
-});

@@ -311,6 +311,8 @@ function preencherTabelaProdutos(produtosPaginados) {
     const corpoTabela = document.getElementById("corpoTabela");
     corpoTabela.innerHTML = '';
 
+    const MAX_CHARS_PER_LINE = 30; // Número máximo de caracteres por linha
+
     produtosPaginados.forEach(produto => {
         const tr = document.createElement('tr');
         const { id, nome, descricao, preco, quantidade } = produto;
@@ -321,11 +323,21 @@ function preencherTabelaProdutos(produtosPaginados) {
         });
 
         let status = quantidade > 0 ? "Disponível" : "Indisponível";
-        const dados = [id, nome, descricao, precoFormatado, quantidade, status];
+
+        // Quebra a descrição em linhas automáticas
+        const descricaoQuebrada = descricao.length > MAX_CHARS_PER_LINE 
+            ? descricao.match(new RegExp(`.{1,${MAX_CHARS_PER_LINE}}`, 'g')).join('\n') 
+            : descricao;
+
+        const dados = [id, nome, descricaoQuebrada, precoFormatado, quantidade, status];
 
         tr.append(...dados.map(dado => {
             const td = document.createElement('td');
             td.textContent = dado;
+            // Adiciona a classe CSS para quebra de linha, se necessário
+            if (dado === descricaoQuebrada) {
+                td.style.whiteSpace = 'pre-wrap'; // Mantém a quebra de linha
+            }
             return td;
         }));
 
@@ -333,6 +345,7 @@ function preencherTabelaProdutos(produtosPaginados) {
         corpoTabela.appendChild(tr);
     });
 }
+
 
 function mostrarPagina(pagina, produtos) {
     const produtosPorPagina = itensPorPagina; // Usar a constante para o número de itens por página
