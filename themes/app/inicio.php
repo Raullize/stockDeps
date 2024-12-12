@@ -51,7 +51,7 @@ $this->layout("_theme");
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="card text-center text-white bg-dark box-hover">
+                <div class="card text-center text-light bg-dark box-hover">
                     <div class="card-body">
                         <h5 class="card-title">Total de Clientes</h5>
                         <h3 id="total-clientes">0</h3>
@@ -91,13 +91,13 @@ $this->layout("_theme");
         <!-- Gráficos -->
         <div class="row mt-5 mb-5 d-flex align-items-stretch">
             <div class="col-md-5">
-                <div class="card h-100">
+                <div class="card h-100 d-flex flex-column">
                     <div class="card-body">
-                        <h5 class="card-title">Lucro por Período</h5>
+                        <h3 class="card-title mt-3 text-center">Lucro por Período</h3>
                         <!-- Filtro para selecionar o período -->
-                        <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex justify-content-between align-items-center mt-3">
                             <div>
-                                <label for="periodo" class="form-label">Selecione o Período</label>
+                                <label for="periodo" class="form-label mt-3">Selecione o Período</label>
                                 <select id="periodo" class="form-select" onchange="calcularLucro()">
                                     <option value="total">Total</option>
                                     <option value="dia">Dia</option>
@@ -111,31 +111,31 @@ $this->layout("_theme");
                                 </select>
                             </div>
                             <div>
-                                <button class="btn btn-primary" onclick="calcularLucro()">Calcular</button>
+                                <button class="btn btn-primary mt-5" onclick="calcularLucro()">Calcular</button>
                             </div>
                         </div>
-                        <!-- Exibindo Lucro Bruto e Lucro Líquido -->
-                        <div class="row">
-                            <!-- Caixa de Lucro Bruto -->
-                            <div class="col-md-6">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Lucro Bruto</h5>
-                                        <h3 id="lucro-bruto">R$ 0,00</h3> <!-- Exibirá o lucro bruto -->
-                                    </div>
+                    </div>
+                    <!-- Exibindo Lucro Bruto e Lucro Líquido -->
+                    <div class="row mt-auto mb-4 mx-1">
+                        <div class="col-md-6">
+                            <div class="card h-100 p-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Lucro Bruto</h5>
+                                    <h3 id="lucro-bruto">R$ 0,00</h3> <!-- Exibirá o lucro bruto -->
                                 </div>
                             </div>
-                            <!-- Caixa de Lucro Líquido -->
-                            <div class="col-md-6">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Lucro Líquido</h5>
-                                        <h3 id="lucro-liquido">R$ 0,00</h3> <!-- Exibirá o lucro líquido -->
-                                    </div>
+                        </div>
+                        <!-- Caixa de Lucro Líquido -->
+                        <div class="col-md-6">
+                            <div class="card h-100 p-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Lucro Líquido</h5>
+                                    <h3 id="lucro-liquido">R$ 0,00</h3> <!-- Exibirá o lucro líquido -->
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="col-md-3">
@@ -149,15 +149,19 @@ $this->layout("_theme");
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Produtos Mais Vendidos</h5>
-                        <ul class="list-group list-group-flush" id="produtos-mais-vendidos">
-                            <!-- Os itens serão inseridos dinamicamente pelo JavaScript -->
-                        </ul>
-                    </div>
-                </div>
+    <div class="card h-100 produtos-mais-vendidos-card">
+        <div class="card-body">
+            <h5 class="card-title text-center">Produtos Mais Vendidos</h5>
+            <div class="produtos-mais-vendidos-container">
+                <ul class="list-group list-group-flush" id="produtos-mais-vendidos">
+                    <!-- Os itens serão inseridos dinamicamente pelo JavaScript -->
+                </ul>
             </div>
+        </div>
+    </div>
+</div>
+
+
         </div>
     </div>
 

@@ -119,6 +119,7 @@ function atualizarProdutosMaisVendidos() {
     .join("");
 }
 
+
 function atualizarGraficoCategorias(categorias) {
   if (!categorias || categorias.length === 0) {
     console.error("Categorias inválidas ou não carregadas.");

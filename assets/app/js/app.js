@@ -644,7 +644,7 @@ function createButtonGroup(produto) {
         { text: 'Editar', class: 'btn-primary', action: () => openModal('Editar', produto, produto.id, categorias) },
         { text: 'Excluir', class: 'btn-danger', action: () => openModal('Excluir', produto.id) },
         { text: 'Adicionar Entrada', class: 'btn-success', action: () => openModalEntrada(produto.id) },
-        { text: 'Adicionar Saída', class: 'btn-warning', action: () => openModalSaida(produto.id) }
+        { text: 'Adicionar Saída', class: 'btn-warning', action: () => openModalSaida(produto.id, produto.preco) }
     ];
 
     const btnGroup = document.createElement('div');
@@ -710,12 +710,20 @@ function openModalEntrada(id) {
     new bootstrap.Modal(document.getElementById('modalEntrada')).show();
 }
 
-function openModalSaida(id) {
+function openModalSaida(id, preco) {
     const inputProdutoId = document.getElementById('produtoId2');
+    const inputPrecoSaida = document.getElementById('precoSaida');
 
+    // Define o ID do produto no campo oculto
     inputProdutoId.value = id;
+
+    // Define o preço do produto formatado no campo de preço
+    inputPrecoSaida.value = preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    // Exibe o modal
     new bootstrap.Modal(document.getElementById('modalSaida')).show();
 }
+
 
 let ordemAtual = {
     coluna: null,
