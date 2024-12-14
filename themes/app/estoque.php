@@ -17,7 +17,9 @@ $this->layout("_theme");
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
                         Adicionar Produto
                     </button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria" id="adicionarCategoriaBtn">Adicionar Categoria</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTabelaCategorias" id="adicionarCategoriaBtn">
+                        Gerenciar Categorias
+                    </button>
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarDANFE">
                         Adicionar Notas
                     </button>
@@ -107,6 +109,44 @@ $this->layout("_theme");
         </div>
     </div>
 
+
+    <!-- Modal com a tabela de categorias -->
+    <div class="modal fade" id="modalTabelaCategorias" tabindex="-1" aria-labelledby="modalTabelaCategoriasLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTabelaCategoriasLabel">Gerenciar Categorias</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Botão para adicionar uma nova categoria -->
+                    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria">
+                        Adicionar Categoria
+                    </button>
+
+                    <!-- Tabela de categorias -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped" id="tabelaCategorias">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Descrição</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpoTabelaCategorias">
+                                <!-- As categorias serão inseridas aqui dinamicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Adicionar Categoria -->
     <div class="modal fade" id="modalAdicionarCategoria" tabindex="-1" aria-labelledby="modalAdicionarCategoriaLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -129,6 +169,34 @@ $this->layout("_theme");
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         <button type="submit" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Categoria -->
+    <div class="modal fade" id="modalEditarCategoria" tabindex="-1" aria-labelledby="modalEditarCategoriaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarCategoriaLabel">Editar Categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="categoria-editar" name="categoria-editar" method="post">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="nomeCategoriaEditar" class="form-label">Nome</label>
+                            <input name="nome" type="text" class="form-control" id="nomeCategoriaEditar" placeholder="Digite o nome da categoria">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricaoCategoriaEditar" class="form-label">Descrição</label>
+                            <textarea name="descricao" class="form-control" id="descricaoCategoriaEditar" placeholder="Digite a descrição da categoria"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarEdicaoCategoria">Salvar Alterações</button>
                     </div>
                 </form>
             </div>
@@ -185,6 +253,29 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
+
+    <!-- Modal Excluir Categoria -->
+    <div class="modal fade" id="modalExcluirCategoria" tabindex="-1" aria-labelledby="modalExcluirCategoriaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalExcluirCategoriaLabel">Excluir Categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form id="categoria-excluir" name="categoria-excluir" method="post">
+                    <div class="modal-body">
+                        <p>Tem certeza de que deseja excluir esta categoria?</p>
+                        <input type="hidden" id="idCategoriaExcluir" name="idCategoriaExcluir"> <!-- Campo oculto para armazenar o ID -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-danger" id="confirmarExcluirCategoria">Excluir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Modal Excluir -->
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">

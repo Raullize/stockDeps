@@ -26,6 +26,7 @@ async function fetchCategorias() {
     categorias = await response.json();
     console.log(categorias)
     preencherCategorias(categorias, () => alterarTabelaPorCategoriaSelecionada());
+    renderizarTabela();
 }
 async function fetchClientes() {
     const response = await fetch(`${BASE_URL}/getClientes`);
@@ -68,6 +69,141 @@ function formatarData(dataISO) {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
+    });
+}
+
+// ELANO OLHA AQUI AS PROXIMAS 4 FUNÇÕES DE CATEGORIAS
+
+document.getElementById('categoria-cadastro').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const nome = document.getElementById('nomeCategoriaAdicionar').value;
+    const descricao = document.getElementById('descricaoCategoriaAdicionar').value;
+
+    const novaCategoria = {
+        nome: nome,
+        descricao: descricao
+    };
+
+    try {
+        const response = await fetch(`${BASE_URL}/addCategoria`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(novaCategoria)
+        });
+
+        if (response.ok) {
+            const categoriaAdicionada = await response.json();
+            categorias.push(categoriaAdicionada); // Adiciona a nova categoria à lista
+            renderizarTabela();
+            
+            // Limpa e fecha o modal
+            document.getElementById('nomeCategoriaAdicionar').value = '';
+            document.getElementById('descricaoCategoriaAdicionar').value = '';
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalAdicionarCategoria'));
+            modal.hide();
+        } else {
+            console.error("Erro ao adicionar categoria");
+        }
+    } catch (error) {
+        console.error("Erro ao adicionar categoria:", error);
+    }
+});
+
+// Função para editar uma categoria existente
+function editarCategoria(id) {
+    const categoria = categorias.find(cat => cat.id === id);
+    
+    document.getElementById('nomeCategoriaEditar').value = categoria.nome;
+    document.getElementById('descricaoCategoriaEditar').value = categoria.descricao;
+    
+    const formEditar = document.getElementById('categoria-editar');
+    formEditar.onsubmit = async function(event) {
+        event.preventDefault();
+        
+        const categoriaAtualizada = {
+            nome: document.getElementById('nomeCategoriaEditar').value,
+            descricao: document.getElementById('descricaoCategoriaEditar').value
+        };
+
+        try {
+            const response = await fetch(`${BASE_URL}/updateCategoria/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(categoriaAtualizada)
+            });
+
+            if (response.ok) {
+                categoria.nome = categoriaAtualizada.nome;
+                categoria.descricao = categoriaAtualizada.descricao;
+                renderizarTabela();
+                const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarCategoria'));
+                modal.hide();
+            } else {
+                console.error("Erro ao editar categoria");
+            }
+        } catch (error) {
+            console.error("Erro ao editar categoria:", error);
+        }
+    };
+
+    const modalEditar = new bootstrap.Modal(document.getElementById('modalEditarCategoria'));
+    modalEditar.show();
+}
+
+let categoriaIdParaExcluir = null; // Variável global para armazenar o ID da categoria a ser excluída
+
+// Função para abrir o modal de confirmação de exclusão
+function excluirCategoria(id) {
+    categoriaIdParaExcluir = id; // Armazena o ID da categoria a ser excluída
+    const modalExcluir = new bootstrap.Modal(document.getElementById('modalExcluirCategoria'));
+    modalExcluir.show();
+}
+
+// Função para confirmar a exclusão ao submeter o formulário
+document.getElementById('categoria-excluir').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    try {
+        const response = await fetch(`${BASE_URL}/deleteCategoria/${categoriaIdParaExcluir}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            categorias = categorias.filter(cat => cat.id !== categoriaIdParaExcluir); // Remove a categoria da lista
+            renderizarTabela();
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalExcluirCategoria'));
+            modal.hide();
+        } else {
+            console.error("Erro ao excluir categoria");
+        }
+    } catch (error) {
+        console.error("Erro ao excluir categoria:", error);
+    }
+});
+
+
+function renderizarTabela() {
+    const tbody = document.getElementById('corpoTabelaCategorias');
+    tbody.innerHTML = '';
+
+    categorias.forEach(categoria => {
+        const tr = document.createElement('tr');
+        
+        tr.innerHTML = `
+            <td>${categoria.nome}</td>
+            <td>${categoria.descricao}</td>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="editarCategoria(${categoria.id})">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="excluirCategoria(${categoria.id})">Excluir</button>
+            </td>
+        `;
+        
+        tbody.appendChild(tr);
     });
 }
 
@@ -244,7 +380,6 @@ function excluirEntrada(id) {
     $('#modalExcluirEntrada').modal('show');
 }
 
-// Funções para editar saída
 function editarSaida(id) {
     const saida = saidas.find(s => s.id === id); // Encontre a saída pelo ID
     const produto = produtos.find(p => p.id === saida.idProdutos); // Encontre o produto correspondente à saída
@@ -703,6 +838,7 @@ function openModal(tipo, produto) {
 
     new bootstrap.Modal(document.getElementById(modalId)).show();
 };
+
 function openModalEntrada(id) {
     const inputProdutoId = document.getElementById('produtoId');
 
@@ -714,13 +850,10 @@ function openModalSaida(id, preco) {
     const inputProdutoId = document.getElementById('produtoId2');
     const inputPrecoSaida = document.getElementById('precoSaida');
 
-    // Define o ID do produto no campo oculto
     inputProdutoId.value = id;
 
-    // Define o preço do produto formatado no campo de preço
     inputPrecoSaida.value = preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-    // Exibe o modal
     new bootstrap.Modal(document.getElementById('modalSaida')).show();
 }
 
