@@ -90,7 +90,7 @@ form_su.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: `${BASE_URL}/estoque-cu`,
+        url: `${BASE_URL}/estoque-su`,
         data: serializedData,
         dataType: "json",
         success: function(response) {

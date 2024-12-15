@@ -396,7 +396,7 @@ class App
 
 
 
-    /*------------ CR ENTRADAS, falta UD ------------*/
+    /*------------ CRUD ENTRADAS ------------*/
 
     public function estoqueEc(?array $data): void
     {
@@ -457,7 +457,7 @@ class App
                     "idFornecedor" => $idFonecedor,
                     "idProdutos" => $data["produtoId"],
                     "quantidade" => $data["quantidade"],
-                    "preco" => $data["preco"],
+                    "preco" => $precoFloat,
                     "message" => "Entrada cadastrada com sucesso!",
                     "type" => "success"
                 ];
@@ -567,6 +567,140 @@ class App
     public function estoqueSc(?array $data): void
     {
         if (!empty($data)) {
+
+            if (($data["produtoId2"] && $data["quantidade"] && $data["preco"]) == null) {
+                $json = [
+                    "nome" => $data["nome"],
+                    "idProdutos" => $data["produtoId2"],
+                    "quantidade" => $data["quantidade"],
+                    "preco" => $data["preco"],
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $newpreco = $data["preco"];
+
+            // Remove o símbolo de moeda 'R$'
+            $newpreco = str_replace('R$', '', $newpreco);
+
+            // Remove os pontos (separadores de milhar)
+            $newpreco = str_replace('.', '', $newpreco);
+
+            // Substitui a vírgula decimal por um ponto
+            $newpreco = str_replace(',', '.', $newpreco);
+
+            // Converte para float
+            $precoFloat = (float)$newpreco;
+
+            $cliente = new Clientes();
+            $idCliente = $cliente->findByIdName($data["nome"]);
+
+            if ($idCliente == false) {
+                $idCliente = null;
+            }
+
+            $produto = new Produtos();
+            $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
+
+            if ($quantidadeProduto < $data["quantidade"]) {
+                $json = [
+                    "quantidadeProduto" => $quantidadeProduto,
+                    "quantidade" => $data["quantidade"],
+                    "message" => "Quantidade inválida!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $saidas = new Saidas(
+                NULL,
+                $idCliente,
+                $data["produtoId2"],
+                $data["quantidade"],
+                $precoFloat
+            );
+
+            if ($saidas->insert()) {
+
+                $produto->subtraiQuantidadeProdutos($data["produtoId2"], $data["quantidade"]);
+
+                $json = [
+                    "saidas" => $saidas->selectAll(),
+                    "produtos" => $produto->selectAll(),
+                    "nome" => $data["nome"],
+                    "idCliente" => $idCliente,
+                    "idProdutos" => $data["produtoId2"],
+                    "quantidade" => $data["quantidade"],
+                    "preco" => $precoFloat,
+                    "message" => "Saída cadastrada com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Saída não cadastrada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+    public function estoqueSd(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $saida = new Saidas();
+            $saidaDelete = $saida->delete($data["idSaidaExcluir"]);
+
+            if ($saidaDelete) {
+
+                $json = [
+                    "saidas" => $saida->selectAll(),
+                    "message" => "Saída deletada com sucesso!",
+                    "type" => "success"
+                ];
+
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Saída não deletada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+    public function estoqueSu(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
 
             if (($data["produtoId2"] && $data["quantidade"] && $data["preco"]) == null) {
                 $json = [

@@ -610,8 +610,7 @@ $this->layout("_theme");
                 </div>
                 <form id="saida-excluir" method="post">
                     <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir esta saída?
-                            Ao confirmar, todas as entradas relacionadas a ela também serão removidas.</p>
+                        <p>Tem certeza de que deseja excluir esta saída?</p>
                         <input type="hidden" id="idSaidaExcluir" name="idSaidaExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
                     <div class="modal-footer">

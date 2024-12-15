@@ -144,19 +144,45 @@ class Saidas
         return true;
     }
     
-    public function delete($idProduto)
+    public function delete($id)
     {
-        $query = "DELETE FROM saidas WHERE idProdutos = :idProdutos";
+        $query = "DELETE FROM saidas WHERE id = :id";
 
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":idProdutos", $idProduto);
+        $stmt->bindParam(":id", $id);
 
         $stmt->execute();
 
         if ($stmt->rowCount() == 0) {
-            return false;  
+            return false;
         } else {
-            return true;  
+            return true;
+        }
+    }
+
+    public function update($id, $quantidade, $preco)
+    {
+        // Query de atualização
+        $query = "UPDATE saidas 
+                SET quantidade = :quantidade, preco = :preco 
+                WHERE id = :id";
+
+        // Prepara a conexão
+        $stmt = Connect::getInstance()->prepare($query);
+
+        // Liga os parâmetros aos valores
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":quantidade", $quantidade);
+        $stmt->bindParam(":preco", $preco);
+
+        // Executa a query
+        $stmt->execute();
+
+        // Retorna se houve alterações
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 

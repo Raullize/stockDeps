@@ -208,7 +208,7 @@ function mostrarPaginaSaidas(pagina) {
                 <td>${formatarData(saida.created_at)}</td>
                 <td>
                     <button class="btn btn-primary btn-sm me-2" onclick="editarSaida(${saida.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="prepararExcluirSaida(${saida.id})">Excluir</button>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
                 </td>
             </tr>`;
         tabela.insertAdjacentHTML('beforeend', row);
@@ -342,22 +342,16 @@ function editarSaida(id) {
     }
 }
 
-function excluirSaida(id) {
-    const saida = saidas.find(s => s.id === id);
-    if (!saida) return;
+function excluirSaida(saidaId) {
+    // Insere o ID da saída no campo oculto do modal
+    const inputSaidaId = document.getElementById('idSaidaExcluir');
+    inputSaidaId.value = saidaId;
 
-    document.querySelector('#idSaidaExcluir').value = id;
-    const formExcluirSaida = document.querySelector('#saida-excluir');
-    formExcluirSaida.onsubmit = function (event) {
-        event.preventDefault();
-        // Remova a saída (no backend)
-        saidas = saidas.filter(s => s.id !== id);
-        alert('Saída excluída com sucesso!');
-        $('#modalExcluirSaida').modal('hide');
-        mostrarPaginaSaidas(paginaAtualSaidas); // Atualize a tabela
-    };
-    $('#modalExcluirSaida').modal('show');
+    // Mostra o modal de exclusão usando Bootstrap
+    const modalExcluirSaida = new bootstrap.Modal(document.getElementById('modalExcluirSaida'));
+    modalExcluirSaida.show();
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     // Pega os botões e associa o evento de clique

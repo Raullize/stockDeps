@@ -67,7 +67,8 @@ $route->post("/estoque-ed", "App:estoqueEd");
 $route->post("/estoque-eu", "App:estoqueEu");
 
 $route->post("/estoque-sc", "App:estoqueSc");
-
+$route->post("/estoque-sd", "App:estoqueSd");
+$route->post("/estoque-su", "App:estoqueSu");
 
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE CLIENTES MODO:POST */

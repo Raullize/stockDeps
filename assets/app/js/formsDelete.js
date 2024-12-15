@@ -131,7 +131,7 @@ form_sd.on("submit", function(e) {
     
     $.ajax({
         type: "POST",
-        url: `${BASE_URL}/estoque-cd`,
+        url: `${BASE_URL}/estoque-sd`,
         data: serializedData,
         dataType: "json",
         success: function(response) {
