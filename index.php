@@ -77,6 +77,7 @@ $route->post("/estoque-atualizar", "App:estoqueAtualizar");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE CLIENTES MODO:POST */
 $route->post("/cadastro-clientes", "App:cadastroClientes");
+$route->post("/deletar-clientes", "App:deleteClientes");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE FORNECEDORES MODO:POST */
 $route->post("/cadastro-fornecedores", "App:cadastroFornecedores");

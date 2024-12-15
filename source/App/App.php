@@ -180,10 +180,7 @@ class App
             }
 
             $entradas = new Entradas();
-            $entradas->delete($data["idProdutoExcluir"]);
-
             $saidas = new Saidas();
-            $saidas->delete($data["idProdutoExcluir"]);
 
             $produtos = new Produtos();
             $produtoDeletado = $produtos->delete($data["idProdutoExcluir"]);
@@ -222,14 +219,22 @@ class App
                 return;
             }
 
+            $newpreco = $data["preco"];
+            $newpreco = str_replace('R$', '', $newpreco);
+            $newpreco = str_replace('.', '', $newpreco);
+            $newpreco = str_replace(',', '.', $newpreco);
+            $precoFloat = (float)$newpreco;
+
             $entradas = new Entradas();
             $saidas = new Saidas();
+
             $produtos = new Produtos();
             $produtoAtualizado = $produtos->update(
                 $data["idProdutoUpdate"],
                 $data["nome"],
                 $data["descricao"],
-                $data["preco"]
+                $data["categoria"],
+                $precoFloat
             );
 
             if ($produtoAtualizado) {
@@ -237,7 +242,7 @@ class App
                     "entradas" => $entradas->selectAll(),
                     "saidas" => $saidas->selectAll(),
                     "produtos" => $produtos->selectAll(),
-                    "message" => "Produto deletado com sucesso!",
+                    "message" => "Produto atualizado com sucesso!",
                     "type" => "success"
                 ];
                 echo json_encode($json);
@@ -309,6 +314,10 @@ class App
             }
         }
     }
+
+
+
+
 
     /*------------ CR ENTRADAS, falta UD ------------*/
 
@@ -387,6 +396,10 @@ class App
             }
         }
     }
+
+
+
+
 
     /*------------ CR SAÍDAS, falta UD ------------*/
 
@@ -478,6 +491,10 @@ class App
         }
     }
 
+
+
+
+
     /*------------ CR CLIENTES, falta UD ------------*/
 
     public function cadastroClientes(?array $data): void
@@ -532,6 +549,97 @@ class App
 
         echo $this->view->render("clientes");
     }
+
+    public function deleteClientes(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $cliente = new Clientes();
+            $clienteDeletado = $cliente->delete($data["idClienteExcluir"]);
+
+            if ($clienteDeletado) {
+                $json = [
+                    "clientes" => $cliente->selectAll(),
+                    "message" => "Cliente deletado com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Cliente não deletado!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+    public function updateClientes(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para atualizar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $newpreco = $data["preco"];
+            $newpreco = str_replace('R$', '', $newpreco);
+            $newpreco = str_replace('.', '', $newpreco);
+            $newpreco = str_replace(',', '.', $newpreco);
+            $precoFloat = (float)$newpreco;
+
+            $entradas = new Entradas();
+            $saidas = new Saidas();
+
+            $produtos = new Produtos();
+            $produtoAtualizado = $produtos->update(
+                $data["idProdutoUpdate"],
+                $data["nome"],
+                $data["descricao"],
+                $data["categoria"],
+                $precoFloat
+            );
+
+            if ($produtoAtualizado) {
+                $json = [
+                    "entradas" => $entradas->selectAll(),
+                    "saidas" => $saidas->selectAll(),
+                    "produtos" => $produtos->selectAll(),
+                    "message" => "Produto atualizado com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Produto não atualizado!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+
+
+
 
     /*------------ CR FORNECEDORES, falta UD ------------*/
 

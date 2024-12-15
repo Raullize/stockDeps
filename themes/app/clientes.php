@@ -115,10 +115,10 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalExcluirLabel">Excluir Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
-                <form id="produto-excluir" name="produto-excluir" method="post">
+                <form id="cliente-excluir" name="cliente-excluir" method="post">
                     <div class="modal-body">
                         <p>Tem certeza de que deseja excluir este cliente?</p>
-                        <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
+                        <input type="hidden" id="idClienteExcluir" name="idClienteExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -148,6 +148,8 @@ $this->layout("_theme");
 
     <script src="<?= url('assets/app/js/clientes.js') ?>" defer></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 </body>
 

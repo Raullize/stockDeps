@@ -185,23 +185,12 @@ function abrirModalHistorico(id) {
     modalHistorico.show();
 }
 
-async function excluirCliente(id) {
-    const confirmar = confirm("Tem certeza que deseja excluir este cliente?");
-    if (confirmar) {
-        const response = await fetch(`${BASE_URL}/deleteCliente/${id}`, {
-            method: 'DELETE',
-        });
+function openModalExcluir(clienteId) {
+    // Insere o ID do cliente no campo oculto do modal
+    const inputClienteId = document.getElementById('idClienteExcluir');
+    inputClienteId.value = clienteId;
 
-        if (response.ok) {
-            alert("Cliente excluído com sucesso!");
-            fetchClientes();
-        } else {
-            alert("Erro ao excluir o cliente.");
-        }
-    }
-}
-
-function openModalExcluir(){
+    // Mostra o modal
     new bootstrap.Modal(document.getElementById('modalExcluir')).show();
 }
 

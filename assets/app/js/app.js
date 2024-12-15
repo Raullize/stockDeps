@@ -833,7 +833,7 @@ function openModal(tipo, produto) {
     }
 
     if (tipo === 'Excluir') {
-        document.getElementById('idProdutoExcluir').value = produto.id;
+        document.getElementById('idProdutoExcluir').value = produto;
     }
 
     new bootstrap.Modal(document.getElementById(modalId)).show();

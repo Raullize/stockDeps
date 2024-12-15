@@ -166,30 +166,6 @@ class Clientes
 
        return $resultados;
     }
-/*
-    public function update()
-    {
-        $query = "UPDATE users SET name = :name, email = :email, photo = :photo, document = :document WHERE id = :id";
-        $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":name",$this->name);
-        $stmt->bindParam(":email",$this->email);
-        $stmt->bindParam(":photo",$this->photo);
-        $stmt->bindParam(":document",$this->document);
-        $stmt->bindParam(":id",$this->id);
-        $stmt->execute();
-        $arrayUser = [
-            "id" => $this->id,
-            "name" => $this->name,
-            "email" => $this->email,
-            "photo" => $this->photo,
-            "document" => $this->document
-        ];
-        $_SESSION["user"] = $arrayUser;
-        $this->message = "Usuário alterado com sucesso!";
-    }
-
-*/
-    /*finalizar a insert*/
 
     public function insert(): bool 
     {
@@ -207,55 +183,20 @@ class Clientes
         return true;
     }
 
-    /*
-
-    public function validate (string $email, string $password) : bool
+    public function delete($id)
     {
-        $query = "SELECT * FROM users WHERE email LIKE :email";
+        $query = "DELETE FROM clientes WHERE id = :id";
+
         $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":email", $email);
+        $stmt->bindParam(":id", $id);
+
         $stmt->execute();
 
-        if($stmt->rowCount() == 0){
-            $this->message = "Usuário e/ou Senha não cadastrados!";
+        if ($stmt->rowCount() == 0) {
             return false;
         } else {
-            $user = $stmt->fetch();
-            if(!password_verify($password, $user->password)){
-                $this->message = "Usuário e/ou Senha não cadastrados!";
-                return false;
-            }
+            return true;
         }
-
-        $this->id = $user->id;
-        $this->name = $user->name;
-        $this->email = $user->email;
-        $this->document = $user->document;
-        $this->message = "Usuário Autorizado, redirect to APP!";
-
-        $arrayUser = [
-            "id" => $this->id,
-            "name" => $this->name,
-            "email" => $this->email,
-            "photo" => $this->photo,
-        ];
-
-        $_SESSION["user"] = $arrayUser;
-        setcookie("user","Logado",time()+60*60,"/");
-        return true;
     }
-
-    public function getArray() : array
-    {
-        return ["user" => [
-            "id" => $this->getId(),
-            "name" => $this->getName(),
-            "email" => $this->getEmail(),
-            "document" => $this->getDocument(),
-            "photo" => $this->getPhoto()
-        ]];
-    }
-
-*/
 
 } 

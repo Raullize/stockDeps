@@ -266,11 +266,11 @@ class Produtos
         }
     }
 
-    public function update($id, $nome, $descricao, $preco)
+    public function update($id, $nome, $descricao, $idCategoria, $preco)
     {
         // Query de atualização
         $query = "UPDATE produtos 
-                SET nome = :nome, descricao = :descricao, preco = :preco 
+                SET nome = :nome, descricao = :descricao, idCategoria = :idCategoria, preco = :preco 
                 WHERE id = :id";
 
         // Prepara a conexão
@@ -280,6 +280,7 @@ class Produtos
         $stmt->bindParam(":id", $id);
         $stmt->bindParam(":nome", $nome);
         $stmt->bindParam(":descricao", $descricao);
+        $stmt->bindParam(":idCategoria", $idCategoria);
         $stmt->bindParam(":preco", $preco);
 
         // Executa a query
