@@ -63,8 +63,8 @@ $route->post("/estoque-cd", "App:estoqueCd");
 $route->post("/estoque-cu", "App:estoqueCu");
 
 $route->post("/estoque-ec", "App:estoqueEc");
-
-
+$route->post("/estoque-ed", "App:estoqueEd");
+$route->post("/estoque-eu", "App:estoqueEu");
 
 $route->post("/estoque-sc", "App:estoqueSc");
 

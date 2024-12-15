@@ -113,22 +113,6 @@ class Entradas
         }
     }
 
-    public function delete($idProduto)
-    {
-        $query = "DELETE FROM entradas WHERE idProdutos = :idProdutos";
-
-        $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":idProdutos", $idProduto);
-
-        $stmt->execute();
-
-        if ($stmt->rowCount() == 0) {
-            return false;  
-        } else {
-            return true;  
-        }
-    }
-
 
     public function insert() : bool
     {
@@ -142,20 +126,47 @@ class Entradas
         $stmt->execute();
         return true;
     }
-    
-    /*
 
-    public function getArray() : array
+    public function delete($id)
     {
-        return ["user" => [
-            "id" => $this->getId(),
-            "name" => $this->getName(),
-            "email" => $this->getEmail(),
-            "document" => $this->getDocument(),
-            "photo" => $this->getPhoto()
-        ]];
+        $query = "DELETE FROM entradas WHERE id = :id";
+
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(":id", $id);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    */
+    public function update($id, $quantidade, $preco)
+    {
+        // Query de atualização
+        $query = "UPDATE entradas 
+                SET quantidade = :quantidade, preco = :preco 
+                WHERE id = :id";
+
+        // Prepara a conexão
+        $stmt = Connect::getInstance()->prepare($query);
+
+        // Liga os parâmetros aos valores
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":quantidade", $quantidade);
+        $stmt->bindParam(":preco", $preco);
+
+        // Executa a query
+        $stmt->execute();
+
+        // Retorna se houve alterações
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

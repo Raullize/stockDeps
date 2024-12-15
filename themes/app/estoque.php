@@ -473,30 +473,31 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="entrada-editar" method="post">
+                            <input name="idEntradaEditar" id="idEntradaEditar" type="hidden">
                         <!-- Nome do Produto -->
                         <div class="mb-3">
                             <label for="entradaProduto" class="form-label">Produto</label>
-                            <input type="text" class="form-control" id="entradaProduto" readonly>
+                            <input  name="nome" type="text" class="form-control" id="entradaProduto" readonly>
                         </div>
 
                         <!-- Quantidade -->
                         <div class="mb-3">
                             <label for="entradaQuantidade" class="form-label">Quantidade</label>
-                            <input type="number" class="form-control" id="entradaQuantidade" min="0">
+                            <input name="quantidade" type="number" class="form-control" id="entradaQuantidade" min="0">
                         </div>
 
                         <!-- Preço -->
                         <div class="mb-3">
                             <label for="entradaPreco" class="form-label">Preço</label>
-                            <input type="number" class="form-control" id="entradaPreco" min="0" step="0.01">
+                            <input name="preco" type="number" class="form-control" id="entradaPreco" min="0" step="0.01">
                         </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="salvarEdicaoEntrada()">Salvar alterações</button>
+                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -571,7 +572,7 @@ $this->layout("_theme");
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" onclick="salvarEdicaoSaida()">Salvar alterações</button>
+                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
                 </div>
             </div>
         </div>
@@ -587,8 +588,7 @@ $this->layout("_theme");
                 </div>
                 <form id="entrada-excluir" method="post">
                     <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir esta entrada?
-                            Ao confirmar, todas as saídas relacionadas a ela também serão removidas.</p>
+                        <p>Tem certeza de que deseja excluir esta entrada?</p>
                         <input type="hidden" id="idEntradaExcluir" name="idEntradaExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
                     <div class="modal-footer">

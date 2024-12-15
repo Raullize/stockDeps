@@ -474,6 +474,90 @@ class App
         }
     }
 
+    public function estoqueEd(?array $data): void
+    {
+
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $entrada = new Entradas();
+            $entradaDeletada = $entrada->delete($data["idEntradaExcluir"]);
+
+            if ($entradaDeletada) {
+
+                $json = [
+                    "entradas" => $entrada->selectAll(),
+                    "message" => "Entrada deletada com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Entrada não deletada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+    public function estoqueEu(?array $data): void
+    {
+
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+           /* $newpreco = $data["preco"];
+            $newpreco = str_replace('R$', '', $newpreco);
+            $newpreco = str_replace('.', '', $newpreco);
+            $newpreco = str_replace(',', '.', $newpreco);
+            $precoFloat = (float)$newpreco;*/
+
+            $entrada = new Entradas();
+            $entradaAtualizar = $entrada->update(
+                    $data["idEntradaEditar"],
+                    $data["quantidade"],
+                    $data["preco"]
+                    );
+
+            if ($entradaAtualizar) {
+
+                $json = [
+                    "entradas" => $entrada->selectAll(),
+                    "message" => "Entrada atualizada com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Entrada não atualizada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
 
 
 

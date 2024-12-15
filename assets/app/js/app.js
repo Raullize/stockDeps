@@ -176,7 +176,7 @@ function mostrarPaginaEntradas(pagina) {
                 <td>${formatarData(entrada.created_at)}</td>
                 <td>
                     <button class="btn btn-primary btn-sm" onclick="editarEntrada(${entrada.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirEntrada" onclick="prepararExcluirEntrada(${entrada.id})">Excluir</button>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirEntrada" onclick="excluirEntrada(${entrada.id})">Excluir</button>
                 </td>
             </tr>`;
         tabela.insertAdjacentHTML('beforeend', row);
@@ -295,6 +295,7 @@ function editarEntrada(id) {
         const nomeProduto = produto ? produto.nome : 'Produto não encontrado';
 
         // Preencher os campos do modal
+        document.getElementById('idEntradaEditar').value = id;
         document.getElementById('entradaProduto').value = nomeProduto;
         document.getElementById('entradaQuantidade').value = entrada.quantidade;
         document.getElementById('entradaPreco').value = entrada.preco;
@@ -310,21 +311,14 @@ function editarEntrada(id) {
     }
 }
 
-function excluirEntrada(id) {
-    const entrada = entradas.find(e => e.id === id);
-    if (!entrada) return;
+function excluirEntrada(entradaId) {
+    // Insere o ID da entrada no campo oculto do modal
+    const inputEntradaId = document.getElementById('idEntradaExcluir');
+    inputEntradaId.value = entradaId;
 
-    document.querySelector('#idEntradaExcluir').value = id;
-    const formExcluirEntrada = document.querySelector('#entrada-excluir');
-    formExcluirEntrada.onsubmit = function (event) {
-        event.preventDefault();
-        // Remova a entrada (no backend)
-        entradas = entradas.filter(e => e.id !== id);
-        alert('Entrada excluída com sucesso!');
-        $('#modalExcluirEntrada').modal('hide');
-        mostrarPaginaEntradas(paginaAtualEntradas); // Atualize a tabela
-    };
-    $('#modalExcluirEntrada').modal('show');
+    // Mostra o modal de exclusão usando Bootstrap
+    const modalExcluirEntrada = new bootstrap.Modal(document.getElementById('modalExcluirEntrada'));
+    modalExcluirEntrada.show();
 }
 
 function editarSaida(id) {
