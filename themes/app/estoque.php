@@ -578,8 +578,9 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="saida-editar" method="post">
                         <!-- Nome do Produto (Somente leitura) -->
+                            <input type="hidden" id="idEditarSaida">
                         <div class="mb-3">
                             <label for="saidaProduto" class="form-label">Produto</label>
                             <input type="text" class="form-control" id="saidaProduto" readonly> <!-- readonly torna o campo não editável -->
@@ -588,20 +589,20 @@ $this->layout("_theme");
                         <!-- Quantidade -->
                         <div class="mb-3">
                             <label for="saidaQuantidade" class="form-label">Quantidade</label>
-                            <input type="number" class="form-control" id="saidaQuantidade" min="0">
+                            <input name="quantidade" type="number" class="form-control" id="saidaQuantidade" min="0">
                         </div>
 
                         <!-- Preço -->
                         <div class="mb-3">
                             <label for="saidaPreco" class="form-label">Preço</label>
-                            <input type="number" class="form-control" id="saidaPreco" min="0" step="0.01">
+                            <input name="preco" type="number" class="form-control" id="saidaPreco" min="0" step="0.01">
                         </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Salvar alterações</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>

@@ -583,15 +583,18 @@ class App
 
             $newpreco = $data["preco"];
 
-            // Remove o símbolo de moeda 'R$'
+            // Remove completamente o símbolo de moeda 'R$'
             $newpreco = str_replace('R$', '', $newpreco);
-
+            
+            // Remove espaços extras (inclusive invisíveis) no início e no final
+            $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
+            
             // Remove os pontos (separadores de milhar)
             $newpreco = str_replace('.', '', $newpreco);
-
+            
             // Substitui a vírgula decimal por um ponto
             $newpreco = str_replace(',', '.', $newpreco);
-
+            
             // Converte para float
             $precoFloat = (float)$newpreco;
 
@@ -702,61 +705,25 @@ class App
                 return;
             }
 
-            if (($data["produtoId2"] && $data["quantidade"] && $data["preco"]) == null) {
-                $json = [
-                    "nome" => $data["nome"],
-                    "idProdutos" => $data["produtoId2"],
-                    "quantidade" => $data["quantidade"],
-                    "preco" => $data["preco"],
-                    "message" => "Informe todos os campos para cadastrar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
             $newpreco = $data["preco"];
 
-            // Remove o símbolo de moeda 'R$'
+            // Remove completamente o símbolo de moeda 'R$'
             $newpreco = str_replace('R$', '', $newpreco);
-
+            
+            // Remove espaços extras (inclusive invisíveis) no início e no final
+            $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
+            
             // Remove os pontos (separadores de milhar)
             $newpreco = str_replace('.', '', $newpreco);
-
+            
             // Substitui a vírgula decimal por um ponto
             $newpreco = str_replace(',', '.', $newpreco);
-
+            
             // Converte para float
             $precoFloat = (float)$newpreco;
 
-            $cliente = new Clientes();
-            $idCliente = $cliente->findByIdName($data["nome"]);
-
-            if ($idCliente == false) {
-                $idCliente = null;
-            }
-
-            $produto = new Produtos();
-            $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
-
-            if ($quantidadeProduto < $data["quantidade"]) {
-                $json = [
-                    "quantidadeProduto" => $quantidadeProduto,
-                    "quantidade" => $data["quantidade"],
-                    "message" => "Quantidade inválida!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $saidas = new Saidas(
-                NULL,
-                $idCliente,
-                $data["produtoId2"],
-                $data["quantidade"],
-                $precoFloat
-            );
+            $saida = new Saidas();
+            $saidaUpdate = $saida->update();
 
             if ($saidas->insert()) {
 

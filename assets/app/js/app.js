@@ -811,18 +811,6 @@ function openModalEntrada(id) {
 document.getElementById('saida-cadastro').addEventListener('submit', function (event) {
     const inputPrecoSaida = document.getElementById('precoSaida');
 
-    let preco = inputPrecoSaida.value.replace(/[^\d,]/g, '');
-    preco = preco.replace(',', '.');
-
-
-    if (!preco || isNaN(parseFloat(preco))) {
-        preco = 0;
-    }
-
-
-    console.log("Preço enviado:", preco);
-
-
     inputPrecoSaida.value = preco;
 });
 
