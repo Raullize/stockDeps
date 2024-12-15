@@ -83,19 +83,20 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalEditarClienteLabel">Editar Cliente</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="formEditarCliente">
+                <form id="cliente-update" method="post">
                     <div class="modal-body">
+                            <input type="hidden" id="idClienteUpdate" name="idClienteUpdate"> <!-- Campo oculto para armazenar o id -->
                         <div class="mb-3">
                             <label for="editarNomeCliente" class="form-label">Nome</label>
-                            <input type="text" class="form-control" id="editarNomeCliente">
+                            <input name="nome" type="text" class="form-control" id="editarNomeCliente">
                         </div>
                         <div class="mb-3">
                             <label for="editarCpfCliente" class="form-label">CPF</label>
-                            <input type="text" class="form-control" id="editarCpfCliente">
+                            <input name="cpf" type="text" class="form-control" id="editarCpfCliente">
                         </div>
                         <div class="mb-3">
                             <label for="editarTelefoneCliente" class="form-label">Celular</label>
-                            <input type="text" class="form-control" id="editarTelefoneCliente">
+                            <input name="celular" type="text" class="form-control" id="editarTelefoneCliente">
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -148,6 +148,8 @@ function abrirModalEditarCliente(id) {
         alert("Cliente não encontrado");
         return;
     }
+
+    document.getElementById("idClienteUpdate").value = id;
     document.getElementById("editarNomeCliente").value = cliente.nome;
     document.getElementById("editarCpfCliente").value = cliente.cpf;
     document.getElementById("editarTelefoneCliente").value = cliente.celular;

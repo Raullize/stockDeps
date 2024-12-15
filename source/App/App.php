@@ -91,7 +91,7 @@ class App
 
     
 
-    /* CRUD COMPLETO PRODUTO */
+     /*------------ CRUD PRODUTOS ------------*/
 
     public function estoquePc(?array $data): void
     {
@@ -495,7 +495,7 @@ class App
 
 
 
-    /*------------ CR CLIENTES, falta UD ------------*/
+    /*------------ CRUD CLIENTES ------------*/
 
     public function cadastroClientes(?array $data): void
     {
@@ -598,37 +598,27 @@ class App
                 return;
             }
 
-            $newpreco = $data["preco"];
-            $newpreco = str_replace('R$', '', $newpreco);
-            $newpreco = str_replace('.', '', $newpreco);
-            $newpreco = str_replace(',', '.', $newpreco);
-            $precoFloat = (float)$newpreco;
-
-            $entradas = new Entradas();
-            $saidas = new Saidas();
-
-            $produtos = new Produtos();
-            $produtoAtualizado = $produtos->update(
-                $data["idProdutoUpdate"],
+            $cliente = new Clientes();
+            $clienteAtualizado = $cliente->update(
+                $data["idClienteUpdate"],
                 $data["nome"],
-                $data["descricao"],
-                $data["categoria"],
-                $precoFloat
+                $data["cpf"],
+                $data["celular"]
             );
+                
 
-            if ($produtoAtualizado) {
+
+            if ($clienteAtualizado) {
                 $json = [
-                    "entradas" => $entradas->selectAll(),
-                    "saidas" => $saidas->selectAll(),
-                    "produtos" => $produtos->selectAll(),
-                    "message" => "Produto atualizado com sucesso!",
+                    "clientes" => $cliente->selectAll(),
+                    "message" => "Cliente atualizado com sucesso!",
                     "type" => "success"
                 ];
                 echo json_encode($json);
                 return;
             } else {
                 $json = [
-                    "message" => "Produto não atualizado!",
+                    "message" => "Cliente não atualizado!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
@@ -701,72 +691,11 @@ class App
         echo $this->view->render("fornecedores");
     }
 
-    public function estoqueSaidas(?array $data): void
-    {
-
-        $cliente = new Clientes();
-
-        $saidas = new Saidas(
-            NULL,
-            $data["categoria"],
-            $cliente->findByIdName($data["cliente"]),
-            $data["produto"],
-            $data["quantidade"]
-        );
 
 
-        if (!empty($data)) {
 
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "<div style='color: red'>Informe todos os campos para dar saída neste produto!</div>",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $cliente = new Clientes();
-
-            $saidas = new Saidas(
-                NULL,
-                $data["categoria"],
-                $cliente->findByIdName($data["cliente"]),
-                $data["produto"],
-                $data["quantidade"]
-            );
-
-            if ($saidas->insert()) {
-                $json = [
-                    "message" => "<div style='margin-left: 25px; color: green'>Produtos retirados com sucesso!</div>",
-                    "type" => "success"
-                ];
-                echo json_encode($json);
-                return;
-            } else {
-                $json = [
-                    "message" => "<div style='margin-left: 25px; color: red'>Saldo insuficiente para retirada!</div>",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-        }
-    }
-
-    public function estoqueDeletar(?array $data)
-    {
-        $output = $this->estoqueFeatures->deleteRegister($data['table'], $data['id']);
-        echo json_encode($output);
-    }
-
-    public function estoqueAtualizar(?array $data)
-    {
-        $output = $this->estoqueFeatures->updateRegister($data['table'], $data['id'], $data['quantidade'], $data['idProduto']);
-        echo json_encode($output);
-    }
-
-    public function relatorio(): void
+    
+      public function relatorio(): void
     {
 
         echo $this->view->render("relatorio");

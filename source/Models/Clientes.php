@@ -199,4 +199,31 @@ class Clientes
         }
     }
 
+    public function update($id, $nome, $cpf, $celular)
+    {
+        // Query de atualização
+        $query = "UPDATE clientes 
+                SET nome = :nome, cpf = :cpf, celular = :celular 
+                WHERE id = :id";
+
+        // Prepara a conexão
+        $stmt = Connect::getInstance()->prepare($query);
+
+        // Liga os parâmetros aos valores
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":nome", $nome);
+        $stmt->bindParam(":cpf", $cpf);
+        $stmt->bindParam(":celular", $celular);
+
+        // Executa a query
+        $stmt->execute();
+
+        // Retorna se houve alterações
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 } 
