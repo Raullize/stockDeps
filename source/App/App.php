@@ -1397,7 +1397,7 @@ class App
                     $stmtInsertProduto = $pdo->prepare($queryInsertProduto);
                     $stmtInsertProduto->execute([
                         'idCategoria' => 1, // Substitua por lógica para associar a categoria, se necessário
-                        'nome' => $produto['Descrição'],
+                        'nome' => $produto['nome'],
                         'descricao' => $produto['Descrição'],
                         'preco' => $produto['Valor Unitário'],
                         'quantidade' => $produto['Quantidade'],

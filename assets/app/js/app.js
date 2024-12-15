@@ -74,7 +74,7 @@ function formatarData(dataISO) {
 
 // ELANO OLHA AQUI AS PROXIMAS 4 FUNÇÕES DE CATEGORIAS
 
-document.getElementById('categoria-cadastro').addEventListener('submit', async function(event) {
+document.getElementById('categoria-cadastro').addEventListener('submit', async function (event) {
     event.preventDefault();
 
     const nome = document.getElementById('nomeCategoriaAdicionar').value;
@@ -98,7 +98,7 @@ document.getElementById('categoria-cadastro').addEventListener('submit', async f
             const categoriaAdicionada = await response.json();
             categorias.push(categoriaAdicionada); // Adiciona a nova categoria à lista
             renderizarTabela();
-            
+
             // Limpa e fecha o modal
             document.getElementById('nomeCategoriaAdicionar').value = '';
             document.getElementById('descricaoCategoriaAdicionar').value = '';
@@ -115,11 +115,11 @@ document.getElementById('categoria-cadastro').addEventListener('submit', async f
 // Função para editar uma categoria existente
 function editarCategoria(id) {
     const categoria = categorias.find(cat => cat.id === id);
-    
+
     document.getElementById('idCategoriaEditar').value = categoria.id;
     document.getElementById('nomeCategoriaEditar').value = categoria.nome;
     document.getElementById('descricaoCategoriaEditar').value = categoria.descricao;
-    
+
     const modalEditar = new bootstrap.Modal(document.getElementById('modalEditarCategoria'));
     modalEditar.show();
 }
@@ -140,7 +140,7 @@ function renderizarTabela() {
 
     categorias.forEach(categoria => {
         const tr = document.createElement('tr');
-        
+
         tr.innerHTML = `
             <td>${categoria.nome}</td>
             <td>${categoria.descricao}</td>
@@ -149,7 +149,7 @@ function renderizarTabela() {
                 <button class="btn btn-danger btn-sm" onclick="excluirCategoria(${categoria.id})">Excluir</button>
             </td>
         `;
-        
+
         tbody.appendChild(tr);
     });
 }
@@ -204,7 +204,7 @@ function mostrarPaginaSaidas(pagina) {
                 <td>${nomeCliente}</td>
                 <td>${nomeProduto}</td>
                 <td>${saida.quantidade}</td>
-                <td>${saida.preco}</td>
+                <td>${saida.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                 <td>${formatarData(saida.created_at)}</td>
                 <td>
                     <button class="btn btn-primary btn-sm me-2" onclick="editarSaida(${saida.id})">Editar</button>
@@ -314,12 +314,25 @@ function editarEntrada(id) {
 function excluirEntrada(entradaId) {
     // Insere o ID da entrada no campo oculto do modal
     const inputEntradaId = document.getElementById('idEntradaExcluir');
-    inputEntradaId.value = entradaId;
+    if (inputEntradaId) {
+        inputEntradaId.value = entradaId;
+    }
 
-    // Mostra o modal de exclusão usando Bootstrap
+    // Fecha quaisquer modais abertos
+    const modaisAbertos = document.querySelectorAll('.modal.show');
+    modaisAbertos.forEach(modal => {
+        const bootstrapModal = bootstrap.Modal.getInstance(modal);
+        if (bootstrapModal) bootstrapModal.hide();
+    });
+
+    // Remove backdrop existente, se houver
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+
+    // Exibe o modal de exclusão usando Bootstrap
     const modalExcluirEntrada = new bootstrap.Modal(document.getElementById('modalExcluirEntrada'));
     modalExcluirEntrada.show();
 }
+
 
 function editarSaida(id) {
     const saida = saidas.find(s => s.id === id); // Encontre a saída pelo ID
@@ -343,13 +356,25 @@ function editarSaida(id) {
 }
 
 function excluirSaida(saidaId) {
-    // Insere o ID da saída no campo oculto do modal
-    const inputSaidaId = document.getElementById('idSaidaExcluir');
-    inputSaidaId.value = saidaId;
+    // Fecha manualmente qualquer modal aberto
+    const modaisAbertos = document.querySelectorAll('.modal.show');
+    modaisAbertos.forEach(modal => {
+        const bootstrapModal = bootstrap.Modal.getInstance(modal);
+        if (bootstrapModal) bootstrapModal.hide();
+    });
 
-    // Mostra o modal de exclusão usando Bootstrap
-    const modalExcluirSaida = new bootstrap.Modal(document.getElementById('modalExcluirSaida'));
-    modalExcluirSaida.show();
+    // Remove backdrop existente, se houver
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
+
+    // Configura o modal de exclusão
+    const inputSaidaId = document.getElementById('idSaidaExcluir');
+    if (inputSaidaId) {
+        inputSaidaId.value = saidaId;
+    }
+
+    // Exibe o modal de exclusão
+    const modalExcluir = new bootstrap.Modal(document.getElementById('modalExcluirSaida'));
+    modalExcluir.show();
 }
 
 
@@ -395,8 +420,8 @@ function preencherTabelaProdutos(produtosPaginados) {
         let status = quantidade > 0 ? "Disponível" : "Indisponível";
 
         // Quebra a descrição em linhas automáticas
-        const descricaoQuebrada = descricao.length > MAX_CHARS_PER_LINE 
-            ? descricao.match(new RegExp(`.{1,${MAX_CHARS_PER_LINE}}`, 'g')).join('\n') 
+        const descricaoQuebrada = descricao.length > MAX_CHARS_PER_LINE
+            ? descricao.match(new RegExp(`.{1,${MAX_CHARS_PER_LINE}}`, 'g')).join('\n')
             : descricao;
 
         const dados = [id, nome, descricaoQuebrada, precoFormatado, quantidade, status];
@@ -781,16 +806,46 @@ function openModalEntrada(id) {
     new bootstrap.Modal(document.getElementById('modalEntrada')).show();
 }
 
+
+
+document.getElementById('saida-cadastro').addEventListener('submit', function (event) {
+    const inputPrecoSaida = document.getElementById('precoSaida');
+
+    let preco = inputPrecoSaida.value.replace(/[^\d,]/g, '');
+    preco = preco.replace(',', '.');
+
+
+    if (!preco || isNaN(parseFloat(preco))) {
+        preco = 0;
+    }
+
+
+    console.log("Preço enviado:", preco);
+
+
+    inputPrecoSaida.value = preco;
+});
+
+
+// Função para abrir o modal e definir o preço formatado
 function openModalSaida(id, preco) {
     const inputProdutoId = document.getElementById('produtoId2');
     const inputPrecoSaida = document.getElementById('precoSaida');
 
     inputProdutoId.value = id;
 
-    inputPrecoSaida.value = preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    // Verifica se o preço é maior que 0, senão define como 0 formatado
+    if (!preco || preco <= 0) {
+        inputPrecoSaida.value = "R$ 0,00";
+    } else {
+        // Formata o valor do preço como moeda (BRL) antes de exibir
+        inputPrecoSaida.value = preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
 
+    // Exibe o modal
     new bootstrap.Modal(document.getElementById('modalSaida')).show();
 }
+
 
 
 let ordemAtual = {

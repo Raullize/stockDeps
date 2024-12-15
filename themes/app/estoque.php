@@ -71,6 +71,10 @@ $this->layout("_theme");
                 <form id="produto-cadastro" name="produto-cadastro" method="post">
                     <div class="modal-body">
                         <div class="mb-3">
+                            <label for="codigoProdutoAdicionar" class="form-label">Código do Produto</label>
+                            <input name="codigo" type="text" class="form-control" id="codigoProdutoAdicionar" placeholder="Digite o código do produto">
+                        </div>
+                        <div class="mb-3">
                             <label for="nomeProdutoAdicionar" class="form-label">Nome</label>
                             <input name="nome" type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
                         </div>
@@ -96,6 +100,17 @@ $this->layout("_theme");
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                         <div class="mb-3">
+                            <label for="unidadeProdutoAdicionar" class="form-label">Unidade de Medida</label>
+                            <select name="unidade" class="form-control" id="unidadeProdutoAdicionar">
+                                <option value="kg">Kilograma (kg)</option>
+                                <option value="g">Grama (g)</option>
+                                <option value="l">Litro (l)</option>
+                                <option value="ml">Mililitro (ml)</option>
+                                <option value="pacote">Pacote</option>
+                                <option value="un">Unidade (un)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
                             <label for="fotoProdutoAdicionar" class="form-label">Foto do Produto</label>
                             <input type="file" id="fotoProdutoAdicionar" class="form-control" accept="image/*">
                         </div>
@@ -110,6 +125,67 @@ $this->layout("_theme");
     </div>
 
 
+    <!-- Modal Editar Produto -->
+    <div class="modal" id="modalEditar" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Produto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="produto-update" name="produto-update" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="idProdutoUpdate" id="idProdutoUpdate">
+                        <!-- Campo de Código do Produto -->
+                        <div class="mb-3">
+                            <label for="codigoProdutoEditar" class="form-label">Código do Produto</label>
+                            <input name="codigo" type="text" class="form-control" id="codigoProdutoEditar" placeholder="Digite o código do produto">
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomeProduto" class="form-label">Nome</label>
+                            <input name="nome" type="text" id="nomeProduto" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="descricaoProduto" class="form-label">Descrição</label>
+                            <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="categoriaProdutoEditar" class="form-label">Categoria</label>
+                            <select name="categoria" class="form-control" id="categoriaProdutoEditar">
+                                <!-- As categorias serão preenchidas dinamicamente -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="precoProduto" class="form-label">Preço</label>
+                            <input name="preco" type="text" class="form-control" id="precoProduto" placeholder="R$ 0,00" oninput="formatarPreco(this)">
+                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                        </div>
+                        <!-- Campo Unidade de Medida -->
+                        <div class="mb-3">
+                            <label for="unidadeProdutoEditar" class="form-label">Unidade de Medida</label>
+                            <select name="unidade" class="form-control" id="unidadeProdutoEditar">
+                                <option value="kg">Kilograma (kg)</option>
+                                <option value="g">Grama (g)</option>
+                                <option value="l">Litro (l)</option>
+                                <option value="ml">Mililitro (ml)</option>
+                                <option value="pacote">Pacote</option>
+                                <option value="un">Unidade (un)</option>
+                            </select>
+                        </div>
+                        <!-- Campo para adicionar foto do produto -->
+                        <div class="mb-3">
+                            <label for="fotoProduto" class="form-label">Foto do Produto</label>
+                            <input type="file" id="fotoProduto" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- Modal com a tabela de categorias -->
     <div class="modal fade" id="modalTabelaCategorias" tabindex="-1" aria-labelledby="modalTabelaCategoriasLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -185,7 +261,7 @@ $this->layout("_theme");
                 </div>
                 <form id="categoria-editar" name="categoria-editar" method="post">
                     <div class="modal-body">
-                            <input name="idCategoriaEditar" id="idCategoriaEditar" type="hidden">
+                        <input name="idCategoriaEditar" id="idCategoriaEditar" type="hidden">
                         <div class="mb-3">
                             <label for="nomeCategoriaEditar" class="form-label">Nome</label>
                             <input name="nome" type="text" class="form-control" id="nomeCategoriaEditar" placeholder="Digite o nome da categoria">
@@ -204,56 +280,8 @@ $this->layout("_theme");
         </div>
     </div>
 
-    <!-- Modal Editar Produto -->
-    <div class="modal" id="modalEditar" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar Produto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form id="produto-update" name="produto-update" method="post">
-                    <div class="modal-body">
-                        <input type="hidden" name="idProdutoUpdate" id="idProdutoUpdate">
-                        <div class="mb-3">
-                            <label for="nomeProduto" class="form-label">Nome</label>
-                            <input name="nome" type="text" id="nomeProduto" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="descricaoProduto" class="form-label">Descrição</label>
-                            <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="categoriaProdutoEditar" class="form-label">Categoria</label>
-                            <select name="categoria" class="form-control" id="categoriaProdutoEditar">
-                                <!-- As categorias serão preenchidas dinamicamente -->
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="precoProduto" class="form-label">Preço</label>
-                            <input
-                                name="preco"
-                                type="text"
-                                class="form-control"
-                                id="precoProduto"
-                                placeholder="R$ 0,00"
-                                oninput="formatarPreco(this)">
-                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
-                        </div>
-                        <!-- Campo para adicionar foto do produto -->
-                        <div class="mb-3">
-                            <label for="fotoProduto" class="form-label">Foto do Produto</label>
-                            <input type="file" id="fotoProduto" class="form-control" accept="image/*">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+
 
     <!-- Modal Excluir Categoria -->
     <div class="modal fade" id="modalExcluirCategoria" tabindex="-1" aria-labelledby="modalExcluirCategoriaLabel" aria-hidden="true">
@@ -474,11 +502,11 @@ $this->layout("_theme");
                 </div>
                 <div class="modal-body">
                     <form id="entrada-editar" method="post">
-                            <input name="idEntradaEditar" id="idEntradaEditar" type="hidden">
+                        <input name="idEntradaEditar" id="idEntradaEditar" type="hidden">
                         <!-- Nome do Produto -->
                         <div class="mb-3">
                             <label for="entradaProduto" class="form-label">Produto</label>
-                            <input  name="nome" type="text" class="form-control" id="entradaProduto" readonly>
+                            <input name="nome" type="text" class="form-control" id="entradaProduto" readonly>
                         </div>
 
                         <!-- Quantidade -->
