@@ -22,11 +22,13 @@ CREATE TABLE `produtos` (
     `preco` float NOT NULL,
     `quantidade` int(11) NOT NULL DEFAULT 0,
     `imagem` varchar(255) DEFAULT NULL,
+    `unidade_medida` varchar(50) NOT NULL,
+    `codigo_produto` varchar(50) NOT NULL, -- UNIQUE
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
     KEY `fk_produtos_categorias_idx` (`idCategoria`),
-    CONSTRAINT `fk_produtos_categorias` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_produtos_categorias` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de clientes
@@ -70,9 +72,9 @@ CREATE TABLE `entradas` (
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
     KEY `fk_entradas_fornecedor_idx` (`idFornecedor`),
-    CONSTRAINT `fk_entradas_fornecedor` FOREIGN KEY (`idFornecedor`) REFERENCES `fornecedores` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    CONSTRAINT `fk_entradas_fornecedor` FOREIGN KEY (`idFornecedor`) REFERENCES `fornecedores` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
     KEY `fk_entradas_produtos_idx` (`idProdutos`),
-    CONSTRAINT `fk_entradas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_entradas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de saídas
@@ -89,5 +91,5 @@ CREATE TABLE `saidas` (
     KEY `fk_saidas_clientes_idx` (`idClientes`),
     CONSTRAINT `fk_saidas_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,  -- Ajuste para permitir NULL
     KEY `fk_saidas_produtos_idx` (`idProdutos`),
-    CONSTRAINT `fk_saidas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT `fk_saidas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

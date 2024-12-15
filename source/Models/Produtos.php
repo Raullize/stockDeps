@@ -11,13 +11,19 @@ class Produtos
     private $nome;
     private $descricao;
     private $preco;
+    private $imagem;
+    private $unidade_medida;
+    private $codigo_produto;
 
     public function __construct(
         int $id = NULL,
         int $idCategoria = NULL,
         string $nome = NULL,
         string $descricao = NULL,
-        float $preco = NULL
+        float $preco = NULL,
+        string $imagem = NULL,
+        string $unidade_medida = NULL,
+        int $codigo_produto = NULL
     )
     {
         $this->id = $id;
@@ -25,6 +31,9 @@ class Produtos
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->preco = $preco;
+        $this->imagem = $imagem;
+        $this->unidade_medida = $unidade_medida;
+        $this->codigo_produto = $codigo_produto;
     }
 
     /**
@@ -107,7 +116,66 @@ class Produtos
         $this->descricao = $descricao;
     }
 
-   
+    /**
+     * Get the value of imagem
+     */ 
+    public function getImagem()
+    {
+        return $this->imagem;
+    }
+
+    /**
+     * Set the value of imagem
+     *
+     * @return  self
+     */ 
+    public function setImagem($imagem)
+    {
+        $this->imagem = $imagem;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of unidade_medida
+     */ 
+    public function getUnidade_medida()
+    {
+        return $this->unidade_medida;
+    }
+
+    /**
+     * Set the value of unidade_medida
+     *
+     * @return  self
+     */ 
+    public function setUnidade_medida($unidade_medida)
+    {
+        $this->unidade_medida = $unidade_medida;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of codigo_produto
+     */ 
+    public function getCodigo_produto()
+    {
+        return $this->codigo_produto;
+    }
+
+    /**
+     * Set the value of codigo_produto
+     *
+     * @return  self
+     */ 
+    public function setCodigo_produto($codigo_produto)
+    {
+        $this->codigo_produto = $codigo_produto;
+
+        return $this;
+    }
+
     public function selectAll ()
     {
         $query = "SELECT * FROM produtos";

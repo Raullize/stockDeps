@@ -89,6 +89,8 @@ class App
 
 
 
+    
+
     /* CRUD COMPLETO PRODUTO */
 
     public function estoquePc(?array $data): void
@@ -134,7 +136,10 @@ class App
                 $data["categoria"],
                 $data["nome"],
                 $data["descricao"],
-                $precoFloat
+                $precoFloat,
+                NULL,
+                NULL,
+                NULL
             );
 
             if ($produto->insert()) {

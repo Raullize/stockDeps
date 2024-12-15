@@ -1,12 +1,12 @@
 {
-  "name": "elano-tavares/valen",
-  "description": "Valen - Gerenciador de Arquivos",
+  "name": "elano-tavares/stockdeps",
+  "description": "stockDeps",
   "minimum-stability": "stable",
   "authors": [
     {
       "name": "Elano Tavares",
       "email": "elano.tavares.ncs@gmail.com",
-      "homepage": "https://www.ifsul.edu.br",
+      "homepage": "https://depsmodels.com",
       "role": "Developer"
     }
   ],
