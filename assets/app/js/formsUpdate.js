@@ -40,11 +40,11 @@ form_pu.on("submit", function(e) {
     });
 });
 
-const form_ee = $("#entrada-editar");
-form_ee.on("submit", function(e) {
+const form_eu = $("#entrada-editar");
+form_eu.on("submit", function(e) {
     e.preventDefault();
 
-    const serializedData = form_ee.serialize();
+    const serializedData = form_eu.serialize();
     
     $.ajax({
         type: "POST",
@@ -82,11 +82,11 @@ form_ee.on("submit", function(e) {
     });
 });
 
-const form_se = $("#categoria-editar");
-form_se.on("submit", function(e) {
+const form_su = $("#saida-editar");
+form_su.on("submit", function(e) {
     e.preventDefault();
 
-    const serializedData = form_se.serialize();
+    const serializedData = form_su.serialize();
     
     $.ajax({
         type: "POST",

@@ -123,11 +123,11 @@ form_ed.on("submit", function(e) {
     });
 });
 
-const form_eu = $("#categoria-excluir");
-form_eu.on("submit", function(e) {
+const form_sd = $("#saida-excluir");
+form_sd.on("submit", function(e) {
     e.preventDefault();
 
-    const serializedData = form_eu.serialize();
+    const serializedData = form_sd.serialize();
     
     $.ajax({
         type: "POST",
