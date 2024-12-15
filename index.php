@@ -82,6 +82,8 @@ $route->post("/update-clientes", "App:updateClientes");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE FORNECEDORES MODO:POST */
 $route->post("/cadastro-fornecedores", "App:cadastroFornecedores");
+$route->post("/deletar-fornecedores", "App:deleteFornecedores");
+$route->post("/update-fornecedores", "App:updateFornecedores");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AOS RELATORIOS MODO:GET*/
 

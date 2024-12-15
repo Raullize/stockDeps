@@ -181,30 +181,23 @@ document.getElementById("formEditarFornecedor").addEventListener("submit", async
     const cnpj = document.getElementById("editarFornecedorCnpj").value;
     const email = document.getElementById("editarFornecedorEmail").value;
     const telefone = document.getElementById("editarFornecedorTelefone").value;
-    const cidade = document.getElementById("editarFornecedorCidade").value;
-    const bairro = document.getElementById("editarFornecedorBairro").value;
-    const uf = document.getElementById("editarFornecedorUf").value;
+    const municipio = document.getElementById("editarFornecedorMunicipio").value;
+    const cep = document.getElementById("editarFornecedorCep").value;
+    const uf = document.getElementById("editarUfFornecedor").value;
 
-    const fornecedorAtualizado = { id, nome, cnpj, email, telefone, cidade, bairro, uf };
-
-    const response = await fetch(`${BASE_URL}/atualizarFornecedor`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(fornecedorAtualizado)
-    });
-
-    if (response.ok) {
-        alert('Fornecedor atualizado com sucesso!');
-        fecharModal();
-        fetchFornecedores();
-    } else {
-        alert('Erro ao atualizar fornecedor.');
-    }
+    const fornecedorAtualizado = { id, nome, cnpj, email, telefone, municipio, cep, uf };
 });
 
-function openModalExcluir(){
+function openModalExcluir(fornecedorId) {
+    // Insere o ID do fornecedor no campo oculto do modal
+    const inputFornecedorId = document.getElementById('idFornecedorExcluir');
+    inputFornecedorId.value = fornecedorId;
+
+    // Mostra o modal
     new bootstrap.Modal(document.getElementById('modalExcluir')).show();
 }
+
+
 function abrirModalHistorico(id) {
     const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoFornecedor"));
 

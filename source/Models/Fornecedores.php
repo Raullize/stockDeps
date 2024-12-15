@@ -306,6 +306,54 @@ public function insert()
     return true;
 }
 
+public function delete($id)
+    {
+        $query = "DELETE FROM fornecedores WHERE id = :id";
+
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(":id", $id);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function update($id, $nome, $cnpj, $email, $telefone, $endereco, $municipio, $cep, $uf)
+    {
+        // Query de atualização
+        $query = "UPDATE fornecedores 
+                SET nome = :nome, cnpj = :cnpj, email = :email, telefone = :telefone, endereco = :endereco, municipio = :municipio, cep = :cep, uf = :uf 
+                WHERE id = :id";
+
+        // Prepara a conexão
+        $stmt = Connect::getInstance()->prepare($query);
+
+        // Liga os parâmetros aos valores
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":nome", $nome);
+        $stmt->bindParam(":cnpj", $cnpj);
+        $stmt->bindParam(":email",$email);
+        $stmt->bindParam(":telefone",$telefone);
+        $stmt->bindParam(":endereco",$endereco);
+        $stmt->bindParam(":municipio",$municipio);
+        $stmt->bindParam(":cep",$cep);
+        $stmt->bindParam(":uf",$uf);
+
+        // Executa a query
+        $stmt->execute();
+
+        // Retorna se houve alterações
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 public function selectAll ()
 {
     $query = "SELECT * FROM fornecedores";

@@ -127,6 +127,8 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
+
+    <!-- Modal Editar -->
     <div class="modal fade" id="modalEditarFornecedor" tabindex="-1" aria-labelledby="modalEditarFornecedorLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -134,35 +136,35 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarFornecedorLabel">Editar Fornecedor</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="formEditarFornecedor" class="p-3">
-                    <input type="hidden" id="editarFornecedorId">
+                <form id="formEditarFornecedor" name="formEditarFornecedor" method="post" class="p-3">
+                        <input name="idFornecedorEditar" type="hidden" id="editarFornecedorId">
                     <div class="mb-3">
                         <label for="editarFornecedorNome" class="form-label">Nome</label>
-                        <input type="text" id="editarFornecedorNome" class="form-control">
+                        <input name="nome" type="text" id="editarFornecedorNome" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="editarFornecedorCnpj" class="form-label">CNPJ</label>
-                        <input type="text" id="editarFornecedorCnpj" class="form-control">
+                        <input name="cnpj" type="text" id="editarFornecedorCnpj" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="editarFornecedorEmail" class="form-label">Email</label>
-                        <input type="email" id="editarFornecedorEmail" class="form-control">
+                        <input name="email" type="email" id="editarFornecedorEmail" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="editarFornecedorTelefone" class="form-label">Telefone</label>
-                        <input type="text" id="editarFornecedorTelefone" class="form-control">
+                        <input name="telefone" type="text" id="editarFornecedorTelefone" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="editarFornecedorEndereco" class="form-label">Endereco</label>
-                        <input type="text" id="editarFornecedorEndereco" class="form-control">
+                        <input name="endereco" type="text" id="editarFornecedorEndereco" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="editarFornecedorMunicipio" class="form-label">Municipio</label>
-                        <input type="text" id="editarFornecedorMunicipio" class="form-control">
+                        <input name="municipio" type="text" id="editarFornecedorMunicipio" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="editarFornecedorCep" class="form-label">CEP</label>
-                        <input type="text" id="editarFornecedorCep" class="form-control">
+                        <input name="cep" type="text" id="editarFornecedorCep" class="form-control">
                     </div>
                     <div class="mb-3">
                         <label for="editarUfFornecedor" class="form-label">UF</label>
@@ -197,26 +199,27 @@ $this->layout("_theme");
                             <option value="TO">Tocantins (TO)</option>
                         </select>
                     </div>
-                </form>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-primary" id="btnSalvarEdicao">Editar</button>
+                    <button type="submit" class="btn btn-primary" id="btnSalvarEdicao">Editar</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
+
     <!-- Modal Excluir -->
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirLabel">Excluir Produto</h5>
+                    <h5 class="modal-title" id="modalExcluirLabel">Excluir Fornecedor</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
-                <form id="produto-excluir" name="produto-excluir" method="post">
+                <form id="fornecedor-excluir" name="fornecedor-excluir" method="post">
                     <div class="modal-body">
                         <p>Tem certeza de que deseja excluir este fornecedor?</p>
-                        <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
+                        <input type="hidden" id="idFornecedorExcluir" name="idFornecedorExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -226,6 +229,7 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
+
     <!-- Modal Histórico -->
     <div class="modal fade" id="modalHistoricoFornecedor" tabindex="-1" aria-labelledby="modalHistoricoFornecedorLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -246,6 +250,8 @@ $this->layout("_theme");
 
     <script src="<?= url('assets/app/js/fornecedores.js') ?>" defer></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 </body>
 

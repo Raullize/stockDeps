@@ -691,6 +691,88 @@ class App
         echo $this->view->render("fornecedores");
     }
 
+    public function deleteFornecedores(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $fornecedor = new Fornecedores();
+            $fornecedorDeletado = $fornecedor->delete($data["idFornecedorExcluir"]);
+
+            if ($fornecedorDeletado) {
+                $json = [
+                    "fornecedores" => $fornecedor->selectAll(),
+                    "message" => "Fornecedor deletado com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Fornecedor não deletado!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+    public function updateFornecedores(?array $data): void
+    {
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para atualizar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $fornecedor = new Fornecedores();
+            $fornecedorAtualizado = $fornecedor->update(
+                $data["idFornecedorEditar"],
+                $data["nome"],
+                $data["cnpj"],
+                $data["email"],
+                $data["telefone"],
+                $data["endereco"],
+                $data["municipio"],
+                $data["cep"],
+                $data["uf"]
+            );
+                
+
+
+            if ($fornecedorAtualizado) {
+                $json = [
+                    "fornecedor" => $fornecedor->selectAll(),
+                    "message" => "Fornecedor atualizado com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Fornecedor não atualizado!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
 
 
 
