@@ -262,7 +262,7 @@ class App
 
 
 
-    /*------------ CR CATEGORIA, falta UD ------------*/
+    /*------------ CRUD CATEGORIA ------------*/
 
     public function estoqueCc(?array $data): void
     {
@@ -315,6 +315,83 @@ class App
         }
     }
 
+    public function estoqueCd(?array $data): void
+    {
+
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $categoria = new Categorias();
+            $categoriaDeletada = $categoria->delete($data["idCategoriaExcluir"]);
+
+            if ($categoriaDeletada) {
+
+                $json = [
+                    "categorias" => $categoria->selectAll(),
+                    "message" => "Categoria deletada com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Categoria não deletada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
+
+    public function estoqueCu(?array $data): void
+    {
+
+        if (!empty($data)) {
+
+            if (in_array("", $data)) {
+                $json = [
+                    "message" => "Informe todos os campos para cadastrar!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            $categoria = new Categorias();
+            $categoriaAtualizar = $categoria->update(
+                $data["idCategoriaEditar"],
+                $data["nome"],
+                $data["descricao"]
+            );
+
+            if ($categoriaAtualizar) {
+
+                $json = [
+                    "categorias" => $categoria->selectAll(),
+                    "message" => "Categoria atualizada com sucesso!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Categoria não atualizada!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
+        }
+    }
 
 
 
@@ -631,7 +708,7 @@ class App
 
 
 
-    /*------------ CR FORNECEDORES, falta UD ------------*/
+    /*------------ CRUD FORNECEDORES ------------*/
 
     public function cadastroFornecedores(?array $data): void
     {

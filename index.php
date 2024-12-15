@@ -55,25 +55,20 @@ $route->post("/processarXmlNota", "App:processarXmlNota");
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE ESTOQUE MODO:POST */
 
 $route->post("/estoque-pc", "App:estoquePc");
-$route->post("/estoque-cc", "App:estoqueCc");
-$route->post("/estoque-ec", "App:estoqueEc");
-$route->post("/estoque-sc", "App:estoqueSc");
-
 $route->post("/estoque-pd", "App:estoquePd");
-
 $route->post("/estoque-pu", "App:estoquePu");
-/*
-$route->post("/estoque-cc", "App:estoqueCc");
-$route->post("/estoque-ec", "App:estoqueEc");
-$route->post("/estoque-sc", "App:estoqueSc");
-*/
 
-/* ATUALIZAR TODAS ABAIXO */
-$route->post("/categorias-deletar", "App:categoriasDeletar");
-$route->post("/estoque-entrada", "App:estoqueEntrada");
-$route->post("/estoque-saidas", "App:estoqueSaidas");
-$route->post("/estoque-deletar", "App:estoqueDeletar");
-$route->post("/estoque-atualizar", "App:estoqueAtualizar");
+$route->post("/estoque-cc", "App:estoqueCc");
+$route->post("/estoque-cd", "App:estoqueCd");
+$route->post("/estoque-cu", "App:estoqueCu");
+
+$route->post("/estoque-ec", "App:estoqueEc");
+
+
+
+$route->post("/estoque-sc", "App:estoqueSc");
+
+
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE CLIENTES MODO:POST */
 $route->post("/cadastro-clientes", "App:cadastroClientes");

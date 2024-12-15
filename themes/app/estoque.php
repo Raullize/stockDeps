@@ -185,6 +185,7 @@ $this->layout("_theme");
                 </div>
                 <form id="categoria-editar" name="categoria-editar" method="post">
                     <div class="modal-body">
+                            <input name="idCategoriaEditar" id="idCategoriaEditar" type="hidden">
                         <div class="mb-3">
                             <label for="nomeCategoriaEditar" class="form-label">Nome</label>
                             <input name="nome" type="text" class="form-control" id="nomeCategoriaEditar" placeholder="Digite o nome da categoria">

@@ -118,7 +118,8 @@ $this->layout("_theme");
                 </div>
                 <form id="cliente-excluir" name="cliente-excluir" method="post">
                     <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir este cliente?</p>
+                        <p>Tem certeza de que deseja excluir este cliente?  
+                        Ao confirmar, todas as vendas, transações e outros registros relacionados a ele também serão removidos.</p>
                         <input type="hidden" id="idClienteExcluir" name="idClienteExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
                     <div class="modal-footer">

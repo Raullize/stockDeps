@@ -218,7 +218,8 @@ $this->layout("_theme");
                 </div>
                 <form id="fornecedor-excluir" name="fornecedor-excluir" method="post">
                     <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir este fornecedor?</p>
+                        <p>Tem certeza de que deseja excluir este fornecedor?  
+                        Ao confirmar, todas as entradas, compras e outros registros relacionados a ele também serão removidos.</p>
                         <input type="hidden" id="idFornecedorExcluir" name="idFornecedorExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
                     <div class="modal-footer">

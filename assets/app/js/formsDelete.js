@@ -43,6 +43,46 @@ form_pd.on("submit", function(e) {
     });
 });
 
+const form_cgd = $("#categoria-excluir");
+form_cgd.on("submit", function(e) {
+    e.preventDefault();
+
+    const serializedData = form_cgd.serialize();
+    
+    $.ajax({
+        type: "POST",
+        url: `${BASE_URL}/estoque-cd`,
+        data: serializedData,
+        dataType: "json",
+        success: function(response) {
+
+            if (response.type == 'error') {
+                console.log(response);
+                exibirMensagemTemporariaErro(response.message);
+                return;
+            }
+
+            if (response.type == 'warning') {
+                console.log(response);
+                exibirMensagemTemporariaAviso(response.message);
+                return;
+            }
+
+            if (response.type == 'success') {
+                exibirMensagemTemporariaSucesso(response.message);
+
+                preencherTabelaEntradas(response.entradas, response.produtos);
+                preencherTabelaSaidas(response.saidas, response.produtos);
+                preencherTabelaProdutos(response.produtos);
+                produtos = response.produtos;
+                mostrarPagina(paginaAtual);
+                return;
+            }
+
+        }
+    });
+});
+
 const form_cd = $("#cliente-excluir");
 form_cd.on("submit", function(e) {
     e.preventDefault();

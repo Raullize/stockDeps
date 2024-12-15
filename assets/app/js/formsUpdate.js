@@ -40,6 +40,48 @@ form_pu.on("submit", function(e) {
     });
 });
 
+const form_cgu = $("#categoria-editar");
+form_cgu.on("submit", function(e) {
+    e.preventDefault();
+
+    const serializedData = form_cgu.serialize();
+    
+    $.ajax({
+        type: "POST",
+        url: `${BASE_URL}/estoque-cu`,
+        data: serializedData,
+        dataType: "json",
+        success: function(response) {
+
+            if (response.type == 'error') {
+                console.log(response);
+                exibirMensagemTemporariaErro(response.message);
+                return;
+            }
+
+            if (response.type == 'warning') {
+                console.log(response);
+                exibirMensagemTemporariaAviso(response.message);
+                return;
+            }
+
+            if (response.type == 'success') {
+                console.log(response);
+
+                exibirMensagemTemporariaSucesso(response.message);
+
+                preencherTabelaEntradas(response.entradas, response.produtos);
+                preencherTabelaSaidas(response.saidas, response.produtos);
+                preencherTabelaProdutos(response.produtos);
+                produtos = response.produtos;
+                mostrarPagina(paginaAtual);
+                return;
+            }
+
+        }
+    });
+});
+
 const form_cu = $("#cliente-update");
 form_cu.on("submit", function(e) {
     e.preventDefault();

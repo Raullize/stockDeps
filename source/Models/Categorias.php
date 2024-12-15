@@ -136,25 +136,46 @@ public function findById($id) : bool
         return false;
     }
 }
-public function delete($id) : bool
-{
-    try {
+public function delete($id)
+    {
         $query = "DELETE FROM categorias WHERE id = :id";
+
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":id", $id);
 
-        // Executa a query e verifica se foi bem-sucedida
-        if ($stmt->execute()) {
-            return true; // Sucesso
-        } else {
-            return false; // Falha
-        }
+        $stmt->execute();
 
-    } catch (PDOException $e) {
-        // Captura a exceção e faz log ou trata o erro
-        error_log("Erro ao inserir categoria: " . $e->getMessage());
-        return false;
+        if ($stmt->rowCount() == 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
-}
+
+    public function update($id, $nome, $descricao)
+    {
+        // Query de atualização
+        $query = "UPDATE categorias 
+                SET nome = :nome, descricao = :descricao 
+                WHERE id = :id";
+
+        // Prepara a conexão
+        $stmt = Connect::getInstance()->prepare($query);
+
+        // Liga os parâmetros aos valores
+        $stmt->bindParam(":id", $id);
+        $stmt->bindParam(":nome", $nome);
+        $stmt->bindParam(":descricao", $descricao);
+
+        // Executa a query
+        $stmt->execute();
+
+        // Retorna se houve alterações
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

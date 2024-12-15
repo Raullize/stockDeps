@@ -116,76 +116,23 @@ document.getElementById('categoria-cadastro').addEventListener('submit', async f
 function editarCategoria(id) {
     const categoria = categorias.find(cat => cat.id === id);
     
+    document.getElementById('idCategoriaEditar').value = categoria.id;
     document.getElementById('nomeCategoriaEditar').value = categoria.nome;
     document.getElementById('descricaoCategoriaEditar').value = categoria.descricao;
     
-    const formEditar = document.getElementById('categoria-editar');
-    formEditar.onsubmit = async function(event) {
-        event.preventDefault();
-        
-        const categoriaAtualizada = {
-            nome: document.getElementById('nomeCategoriaEditar').value,
-            descricao: document.getElementById('descricaoCategoriaEditar').value
-        };
-
-        try {
-            const response = await fetch(`${BASE_URL}/updateCategoria/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(categoriaAtualizada)
-            });
-
-            if (response.ok) {
-                categoria.nome = categoriaAtualizada.nome;
-                categoria.descricao = categoriaAtualizada.descricao;
-                renderizarTabela();
-                const modal = bootstrap.Modal.getInstance(document.getElementById('modalEditarCategoria'));
-                modal.hide();
-            } else {
-                console.error("Erro ao editar categoria");
-            }
-        } catch (error) {
-            console.error("Erro ao editar categoria:", error);
-        }
-    };
-
     const modalEditar = new bootstrap.Modal(document.getElementById('modalEditarCategoria'));
     modalEditar.show();
 }
 
-let categoriaIdParaExcluir = null; // Variável global para armazenar o ID da categoria a ser excluída
-
 // Função para abrir o modal de confirmação de exclusão
 function excluirCategoria(id) {
-    categoriaIdParaExcluir = id; // Armazena o ID da categoria a ser excluída
-    const modalExcluir = new bootstrap.Modal(document.getElementById('modalExcluirCategoria'));
-    modalExcluir.show();
+    // Insere o ID da categoria no campo oculto do modal
+    const inputCategoriaId = document.getElementById('idCategoriaExcluir');
+    inputCategoriaId.value = id;
+
+    // Mostra o modal de exclusão
+    new bootstrap.Modal(document.getElementById('modalExcluirCategoria')).show();
 }
-
-// Função para confirmar a exclusão ao submeter o formulário
-document.getElementById('categoria-excluir').addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    try {
-        const response = await fetch(`${BASE_URL}/deleteCategoria/${categoriaIdParaExcluir}`, {
-            method: 'DELETE'
-        });
-
-        if (response.ok) {
-            categorias = categorias.filter(cat => cat.id !== categoriaIdParaExcluir); // Remove a categoria da lista
-            renderizarTabela();
-            const modal = bootstrap.Modal.getInstance(document.getElementById('modalExcluirCategoria'));
-            modal.hide();
-        } else {
-            console.error("Erro ao excluir categoria");
-        }
-    } catch (error) {
-        console.error("Erro ao excluir categoria:", error);
-    }
-});
-
 
 function renderizarTabela() {
     const tbody = document.getElementById('corpoTabelaCategorias');
