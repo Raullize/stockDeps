@@ -580,7 +580,7 @@ $this->layout("_theme");
                 <div class="modal-body">
                     <form id="saida-editar" method="post">
                         <!-- Nome do Produto (Somente leitura) -->
-                            <input type="hidden" id="idEditarSaida">
+                            <input type="hidden" name="idEditarSaida" id="idEditarSaida">
                         <div class="mb-3">
                             <label for="saidaProduto" class="form-label">Produto</label>
                             <input type="text" class="form-control" id="saidaProduto" readonly> <!-- readonly torna o campo não editável -->

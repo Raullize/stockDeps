@@ -340,6 +340,7 @@ function editarSaida(id) {
 
     if (saida) {
         // Preencher os campos no modal
+        document.getElementById('idEditarSaida').value = saida.id;
         document.getElementById('saidaProduto').value = produto.nome; // Nome do produto (não editável)
         document.getElementById('saidaQuantidade').value = saida.quantidade; // Quantidade
         document.getElementById('saidaPreco').value = saida.preco; // Preço

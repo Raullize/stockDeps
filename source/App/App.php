@@ -562,7 +562,7 @@ class App
 
 
 
-    /*------------ CR SAÍDAS, falta UD ------------*/
+    /*------------ CRUD SAÍDAS ------------*/
 
     public function estoqueSc(?array $data): void
     {
@@ -723,28 +723,25 @@ class App
             $precoFloat = (float)$newpreco;
 
             $saida = new Saidas();
-            $saidaUpdate = $saida->update();
+            $saidaUpdate = $saida->update(
+                $data["idEditarSaida"], 
+        $data["quantidade"],
+             $data["preco"]);
 
-            if ($saidas->insert()) {
-
-                $produto->subtraiQuantidadeProdutos($data["produtoId2"], $data["quantidade"]);
+            if ($saidaUpdate) {
 
                 $json = [
-                    "saidas" => $saidas->selectAll(),
-                    "produtos" => $produto->selectAll(),
-                    "nome" => $data["nome"],
-                    "idCliente" => $idCliente,
-                    "idProdutos" => $data["produtoId2"],
+                    "saidas" => $saida->selectAll(),
                     "quantidade" => $data["quantidade"],
                     "preco" => $data["preco"],
-                    "message" => "Saída cadastrada com sucesso!",
+                    "message" => "Saída atualizada com sucesso!",
                     "type" => "success"
                 ];
                 echo json_encode($json);
                 return;
             } else {
                 $json = [
-                    "message" => "Saída não cadastrada!",
+                    "message" => "Saída não atualizada!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
