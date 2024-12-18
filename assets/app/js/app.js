@@ -193,12 +193,14 @@ function mostrarPaginaSaidas(pagina) {
     const tabela = document.querySelector("#tabelaSaidas tbody");
     tabela.innerHTML = ''; // Limpa a tabela
 
-    saidasPagina.forEach(saida => {
-        // Buscar cliente e produto
-        const nomeCliente = clientes.find(c => c.id === saida.idClientes)?.nome || 'Cliente não encontrado';
-        const nomeProduto = produtos.find(p => p.id === saida.idProdutos)?.nome || 'Produto não encontrado';
+    
 
-        const row = `
+    saidasPagina.forEach(saida => {
+        const nomeProduto = produtos.find(p => p.id === saida.idProdutos)?.nome || 'Produto não encontrado';
+        // Buscar cliente e produto
+        if (clientes) {
+            const nomeCliente = clientes.find(c => c.id === saida.idClientes)?.nome || 'Cliente não encontrado';
+            const row = `
             <tr>
                 <td>${saida.id}</td>
                 <td>${nomeCliente}</td>
@@ -211,7 +213,25 @@ function mostrarPaginaSaidas(pagina) {
                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
                 </td>
             </tr>`;
-        tabela.insertAdjacentHTML('beforeend', row);
+            tabela.insertAdjacentHTML('beforeend', row);
+
+        } else {
+            const nomeCliente = 'Cliente não encontrado';
+            const row = `
+            <tr>
+                <td>${saida.id}</td>
+                <td>${nomeCliente}</td>
+                <td>${nomeProduto}</td>
+                <td>${saida.quantidade}</td>
+                <td>${saida.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                <td>${formatarData(saida.created_at)}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm me-2" onclick="editarSaida(${saida.id})">Editar</button>
+                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
+                </td>
+            </tr>`;
+            tabela.insertAdjacentHTML('beforeend', row);
+        }
     });
 
     configurarPaginacao(saidasFiltradas.length, mostrarPaginaSaidas, '#paginacaoSaidas', pagina);
