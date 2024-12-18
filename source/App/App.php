@@ -1365,81 +1365,87 @@ class App
     }
     
     public function cadastrarNota(array $fornecedorData, array $produtosData): void
-    {
-        $pdo = \Source\Core\Connect::getInstance();
-    
-        try {
-            $pdo->beginTransaction();
-    
-            // Verifica se o fornecedor já existe
-            $queryFornecedor = "SELECT id FROM fornecedores WHERE cnpj = :cnpj LIMIT 1";
-            $stmtFornecedor = $pdo->prepare($queryFornecedor);
-            $stmtFornecedor->execute(['cnpj' => $fornecedorData['CNPJ']]);
-            $fornecedorId = $stmtFornecedor->fetchColumn();
-    
-            if (!$fornecedorId) {
-                $queryInsertFornecedor = "
-                INSERT INTO fornecedores (nome, cnpj, telefone, endereco, municipio, cep, uf, created_at) 
-                VALUES (:nome, :cnpj, :telefone, :endereco, :municipio, :cep, :uf, NOW())
-                ";
-                $stmtInsertFornecedor = $pdo->prepare($queryInsertFornecedor);
-                $stmtInsertFornecedor->execute([
-                    'nome' => $fornecedorData['Nome'],
-                    'cnpj' => $fornecedorData['CNPJ'],
-                    'telefone' => $fornecedorData['Telefone'],
-                    'endereco' => $fornecedorData['Endereco'],
-                    'municipio' => $fornecedorData['Municipio'],
-                    'cep' => $fornecedorData['CEP'],
-                    'uf' => $fornecedorData['UF'],
-                ]);
-                $fornecedorId = $pdo->lastInsertId();
-            }
-    
-            // Processar produtos
-            foreach ($produtosData as $produto) {
-                $queryProduto = "SELECT id FROM produtos WHERE codigo_produto = :codigo_produto LIMIT 1";
-                $stmtProduto = $pdo->prepare($queryProduto);
-                $stmtProduto->execute(['codigo_produto' => $produto['codigo_produto']]);
-                $produtoId = $stmtProduto->fetchColumn();
-    
-                if (!$produtoId) {
-                    $queryInsertProduto = "
-                    INSERT INTO produtos (idCategoria, nome, descricao, preco, quantidade, codigo_produto, unidade_medida, created_at)
-                    VALUES (:idCategoria, :nome, :descricao, :preco, :quantidade, :codigo_produto, :unidade_medida, NOW())
-                    ";
-                    $stmtInsertProduto = $pdo->prepare($queryInsertProduto);
-                    $stmtInsertProduto->execute([
-                        'idCategoria' => 1,
-                        'nome' => $produto['nome'],
-                        'descricao' => $produto['descricao'],
-                        'preco' => 0, // Insere o preço como 0 no banco
-                        'quantidade' => $produto['quantidade'],
-                        'codigo_produto' => $produto['codigo_produto'],
-                        'unidade_medida' => $produto['unidade_medida'],
-                    ]);
-                    $produtoId = $pdo->lastInsertId();
-                }
-    
-                $queryInsertEntrada = "
-                INSERT INTO entradas (idFornecedor, idProdutos, quantidade, preco, created_at)
-                VALUES (:idFornecedor, :idProdutos, :quantidade, :preco, NOW())
-                ";
-                $stmtInsertEntrada = $pdo->prepare($queryInsertEntrada);
-                $stmtInsertEntrada->execute([
-                    'idFornecedor' => $fornecedorId,
-                    'idProdutos' => $produtoId,
-                    'quantidade' => $produto['quantidade'],
-                    'preco' => 0, // Sobrescreve o preço da entrada para 0
-                ]);
-            }
-    
-            $pdo->commit();
-        } catch (\Exception $e) {
-            $pdo->rollBack();
-            header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(['error' => "Erro ao processar a nota: " . $e->getMessage()]);
+{
+    $pdo = \Source\Core\Connect::getInstance();
+
+    try {
+        $pdo->beginTransaction();
+
+        // Verifica se o fornecedor já existe
+        $queryFornecedor = "SELECT id FROM fornecedores WHERE cnpj = :cnpj LIMIT 1";
+        $stmtFornecedor = $pdo->prepare($queryFornecedor);
+        $stmtFornecedor->execute(['cnpj' => $fornecedorData['CNPJ']]);
+        $fornecedorId = $stmtFornecedor->fetchColumn();
+
+        if (!$fornecedorId) {
+            $queryInsertFornecedor = "
+            INSERT INTO fornecedores (nome, cnpj, telefone, endereco, municipio, cep, uf, created_at) 
+            VALUES (:nome, :cnpj, :telefone, :endereco, :municipio, :cep, :uf, NOW())
+            ";
+            $stmtInsertFornecedor = $pdo->prepare($queryInsertFornecedor);
+            $stmtInsertFornecedor->execute([
+                'nome' => $fornecedorData['Nome'],
+                'cnpj' => $fornecedorData['CNPJ'],
+                'telefone' => $fornecedorData['Telefone'],
+                'endereco' => $fornecedorData['Endereco'],
+                'municipio' => $fornecedorData['Municipio'],
+                'cep' => $fornecedorData['CEP'],
+                'uf' => $fornecedorData['UF'],
+            ]);
+            $fornecedorId = $pdo->lastInsertId();
         }
+
+        // Processar produtos
+        foreach ($produtosData as $produto) {
+            $queryProduto = "SELECT id FROM produtos WHERE codigo_produto = :codigo_produto LIMIT 1";
+            $stmtProduto = $pdo->prepare($queryProduto);
+            $stmtProduto->execute(['codigo_produto' => $produto['codigo_produto']]);
+            $produtoId = $stmtProduto->fetchColumn();
+
+            if (!$produtoId) {
+                // Produto não existe, inserir um novo registro
+                $queryInsertProduto = "
+                INSERT INTO produtos (idCategoria, nome, descricao, preco, quantidade, codigo_produto, unidade_medida, created_at)
+                VALUES (:idCategoria, :nome, :descricao, :preco, :quantidade, :codigo_produto, :unidade_medida, NOW())
+                ";
+                $stmtInsertProduto = $pdo->prepare($queryInsertProduto);
+                $stmtInsertProduto->execute([
+                    'idCategoria' => 1,
+                    'nome' => $produto['nome'],
+                    'descricao' => $produto['descricao'],
+                    'preco' => 0, // Insere o preço como 0 no banco
+                    'quantidade' => $produto['quantidade'],
+                    'codigo_produto' => $produto['codigo_produto'],
+                    'unidade_medida' => $produto['unidade_medida'],
+                ]);
+                $produtoId = $pdo->lastInsertId();
+            } else {
+                // Produto já existe, apenas soma a quantidade
+                $produtos = new Produtos();
+                $produtos->somaQuantidadeProdutos($produtoId, $produto['quantidade']);
+            }
+
+            $queryInsertEntrada = "
+            INSERT INTO entradas (idFornecedor, idProdutos, quantidade, preco, created_at)
+            VALUES (:idFornecedor, :idProdutos, :quantidade, :preco, NOW())
+            ";
+            $stmtInsertEntrada = $pdo->prepare($queryInsertEntrada);
+            $stmtInsertEntrada->execute([
+                'idFornecedor' => $fornecedorId,
+                'idProdutos' => $produtoId,
+                'quantidade' => $produto['quantidade'],
+                'preco' => 0, // Sobrescreve o preço da entrada para 0
+            ]);
+        }
+
+        $pdo->commit();
+    } catch (\Exception $e) {
+        $pdo->rollBack();
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(['error' => "Erro ao processar a nota: " . $e->getMessage()]);
     }
+}
+
     
 
     
