@@ -89,9 +89,9 @@ class App
 
 
 
-    
 
-     /*------------ CRUD PRODUTOS ------------*/
+
+    /*------------ CRUD PRODUTOS ------------*/
 
     public function estoquePc(?array $data): void
     {
@@ -531,7 +531,7 @@ class App
                 return;
             }
 
-           /* $newpreco = $data["preco"];
+            /* $newpreco = $data["preco"];
             $newpreco = str_replace('R$', '', $newpreco);
             $newpreco = str_replace('.', '', $newpreco);
             $newpreco = str_replace(',', '.', $newpreco);
@@ -539,10 +539,10 @@ class App
 
             $entrada = new Entradas();
             $entradaAtualizar = $entrada->update(
-                    $data["idEntradaEditar"],
-                    $data["quantidade"],
-                    $data["preco"]
-                    );
+                $data["idEntradaEditar"],
+                $data["quantidade"],
+                $data["preco"]
+            );
 
             if ($entradaAtualizar) {
 
@@ -591,16 +591,16 @@ class App
 
             // Remove completamente o símbolo de moeda 'R$'
             $newpreco = str_replace('R$', '', $newpreco);
-            
+
             // Remove espaços extras (inclusive invisíveis) no início e no final
             $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
-            
+
             // Remove os pontos (separadores de milhar)
             $newpreco = str_replace('.', '', $newpreco);
-            
+
             // Substitui a vírgula decimal por um ponto
             $newpreco = str_replace(',', '.', $newpreco);
-            
+
             // Converte para float
             $precoFloat = (float)$newpreco;
 
@@ -719,24 +719,25 @@ class App
 
             // Remove completamente o símbolo de moeda 'R$'
             $newpreco = str_replace('R$', '', $newpreco);
-            
+
             // Remove espaços extras (inclusive invisíveis) no início e no final
             $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
-            
+
             // Remove os pontos (separadores de milhar)
             $newpreco = str_replace('.', '', $newpreco);
-            
+
             // Substitui a vírgula decimal por um ponto
             $newpreco = str_replace(',', '.', $newpreco);
-            
+
             // Converte para float
             $precoFloat = (float)$newpreco;
 
             $saida = new Saidas();
             $saidaUpdate = $saida->update(
-                $data["idEditarSaida"], 
-        $data["quantidade"],
-             $data["preco"]);
+                $data["idEditarSaida"],
+                $data["quantidade"],
+                $data["preco"]
+            );
 
             if ($saidaUpdate) {
 
@@ -874,7 +875,7 @@ class App
                 $data["cpf"],
                 $data["celular"]
             );
-                
+
 
 
             if ($clienteAtualizado) {
@@ -1020,7 +1021,7 @@ class App
                 $data["cep"],
                 $data["uf"]
             );
-                
+
 
 
             if ($fornecedorAtualizado) {
@@ -1045,8 +1046,8 @@ class App
 
 
 
-    
-      public function relatorio(): void
+
+    public function relatorio(): void
     {
 
         echo $this->view->render("relatorio");
@@ -1277,25 +1278,36 @@ class App
     public function processarXmlNota($request)
     {
         $pdo = \Source\Core\Connect::getInstance();
-
+    
         if (!isset($_FILES['arquivoNota']) || $_FILES['arquivoNota']['error'] != UPLOAD_ERR_OK) {
+            header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['error' => 'Erro no upload do arquivo XML']);
             return;
         }
-
+    
         $xmlPath = $_FILES['arquivoNota']['tmp_name'];
         $xmlContent = file_get_contents($xmlPath);
         $xml = simplexml_load_string($xmlContent);
-
+    
         if (!$xml) {
+            header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['error' => 'Arquivo XML inválido']);
             return;
         }
-
+    
+        // Registrar namespace do XML
         $namespaces = $xml->getNamespaces(true);
-        $xml->registerXPathNamespace('nfe', $namespaces['']);
-
-        $emit = $xml->xpath('//nfe:emit')[0];
+        if (isset($namespaces[''])) {
+            $xml->registerXPathNamespace('nfe', $namespaces['']);
+        }
+    
+        // Extrair informações do fornecedor
+        $emit = $xml->xpath('//nfe:emit')[0] ?? null;
+        if (!$emit) {
+            echo json_encode(['error' => 'Dados do fornecedor não encontrados no XML']);
+            return;
+        }
+    
         $fornecedor = [
             'CNPJ' => (string)($emit->CNPJ ?? ''),
             'Nome' => (string)($emit->xNome ?? ''),
@@ -1305,111 +1317,131 @@ class App
             'UF' => (string)($emit->enderEmit->UF ?? ''),
             'Telefone' => (string)($emit->enderEmit->fone ?? ''),
         ];
-
+    
+        // Processar produtos
         $produtos = [];
-        foreach ($xml->xpath('//nfe:det') as $det) {
-            $prod = $det->prod;
-            $produtos[] = [
-                'Descrição' => (string)($prod->xProd ?? ''),
-                'Quantidade' => (float)($prod->qCom ?? 0),
-                'Valor Unitário' => (float)($prod->vUnCom ?? 0),
-            ];
+        $detElements = $xml->xpath('//nfe:det');
+        
+        if (!$detElements || count($detElements) < 1) {
+            echo json_encode(['error' => 'Nenhum produto encontrado no XML']);
+            return;
         }
-
+    
+        foreach ($detElements as $det) {
+            $prod = $det->prod ?? null;
+    
+            if (!$prod) {
+                echo json_encode(['warning' => 'Produto com estrutura inválida ignorado']);
+                continue;
+            }
+    
+            $produto = [
+                'codigo_produto' => (string)($prod->cProd ?? ''),
+                'nome' => (string)($prod->xProd ?? ''),
+                'descricao' => (string)($prod->xProd ?? ''),
+                'quantidade' => (float)($prod->qCom ?? 0),
+                'preco' => 0, // Sobrescreve o preço para sempre ser 0
+                'unidade_medida' => (string)($prod->uCom ?? ''),
+            ];
+    
+            // Validações dos campos obrigatórios
+            if (empty($produto['codigo_produto']) || empty($produto['nome']) || $produto['quantidade'] <= 0) {
+                echo json_encode(['error' => 'Produto inválido: ' . json_encode($produto)]);
+                continue;
+            }
+    
+            $produtos[] = $produto;
+        }
+    
+        if (count($produtos) === 0) {
+            echo json_encode(['error' => 'Nenhum produto válido encontrado no XML']);
+            return;
+        }
+    
+        // Registrar dados no banco de dados
         $this->cadastrarNota($fornecedor, $produtos);
-        echo "Nota processada com sucesso!";
+    
+        echo json_encode(['type' => 'success', 'message' => 'Nota processada com sucesso!']);
     }
-
+    
     public function cadastrarNota(array $fornecedorData, array $produtosData): void
     {
         $pdo = \Source\Core\Connect::getInstance();
-        var_dump($fornecedorData, $produtosData);
-
+    
         try {
-            // Inicia a transação
             $pdo->beginTransaction();
-
+    
             // Verifica se o fornecedor já existe
             $queryFornecedor = "SELECT id FROM fornecedores WHERE cnpj = :cnpj LIMIT 1";
             $stmtFornecedor = $pdo->prepare($queryFornecedor);
             $stmtFornecedor->execute(['cnpj' => $fornecedorData['CNPJ']]);
             $fornecedorId = $stmtFornecedor->fetchColumn();
-
+    
             if (!$fornecedorId) {
-                // Cadastra o fornecedor
                 $queryInsertFornecedor = "
                 INSERT INTO fornecedores (nome, cnpj, telefone, endereco, municipio, cep, uf, created_at) 
                 VALUES (:nome, :cnpj, :telefone, :endereco, :municipio, :cep, :uf, NOW())
-            ";
+                ";
                 $stmtInsertFornecedor = $pdo->prepare($queryInsertFornecedor);
                 $stmtInsertFornecedor->execute([
                     'nome' => $fornecedorData['Nome'],
                     'cnpj' => $fornecedorData['CNPJ'],
                     'telefone' => $fornecedorData['Telefone'],
-                    'endereco' => $fornecedorData['Endereco'], // Acessando diretamente
-                    'municipio' => $fornecedorData['Municipio'], // Acessando diretamente
-                    'cep' => $fornecedorData['CEP'], // Acessando diretamente
+                    'endereco' => $fornecedorData['Endereco'],
+                    'municipio' => $fornecedorData['Municipio'],
+                    'cep' => $fornecedorData['CEP'],
                     'uf' => $fornecedorData['UF'],
                 ]);
                 $fornecedorId = $pdo->lastInsertId();
             }
-
-            // Processa cada produto
+    
+            // Processar produtos
             foreach ($produtosData as $produto) {
-                // Verifica se o produto já existe
-                $queryProduto = "SELECT id FROM produtos WHERE nome = :nome LIMIT 1";
+                $queryProduto = "SELECT id FROM produtos WHERE codigo_produto = :codigo_produto LIMIT 1";
                 $stmtProduto = $pdo->prepare($queryProduto);
-                $stmtProduto->execute(['nome' => $produto['Descrição']]);
+                $stmtProduto->execute(['codigo_produto' => $produto['codigo_produto']]);
                 $produtoId = $stmtProduto->fetchColumn();
-
+    
                 if (!$produtoId) {
-                    // Cadastra o produto
                     $queryInsertProduto = "
-                    INSERT INTO produtos (idCategoria, nome, descricao, preco, quantidade, created_at)
-                    VALUES (:idCategoria, :nome, :descricao, :preco, :quantidade, NOW())
-                ";
+                    INSERT INTO produtos (idCategoria, nome, descricao, preco, quantidade, codigo_produto, unidade_medida, created_at)
+                    VALUES (:idCategoria, :nome, :descricao, :preco, :quantidade, :codigo_produto, :unidade_medida, NOW())
+                    ";
                     $stmtInsertProduto = $pdo->prepare($queryInsertProduto);
                     $stmtInsertProduto->execute([
-                        'idCategoria' => 1, // Substitua por lógica para associar a categoria, se necessário
+                        'idCategoria' => 1,
                         'nome' => $produto['nome'],
-                        'descricao' => $produto['Descrição'],
-                        'preco' => $produto['Valor Unitário'],
-                        'quantidade' => $produto['Quantidade'],
+                        'descricao' => $produto['descricao'],
+                        'preco' => 0, // Insere o preço como 0 no banco
+                        'quantidade' => $produto['quantidade'],
+                        'codigo_produto' => $produto['codigo_produto'],
+                        'unidade_medida' => $produto['unidade_medida'],
                     ]);
                     $produtoId = $pdo->lastInsertId();
-                } else {
-                    // Atualiza a quantidade existente
-                    $queryUpdateQuantidade = "
-                    UPDATE produtos SET quantidade = quantidade + :quantidade WHERE id = :id
-                ";
-                    $stmtUpdateQuantidade = $pdo->prepare($queryUpdateQuantidade);
-                    $stmtUpdateQuantidade->execute([
-                        'quantidade' => $produto['Quantidade'],
-                        'id' => $produtoId,
-                    ]);
                 }
-
-                // Cadastra a entrada
+    
                 $queryInsertEntrada = "
                 INSERT INTO entradas (idFornecedor, idProdutos, quantidade, preco, created_at)
                 VALUES (:idFornecedor, :idProdutos, :quantidade, :preco, NOW())
-            ";
+                ";
                 $stmtInsertEntrada = $pdo->prepare($queryInsertEntrada);
                 $stmtInsertEntrada->execute([
                     'idFornecedor' => $fornecedorId,
                     'idProdutos' => $produtoId,
-                    'quantidade' => $produto['Quantidade'],
-                    'preco' => $produto['Valor Unitário'],
+                    'quantidade' => $produto['quantidade'],
+                    'preco' => 0, // Sobrescreve o preço da entrada para 0
                 ]);
             }
-
-            // Finaliza a transação
+    
             $pdo->commit();
-            echo "Nota processada com sucesso!";
         } catch (\Exception $e) {
             $pdo->rollBack();
-            echo "Erro ao processar a nota: " . $e->getMessage();
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(['error' => "Erro ao processar a nota: " . $e->getMessage()]);
         }
-        // var_dump($fornecedorData, $produtosData);
     }
+    
+
+    
+
 }

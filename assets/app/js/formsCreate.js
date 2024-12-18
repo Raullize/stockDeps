@@ -210,25 +210,35 @@ form_cadastro_fornecedores.on("submit", function (e) {
     });
 });
 
+
 const form = document.querySelector('form[action="processarXmlNota"]');
-form.removeEventListener('submit', handleFormSubmit); 
-form.addEventListener('submit', handleFormSubmit); 
+form.removeEventListener('submit', handleFormSubmit); // Remove listener duplicado, se houver
+form.addEventListener('submit', handleFormSubmit);    // Adiciona o listener apenas uma vez
 
 function handleFormSubmit(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
+    e.preventDefault(); // Impede o envio do formulário de forma tradicional
+    const formData = new FormData(this); // Captura o conteúdo do formulário
 
     fetch('processarXmlNota', {
         method: 'POST',
         body: formData
     })
-        .then(response => response.text())
+        .then(response => response.json())  // Aguarda a resposta JSON
         .then(result => {
-            alert("Nota processada com sucesso!");
-            window.location.reload(); 
+            // Verifica se o resultado é de sucesso
+            if (result.type === 'success') {
+                // Exibe mensagem de sucesso
+                exibirMensagemTemporariaSucesso(result.message);
+                fetchFornecedores();
+                fetchProdutos();    
+            } else {
+                // Caso haja erro ou warning, exibe a mensagem adequada
+                exibirMensagemTemporariaErro(result.message);
+            }
         })
         .catch(error => {
             console.error('Erro:', error);
-            alert("Ocorreu um erro ao processar a nota.");
+            // Exibe erro genérico
+            exibirMensagemTemporariaErro("Ocorreu um erro ao processar a nota.");
         });
 }

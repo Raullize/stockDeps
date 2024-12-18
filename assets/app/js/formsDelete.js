@@ -75,19 +75,18 @@ async function atualizarProdutos() {
     }
 }
 
-// Atualiza a tabela de clientes após a exclusão
+
 function atualizarTabelaClientes(response) {
-    clientes = response.clientes || []; // Atualiza a lista de clientes
-    mostrarPaginaClientes(1, clientes); // Mostra a primeira página atualizada
+    clientes = response.clientes || []; 
+    mostrarPaginaClientes(1, clientes); 
 }
 
 // Atualiza a tabela de fornecedores após a exclusão
 function atualizarTabelaFornecedores(response) {
-    fornecedores = response.fornecedores || []; // Atualiza a lista de fornecedores
-    mostrarPaginaFornecedores(1, fornecedores); // Mostra a primeira página atualizada
+    fornecedores = response.fornecedores || []; 
+    mostrarPaginaFornecedores(1, fornecedores); 
 }
 
-// Aplicando a função genérica aos formulários de exclusão
 handleDeleteFormSubmission("#produto-excluir", `${BASE_URL}/estoque-pd`, atualizarDadosGlobais);
 handleDeleteFormSubmission("#categoria-excluir", `${BASE_URL}/estoque-cd`, atualizarDadosGlobais);
 handleDeleteFormSubmission("#entrada-excluir", `${BASE_URL}/estoque-ed`, atualizarDadosGlobais);

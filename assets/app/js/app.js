@@ -763,18 +763,38 @@ function createButtonGroup(produto) {
 
 function openModal(tipo, produto) {
     const modalId = tipo === 'Editar' ? 'modalEditar' : 'modalExcluir';
+
     if (tipo === 'Editar') {
-        document.getElementById('idProdutoUpdate').value = produto.id;
+        document.getElementById('codigoProdutoEditar').value = produto.codigo_produto;
         document.getElementById('nomeProduto').value = produto.nome;
         document.getElementById('descricaoProduto').value = produto.descricao;
+
+        // Configurar unidade de medida
+        const unidadeSelect = document.getElementById('unidadeProdutoEditar');
+        const unidadeMedida = produto.unidade_medida;
+
+        // Verificar se a unidade já existe no select
+        const optionExiste = Array.from(unidadeSelect.options).some(option => option.value === unidadeMedida);
+
+        // Adicionar a unidade ao select, se não existir
+        if (!optionExiste) {
+            const novaOption = document.createElement('option');
+            novaOption.value = unidadeMedida;
+            novaOption.textContent = unidadeMedida;
+            unidadeSelect.appendChild(novaOption);
+        }
+
+        // Selecionar a unidade do produto
+        unidadeSelect.value = unidadeMedida;
+
+        // Configurar preço com formato BRL
         document.getElementById('precoProduto').value = produto.preco.toLocaleString('pt-BR', {
             style: 'currency',
             currency: 'BRL'
-        });; //sexo
+        });
 
+        // Configurar categorias no select
         const categoria = categorias.find(categoria => categoria.id === produto.idCategoria);
-
-        // Garantir que as opções de categoria estejam sendo carregadas no select
         const categoriaSelect = document.getElementById('categoriaProdutoEditar');
         categoriaSelect.innerHTML = ''; // Limpar opções anteriores
 
@@ -792,7 +812,7 @@ function openModal(tipo, produto) {
             categoriaSelect.appendChild(option);
         });
 
-        // Agora, definimos o valor selecionado como o id da categoria
+        // Selecionar a categoria correspondente ao produto
         if (categoria) {
             categoriaSelect.value = categoria.id;
         }
@@ -802,8 +822,10 @@ function openModal(tipo, produto) {
         document.getElementById('idProdutoExcluir').value = produto;
     }
 
+    // Exibir o modal correspondente
     new bootstrap.Modal(document.getElementById(modalId)).show();
-};
+}
+
 
 function openModalEntrada(id) {
     const inputProdutoId = document.getElementById('produtoId');

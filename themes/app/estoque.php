@@ -125,7 +125,6 @@ $this->layout("_theme");
         </div>
     </div>
 
-
     <!-- Modal Editar Produto -->
     <div class="modal" id="modalEditar" tabindex="-1">
         <div class="modal-dialog">
@@ -338,14 +337,6 @@ $this->layout("_theme");
                 </div>
                 <form action="processarXmlNota" method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="numeroNota" class="form-label">Número da Nota</label>
-                            <input type="text" id="numeroNota" class="form-control" placeholder="Digite o número da nota">
-                        </div>
-                        <div class="mb-3">
-                            <label for="dataEmissao" class="form-label">Data de Emissão</label>
-                            <input type="date" id="dataEmissao" class="form-control">
-                        </div>
                         <div class="mb-3">
                             <label for="arquivoNota" class="form-label">Upload de Nota (XML)</label>
                             <input type="file" id="arquivoNota" name="arquivoNota" class="form-control" accept=".xml">
