@@ -138,8 +138,8 @@ class App
                 $data["descricao"],
                 $precoFloat,
                 NULL,
-                NULL,
-                NULL
+                $data["unidade"],
+                $data["codigo"]
             );
 
             if ($produto->insert()) {
@@ -489,9 +489,13 @@ class App
             }
 
             $entrada = new Entradas();
+            $valoresEntrada = $entrada->selectInfoEntradaById($data["idEntradaExcluir"]);
             $entradaDeletada = $entrada->delete($data["idEntradaExcluir"]);
 
             if ($entradaDeletada) {
+
+                $produto = new Produtos();
+                $produto->subtraiQuantidadeProdutos($valoresEntrada->idProdutos, $valoresEntrada->quantidade);
 
                 $json = [
                     "entradas" => $entrada->selectAll(),
@@ -669,9 +673,13 @@ class App
             }
 
             $saida = new Saidas();
+            $valoresSaida = $saida->selectInfoSaidaById($data["idSaidaExcluir"]);
             $saidaDelete = $saida->delete($data["idSaidaExcluir"]);
 
             if ($saidaDelete) {
+
+                $produto = new Produtos();
+                $produto->somaQuantidadeProdutos($valoresSaida->idProdutos, $valoresSaida->quantidade);
 
                 $json = [
                     "saidas" => $saida->selectAll(),

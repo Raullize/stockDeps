@@ -195,8 +195,6 @@ form_sd.on("submit", async function (e) {
     }
 });
 
-
-
 const form_cd = $("#cliente-excluir");
 form_cd.on("submit", function(e) {
     e.preventDefault();

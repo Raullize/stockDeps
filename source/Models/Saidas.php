@@ -124,6 +124,24 @@ class Saidas
         }
     }
 
+    public function selectInfoSaidaById($id)
+    {
+        $query = "SELECT * FROM saidas WHERE id = :id";
+        
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+        
+        // Verifica se há resultados
+        if ($stmt->rowCount() == 0) {
+            return false; // Nenhum registro encontrado
+        } else {
+            // Retorna os valores da saida
+            return $stmt->fetch();
+        }
+    }
+
     public function insert()
     {
 

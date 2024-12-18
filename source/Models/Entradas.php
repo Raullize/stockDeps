@@ -113,6 +113,23 @@ class Entradas
         }
     }
 
+    public function selectInfoEntradaById($id)
+    {
+        $query = "SELECT * FROM entradas WHERE id = :id";
+        
+        $stmt = Connect::getInstance()->prepare($query);
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+        
+        // Verifica se há resultados
+        if ($stmt->rowCount() == 0) {
+            return false; // Nenhum registro encontrado
+        } else {
+            // Retorna os valores da entrada
+            return $stmt->fetch();
+        }
+    }
 
     public function insert() : bool
     {
