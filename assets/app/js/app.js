@@ -429,7 +429,7 @@ function preencherTabelaProdutos(produtosPaginados) {
 
     produtosPaginados.forEach(produto => {
         const tr = document.createElement('tr');
-        const { id, nome, descricao, preco, quantidade } = produto;
+        const { codigo_produto, nome, descricao, preco, quantidade,unidade_medida } = produto;
 
         const precoFormatado = preco.toLocaleString('pt-BR', {
             style: 'currency',
@@ -437,7 +437,7 @@ function preencherTabelaProdutos(produtosPaginados) {
         });
 
         const status = quantidade > 0 ? "Disponível" : "Indisponível";
-        const dados = [id, nome, descricao, precoFormatado, quantidade, status];
+        const dados = [codigo_produto, nome, descricao, precoFormatado, quantidade,unidade_medida, status];
 
         dados.forEach(dado => {
             const td = document.createElement('td');

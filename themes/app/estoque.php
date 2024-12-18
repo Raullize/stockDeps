@@ -42,6 +42,7 @@ $this->layout("_theme");
                             <th id="ordenarDescricao">Descrição <span class="seta" id="setaDescricao">⬍</span></th>
                             <th id="ordenarPreco">Preço <span class="seta" id="setaPreco">⬍</span></th>
                             <th id="ordenarQuantidade">Quantidade <span class="seta" id="setaQuantidade">⬍</span></th>
+                            <th id="ordenarQuantidade">Unidade <span class="seta" id="setaQuantidade">⬍</span></th>
                             <th>Status</th>
                             <th class="text-center" colspan="2">Ações</th>
                         </tr>
@@ -186,6 +187,7 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
+
     <!-- Modal com a tabela de categorias -->
     <div class="modal fade" id="modalTabelaCategorias" tabindex="-1" aria-labelledby="modalTabelaCategoriasLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -279,9 +281,6 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
-
-
-
 
     <!-- Modal Excluir Categoria -->
     <div class="modal fade" id="modalExcluirCategoria" tabindex="-1" aria-labelledby="modalExcluirCategoriaLabel" aria-hidden="true">
