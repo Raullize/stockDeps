@@ -1,251 +1,83 @@
-const form_pu = $("#produto-update");
-form_pu.on("submit", function(e) {
-    e.preventDefault();
+function handleEditFormSubmission(formSelector, url, callback) {
+    const form = $(formSelector);
+    form.on("submit", function (e) {
+        e.preventDefault();
 
-    const serializedData = form_pu.serialize();
-    
-    $.ajax({
-        type: "POST",
-        url: `${BASE_URL}/estoque-pu`,
-        data: serializedData,
-        dataType: "json",
-        success: function(response) {
+        const serializedData = form.serialize();
 
-            if (response.type == 'error') {
-                console.log(response);
-                exibirMensagemTemporariaErro(response.message);
-                return;
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: serializedData,
+            dataType: "json",
+            success: function (response) {
+                if (response.type === 'error') {
+                    exibirMensagemTemporariaErro(response.message);
+                    return;
+                }
+
+                if (response.type === 'warning') {
+                    exibirMensagemTemporariaAviso(response.message);
+                    return;
+                }
+
+                if (response.type === 'success') {
+                    exibirMensagemTemporariaSucesso(response.message);
+                    if (callback) callback(response); // Executa a lógica adicional passada
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Erro no AJAX:", error);
+                exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
             }
-
-            if (response.type == 'warning') {
-                console.log(response);
-                exibirMensagemTemporariaAviso(response.message);
-                return;
-            }
-
-            if (response.type == 'success') {
-                console.log(response);
-
-                exibirMensagemTemporariaSucesso(response.message);
-
-                preencherTabelaEntradas(response.entradas, response.produtos);
-                preencherTabelaSaidas(response.saidas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
-
-        }
+        });
     });
+}
+
+// Atualiza tabelas e dados globais
+function atualizarDadosGlobais(response) {
+    if (response.produtos) {
+        produtos = response.produtos;
+        preencherTabelaProdutos(produtos);
+        mostrarPagina(paginaAtual, produtos);
+    }
+    if (response.entradas) {
+        entradas = response.entradas;
+        entradasFiltradas = [...entradas]; // Atualiza a lista filtrada
+        mostrarPaginaEntradas(1); // Reinicia na primeira página
+    }
+    if (response.saidas) {
+        saidas = response.saidas;
+        saidasFiltradas = [...saidas]; // Atualiza a lista filtrada
+        mostrarPaginaSaidas(1); // Reinicia na primeira página
+    }
+}
+
+// Recarrega entradas e saídas após edição
+function recarregarEntradas() {
+    fetchEntradas(); // Recarrega a lista de entradas
+}
+function recarregarSaidas() {
+    fetchSaidas(); // Recarrega a lista de saídas
+}
+
+// Formulários com callbacks específicos
+handleEditFormSubmission("#produto-update", `${BASE_URL}/estoque-pu`, atualizarDadosGlobais);
+handleEditFormSubmission("#entrada-editar", `${BASE_URL}/estoque-eu`, recarregarEntradas);
+handleEditFormSubmission("#saida-editar", `${BASE_URL}/estoque-su`, recarregarSaidas);
+handleEditFormSubmission("#categoria-editar", `${BASE_URL}/estoque-cu`, function (response) {
+    if (response.produtos) atualizarDadosGlobais(response);
+    fetchCategorias(); // Recarrega categorias
 });
-
-const form_eu = $("#entrada-editar");
-form_eu.on("submit", function(e) {
-    e.preventDefault();
-
-    const serializedData = form_eu.serialize();
-    
-    $.ajax({
-        type: "POST",
-        url: `${BASE_URL}/estoque-eu`,
-        data: serializedData,
-        dataType: "json",
-        success: function(response) {
-
-            if (response.type == 'error') {
-                console.log(response);
-                exibirMensagemTemporariaErro(response.message);
-                return;
-            }
-
-            if (response.type == 'warning') {
-                console.log(response);
-                exibirMensagemTemporariaAviso(response.message);
-                return;
-            }
-
-            if (response.type == 'success') {
-                console.log(response);
-
-                exibirMensagemTemporariaSucesso(response.message);
-
-                preencherTabelaEntradas(response.entradas, response.produtos);
-                preencherTabelaSaidas(response.saidas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
-
-        }
-    });
+handleEditFormSubmission("#cliente-update", `${BASE_URL}/update-clientes`, function (response) {
+    if (response.clientes) {
+        clientes = response.clientes;
+        mostrarPaginaClientes(paginaAtualClientes, clientes);
+    }
 });
-
-const form_su = $("#saida-editar");
-form_su.on("submit", function(e) {
-    e.preventDefault();
-
-    const serializedData = form_su.serialize();
-    
-    $.ajax({
-        type: "POST",
-        url: `${BASE_URL}/estoque-su`,
-        data: serializedData,
-        dataType: "json",
-        success: function(response) {
-
-            if (response.type == 'error') {
-                console.log(response);
-                exibirMensagemTemporariaErro(response.message);
-                return;
-            }
-
-            if (response.type == 'warning') {
-                console.log(response);
-                exibirMensagemTemporariaAviso(response.message);
-                return;
-            }
-
-            if (response.type == 'success') {
-                console.log(response);
-
-                exibirMensagemTemporariaSucesso(response.message);
-
-                preencherTabelaEntradas(response.entradas, response.produtos);
-                preencherTabelaSaidas(response.saidas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
-
-        }
-    });
-});
-
-const form_cgu = $("#categoria-editar");
-form_cgu.on("submit", function(e) {
-    e.preventDefault();
-
-    const serializedData = form_cgu.serialize();
-    
-    $.ajax({
-        type: "POST",
-        url: `${BASE_URL}/estoque-cu`,
-        data: serializedData,
-        dataType: "json",
-        success: function(response) {
-
-            if (response.type == 'error') {
-                console.log(response);
-                exibirMensagemTemporariaErro(response.message);
-                return;
-            }
-
-            if (response.type == 'warning') {
-                console.log(response);
-                exibirMensagemTemporariaAviso(response.message);
-                return;
-            }
-
-            if (response.type == 'success') {
-                console.log(response);
-
-                exibirMensagemTemporariaSucesso(response.message);
-
-                preencherTabelaEntradas(response.entradas, response.produtos);
-                preencherTabelaSaidas(response.saidas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
-
-        }
-    });
-});
-
-const form_cu = $("#cliente-update");
-form_cu.on("submit", function(e) {
-    e.preventDefault();
-
-    const serializedData = form_cu.serialize();
-    
-    $.ajax({
-        type: "POST",
-        url: `${BASE_URL}/update-clientes`,
-        data: serializedData,
-        dataType: "json",
-        success: function(response) {
-
-            if (response.type == 'error') {
-                console.log(response);
-                exibirMensagemTemporariaErro(response.message);
-                return;
-            }
-
-            if (response.type == 'warning') {
-                console.log(response);
-                exibirMensagemTemporariaAviso(response.message);
-                return;
-            }
-
-            if (response.type == 'success') {
-                console.log(response);
-
-                exibirMensagemTemporariaSucesso(response.message);
-
-                preencherTabelaEntradas(response.entradas, response.produtos);
-                preencherTabelaSaidas(response.saidas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
-
-        }
-    });
-});
-
-const form_fu = $("#formEditarFornecedor");
-form_fu.on("submit", function(e) {
-    e.preventDefault();
-
-    const serializedData = form_fu.serialize();
-    
-    $.ajax({
-        type: "POST",
-        url: `${BASE_URL}/update-fornecedores`,
-        data: serializedData,
-        dataType: "json",
-        success: function(response) {
-
-            if (response.type == 'error') {
-                console.log(response);
-                exibirMensagemTemporariaErro(response.message);
-                return;
-            }
-
-            if (response.type == 'warning') {
-                console.log(response);
-                exibirMensagemTemporariaAviso(response.message);
-                return;
-            }
-
-            if (response.type == 'success') {
-                console.log(response);
-
-                exibirMensagemTemporariaSucesso(response.message);
-
-                preencherTabelaEntradas(response.entradas, response.produtos);
-                preencherTabelaSaidas(response.saidas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
-
-        }
-    });
+handleEditFormSubmission("#formEditarFornecedor", `${BASE_URL}/update-fornecedores`, function (response) {
+    if (response.fornecedores) {
+        fornecedores = response.fornecedores;
+        mostrarPaginaFornecedores(paginaAtualFornecedores, fornecedores);
+    }
 });
