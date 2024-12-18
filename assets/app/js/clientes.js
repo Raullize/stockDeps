@@ -1,8 +1,8 @@
 const BASE_URL = '/stockDeps';
 
-const itensPorPaginaClientes = 8;
+const itensPorPaginaClientes = 8;   // Quantidade de clientes por página
 const maxBotoesPaginacaoClientes = 5;
-let paginaAtualClientes = 1;
+let paginaAtualClientes = 1;        // Sempre começar na página 1
 
 let clientes = [];
 let produtos = [];
@@ -22,9 +22,9 @@ async function fetchCategorias() {
 async function fetchClientes() {
     const response = await fetch(`${BASE_URL}/getClientes`);
     clientes = await response.json();
-    mostrarPaginaClientes(paginaAtualClientes);
-    buscarCliente(clientes)
+    buscarCliente(clientes);
     ordenarTabelaClientes('nome', 'setaNomeCliente');
+    mostrarPaginaClientes(paginaAtualClientes); // Exibir corretamente a primeira página de clientes
 }
 
 async function fetchEntradas() {
@@ -74,13 +74,14 @@ function preencherTabelaClientes(clientesPaginados) {
 }
 
 function mostrarPaginaClientes(pagina, listaClientes = clientes) {
-    paginaAtualClientes = pagina;
-    const inicio = (pagina - 1) * itensPorPaginaClientes;
-    const fim = inicio + itensPorPaginaClientes;
-    const clientesPaginados = listaClientes.slice(inicio, fim);
-    preencherTabelaClientes(clientesPaginados);
-    atualizarPaginacaoClientes(listaClientes);
+    paginaAtualClientes = pagina; // Atualizar a página atual
+    const inicio = (pagina - 1) * itensPorPaginaClientes;  // Cálculo do início da página
+    const fim = inicio + itensPorPaginaClientes;           // Cálculo do fim da página
+    const clientesPaginados = listaClientes.slice(inicio, fim); // Pegando apenas os clientes da página atual
+    preencherTabelaClientes(clientesPaginados);           // Preenchendo a tabela com os clientes paginados
+    atualizarPaginacaoClientes(listaClientes);            // Atualizando a paginação
 }
+
 
 function atualizarPaginacaoClientes(listaClientes = clientes) {
     const totalPaginas = Math.ceil(listaClientes.length / itensPorPaginaClientes);
