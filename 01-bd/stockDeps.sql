@@ -2,8 +2,7 @@ CREATE DATABASE IF NOT EXISTS `stockDeps`;
 USE `stockDeps`;
 
 -- Tabela de categorias
-DROP TABLE IF EXISTS `categorias`;
-CREATE TABLE `categorias` (
+CREATE TABLE IF NOT EXISTS `categorias` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nome` varchar(255) NOT NULL,
     `descricao` text NOT NULL,
@@ -13,8 +12,7 @@ CREATE TABLE `categorias` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de produtos
-DROP TABLE IF EXISTS `produtos`;
-CREATE TABLE `produtos` (
+CREATE TABLE IF NOT EXISTS `produtos` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `idCategoria` int(11) NOT NULL,
     `nome` varchar(255) NOT NULL,
@@ -31,9 +29,12 @@ CREATE TABLE `produtos` (
     CONSTRAINT `fk_produtos_categorias` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Adicionar coluna 'unidade_medida' caso ela não exista
+ALTER TABLE `produtos` 
+ADD COLUMN IF NOT EXISTS `unidade_medida` varchar(50) NOT NULL;
+
 -- Tabela de clientes
-DROP TABLE IF EXISTS `clientes`;
-CREATE TABLE `clientes` (
+CREATE TABLE IF NOT EXISTS `clientes` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nome` varchar(255) NOT NULL,
     `cpf` varchar(14) NOT NULL,
@@ -44,8 +45,7 @@ CREATE TABLE `clientes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de fornecedores
-DROP TABLE IF EXISTS `fornecedores`;
-CREATE TABLE `fornecedores` (
+CREATE TABLE IF NOT EXISTS `fornecedores` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nome` varchar(255) NOT NULL,
     `cnpj` varchar(18) NOT NULL,
@@ -61,8 +61,7 @@ CREATE TABLE `fornecedores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de entradas
-DROP TABLE IF EXISTS `entradas`;
-CREATE TABLE `entradas` (
+CREATE TABLE IF NOT EXISTS `entradas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `idFornecedor` int(11) NOT NULL,
     `idProdutos` int(11) NOT NULL,
@@ -78,8 +77,7 @@ CREATE TABLE `entradas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Tabela de saídas
-DROP TABLE IF EXISTS `saidas`;
-CREATE TABLE `saidas` (
+CREATE TABLE IF NOT EXISTS `saidas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `idClientes` int(11) DEFAULT NULL,  -- Permite NULL
     `idProdutos` int(11) NOT NULL,
@@ -89,7 +87,7 @@ CREATE TABLE `saidas` (
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
     KEY `fk_saidas_clientes_idx` (`idClientes`),
-    CONSTRAINT `fk_saidas_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,  -- Ajuste para permitir NULL
+    CONSTRAINT `fk_saidas_clientes` FOREIGN KEY (`idClientes`) REFERENCES `clientes` (`id`) ON DELETE SET NULL ON UPDATE NO ACTION,
     KEY `fk_saidas_produtos_idx` (`idProdutos`),
     CONSTRAINT `fk_saidas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
