@@ -189,12 +189,13 @@ class Produtos
         }
     }
 
-    public function validateProdutoName($nome, $idCategoria) : bool
+    public function validateProduto($nome, $idCategoria, $codigo_produto) : bool
     {
-        $query = "SELECT * FROM produtos WHERE nome = :nome AND idCategoria = :idCategoria";
+        $query = "SELECT * FROM produtos WHERE (nome = :nome AND idCategoria = :idCategoria) OR (codigo_produto = :codigo_produto)";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":nome", $nome);
         $stmt->bindParam(":idCategoria", $idCategoria);
+        $stmt->bindParam(":codigo_produto", $codigo_produto);
         $stmt->execute();
         if($stmt->rowCount() == 1){
             return true;
