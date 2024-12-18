@@ -23,7 +23,7 @@ class Produtos
         float $preco = NULL,
         string $imagem = NULL,
         string $unidade_medida = NULL,
-        int $codigo_produto = NULL
+        string $codigo_produto = NULL
     )
     {
         $this->id = $id;
@@ -189,7 +189,7 @@ class Produtos
         }
     }
 
-    public function validateProdutos($nome, $idCategoria) : bool
+    public function validateProdutoName($nome, $idCategoria) : bool
     {
         $query = "SELECT * FROM produtos WHERE nome = :nome AND idCategoria = :idCategoria";
         $stmt = Connect::getInstance()->prepare($query);

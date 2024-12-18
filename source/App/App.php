@@ -122,7 +122,7 @@ class App
 
             $produto = new Produtos();
 
-            if ($produto->validateProdutos($data["nome"], $data["categoria"])) {
+            if ($produto->validateProdutoName($data["nome"], $data["categoria"])) {
                 $json = [
                     "message" => "Produto já cadastrado!",
                     "type" => "warning"
