@@ -72,8 +72,6 @@ function formatarData(dataISO) {
     });
 }
 
-// ELANO OLHA AQUI AS PROXIMAS 4 FUNÇÕES DE CATEGORIAS
-
 document.getElementById('categoria-cadastro').addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -112,7 +110,6 @@ document.getElementById('categoria-cadastro').addEventListener('submit', async f
     }
 });
 
-// Função para editar uma categoria existente
 function editarCategoria(id) {
     const categoria = categorias.find(cat => cat.id === id);
 
@@ -124,7 +121,6 @@ function editarCategoria(id) {
     modalEditar.show();
 }
 
-// Função para abrir o modal de confirmação de exclusão
 function excluirCategoria(id) {
     // Insere o ID da categoria no campo oculto do modal
     const inputCategoriaId = document.getElementById('idCategoriaExcluir');
@@ -168,11 +164,10 @@ function mostrarPaginaEntradas(pagina) {
 
         const row = `
             <tr>
-                <td>${entrada.id}</td>
                 <td>${nomeFornecedor}</td>
                 <td>${nomeProduto}</td>
                 <td>${entrada.quantidade}</td>
-                <td>${entrada.preco}</td>
+                <td>${entrada.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                 <td>${formatarData(entrada.created_at)}</td>
                 <td>
                     <button class="btn btn-primary btn-sm" onclick="editarEntrada(${entrada.id})">Editar</button>
@@ -202,7 +197,6 @@ function mostrarPaginaSaidas(pagina) {
             const nomeCliente = clientes.find(c => c.id === saida.idClientes)?.nome || 'Cliente não encontrado';
             const row = `
             <tr>
-                <td>${saida.id}</td>
                 <td>${nomeCliente}</td>
                 <td>${nomeProduto}</td>
                 <td>${saida.quantidade}</td>
@@ -353,7 +347,6 @@ function excluirEntrada(entradaId) {
     modalExcluirEntrada.show();
 }
 
-
 function editarSaida(id) {
     const saida = saidas.find(s => s.id === id); // Encontre a saída pelo ID
     const produto = produtos.find(p => p.id === saida.idProdutos); // Encontre o produto correspondente à saída
@@ -398,7 +391,6 @@ function excluirSaida(saidaId) {
     modalExcluir.show();
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
     // Pega os botões e associa o evento de clique
     const consultarEntradasBtn = document.getElementById('consultarEntradasBtn');
@@ -429,7 +421,7 @@ function preencherTabelaProdutos(produtosPaginados) {
 
     produtosPaginados.forEach(produto => {
         const tr = document.createElement('tr');
-        const { codigo_produto, nome, descricao, preco, quantidade,unidade_medida } = produto;
+        const { codigo_produto, nome, descricao, preco, quantidade, unidade_medida} = produto;
 
         const precoFormatado = preco.toLocaleString('pt-BR', {
             style: 'currency',
@@ -449,7 +441,6 @@ function preencherTabelaProdutos(produtosPaginados) {
         corpoTabela.appendChild(tr);
     });
 }
-
 
 function mostrarPagina(pagina, produtos) {
     paginaAtual = pagina;
@@ -513,7 +504,6 @@ function atualizarPaginacao(totalProdutos, paginaAtual) {
         pagination.appendChild(liNext);
     }
 }
-
 
 function buscarProduto(produtosOriginais) {
     const inputBuscarProduto = document.getElementById('buscarProduto');
@@ -777,7 +767,10 @@ function openModal(tipo, produto) {
         document.getElementById('idProdutoUpdate').value = produto.id;
         document.getElementById('nomeProduto').value = produto.nome;
         document.getElementById('descricaoProduto').value = produto.descricao;
-        document.getElementById('precoProduto').value = parseFloat(produto.preco).toFixed(2);
+        document.getElementById('precoProduto').value = produto.preco.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });; //sexo
 
         const categoria = categorias.find(categoria => categoria.id === produto.idCategoria);
 
@@ -819,16 +812,12 @@ function openModalEntrada(id) {
     new bootstrap.Modal(document.getElementById('modalEntrada')).show();
 }
 
-
-
 document.getElementById('saida-cadastro').addEventListener('submit', function (event) {
     const inputPrecoSaida = document.getElementById('precoSaida');
 
     inputPrecoSaida.value = preco;
 });
 
-
-// Função para abrir o modal e definir o preço formatado
 function openModalSaida(id, preco) {
     const inputProdutoId = document.getElementById('produtoId2');
     const inputPrecoSaida = document.getElementById('precoSaida');
@@ -846,8 +835,6 @@ function openModalSaida(id, preco) {
     // Exibe o modal
     new bootstrap.Modal(document.getElementById('modalSaida')).show();
 }
-
-
 
 let ordemAtual = {
     coluna: null,

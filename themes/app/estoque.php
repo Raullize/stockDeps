@@ -158,7 +158,7 @@ $this->layout("_theme");
                         </div>
                         <div class="mb-3">
                             <label for="precoProduto" class="form-label">Preço</label>
-                            <input name="preco" type="text" class="form-control" id="precoProduto" placeholder="R$ 0,00" oninput="formatarPreco(this)">
+                            <input name="preco" type="text" class="form-control" id="precoProduto" value="R$ 0,00" oninput="formatarPreco(this)">
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                         <!-- Campo Unidade de Medida -->
@@ -452,7 +452,6 @@ $this->layout("_theme");
         </div>
     </div>
 
-
     <!-- Modal de Entradas -->
     <div class="modal fade" id="entradasModal" tabindex="-1" aria-labelledby="entradasModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -469,7 +468,6 @@ $this->layout("_theme");
                     <table class="table table-striped" id="tabelaEntradas">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Fornecedor</th>
                                 <th>Produto</th>
                                 <th>Quantidade</th>
@@ -545,7 +543,6 @@ $this->layout("_theme");
                     <table class="table table-striped" id="tabelaSaidas">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Cliente</th>
                                 <th>Produto</th>
                                 <th>Quantidade</th>
@@ -568,7 +565,6 @@ $this->layout("_theme");
     </div>
 
     <!-- Modal Editar Saidas -->
-
     <div class="modal fade" id="modalEditarSaida" tabindex="-1" aria-labelledby="modalEditarSaidaLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -649,8 +645,6 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
-
-
 
     <script src="<?= url('assets/app/js/app.js') ?>"></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>

@@ -31,6 +31,9 @@ function handleDeleteFormSubmission(formSelector, url, callback) {
 
                     // Executa callback para atualizar dados
                     if (callback) callback(response);
+
+                    // Atualiza a tabela de produtos diretamente após exclusão
+                    atualizarProdutos(); 
                 }
             },
             error: function (xhr, status, error) {
@@ -46,20 +49,33 @@ function atualizarDadosGlobais(response) {
     if (response.produtos) {
         produtos = response.produtos;
         preencherTabelaProdutos(produtos);
-        mostrarPagina(paginaAtual, produtos);
+        mostrarPagina(1, produtos); // Sempre mostrar a primeira página atualizada dos produtos
     }
     if (response.entradas) {
         entradas = response.entradas;
-        entradasFiltradas = [...entradas]; // Atualiza a lista filtrada
+        entradasFiltradas = [...entradas]; // Atualiza a lista filtrada de entradas
         mostrarPaginaEntradas(1); // Reinicia na primeira página
     }
     if (response.saidas) {
         saidas = response.saidas;
-        saidasFiltradas = [...saidas]; // Atualiza a lista filtrada
+        saidasFiltradas = [...saidas]; // Atualiza a lista filtrada de saídas
         mostrarPaginaSaidas(1); // Reinicia na primeira página
     }
 }
-    // Atualiza a tabela de clientes após a exclusão
+
+// Função para recarregar os produtos
+async function atualizarProdutos() {
+    try {
+        const response = await fetch(`${BASE_URL}/getProdutos`); // Recarrega os produtos via AJAX
+        produtos = await response.json();
+        mostrarPagina(1, produtos); // Atualiza a tabela de produtos para a primeira página
+    } catch (error) {
+        console.error("Erro ao atualizar a lista de produtos:", error);
+        exibirMensagemTemporariaErro("Erro ao atualizar a lista de produtos.");
+    }
+}
+
+// Atualiza a tabela de clientes após a exclusão
 function atualizarTabelaClientes(response) {
     clientes = response.clientes || []; // Atualiza a lista de clientes
     mostrarPaginaClientes(1, clientes); // Mostra a primeira página atualizada
@@ -70,7 +86,6 @@ function atualizarTabelaFornecedores(response) {
     fornecedores = response.fornecedores || []; // Atualiza a lista de fornecedores
     mostrarPaginaFornecedores(1, fornecedores); // Mostra a primeira página atualizada
 }
-
 
 // Aplicando a função genérica aos formulários de exclusão
 handleDeleteFormSubmission("#produto-excluir", `${BASE_URL}/estoque-pd`, atualizarDadosGlobais);
