@@ -427,8 +427,6 @@ function preencherTabelaProdutos(produtosPaginados) {
     const corpoTabela = document.getElementById("corpoTabela");
     corpoTabela.innerHTML = '';
 
-    const MAX_CHARS_PER_LINE = 30; // Número máximo de caracteres por linha
-
     produtosPaginados.forEach(produto => {
         const tr = document.createElement('tr');
         const { id, nome, descricao, preco, quantidade } = produto;
@@ -438,24 +436,14 @@ function preencherTabelaProdutos(produtosPaginados) {
             currency: 'BRL'
         });
 
-        let status = quantidade > 0 ? "Disponível" : "Indisponível";
+        const status = quantidade > 0 ? "Disponível" : "Indisponível";
+        const dados = [id, nome, descricao, precoFormatado, quantidade, status];
 
-        // Quebra a descrição em linhas automáticas
-        const descricaoQuebrada = descricao.length > MAX_CHARS_PER_LINE
-            ? descricao.match(new RegExp(`.{1,${MAX_CHARS_PER_LINE}}`, 'g')).join('\n')
-            : descricao;
-
-        const dados = [id, nome, descricaoQuebrada, precoFormatado, quantidade, status];
-
-        tr.append(...dados.map(dado => {
+        dados.forEach(dado => {
             const td = document.createElement('td');
             td.textContent = dado;
-            // Adiciona a classe CSS para quebra de linha, se necessário
-            if (dado === descricaoQuebrada) {
-                td.style.whiteSpace = 'pre-wrap'; // Mantém a quebra de linha
-            }
-            return td;
-        }));
+            tr.appendChild(td);
+        });
 
         tr.appendChild(createButtonGroup(produto));
         corpoTabela.appendChild(tr);
@@ -464,75 +452,79 @@ function preencherTabelaProdutos(produtosPaginados) {
 
 
 function mostrarPagina(pagina, produtos) {
-    const produtosPorPagina = itensPorPagina; // Usar a constante para o número de itens por página
-    const inicio = (pagina - 1) * produtosPorPagina;
-    const fim = pagina * produtosPorPagina;
+    paginaAtual = pagina;
 
-    const produtosNaPagina = produtos.slice(inicio, fim); // Pega os produtos da página atual
-    preencherTabelaProdutos(produtosNaPagina); // Atualiza a tabela com os produtos filtrados/ordenados para a página
+    const inicio = (pagina - 1) * itensPorPagina;
+    const fim = pagina * itensPorPagina;
 
-    // Atualiza a paginação
-    atualizarPaginacao(produtos.length, pagina);
+    const produtosNaPagina = produtos.slice(inicio, fim);
+    preencherTabelaProdutos(produtosNaPagina);
+
+    atualizarPaginacao(produtos.length, paginaAtual);
 }
 
 function atualizarPaginacao(totalProdutos, paginaAtual) {
     const totalPaginas = Math.ceil(totalProdutos / itensPorPagina);
     const pagination = document.getElementById('pagination');
-    pagination.innerHTML = '';
+    pagination.innerHTML = ''; // Limpa o container de paginação
 
     const paginaInicial = Math.max(1, paginaAtual - Math.floor(maxBotoesPaginacao / 2));
     const paginaFinal = Math.min(totalPaginas, paginaInicial + maxBotoesPaginacao - 1);
 
+    // Botão "Anterior"
     if (paginaAtual > 1) {
         const liPrev = document.createElement('li');
         liPrev.classList.add('page-item');
         const aPrev = document.createElement('a');
         aPrev.classList.add('page-link');
-        aPrev.textContent = `Anterior`;
+        aPrev.textContent = 'Anterior';
         aPrev.onclick = () => mostrarPagina(paginaAtual - 1, produtos);
         liPrev.appendChild(aPrev);
         pagination.appendChild(liPrev);
     }
 
+    // Botões das páginas
     for (let i = paginaInicial; i <= paginaFinal; i++) {
         const li = document.createElement('li');
         li.classList.add('page-item');
         if (i === paginaAtual) {
-            li.classList.add('active');
+            li.classList.add('active'); // Adiciona a classe ativa na página atual
         }
 
         const a = document.createElement('a');
         a.classList.add('page-link');
         a.textContent = i;
-        a.onclick = () => mostrarPagina(i, produtos);
+        a.onclick = () => {
+            mostrarPagina(i, produtos); // Navega para a página correspondente
+        };
         li.appendChild(a);
         pagination.appendChild(li);
     }
 
+    // Botão "Próximo"
     if (paginaAtual < totalPaginas) {
         const liNext = document.createElement('li');
         liNext.classList.add('page-item');
         const aNext = document.createElement('a');
         aNext.classList.add('page-link');
-        aNext.textContent = `Próximo`;
+        aNext.textContent = 'Próximo';
         aNext.onclick = () => mostrarPagina(paginaAtual + 1, produtos);
         liNext.appendChild(aNext);
         pagination.appendChild(liNext);
     }
 }
 
+
 function buscarProduto(produtosOriginais) {
     const inputBuscarProduto = document.getElementById('buscarProduto');
     inputBuscarProduto.addEventListener('input', function () {
         const termoBusca = inputBuscarProduto.value.toLowerCase();
 
-        // Filtra os produtos com base no termo de busca
         const produtosFiltrados = produtosOriginais.filter(produto =>
             produto.nome.toLowerCase().includes(termoBusca) ||
             produto.descricao.toLowerCase().includes(termoBusca)
         );
 
-        // Atualiza os produtos exibidos e a paginação
         produtos = produtosFiltrados;
         paginaAtual = 1;
         mostrarPagina(paginaAtual, produtos);

@@ -3,42 +3,41 @@ form_pd.on("submit", function(e) {
     e.preventDefault();
 
     const serializedData = form_pd.serialize();
-    
+
     $.ajax({
         type: "POST",
         url: `${BASE_URL}/estoque-pd`,
         data: serializedData,
         dataType: "json",
         success: function(response) {
-
-            if (response.type == 'error') {
-                console.log(response);
+            if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
                 return;
             }
 
-            if (response.type == 'warning') {
-                console.log(response);
+            if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
                 return;
             }
 
-            if (response.type == 'success') {
-                console.log(response);
-                
+            if (response.type === 'success') {
                 const modalExcluir = bootstrap.Modal.getInstance(document.getElementById('modalExcluir'));
                 modalExcluir.hide();
 
                 exibirMensagemTemporariaSucesso(response.message);
 
-                preencherTabelaEntradas(response.entradas, response.produtos);
-                preencherTabelaSaidas(response.saidas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
+                // Atualiza a lista global de produtos
+                produtos = response.produtos; // Lista atualizada recebida do servidor
+                
+                // Recalcula a página atual
+                const totalPaginas = Math.ceil(produtos.length / itensPorPagina);
+                if (paginaAtual > totalPaginas) {
+                    paginaAtual = totalPaginas; // Ajusta para a última página existente
+                }
 
+                // Atualiza a tabela e a paginação
+                mostrarPagina(paginaAtual, produtos);
+            }
         }
     });
 });

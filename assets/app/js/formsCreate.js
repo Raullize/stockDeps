@@ -1,3 +1,4 @@
+// Cadastro de produtos
 const form_pc = $("#produto-cadastro");
 form_pc.on("submit", function (e) {
     e.preventDefault();
@@ -10,32 +11,29 @@ form_pc.on("submit", function (e) {
         data: serializedData,
         dataType: "json",
         success: function (response) {
-
-            if (response.type == 'error') {
-                console.log(response);
+            if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
                 return;
             }
-
-            if (response.type == 'warning') {
-                console.log(response);
+            if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
                 return;
             }
-
-            if (response.type == 'success') {
-                console.log(response);
+            if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
 
+                // Recarrega os produtos dinamicamente
+                fetchProdutos(); // Recarrega os produtos e atualiza a tabela
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro no AJAX:", error);
+            exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
         }
     });
 });
 
+// Cadastro de categorias
 const form_cc = $("#categoria-cadastro");
 form_cc.on("submit", function (e) {
     e.preventDefault();
@@ -48,30 +46,29 @@ form_cc.on("submit", function (e) {
         data: serializedData,
         dataType: "json",
         success: function (response) {
-
-            if (response.type == 'error') {
-                console.log(response);
+            if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
                 return;
             }
-
-            if (response.type == 'warning') {
-                console.log(response);
+            if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
                 return;
             }
-
-            if (response.type == 'success') {
-                console.log(response);
+            if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
-                preencherCategorias(response.categorias);
-                return;
-            }
 
+                // Recarrega as categorias dinamicamente
+                fetchCategorias();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro no AJAX:", error);
+            exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
         }
     });
 });
 
+// Cadastro de entradas
 const form_ec = $("#entrada-cadastro");
 form_ec.on("submit", function (e) {
     e.preventDefault();
@@ -84,33 +81,30 @@ form_ec.on("submit", function (e) {
         data: serializedData,
         dataType: "json",
         success: function (response) {
-
-            if (response.type == 'error') {
-                console.log(response);
+            if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
                 return;
             }
-
-            if (response.type == 'warning') {
-                console.log(response);
+            if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
                 return;
             }
-
-            if (response.type == 'success') {
-                console.log(response);
+            if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
-                preencherTabelaEntradas(response.entradas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
 
+                // Recarrega entradas e produtos
+                fetchEntradas();
+                fetchProdutos();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro no AJAX:", error);
+            exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
         }
     });
 });
 
+// Cadastro de saídas
 const form_sc = $("#saida-cadastro");
 form_sc.on("submit", function (e) {
     e.preventDefault();
@@ -123,33 +117,30 @@ form_sc.on("submit", function (e) {
         data: serializedData,
         dataType: "json",
         success: function (response) {
-
-            if (response.type == 'error') {
-                console.log(response);
+            if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
                 return;
             }
-
-            if (response.type == 'warning') {
-                console.log(response);
+            if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
                 return;
             }
-
-            if (response.type == 'success') {
-                console.log(response);
+            if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
-                preencherTabelaSaidas(response.saidas, response.produtos);
-                preencherTabelaProdutos(response.produtos);
-                produtos = response.produtos;
-                mostrarPagina(paginaAtual);
-                return;
-            }
 
+                // Recarrega saídas e produtos
+                fetchSaidas();
+                fetchProdutos();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro no AJAX:", error);
+            exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
         }
     });
 });
 
+// Cadastro de clientes
 const form_cadastro_clientes = $("#cadastro-clientes");
 form_cadastro_clientes.on("submit", function (e) {
     e.preventDefault();
@@ -162,32 +153,29 @@ form_cadastro_clientes.on("submit", function (e) {
         data: serializedData,
         dataType: "json",
         success: function (response) {
-
-            if (response.type == 'error') {
-                console.log(response);
+            if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
                 return;
             }
-
-            if (response.type == 'warning') {
-                console.log(response);
+            if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
                 return;
             }
-
-            if (response.type == 'success') {
-                console.log(response);
+            if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
-                clientes = response.clientes;
-                mostrarPaginaClientes(paginaAtualClientes);
-                return;
-            }
 
+                // Recarrega os clientes dinamicamente
+                fetchClientes();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro no AJAX:", error);
+            exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
         }
     });
 });
 
-
+// Cadastro de fornecedores
 const form_cadastro_fornecedores = $("#formAdicionarFornecedor");
 form_cadastro_fornecedores.on("submit", function (e) {
     e.preventDefault();
@@ -200,27 +188,24 @@ form_cadastro_fornecedores.on("submit", function (e) {
         data: serializedData,
         dataType: "json",
         success: function (response) {
-
-            if (response.type == 'error') {
-                console.log(response);
+            if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
                 return;
             }
-
-            if (response.type == 'warning') {
-                console.log(response);
+            if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
                 return;
             }
-
-            if (response.type == 'success') {
-                console.log(response);
+            if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
-                fornecedores = response.fornecedores;
-                mostrarPaginaFornecedores(paginaAtualFornecedores);
-                return;
-            }
 
+                // Recarrega os fornecedores dinamicamente
+                fetchFornecedores();
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Erro no AJAX:", error);
+            exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
         }
     });
 });
