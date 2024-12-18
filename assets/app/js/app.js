@@ -893,13 +893,11 @@ function ordenarTabela(coluna, idSeta) {
         }
     });
 
-    preencherTabelaProdutos(produtosOrdenados);
-    atualizarPaginacao();
+    mostrarPagina(1, produtosOrdenados);
 }
 
 document.getElementById("ordenarCodigo").addEventListener("click", () => ordenarTabela("id", "setaCodigo"));
 document.getElementById("ordenarNome").addEventListener("click", () => ordenarTabela("nome", "setaNome"));
-document.getElementById("ordenarDescricao").addEventListener("click", () => ordenarTabela("descricao", "setaDescricao"));
 document.getElementById("ordenarPreco").addEventListener("click", () => ordenarTabela("preco", "setaPreco"));
 document.getElementById("ordenarQuantidade").addEventListener("click", () => ordenarTabela("quantidade", "setaQuantidade"));
 

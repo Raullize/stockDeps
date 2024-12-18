@@ -43,7 +43,6 @@ function preencherTabelaFornecedores(fornecedoresPaginados) {
     fornecedoresPaginados.forEach(fornecedor => {
         const linha = document.createElement("tr");
         linha.innerHTML = `
-            <td>${fornecedor.id}</td>
             <td>${fornecedor.nome}</td>
             <td>${fornecedor.cnpj}</td>
             <td>${fornecedor.email}</td>
@@ -283,15 +282,8 @@ function ordenarTabelaFornecedores(coluna, idSeta) {
 }
 
 // Adicionando eventos de clique para ordenar as colunas de fornecedores
-document.getElementById("ordenarIdFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("id", "setaIdFornecedor"));
+
 document.getElementById("ordenarNomeFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("nome", "setaNomeFornecedor"));
-document.getElementById("ordenarCnpjFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("cnpj", "setaCnpjFornecedor"));
-document.getElementById("ordenarEmailFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("email", "setaEmailFornecedor"));
-document.getElementById("ordenarTelefoneFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("telefone", "setaTelefoneFornecedor"));
-document.getElementById("ordenarEnderecoFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("endereco", "setaEnderecoFornecedor"));
-document.getElementById("ordenarMunicipioFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("municipio", "setaMunicipioFornecedor"));
-document.getElementById("ordenarCepFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("cep", "setaCepFornecedor"));
-document.getElementById("ordenarUfFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("uf", "setaUfFornecedor"));
 
 function formatarCNPJ(event) {
     let cnpj = event.target.value;

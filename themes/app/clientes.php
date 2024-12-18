@@ -25,7 +25,6 @@ $this->layout("_theme");
                 <table id="tabelaClientes" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th id="ordenarCodigoCliente">ID <span class="seta" id="setaCodigoCliente">⬍</span></th>
                             <th id="ordenarNomeCliente">Nome <span class="seta" id="setaNomeCliente">⬍</span></th>
                             <th id="ordenarCpfCliente">CPF</th>
                             <th id="ordenarCelularCliente">Celular</th>

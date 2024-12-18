@@ -57,7 +57,6 @@ function preencherTabelaClientes(clientesPaginados) {
     clientesPaginados.forEach(cliente => {
         const linha = document.createElement("tr");
         linha.innerHTML = `
-            <td>${cliente.id}</td>
             <td>${cliente.nome}</td>
             <td>${cliente.cpf}</td>
             <td>${cliente.celular}</td>
@@ -253,6 +252,5 @@ function ordenarTabelaClientes(coluna, idSeta) {
     mostrarPaginaClientes(1, clientesOrdenados);
 }
 
-// Adicionando eventos de clique para ordenar as colunas
-document.getElementById("ordenarCodigoCliente").addEventListener("click", () => ordenarTabelaClientes("id", "setaCodigoCliente"));
+
 document.getElementById("ordenarNomeCliente").addEventListener("click", () => ordenarTabelaClientes("nome", "setaNomeCliente"));
