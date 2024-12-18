@@ -39,10 +39,10 @@ $this->layout("_theme");
                         <tr>
                             <th id="ordenarCodigo">Código <span class="seta" id="setaCodigo">⬍</span></th>
                             <th id="ordenarNome">Nome <span class="seta" id="setaNome">⬍</span></th>
-                            <th id="ordenarDescricao">Descrição <span class="seta" id="setaDescricao">⬍</span></th>
+                            <th id="ordenarDescricao">Descrição</th>
                             <th id="ordenarPreco">Preço <span class="seta" id="setaPreco">⬍</span></th>
                             <th id="ordenarQuantidade">Quantidade <span class="seta" id="setaQuantidade">⬍</span></th>
-                            <th id="ordenarQuantidade">Unidade <span class="seta" id="setaQuantidade">⬍</span></th>
+                            <th id="ordenarQuantidade">Unidade</th>
                             <th>Status</th>
                             <th class="text-center" colspan="2">Ações</th>
                         </tr>

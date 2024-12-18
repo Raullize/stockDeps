@@ -24,15 +24,14 @@ $this->layout("_theme");
                 <table id="tabelaFornecedores" class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th id="ordenarIdFornecedor">ID <span class="seta" id="setaIdFornecedor">⬍</span></th>
                             <th id="ordenarNomeFornecedor">Nome <span class="seta" id="setaNomeFornecedor">⬍</span></th>
-                            <th id="ordenarCnpjFornecedor">CNPJ <span class="seta" id="setaCnpjFornecedor">⬍</span></th>
-                            <th id="ordenarEmailFornecedor">Email <span class="seta" id="setaEmailFornecedor">⬍</span></th>
-                            <th id="ordenarTelefoneFornecedor">Telefone <span class="seta" id="setaTelefoneFornecedor">⬍</span></th>
-                            <th id="ordenarEnderecoFornecedor">Endereço <span class="seta" id="setaEnderecoFornecedor">⬍</span></th>
-                            <th id="ordenarMunicipioFornecedor">Município <span class="seta" id="setaMunicipioFornecedor">⬍</span></th>
-                            <th id="ordenarCepFornecedor">CEP <span class="seta" id="setaCepFornecedor">⬍</span></th>
-                            <th id="ordenarUfFornecedor">UF <span class="seta" id="setaUfFornecedor">⬍</span></th>
+                            <th id="ordenarCnpjFornecedor">CNPJ</th>
+                            <th id="ordenarEmailFornecedor">Email</th>
+                            <th id="ordenarTelefoneFornecedor">Telefone</th>
+                            <th id="ordenarEnderecoFornecedor">Endereço</th>
+                            <th id="ordenarMunicipioFornecedor">Município</th>
+                            <th id="ordenarCepFornecedor">CEP</th>
+                            <th id="ordenarUfFornecedor">UF</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
