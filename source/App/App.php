@@ -150,6 +150,8 @@ class App
                     "categoria" => $data["categoria"],
                     "preco" => $precoFloat,
                     "descricao" => $data["descricao"],
+                    "unidade" => $data["unidade"],
+                    "codigo" => $data["codigo"],
                     "message" => "Produto cadastrado com sucesso!",
                     "type" => "success"
                 ];

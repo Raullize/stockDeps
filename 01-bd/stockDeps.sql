@@ -23,7 +23,7 @@ CREATE TABLE `produtos` (
     `quantidade` int(11) NOT NULL DEFAULT 0,
     `imagem` varchar(255) DEFAULT NULL,
     `unidade_medida` varchar(50) NOT NULL,
-    `codigo_produto` varchar(50) NOT NULL, -- UNIQUE
+    `codigo_produto` varchar(50) NOT NULL UNIQUE,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`),
