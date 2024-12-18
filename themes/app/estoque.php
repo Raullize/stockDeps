@@ -103,12 +103,12 @@ $this->layout("_theme");
                         <div class="mb-3">
                             <label for="unidadeProdutoAdicionar" class="form-label">Unidade de Medida</label>
                             <select name="unidade" class="form-control" id="unidadeProdutoAdicionar">
-                                <option value="kg">Kilograma (kg)</option>
-                                <option value="g">Grama (g)</option>
-                                <option value="l">Litro (l)</option>
-                                <option value="ml">Mililitro (ml)</option>
-                                <option value="pacote">Pacote</option>
-                                <option value="un">Unidade (un)</option>
+                                <option value="KG">Kilograma (kg)</option>
+                                <option value="G">Grama (g)</option>
+                                <option value="L">Litro (l)</option>
+                                <option value="ML">Mililitro (ml)</option>
+                                <option value="PACOTE">Pacote</option>
+                                <option value="UN">Unidade (un)</option>
                             </select>
                         </div>
                         <div class="mb-3">

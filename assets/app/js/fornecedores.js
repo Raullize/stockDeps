@@ -135,7 +135,6 @@ function buscarFornecedor(fornecedores) {
     });
 }
 
-
 function editarFornecedor(id) {
     if (!fornecedores || fornecedores.length === 0) {
         console.error("O array de fornecedores está vazio ou não foi carregado.");

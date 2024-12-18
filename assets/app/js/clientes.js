@@ -250,8 +250,7 @@ function ordenarTabelaClientes(coluna, idSeta) {
         }
     });
 
-    preencherTabelaClientes(clientesOrdenados); // Atualiza a tabela com os dados ordenados
-    atualizarPaginacaoClientes(clientesOrdenados); // Atualiza a paginação
+    mostrarPaginaClientes(1, clientesOrdenados);
 }
 
 // Adicionando eventos de clique para ordenar as colunas
