@@ -74,12 +74,19 @@ function preencherTabelaClientes(clientesPaginados) {
 
 function mostrarPaginaClientes(pagina, listaClientes = clientes) {
     paginaAtualClientes = pagina; // Atualizar a página atual
-    const inicio = (pagina - 1) * itensPorPaginaClientes;  // Cálculo do início da página
-    const fim = inicio + itensPorPaginaClientes;           // Cálculo do fim da página
+    const inicio = (pagina - 1) * itensPorPaginaClientes; // Cálculo do início da página
+    const fim = inicio + itensPorPaginaClientes;
+
+    // Ordenar apenas a lista global, caso não seja fornecida uma ordenada
+    if (listaClientes === clientes) {
+        listaClientes.sort((a, b) => b.id - a.id);
+    }
+
     const clientesPaginados = listaClientes.slice(inicio, fim); // Pegando apenas os clientes da página atual
-    preencherTabelaClientes(clientesPaginados);           // Preenchendo a tabela com os clientes paginados
-    atualizarPaginacaoClientes(listaClientes);            // Atualizando a paginação
+    preencherTabelaClientes(clientesPaginados); // Preenchendo a tabela com os clientes paginados
+    atualizarPaginacaoClientes(listaClientes); // Atualizando a paginação
 }
+
 
 
 function atualizarPaginacaoClientes(listaClientes = clientes) {
@@ -161,6 +168,8 @@ function abrirModalHistorico(id) {
     const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoCliente"));
 
     document.getElementById("historicoCliente").textContent = `Carregando histórico do cliente ID ${id}...`;
+
+    saidas.sort((a, b) => b.id - a.id);
 
     const saidasCliente = saidas.filter(saida => saida.idClientes === id);
 
@@ -249,8 +258,9 @@ function ordenarTabelaClientes(coluna, idSeta) {
         }
     });
 
-    mostrarPaginaClientes(1, clientesOrdenados);
+    mostrarPaginaClientes(1, clientesOrdenados); // Atualiza a tabela com os dados ordenados
 }
+
 
 
 document.getElementById("ordenarNomeCliente").addEventListener("click", () => ordenarTabelaClientes("nome", "setaNomeCliente"));

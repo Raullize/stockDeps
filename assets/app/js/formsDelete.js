@@ -1,4 +1,3 @@
-// Função genérica para submissão de formulários de exclusão
 function handleDeleteFormSubmission(formSelector, url, callback) {
     const form = $(formSelector);
     form.on("submit", function (e) {
@@ -17,22 +16,19 @@ function handleDeleteFormSubmission(formSelector, url, callback) {
                     return;
                 }
 
-                if (response.type === 'warning') {
-                    exibirMensagemTemporariaAviso(response.message);
-                    return;
-                }
-
                 if (response.type === 'success') {
                     exibirMensagemTemporariaSucesso(response.message);
-                    
-                    // Fechar o modal de exclusão, se existir
-                    const modalExcluir = bootstrap.Modal.getInstance(document.querySelector('.modal.show'));
-                    if (modalExcluir) modalExcluir.hide();
 
-                    // Executa callback para atualizar dados
+                    // Fechar o modal de exclusão, se estiver aberto
+                    const modalExcluir = bootstrap.Modal.getInstance(document.querySelector('.modal.show'));
+                    if (modalExcluir) {
+                        modalExcluir.hide(); // Fecha o modal programaticamente
+                    }
+
+                    // Atualizar a tabela e lista local
                     if (callback) callback(response);
 
-                    // Atualiza a tabela de produtos diretamente após exclusão
+                    // Recarregar a tabela de produtos para garantir sincronia
                     atualizarProdutos(); 
                 }
             },
@@ -44,37 +40,98 @@ function handleDeleteFormSubmission(formSelector, url, callback) {
     });
 }
 
-// Função para atualizar tabelas e dados globais
 function atualizarDadosGlobais(response) {
     if (response.produtos) {
         produtos = response.produtos;
-        preencherTabelaProdutos(produtos);
-        mostrarPagina(1, produtos); // Sempre mostrar a primeira página atualizada dos produtos
+        if (!produtos || produtos.length === 0) {
+            limparTabelaProdutos();
+        } else {
+            preencherTabelaProdutos(produtos);
+            mostrarPagina(1, produtos);
+        }
     }
+
     if (response.entradas) {
         entradas = response.entradas;
-        entradasFiltradas = [...entradas]; // Atualiza a lista filtrada de entradas
-        mostrarPaginaEntradas(1); // Reinicia na primeira página
+        entradasFiltradas = [...entradas];
+        if (!entradas || entradas.length === 0) {
+            limparTabelaEntradas();
+        } else {
+            mostrarPaginaEntradas(1);
+        }
     }
+
     if (response.saidas) {
         saidas = response.saidas;
-        saidasFiltradas = [...saidas]; // Atualiza a lista filtrada de saídas
-        mostrarPaginaSaidas(1); // Reinicia na primeira página
+        saidasFiltradas = [...saidas];
+        if (!saidas || saidas.length === 0) {
+            limparTabelaSaidas();
+        } else {
+            mostrarPaginaSaidas(1);
+        }
     }
 }
 
-// Função para recarregar os produtos
 async function atualizarProdutos() {
     try {
-        const response = await fetch(`${BASE_URL}/getProdutos`); // Recarrega os produtos via AJAX
-        produtos = await response.json();
-        mostrarPagina(1, produtos); // Atualiza a tabela de produtos para a primeira página
+        const response = await fetch(`${BASE_URL}/getProdutos`);
+        const produtosAtualizados = await response.json();
+
+        // Atualiza a lista global e a tabela
+        produtos = produtosAtualizados;
+        preencherTabelaProdutos(produtos); // Atualiza a tabela com a lista
     } catch (error) {
         console.error("Erro ao atualizar a lista de produtos:", error);
         exibirMensagemTemporariaErro("Erro ao atualizar a lista de produtos.");
     }
 }
 
+async function atualizarEntradas() {
+    try {
+        const response = await fetch(`${BASE_URL}/getEntradas`);
+        const entradasAtualizadas = await response.json();
+
+        // Verifica se o retorno é válido
+        entradas = Array.isArray(entradasAtualizadas) ? entradasAtualizadas : [];
+        entradasFiltradas = [...entradas];
+
+        if (entradas.length === 0) {
+            limparTabelaEntradas(); // Limpa a tabela e exibe mensagem de vazio
+        } else {
+            mostrarPaginaEntradas(1); // Exibe a primeira página
+        }
+    } catch (error) {
+        console.error("Erro ao atualizar a lista de entradas:", error);
+        exibirMensagemTemporariaErro("Erro ao atualizar a lista de entradas.");
+    }
+}
+
+async function atualizarSaidas() {
+    try {
+        const response = await fetch(`${BASE_URL}/getSaidas`);
+        const saidasAtualizadas = await response.json();
+
+        // Verifica se o retorno é válido
+        saidas = Array.isArray(saidasAtualizadas) ? saidasAtualizadas : [];
+        saidasFiltradas = [...saidas];
+
+        if (saidas.length === 0) {
+            limparTabelaSaidas(); // Limpa a tabela e exibe mensagem de vazio
+        } else {
+            mostrarPaginaSaidas(1); // Exibe a primeira página
+        }
+    } catch (error) {
+        console.error("Erro ao atualizar a lista de saídas:", error);
+        exibirMensagemTemporariaErro("Erro ao atualizar a lista de saídas.");
+    }
+}
+
+function limparTabelaProdutos() {
+    const tabela = document.querySelector("#tabelaProdutos tbody");
+    if (tabela) {
+        tabela.innerHTML = ''; 
+    }
+}
 
 function atualizarTabelaClientes(response) {
     clientes = response.clientes || []; 
@@ -87,9 +144,54 @@ function atualizarTabelaFornecedores(response) {
     mostrarPaginaFornecedores(1, fornecedores); 
 }
 
-handleDeleteFormSubmission("#produto-excluir", `${BASE_URL}/estoque-pd`, atualizarDadosGlobais);
+function removerProdutoLocalmente(idProduto) {
+    produtos = produtos.filter(produto => produto.codigo_produto !== idProduto);
+    preencherTabelaProdutos(produtos);
+}
+
+function removerEntradaLocalmente(idEntrada) {
+    entradas = entradas.filter(entrada => entrada.id !== idEntrada);
+    entradasFiltradas = [...entradas];
+    if (entradas.length === 0) {
+        limparTabelaEntradas();
+    } else {
+        mostrarPaginaEntradas(1);
+    }
+}
+
+function removerSaidaLocalmente(idSaida) {
+    saidas = saidas.filter(saida => saida.id !== idSaida);
+    saidasFiltradas = [...saidas];
+    if (saidas.length === 0) {
+        limparTabelaSaidas();
+    } else {
+        mostrarPaginaSaidas(1);
+    }
+}
+
+function limparTabelaEntradas() {
+    const tabela = document.querySelector("#tabelaEntradas tbody");
+    tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma entrada encontrada.</td></tr>`;
+}
+
+function limparTabelaSaidas() {
+    const tabela = document.querySelector("#tabelaSaidas tbody");
+    tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma saída encontrada.</td></tr>`;
+}
+
+handleDeleteFormSubmission("#produto-excluir", `${BASE_URL}/estoque-pd`, function (response) {
+    if (response.produtoExcluidoId) {
+        // Atualiza localmente removendo o produto
+        removerProdutoLocalmente(response.produtoExcluidoId);
+    }
+});
 handleDeleteFormSubmission("#categoria-excluir", `${BASE_URL}/estoque-cd`, atualizarDadosGlobais);
-handleDeleteFormSubmission("#entrada-excluir", `${BASE_URL}/estoque-ed`, atualizarDadosGlobais);
-handleDeleteFormSubmission("#saida-excluir", `${BASE_URL}/estoque-sd`, atualizarDadosGlobais);
+handleDeleteFormSubmission("#entrada-excluir", `${BASE_URL}/estoque-ed`, function () {
+    atualizarEntradas(); // Recarrega as entradas do servidor
+});
+
+handleDeleteFormSubmission("#saida-excluir", `${BASE_URL}/estoque-sd`, function () {
+    atualizarSaidas(); // Recarrega as saídas do servidor
+});
 handleDeleteFormSubmission("#cliente-excluir", `${BASE_URL}/deletar-clientes`, atualizarTabelaClientes);
 handleDeleteFormSubmission("#fornecedor-excluir", `${BASE_URL}/deletar-fornecedores`, atualizarTabelaFornecedores);
