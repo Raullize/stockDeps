@@ -68,11 +68,16 @@ function mostrarPaginaFornecedores(pagina, listaFornecedores = fornecedores) {
     paginaAtualFornecedores = pagina;
     const inicio = (pagina - 1) * itensPorPaginaFornecedores;
     const fim = inicio + itensPorPaginaFornecedores;
+
+    // Apenas ordenar por ID decrescente se for a lista global original
+    if (listaFornecedores === fornecedores) {
+        listaFornecedores.sort((a, b) => b.id - a.id);
+    }
+
     const fornecedoresPaginados = listaFornecedores.slice(inicio, fim);
     preencherTabelaFornecedores(fornecedoresPaginados);
     atualizarPaginacaoFornecedores(listaFornecedores);
 }
-
 // Função para atualizar os botões de paginação
 function atualizarPaginacaoFornecedores(listaFornecedores = fornecedores) {
     const totalPaginas = Math.ceil(listaFornecedores.length / itensPorPaginaFornecedores);
@@ -200,7 +205,7 @@ function abrirModalHistorico(id) {
     const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoFornecedor"));
 
     document.getElementById("historicoFornecedor").textContent = `Carregando histórico do fornecedor ID ${id}...`;
-
+    entradas.sort((a, b) => b.id - a.id);
     const entradasFornecedor = entradas.filter(entrada => entrada.idFornecedor === id);
 
     let htmlHistorico = '';

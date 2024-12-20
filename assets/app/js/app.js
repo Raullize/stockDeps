@@ -153,11 +153,24 @@ function renderizarTabela() {
 function mostrarPaginaEntradas(pagina) {
     const inicio = (pagina - 1) * itensPorPagina;
     const fim = inicio + itensPorPagina;
+
+    // Atualizar e ordenar os dados
+    entradasFiltradas = [...entradas].sort((a, b) => b.id - a.id);
+
+    // Paginar os resultados
     const entradasPagina = entradasFiltradas.slice(inicio, fim);
 
+    // Selecionar a tabela e limpar seu conteúdo
     const tabela = document.querySelector("#tabelaEntradas tbody");
-    tabela.innerHTML = ''; // Limpa a tabela
+    tabela.innerHTML = '';
 
+    // Preencher a tabela ou exibir mensagem caso não haja entradas
+    if (entradasPagina.length === 0) {
+        tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma entrada encontrada.</td></tr>`;
+        return;
+    }
+
+    // Preencher a tabela com as entradas paginadas
     entradasPagina.forEach(entrada => {
         const nomeFornecedor = fornecedores.find(f => f.id === entrada.idFornecedor)?.nome || 'Fornecedor não encontrado';
         const nomeProduto = produtos.find(p => p.id === entrada.idProdutos)?.nome || 'Produto não encontrado';
@@ -177,43 +190,37 @@ function mostrarPaginaEntradas(pagina) {
         tabela.insertAdjacentHTML('beforeend', row);
     });
 
+    // Configurar a paginação
     configurarPaginacao(entradasFiltradas.length, mostrarPaginaEntradas, '#paginacaoEntradas', pagina);
 }
 
 function mostrarPaginaSaidas(pagina) {
     const inicio = (pagina - 1) * itensPorPagina;
     const fim = inicio + itensPorPagina;
+
+    // Atualizar e ordenar os dados
+    saidasFiltradas = [...saidas].sort((a, b) => b.id - a.id);
+
+    // Paginar os resultados
     const saidasPagina = saidasFiltradas.slice(inicio, fim);
 
+    // Selecionar a tabela e limpar seu conteúdo
     const tabela = document.querySelector("#tabelaSaidas tbody");
-    tabela.innerHTML = ''; // Limpa a tabela
+    tabela.innerHTML = '';
 
-    
+    // Preencher a tabela ou exibir mensagem caso não haja saídas
+    if (saidasPagina.length === 0) {
+        tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma saída encontrada.</td></tr>`;
+        return;
+    }
 
+    // Preencher a tabela com as saídas paginadas
     saidasPagina.forEach(saida => {
         const nomeProduto = produtos.find(p => p.id === saida.idProdutos)?.nome || 'Produto não encontrado';
-        // Buscar cliente e produto
-        if (clientes) {
-            const nomeCliente = clientes.find(c => c.id === saida.idClientes)?.nome || 'Cliente não encontrado';
-            const row = `
-            <tr>
-                <td>${nomeCliente}</td>
-                <td>${nomeProduto}</td>
-                <td>${saida.quantidade}</td>
-                <td>${saida.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                <td>${formatarData(saida.created_at)}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm me-2" onclick="editarSaida(${saida.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
-                </td>
-            </tr>`;
-            tabela.insertAdjacentHTML('beforeend', row);
+        const nomeCliente = clientes.find(c => c.id === saida.idClientes)?.nome || 'Cliente não encontrado';
 
-        } else {
-            const nomeCliente = 'Cliente não encontrado';
-            const row = `
+        const row = `
             <tr>
-                <td>${saida.id}</td>
                 <td>${nomeCliente}</td>
                 <td>${nomeProduto}</td>
                 <td>${saida.quantidade}</td>
@@ -224,10 +231,10 @@ function mostrarPaginaSaidas(pagina) {
                     <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
                 </td>
             </tr>`;
-            tabela.insertAdjacentHTML('beforeend', row);
-        }
+        tabela.insertAdjacentHTML('beforeend', row);
     });
 
+    // Configurar a paginação
     configurarPaginacao(saidasFiltradas.length, mostrarPaginaSaidas, '#paginacaoSaidas', pagina);
 }
 
@@ -417,11 +424,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function preencherTabelaProdutos(produtosPaginados) {
     const corpoTabela = document.getElementById("corpoTabela");
-    corpoTabela.innerHTML = '';
+    corpoTabela.innerHTML = ''; // Limpa a tabela
+
+    if (!produtosPaginados || produtosPaginados.length === 0) {
+        return; // Se não há produtos, apenas limpa a tabela
+    }
 
     produtosPaginados.forEach(produto => {
         const tr = document.createElement('tr');
-        const { codigo_produto, nome, descricao, preco, quantidade, unidade_medida} = produto;
+        const { codigo_produto, nome, descricao, preco, quantidade, unidade_medida } = produto;
 
         const precoFormatado = preco.toLocaleString('pt-BR', {
             style: 'currency',
@@ -429,7 +440,7 @@ function preencherTabelaProdutos(produtosPaginados) {
         });
 
         const status = quantidade > 0 ? "Disponível" : "Indisponível";
-        const dados = [codigo_produto, nome, descricao, precoFormatado, quantidade,unidade_medida, status];
+        const dados = [codigo_produto, nome, descricao, precoFormatado, quantidade, unidade_medida, status];
 
         dados.forEach(dado => {
             const td = document.createElement('td');
@@ -437,22 +448,28 @@ function preencherTabelaProdutos(produtosPaginados) {
             tr.appendChild(td);
         });
 
-        tr.appendChild(createButtonGroup(produto));
+        tr.appendChild(createButtonGroup(produto)); // Adiciona os botões de ação
         corpoTabela.appendChild(tr);
     });
 }
 
-function mostrarPagina(pagina, produtos) {
+function mostrarPagina(pagina, listaProdutos = produtos) {
     paginaAtual = pagina;
 
     const inicio = (pagina - 1) * itensPorPagina;
     const fim = pagina * itensPorPagina;
 
-    const produtosNaPagina = produtos.slice(inicio, fim);
-    preencherTabelaProdutos(produtosNaPagina);
+    // Ordenar apenas a lista global, caso não seja fornecida uma ordenada
+    if (listaProdutos === produtos) {
+        listaProdutos.sort((a, b) => b.id - a.id);
+    }
+
+    const produtosNaPagina = listaProdutos.slice(inicio, fim); // Pegando os produtos da página
+    preencherTabelaProdutos(produtosNaPagina); // Preenchendo a tabela com os produtos paginados
 
     atualizarPaginacao(produtos.length, paginaAtual);
 }
+
 
 function atualizarPaginacao(totalProdutos, paginaAtual) {
     const totalPaginas = Math.ceil(totalProdutos / itensPorPagina);
@@ -882,11 +899,13 @@ function ordenarTabela(coluna, idSeta) {
         let valorA = a[coluna];
         let valorB = b[coluna];
 
+        // Se for uma string, converter para minúscula para comparar corretamente
         if (typeof valorA === "string") {
             valorA = valorA.toLowerCase();
             valorB = valorB.toLowerCase();
         }
 
+        // Comparar de acordo com a ordem crescente ou decrescente
         if (ordemAtual.crescente) {
             return valorA > valorB ? 1 : valorA < valorB ? -1 : 0;
         } else {
@@ -894,8 +913,9 @@ function ordenarTabela(coluna, idSeta) {
         }
     });
 
-    mostrarPagina(1, produtosOrdenados);
+    mostrarPagina(1, produtosOrdenados); // Atualiza a tabela com os dados ordenados
 }
+
 
 document.getElementById("ordenarCodigo").addEventListener("click", () => ordenarTabela("id", "setaCodigo"));
 document.getElementById("ordenarNome").addEventListener("click", () => ordenarTabela("nome", "setaNome"));
