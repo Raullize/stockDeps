@@ -531,13 +531,13 @@ class App
                 return;
             }
 
-            /* $newpreco = $data["preco"];
-            $newpreco = str_replace('R$', '', $newpreco);
-            $newpreco = str_replace('.', '', $newpreco);
-            $newpreco = str_replace(',', '.', $newpreco);
-            $precoFloat = (float)$newpreco;*/
-
             $entrada = new Entradas();
+            $produto = new Produtos();
+
+            $entradaDados = $entrada->selectInfoEntradaById($data["idEntradaEditar"]);
+
+            $produto->subtraiQuantidadeProdutos($entradaDados->idProdutos, $entradaDados->quantidade);
+
             $entradaAtualizar = $entrada->update(
                 $data["idEntradaEditar"],
                 $data["quantidade"],
@@ -545,6 +545,8 @@ class App
             );
 
             if ($entradaAtualizar) {
+
+                $produto->somaQuantidadeProdutos($entradaDados->idProdutos, $data["quantidade"]);
 
                 $json = [
                     "entradas" => $entrada->selectAll(),
@@ -715,24 +717,13 @@ class App
                 return;
             }
 
-            $newpreco = $data["preco"];
-
-            // Remove completamente o símbolo de moeda 'R$'
-            $newpreco = str_replace('R$', '', $newpreco);
-
-            // Remove espaços extras (inclusive invisíveis) no início e no final
-            $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
-
-            // Remove os pontos (separadores de milhar)
-            $newpreco = str_replace('.', '', $newpreco);
-
-            // Substitui a vírgula decimal por um ponto
-            $newpreco = str_replace(',', '.', $newpreco);
-
-            // Converte para float
-            $precoFloat = (float)$newpreco;
-
             $saida = new Saidas();
+            $produto = new Produtos();
+
+            $saidaDados = $saida->selectInfoSaidaById($data["idEditarSaida"]);
+
+            $produto->somaQuantidadeProdutos($saidaDados->idProdutos, $saidaDados->quantidade);
+
             $saidaUpdate = $saida->update(
                 $data["idEditarSaida"],
                 $data["quantidade"],
@@ -740,6 +731,8 @@ class App
             );
 
             if ($saidaUpdate) {
+
+                $produto->subtraiQuantidadeProdutos($saidaDados->idProdutos, $data["quantidade"]);
 
                 $json = [
                     "saidas" => $saida->selectAll(),
@@ -1340,7 +1333,7 @@ class App
                 'nome' => (string)($prod->xProd ?? ''),
                 'descricao' => (string)($prod->xProd ?? ''),
                 'quantidade' => (float)($prod->qCom ?? 0),
-                'preco' => 0, // Sobrescreve o preço para sempre ser 0
+                'preco' => (float)($prod->vUnCom ?? 0),
                 'unidade_medida' => (string)($prod->uCom ?? ''),
             ];
     
@@ -1434,7 +1427,7 @@ class App
                 'idFornecedor' => $fornecedorId,
                 'idProdutos' => $produtoId,
                 'quantidade' => $produto['quantidade'],
-                'preco' => 0, // Sobrescreve o preço da entrada para 0
+                'preco' => $produto['preco'],
             ]);
         }
 
@@ -1445,9 +1438,5 @@ class App
         echo json_encode(['error' => "Erro ao processar a nota: " . $e->getMessage()]);
     }
 }
-
-    
-
-    
 
 }
