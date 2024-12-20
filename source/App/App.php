@@ -235,7 +235,8 @@ class App
                 $data["nome"],
                 $data["descricao"],
                 $data["categoria"],
-                $precoFloat
+                $precoFloat,
+                $data["unidade"]
             );
 
             if ($produtoAtualizado) {

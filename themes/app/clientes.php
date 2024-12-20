@@ -147,7 +147,7 @@ $this->layout("_theme");
         </div>
     </div>
 
-    <script src="<?= url('assets/app/js/clientes.js') ?>" defer></script>
+    <script src="<?= url('assets/app/js/clientes.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>

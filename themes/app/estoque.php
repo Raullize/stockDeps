@@ -164,12 +164,12 @@ $this->layout("_theme");
                         <div class="mb-3">
                             <label for="unidadeProdutoEditar" class="form-label">Unidade de Medida</label>
                             <select name="unidade" class="form-control" id="unidadeProdutoEditar">
-                                <option value="kg">Kilograma (kg)</option>
-                                <option value="g">Grama (g)</option>
-                                <option value="l">Litro (l)</option>
-                                <option value="ml">Mililitro (ml)</option>
-                                <option value="pacote">Pacote</option>
-                                <option value="un">Unidade (un)</option>
+                                <option value="KG">Kilograma (kg)</option>
+                                <option value="G">Grama (g)</option>
+                                <option value="L">Litro (l)</option>
+                                <option value="ML">Mililitro (ml)</option>
+                                <option value="PACOTE">Pacote</option>
+                                <option value="UN">Unidade (un)</option>
                             </select>
                         </div>
                         <!-- Campo para adicionar foto do produto -->
@@ -637,9 +637,9 @@ $this->layout("_theme");
         </div>
     </div>
 
-    <script src="<?= url('assets/app/js/app.js') ?>"></script>
+    <script src="<?= url('assets/app/js/app.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>
-    <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
+    <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>" async></script>
 </body>
