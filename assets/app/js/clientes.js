@@ -1,4 +1,4 @@
-const BASE_URL = '/stockDeps';
+const BASE_URL = '/stockDeps/app';
 
 const itensPorPaginaClientes = 8;   // Quantidade de clientes por página
 const maxBotoesPaginacaoClientes = 5;

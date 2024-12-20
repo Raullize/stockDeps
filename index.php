@@ -17,16 +17,16 @@ $route = new Router(CONF_URL_BASE, ":");
  * Web Routes
  */
 $route->namespace("Source\App");
-/**
- * App Routs
- */
-$route->group("/"); // agrupa em /app
+
 
 
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-
+/**
+ * App Routs
+ */
+$route->group("/app"); // agrupa em /app
 
 /* ROTAS PRINCIPAIS DO SISTEMA MODO:GET */
 
@@ -89,13 +89,10 @@ $route->get("/pdf-r-p", "App:relatorioProdutos");
 /* HISTORICO DO CLIENTE */
 $route->post("/historico-cliente", "App:getHistoricoCliente");
 
-
+$route->group(null); // desagrupo do /app
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-
-
-$route->group(null); // desagrupo do /app
 
 /*
  * Erros Routes

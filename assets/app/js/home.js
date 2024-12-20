@@ -1,4 +1,4 @@
-const BASE_URL = '/stockDeps';
+const BASE_URL = '/stockDeps/app';
 
 let produtos = [];
 let entradas = [];
