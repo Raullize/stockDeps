@@ -12,16 +12,19 @@ function handleEditFormSubmission(formSelector, url, callback) {
             dataType: "json",
             success: function (response) {
                 if (response.type === 'error') {
+                    console.log(response);
                     exibirMensagemTemporariaErro(response.message);
                     return;
                 }
 
                 if (response.type === 'warning') {
+                    console.log(response);
                     exibirMensagemTemporariaAviso(response.message);
                     return;
                 }
 
                 if (response.type === 'success') {
+                    console.log(response);
                     exibirMensagemTemporariaSucesso(response.message);
                     if (callback) callback(response); // Executa a lógica adicional passada
                 }

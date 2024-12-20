@@ -765,6 +765,7 @@ function openModal(tipo, produto) {
     const modalId = tipo === 'Editar' ? 'modalEditar' : 'modalExcluir';
 
     if (tipo === 'Editar') {
+        document.getElementById('idProdutoUpdate').value = produto.id;
         document.getElementById('codigoProdutoEditar').value = produto.codigo_produto;
         document.getElementById('nomeProduto').value = produto.nome;
         document.getElementById('descricaoProduto').value = produto.descricao;
