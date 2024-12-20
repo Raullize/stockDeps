@@ -13,23 +13,27 @@ require __DIR__ . "/vendor/autoload.php";
 use CoffeeCode\Router\Router;
 
 $route = new Router(CONF_URL_BASE, ":");
+
+
+$route->namespace("Source\App");
+
 /**
  * Web Routes
  */
-$route->namespace("Source\App");
 
-
-
+$route->get("/", "Web:login");
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+
 
 /**
  * App Routs
  */
+
 $route->group("/app"); // agrupa em /app
 
 /* ROTAS PRINCIPAIS DO SISTEMA MODO:GET */
-
 $route->get("/", "App:inicio");
 $route->get("/estoque", "App:estoque");
 $route->get("/clientes", "App:clientes");
@@ -37,8 +41,6 @@ $route->get("/fornecedores", "App:fornecedores");
 $route->get("/relatorio", "App:relatorio");
 
 /* ROTAS MODO:GET TRATAMENTO DE VARIAVEIS (MIGUEL) */
-$route->get("/login", "App:login");
-
 $route->get("/getProdutos", "App:getProdutos");
 $route->get("/getCategorias", "App:getCategorias");
 $route->get("/getClientes", "App:getClientes");
@@ -53,7 +55,6 @@ $route->post("/processarXmlNota", "App:processarXmlNota");
 
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE ESTOQUE MODO:POST */
-
 $route->post("/estoque-pc", "App:estoquePc");
 $route->post("/estoque-pd", "App:estoquePd");
 $route->post("/estoque-pu", "App:estoquePu");
@@ -70,7 +71,6 @@ $route->post("/estoque-sc", "App:estoqueSc");
 $route->post("/estoque-sd", "App:estoqueSd");
 $route->post("/estoque-su", "App:estoqueSu");
 
-
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE CLIENTES MODO:POST */
 $route->post("/cadastro-clientes", "App:cadastroClientes");
 $route->post("/deletar-clientes", "App:deleteClientes");
@@ -82,7 +82,6 @@ $route->post("/deletar-fornecedores", "App:deleteFornecedores");
 $route->post("/update-fornecedores", "App:updateFornecedores");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AOS RELATORIOS MODO:GET*/
-
 $route->get("/pdf-r-c", "App:relatorioClientes");
 $route->get("/pdf-r-p", "App:relatorioProdutos");
 

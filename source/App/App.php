@@ -11,7 +11,6 @@ use Source\Models\Fornecedores;
 use Source\Models\Produtos;
 use Source\Models\Saidas;
 use Source\Models\EstoqueFeatures;
-use PDO;
 
 class App
 {
