@@ -44,44 +44,74 @@ async function fetchFornecedores() {
   preencherFornecedores(fornecedores);
 }
 
+
 async function loadDashboardData() {
-  await fetchProdutos();
-  await fetchEntradas();
-  await fetchSaidas();
-  await fetchCategorias();
-  await fetchClientes();
-  await fetchFornecedores();
-  atualizarCaixas(produtos, entradas, saidas);
-  atualizarProdutosMaisVendidos();
+  try {
+    await Promise.all([
+      fetchAndUpdateData('produtos', atualizarProdutos),
+      fetchAndUpdateData('entradas', atualizarEntradas),
+      fetchAndUpdateData('saidas', atualizarSaidas),
+      fetchAndUpdateData('clientes', atualizarClientes),
+      fetchAndUpdateData('fornecedores', atualizarFornecedores),
+      fetchCategorias(),
+    ]);
+    atualizarCaixas();
+    atualizarProdutosMaisVendidos();
   atualizarGraficoCategorias(categorias);
+  } catch (error) {
+    console.error('Erro ao carregar os dados do dashboard:', error);
+  }
 }
 
-function preencherClientes(clientes) {
-  const totalClientes = clientes.length || 0; // Garante que será 0 se o array estiver vazio
-  document.getElementById('total-clientes').textContent = totalClientes;
+async function fetchAndUpdateData(resource, updateFunction) {
+  try {
+    const response = await fetch(`${BASE_URL}/get${capitalize(resource)}`);
+    const data = await response.json();
+    updateFunction(data);
+  } catch (error) {
+    console.error(`Erro ao buscar ${resource}:`, error);
+    updateFunction([]); // Atualiza com array vazia em caso de erro
+  }
 }
 
-function preencherFornecedores(fornecedores) {
-  const totalFornecedores = fornecedores.length || 0; // Garante que será 0 se o array estiver vazio
-  document.getElementById('total-fornecedores').textContent = totalFornecedores;
+function atualizarProdutos(data) {
+  produtos = data || [];
+  document.getElementById('total-produtos').textContent = produtos.length || 0;
+  document.getElementById('produtos-estoque').textContent = produtos.filter(p => p.quantidade > 0).length;
+  document.getElementById('estoque-baixo').textContent = produtos.filter(p => p.quantidade > 0 && p.quantidade < 5).length;
+  document.getElementById('produtos-sem-estoque').textContent = produtos.filter(p => p.quantidade === 0).length;
 }
 
+function atualizarEntradas(data) {
+  entradas = data || [];
+  document.getElementById('total-entradas').textContent = entradas.length || 0;
+}
 
-function atualizarCaixas(produtos, entradas, saidas) {
-  const totalProdutos = produtos.length;
-  const produtosEmEstoque = produtos.filter(produto => produto.quantidade > 0).length;
-  const estoqueBaixo = produtos.filter(produto => produto.quantidade > 0 && produto.quantidade < 5).length;
-  const semEstoque = produtos.filter(produto => produto.quantidade === 0).length;
-  const totalEntradas = entradas.length || 0;
-  const totalSaidas = saidas.length || 0;
+function atualizarSaidas(data) {
+  saidas = data || [];
+  document.getElementById('total-saidas').textContent = saidas.length || 0;
+}
 
+function atualizarClientes(data) {
+  clientes = data || [];
+  document.getElementById('total-clientes').textContent = clientes.length || 0;
+}
 
-  document.querySelector(".card-title + h3").textContent = totalProdutos;
-  document.querySelector(".bg-success h3").textContent = produtosEmEstoque;
-  document.querySelector(".bg-warning h3").textContent = estoqueBaixo;
-  document.querySelector(".bg-danger h3").textContent = semEstoque;
-  document.querySelector(".bg-info h3").textContent = totalEntradas;
-  document.querySelector(".bg-light h3").textContent = totalSaidas;
+function atualizarFornecedores(data) {
+  fornecedores = data || [];
+  document.getElementById('total-fornecedores').textContent = fornecedores.length || 0;
+}
+
+function atualizarCaixas() {
+  atualizarProdutos(produtos);
+  atualizarEntradas(entradas);
+  atualizarSaidas(saidas);
+  atualizarClientes(clientes);
+  atualizarFornecedores(fornecedores);
+}
+
+function capitalize(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function atualizarProdutosMaisVendidos() {

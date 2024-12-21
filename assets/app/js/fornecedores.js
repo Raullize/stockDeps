@@ -3,8 +3,11 @@ const BASE_URL = '/stockDeps/app';
 const itensPorPaginaFornecedores = 7;
 const maxBotoesPaginacaoFornecedores = 5;
 let paginaAtualFornecedores = 1;
+
 let fornecedores = [];
 let entradas = [];
+let produtos = [];
+let categorias
 
 
 async function fetchProdutos() {
@@ -26,10 +29,19 @@ async function fetchSaidas() {
     saidas = await response.json(); // Preenche a variável global saídas
 }
 async function fetchFornecedores() {
-    const response = await fetch(`${BASE_URL}/getFornecedores`);
-    fornecedores = await response.json();
-    mostrarPaginaFornecedores(paginaAtualFornecedores);
-    buscarFornecedor(fornecedores); // Inicializa a busca com a lista de fornecedores
+    try {
+        const response = await fetch(`${BASE_URL}/getFornecedores`);
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar fornecedores: ${response.statusText}`);
+        }
+        fornecedores = await response.json();
+        mostrarPaginaFornecedores(paginaAtualFornecedores); // Exibe a página atual
+        buscarFornecedor(fornecedores); // Configura a busca
+    } catch (error) {
+        console.error('Erro em fetchFornecedores:', error);
+        fornecedores = []; // Garante que a tabela será esvaziada em caso de erro
+        mostrarPaginaFornecedores(1, fornecedores);
+    }
 }
 
 async function fetchEntradas() {
@@ -231,13 +243,19 @@ function abrirModalHistorico(id) {
     modalHistorico.show();
 }
 
-function loadAllData() {
-    fetchProdutos();
-    fetchCategorias();
-    fetchClientes();
-    fetchFornecedores();
-    fetchEntradas();
-    fetchSaidas();
+async function loadAllData() {
+    try {
+        await Promise.all([
+            fetchFornecedores(),
+            fetchProdutos(),
+            fetchCategorias(),
+            fetchClientes(),
+            fetchEntradas(),
+            fetchSaidas(),
+        ]);
+    } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -304,3 +322,25 @@ function formatarCNPJ(event) {
     // Atualiza o valor do campo com o CNPJ formatado
     event.target.value = cnpj;
 }
+
+function formatarTelefone(event) {
+    const input = event.target;
+    let valor = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+    if (valor.length > 11) valor = valor.slice(0, 11); // Limita a 11 caracteres
+
+    const tamanhoAnterior = input.dataset.previousLength || 0;
+    input.dataset.previousLength = valor.length;
+
+    if (tamanhoAnterior > valor.length) {
+        input.value = valor; // Não aplica máscara ao apagar
+        return;
+    }
+
+    if (valor.length <= 10) {
+        input.value = valor.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    } else {
+        input.value = valor.replace(/(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+    }
+}
+
+document.getElementById('telefoneFornecedor').addEventListener('input', formatarTelefone);

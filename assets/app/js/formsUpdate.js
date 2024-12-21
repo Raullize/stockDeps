@@ -1,3 +1,4 @@
+
 function handleEditFormSubmission(formSelector, url, callback) {
     const form = $(formSelector);
     form.on("submit", function (e) {

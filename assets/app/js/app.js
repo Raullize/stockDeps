@@ -40,6 +40,7 @@ async function fetchFornecedores() {
     preencherFornecedores(fornecedores);
     console.log(fornecedores);
 }
+
 async function fetchEntradas() {
     const response = await fetch(`${BASE_URL}/getEntradas`);
     entradas = await response.json();
@@ -399,25 +400,27 @@ function excluirSaida(saidaId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Pega os botões e associa o evento de clique
     const consultarEntradasBtn = document.getElementById('consultarEntradasBtn');
     const consultarSaidasBtn = document.getElementById('consultarSaidasBtn');
+    const entradasModalElement = document.getElementById('entradasModal');
+    const saidasModalElement = document.getElementById('saidasModal');
+
+    if (!consultarEntradasBtn || !consultarSaidasBtn || !entradasModalElement || !saidasModalElement) {
+        console.error("Botões ou modais não encontrados no DOM.");
+        return;
+    }
+
+    // Inicializar os modais
+    const entradasModal = new bootstrap.Modal(entradasModalElement);
+    const saidasModal = new bootstrap.Modal(saidasModalElement);
 
     consultarEntradasBtn.addEventListener('click', () => {
-        // Abre o modal de entradas
-        const entradasModal = new bootstrap.Modal(document.getElementById('entradasModal'));
         entradasModal.show();
-
-        // Carrega as entradas ao abrir o modal
         fetchEntradas();
     });
 
     consultarSaidasBtn.addEventListener('click', () => {
-        // Abre o modal de saídas
-        const saidasModal = new bootstrap.Modal(document.getElementById('saidasModal'));
         saidasModal.show();
-
-        // Carrega as saídas ao abrir o modal
         fetchSaidas();
     });
 });

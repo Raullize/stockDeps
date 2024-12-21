@@ -41,7 +41,7 @@ $this->layout("_theme");
             <ul class="pagination justify-content-center" id="paginationClientes"></ul>
         </nav>
     </div>
-    <!-- MODAIS -->
+    
     <!-- Modal Adicionar Cliente -->
     <div class="modal fade" id="modalAdicionarCliente" tabindex="-1" aria-labelledby="modalAdicionarClienteLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg"> <!-- Aumentando a largura do modal -->
@@ -147,7 +147,7 @@ $this->layout("_theme");
         </div>
     </div>
 
-    <script src="<?= url('assets/app/js/clientes.js') ?>" async></script>
+    <script src="<?= url('assets/app/js/clientes.js') ?>"></script>
     <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>
