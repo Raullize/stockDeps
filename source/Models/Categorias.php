@@ -136,6 +136,25 @@ public function findById($id) : bool
         return false;
     }
 }
+
+public function findNameById($id)
+{
+    $query = "SELECT nome FROM categorias WHERE id = :id";
+    $stmt = Connect::getInstance()->prepare($query);
+    $stmt->bindParam(":id", $id);
+    $stmt->execute();
+
+    // Verifica se a consulta retornou algum resultado
+    if ($stmt->rowCount() == 1) {
+        // Retorna o nome da categoria
+        $result = $stmt->fetch();
+        return $result->nome; // Retorna o nome da categoria
+    } else {
+        return false; // Se não encontrar a categoria
+    }
+}
+
+
 public function delete($id)
     {
         $query = "DELETE FROM categorias WHERE id = :id";

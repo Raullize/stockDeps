@@ -3,11 +3,8 @@
 ob_start();
 session_start();
 
-// Permitir requisições de qualquer origem (ajuste conforme necessário)
 header("Access-Control-Allow-Origin: *");
-// Permitir métodos específicos, como POST, GET
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
-// Permitir cabeçalhos específicos que possam ser utilizados na requisição
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 require __DIR__ . "/vendor/autoload.php";
 use CoffeeCode\Router\Router;
@@ -17,18 +14,17 @@ $route = new Router(CONF_URL_BASE, ":");
 
 $route->namespace("Source\App");
 
+/* ---------------------------------------------------------------------------------------------------- */
+
 /**
  * Web Routes
  */
 
 $route->get("/", "Web:login");
 $route->post("/login", "Web:validaLogin");
-
 $route->get("/criasenha-5052", "Web:criaSenha");
 
 /* ---------------------------------------------------------------------------------------------------- */
-
-
 
 /**
  * App Routs
@@ -51,11 +47,8 @@ $route->get("/getFornecedores", "App:getFornecedores");
 $route->get("/getEntradas", "App:getEntradas");
 $route->get("/getSaidas", "App:getSaidas");
 
-
 /* ROTAS GET:POST DE TRATAMENTO DE DADOS DA NOTA FISCAL .PDF */
 $route->post("/processarXmlNota", "App:processarXmlNota");
-
-
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AO CRUD DE ESTOQUE MODO:POST */
 $route->post("/estoque-pc", "App:estoquePc");
@@ -86,6 +79,7 @@ $route->post("/update-fornecedores", "App:updateFornecedores");
 
 /* ROTAS DE FUNÇÕES RELACIONADAS AOS RELATORIOS MODO:GET*/
 $route->get("/pdf-r-c", "App:relatorioClientes");
+$route->get("/pdf-r-f", "App:relatorioFornecedores");
 $route->get("/pdf-r-p", "App:relatorioProdutos");
 
 /* HISTORICO DO CLIENTE */
@@ -94,7 +88,6 @@ $route->post("/historico-cliente", "App:getHistoricoCliente");
 $route->group(null); // desagrupo do /app
 
 /* ---------------------------------------------------------------------------------------------------- */
-
 
 /*
  * Erros Routes
