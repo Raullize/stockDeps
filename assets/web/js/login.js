@@ -23,7 +23,7 @@ form_login.on("submit", function (e) {
             }
             if (response.type === 'success') {
                 window.location.href = `${BASE_URL}/app`;
-                
+
             }
         },
         error: function (xhr, status, error) {
@@ -32,3 +32,5 @@ form_login.on("submit", function (e) {
         }
     });
 });
+
+

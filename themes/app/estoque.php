@@ -418,7 +418,7 @@ $this->layout("_theme");
                         <!-- Campo Quantidade -->
                         <div class="mb-3">
                             <label for="quantidadeSaida" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
+                            <input name="quantidade" type="float" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
                         </div>
                         <!-- Campo Preço -->
                         <div class="mb-3">
@@ -530,7 +530,7 @@ $this->layout("_theme");
                     <label for="filtroDataSaida">
                         <h5>Filtre pelo dia da saída:</h5>
                     </label>
-                    <input type="date" id="filtroDataSaida" onchange="filtrarSaidasPorData()" />
+                    <input type="date" id="filtroDataSaida"  onchange="filtrarSaidasPorData()" />
                     <table class="table table-striped" id="tabelaSaidas">
                         <thead>
                             <tr>

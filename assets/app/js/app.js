@@ -12,21 +12,28 @@ let paginaAtualEntradas = 1;
 let paginaAtualSaidas = 1;
 let entradasFiltradas = [];
 let saidasFiltradas = [];
+let produtosFiltrados = []; // Produtos após a filtragem
+let produtosOrdenados = []; // Produtos após a ordenação
 
 async function fetchProdutos() {
     const response = await fetch(`${BASE_URL}/getProdutos`);
     produtosOriginais = await response.json(); // Salva os produtos originais
-    produtos = [...produtosOriginais]; // Inicializa produtos com todos
-    console.log(produtos);
-    buscarProduto(produtos);
-    mostrarPagina(paginaAtual, produtos); // Passa os produtos para mostrar a página
+    produtosFiltrados = [...produtosOriginais]; // Inicializa os filtrados com todos os produtos
+    produtosOrdenados = [...produtosFiltrados]; // Inicializa os ordenados com os produtos filtrados
+
+    console.log(produtosOriginais);
+
+    buscarProduto(); // Inicializa o evento de busca
+    mostrarPagina(paginaAtual); // Mostra a primeira página
 }
+
+
 async function fetchCategorias() {
     const response = await fetch(`${BASE_URL}/getCategorias`);
     categorias = await response.json();
     console.log(categorias)
     preencherCategorias(categorias, () => alterarTabelaPorCategoriaSelecionada());
-    renderizarTabela();
+    renderizarTabela(categorias);
 }
 async function fetchClientes() {
     const response = await fetch(`${BASE_URL}/getClientes`);
@@ -47,14 +54,16 @@ async function fetchEntradas() {
     console.log(entradas)
     entradasFiltradas = [...entradas]; // Inicializa as filtradas
     mostrarPaginaEntradas(paginaAtualEntradas);
+    filtrarEntradasPorData()
 }
 async function fetchSaidas() {
     const response = await fetch(`${BASE_URL}/getSaidas`);
     saidas = await response.json();
-    console.log(saidas)
+    console.log(saidas); // Verifique no console se as saídas estão sendo carregadas corretamente
     saidasFiltradas = [...saidas]; // Inicializa as filtradas
     mostrarPaginaSaidas(paginaAtualSaidas);
 }
+
 function loadAllData() {
     fetchProdutos();
     fetchCategorias();
@@ -174,7 +183,7 @@ function mostrarPaginaEntradas(pagina) {
     // Preencher a tabela com as entradas paginadas
     entradasPagina.forEach(entrada => {
         const nomeFornecedor = fornecedores.find(f => f.id === entrada.idFornecedor)?.nome || 'Fornecedor não encontrado';
-        const nomeProduto = produtos.find(p => p.id === entrada.idProdutos)?.nome || 'Produto não encontrado';
+        const nomeProduto = produtosOriginais.find(p => p.id === entrada.idProdutos)?.nome || 'Produto não encontrado';
 
         const row = `
             <tr>
@@ -196,28 +205,25 @@ function mostrarPaginaEntradas(pagina) {
 }
 
 function mostrarPaginaSaidas(pagina) {
+    console.log('Mostrando página das saídas:', pagina);
+    
     const inicio = (pagina - 1) * itensPorPagina;
     const fim = inicio + itensPorPagina;
 
-    // Atualizar e ordenar os dados
     saidasFiltradas = [...saidas].sort((a, b) => b.id - a.id);
 
-    // Paginar os resultados
     const saidasPagina = saidasFiltradas.slice(inicio, fim);
 
-    // Selecionar a tabela e limpar seu conteúdo
     const tabela = document.querySelector("#tabelaSaidas tbody");
-    tabela.innerHTML = '';
+    tabela.innerHTML = ''; // Limpa a tabela
 
-    // Preencher a tabela ou exibir mensagem caso não haja saídas
     if (saidasPagina.length === 0) {
         tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma saída encontrada.</td></tr>`;
         return;
     }
 
-    // Preencher a tabela com as saídas paginadas
     saidasPagina.forEach(saida => {
-        const nomeProduto = produtos.find(p => p.id === saida.idProdutos)?.nome || 'Produto não encontrado';
+        const nomeProduto = produtosOriginais.find(p => p.id === saida.idProdutos)?.nome || 'Produto não encontrado';
         const nomeCliente = clientes.find(c => c.id === saida.idClientes)?.nome || 'Cliente não encontrado';
 
         const row = `
@@ -235,32 +241,70 @@ function mostrarPaginaSaidas(pagina) {
         tabela.insertAdjacentHTML('beforeend', row);
     });
 
-    // Configurar a paginação
     configurarPaginacao(saidasFiltradas.length, mostrarPaginaSaidas, '#paginacaoSaidas', pagina);
 }
 
+
 function filtrarEntradasPorData() {
-    const dataFiltro = document.querySelector('#filtroDataEntrada').value;
+    const dataFiltro = document.querySelector('#filtroDataEntrada').value; // Pega a data do filtro
     if (!dataFiltro) return; // Não faz nada se o campo de data estiver vazio
 
+    console.log('Data selecionada no filtro:', dataFiltro);
+
+    // Filtra as entradas com a data selecionada
     entradasFiltradas = entradas.filter(entrada => {
-        const dataFormatada = entrada.created_at.split(' ')[0]; // Extrai a data no formato YYYY-MM-DD
-        return dataFormatada === dataFiltro;
+        // Extrai a parte da data de created_at (formato YYYY-MM-DD)
+        const dataEntrada = entrada.created_at.split(' ')[0]; // Pega a data sem a hora (ex: 2024-12-22)
+        console.log('Data formatada da entrada:', dataEntrada);
+
+        // Compara as datas no formato YYYY-MM-DD
+        return dataEntrada === dataFiltro;
     });
 
-    mostrarPaginaEntradas(1); // Reinicia na página 1
+    // Verifica se há entradas filtradas, caso contrário exibe uma mensagem
+    if (entradasFiltradas.length === 0) {
+        mostrarMensagemNenhumaEntrada();
+    } else {
+        // Exibe a primeira página das entradas filtradas
+        mostrarPaginaEntradas(1);
+    }
+}
+
+function mostrarMensagemNenhumaEntrada() {
+    // Seleciona a tabela de entradas e limpa seu conteúdo
+    const tabela = document.querySelector("#tabelaEntradas tbody");
+    tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma entrada encontrada para a data selecionada.</td></tr>`;
 }
 
 function filtrarSaidasPorData() {
-    const dataFiltro = document.querySelector('#filtroDataSaida').value;
+    const dataFiltro = document.querySelector('#filtroDataSaida').value; // Pega a data do filtro
     if (!dataFiltro) return; // Não faz nada se o campo de data estiver vazio
 
+    console.log('Data selecionada no filtro:', dataFiltro);
+
+    // Filtra as saídas com a data selecionada
     saidasFiltradas = saidas.filter(saida => {
-        const dataFormatada = saida.created_at.split(' ')[0]; // Extrai a data no formato YYYY-MM-DD
-        return dataFormatada === dataFiltro;
+        // Extrai a parte da data de created_at (formato YYYY-MM-DD)
+        const dataSaida = saida.created_at.split(' ')[0]; // Pega a data sem a hora (ex: 2024-12-22)
+        console.log('Data formatada da saída:', dataSaida);
+
+        // Compara as datas no formato YYYY-MM-DD
+        return dataSaida === dataFiltro;
     });
 
-    mostrarPaginaSaidas(1); // Reinicia na página 1
+    // Verifica se há saídas filtradas, caso contrário exibe uma mensagem
+    if (saidasFiltradas.length === 0) {
+        mostrarMensagemNenhumaSaida();
+    } else {
+        // Exibe a primeira página das saídas filtradas
+        mostrarPaginaSaidas(1);
+    }
+}
+
+function mostrarMensagemNenhumaSaida() {
+    // Seleciona a tabela de saídas e limpa seu conteúdo
+    const tabela = document.querySelector("#tabelaSaidas tbody");
+    tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma saída encontrada para a data selecionada.</td></tr>`;
 }
 
 function configurarPaginacao(totalItens, callback, seletorPaginacao, paginaAtual) {
@@ -313,7 +357,7 @@ function editarEntrada(id) {
 
     if (entrada) {
         // Obter o nome do produto com base no id do produto
-        const produto = produtos.find(p => p.id === entrada.idProdutos);
+        const produto = produtosOriginais.find(p => p.id === entrada.idProdutos);
         const nomeProduto = produto ? produto.nome : 'Produto não encontrado';
 
         // Preencher os campos do modal
@@ -357,7 +401,7 @@ function excluirEntrada(entradaId) {
 
 function editarSaida(id) {
     const saida = saidas.find(s => s.id === id); // Encontre a saída pelo ID
-    const produto = produtos.find(p => p.id === saida.idProdutos); // Encontre o produto correspondente à saída
+    const produto = produtosOriginais.find(p => p.id === saida.idProdutos); // Encontre o produto correspondente à saída
 
     if (saida) {
         // Preencher os campos no modal
@@ -456,21 +500,16 @@ function preencherTabelaProdutos(produtosPaginados) {
     });
 }
 
-function mostrarPagina(pagina, listaProdutos = produtos) {
+function mostrarPagina(pagina) {
     paginaAtual = pagina;
 
     const inicio = (pagina - 1) * itensPorPagina;
-    const fim = pagina * itensPorPagina;
+    const fim = inicio + itensPorPagina;
 
-    // Ordenar apenas a lista global, caso não seja fornecida uma ordenada
-    if (listaProdutos === produtos) {
-        listaProdutos.sort((a, b) => b.id - a.id);
-    }
+    const produtosNaPagina = produtosOrdenados.slice(inicio, fim); // Paginar com a lista ordenada
+    preencherTabelaProdutos(produtosNaPagina);
 
-    const produtosNaPagina = listaProdutos.slice(inicio, fim); // Pegando os produtos da página
-    preencherTabelaProdutos(produtosNaPagina); // Preenchendo a tabela com os produtos paginados
-
-    atualizarPaginacao(produtos.length, paginaAtual);
+    atualizarPaginacao(produtosOrdenados.length, paginaAtual); // Atualiza paginação com a lista ordenada
 }
 
 
@@ -525,39 +564,40 @@ function atualizarPaginacao(totalProdutos, paginaAtual) {
     }
 }
 
-function buscarProduto(produtosOriginais) {
+function buscarProduto() {
     const inputBuscarProduto = document.getElementById('buscarProduto');
     inputBuscarProduto.addEventListener('input', function () {
         const termoBusca = inputBuscarProduto.value.toLowerCase();
 
-        const produtosFiltrados = produtosOriginais.filter(produto =>
+        produtosFiltrados = produtosOriginais.filter(produto =>
             produto.nome.toLowerCase().includes(termoBusca) ||
-            produto.descricao.toLowerCase().includes(termoBusca)
+            produto.codigo_produto.toLowerCase().includes(termoBusca)
         );
 
-        produtos = produtosFiltrados;
-        paginaAtual = 1;
-        mostrarPagina(paginaAtual, produtos);
+        // Reiniciar a ordenação com os produtos filtrados
+        produtosOrdenados = [...produtosFiltrados];
+        paginaAtual = 1; // Reinicia na primeira página
+        mostrarPagina(paginaAtual); // Atualiza a tabela
     });
 }
+
 
 function alterarTabelaPorCategoriaSelecionada() {
     const categoriaSelecionada = document.getElementById("categoria").value;
     const categoriaSelecionadaNumero = Number(categoriaSelecionada);
 
-    let produtosFiltrados;
-
     if (categoriaSelecionada && !isNaN(categoriaSelecionadaNumero)) {
-        produtosFiltrados = produtos.filter(produto => Number(produto.idCategoria) === categoriaSelecionadaNumero);
+        produtosFiltrados = produtosOriginais.filter(produto => Number(produto.idCategoria) === categoriaSelecionadaNumero);
     } else {
-        produtosFiltrados = [...produtosOriginais]; // Garante que os produtos originais não sejam sobrescritos
+        produtosFiltrados = [...produtosOriginais]; // Reseta para todos os produtos
     }
 
-    // Atualiza a lista de produtos filtrados e a paginação
-    produtosFiltradosOrdenados = ordenarProdutos(produtosFiltrados); // Ordena conforme a ordem atual
-    paginaAtual = 1; // Volta para a primeira página após a alteração
-    mostrarPagina(paginaAtual, produtosFiltradosOrdenados);
+    // Reiniciar a ordenação com os produtos filtrados
+    produtosOrdenados = [...produtosFiltrados];
+    paginaAtual = 1; // Reinicia na primeira página
+    mostrarPagina(paginaAtual); // Mostra a tabela atualizada
 }
+
 
 function ordenarProdutos(produtos) {
     // Lógica de ordenação (dependendo da necessidade)
@@ -897,8 +937,8 @@ function ordenarTabela(coluna, idSeta) {
     const setaAtual = document.getElementById(idSeta);
     setaAtual.textContent = ordemAtual.crescente ? "⬆" : "⬇";
 
-    // Ordenar produtos
-    const produtosOrdenados = [...produtos].sort((a, b) => {
+    // Ordenar produtos filtrados
+    produtosOrdenados = [...produtosFiltrados].sort((a, b) => {
         let valorA = a[coluna];
         let valorB = b[coluna];
 
@@ -916,8 +956,9 @@ function ordenarTabela(coluna, idSeta) {
         }
     });
 
-    mostrarPagina(1, produtosOrdenados); // Atualiza a tabela com os dados ordenados
+    mostrarPagina(1); // Atualiza a tabela começando na primeira página
 }
+
 
 
 document.getElementById("ordenarCodigo").addEventListener("click", () => ordenarTabela("id", "setaCodigo"));

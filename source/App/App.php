@@ -1338,26 +1338,6 @@ class App
         $saidas = new Saidas();
         echo json_encode($saidas->selectAll());
     }
-    // {
-    //     $entradas = (new Entradas())->find(
-    //         "created_at BETWEEN :inicio AND :fim",
-    //         "inicio={$dataInicio}&fim={$dataFim}"
-    //     )->fetch(true);
-
-    //     echo json_encode($entradas);
-    // }
-
-    // // SaidasController.php
-    // public function buscarPorDataSaida($dataInicio, $dataFim)
-    // {
-    //     $saidas = (new Saidas())->find(
-    //         "created_at BETWEEN :inicio AND :fim",
-    //         "inicio={$dataInicio}&fim={$dataFim}"
-    //     )->fetch(true);
-
-    //     echo json_encode($saidas);
-    // }
-
 
 
 

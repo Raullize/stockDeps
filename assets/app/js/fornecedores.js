@@ -5,10 +5,8 @@ const maxBotoesPaginacaoFornecedores = 5;
 let paginaAtualFornecedores = 1;
 
 let fornecedores = [];
-let entradas = [];
-let produtos = [];
-let categorias
-
+let fornecedoresFiltrados = [];
+let ordemAtualFornecedores = { coluna: null, crescente: true };
 
 async function fetchProdutos() {
     const response = await fetch(`${BASE_URL}/getProdutos`);
@@ -31,16 +29,18 @@ async function fetchSaidas() {
 async function fetchFornecedores() {
     try {
         const response = await fetch(`${BASE_URL}/getFornecedores`);
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar fornecedores: ${response.statusText}`);
-        }
+        if (!response.ok) throw new Error(`Erro ao buscar fornecedores: ${response.statusText}`);
+
         fornecedores = await response.json();
-        mostrarPaginaFornecedores(paginaAtualFornecedores); // Exibe a página atual
-        buscarFornecedor(fornecedores); // Configura a busca
+        fornecedoresFiltrados = [...fornecedores];
+        aplicarOrdenacaoFornecedores();
+        mostrarPaginaFornecedores(paginaAtualFornecedores);
+        buscarFornecedor()
     } catch (error) {
         console.error('Erro em fetchFornecedores:', error);
-        fornecedores = []; // Garante que a tabela será esvaziada em caso de erro
-        mostrarPaginaFornecedores(1, fornecedores);
+        fornecedores = [];
+        fornecedoresFiltrados = [];
+        mostrarPaginaFornecedores(1);
     }
 }
 
@@ -52,6 +52,7 @@ async function fetchEntradas() {
 function preencherTabelaFornecedores(fornecedoresPaginados) {
     const tabela = document.querySelector("#tabelaFornecedores tbody");
     tabela.innerHTML = "";
+
     fornecedoresPaginados.forEach(fornecedor => {
         const linha = document.createElement("tr");
         linha.innerHTML = `
@@ -75,31 +76,28 @@ function preencherTabelaFornecedores(fornecedoresPaginados) {
     });
 }
 
-// Função para exibir a página de fornecedores atual
-function mostrarPaginaFornecedores(pagina, listaFornecedores = fornecedores) {
+
+function mostrarPaginaFornecedores(pagina) {
     paginaAtualFornecedores = pagina;
+
+    aplicarOrdenacaoFornecedores(); // Garante que a ordenação é sempre aplicada antes de paginar
+
     const inicio = (pagina - 1) * itensPorPaginaFornecedores;
     const fim = inicio + itensPorPaginaFornecedores;
 
-    // Apenas ordenar por ID decrescente se for a lista global original
-    if (listaFornecedores === fornecedores) {
-        listaFornecedores.sort((a, b) => b.id - a.id);
-    }
-
-    const fornecedoresPaginados = listaFornecedores.slice(inicio, fim);
+    const fornecedoresPaginados = fornecedoresFiltrados.slice(inicio, fim);
     preencherTabelaFornecedores(fornecedoresPaginados);
-    atualizarPaginacaoFornecedores(listaFornecedores);
+    atualizarPaginacaoFornecedores();
 }
-// Função para atualizar os botões de paginação
-function atualizarPaginacaoFornecedores(listaFornecedores = fornecedores) {
-    const totalPaginas = Math.ceil(listaFornecedores.length / itensPorPaginaFornecedores);
+
+function atualizarPaginacaoFornecedores() {
+    const totalPaginas = Math.ceil(fornecedoresFiltrados.length / itensPorPaginaFornecedores);
     const pagination = document.getElementById('paginationFornecedores');
     pagination.innerHTML = '';
 
     const maxLeft = Math.max(paginaAtualFornecedores - Math.floor(maxBotoesPaginacaoFornecedores / 2), 1);
     const maxRight = Math.min(maxLeft + maxBotoesPaginacaoFornecedores - 1, totalPaginas);
 
-    // Botão "Anterior"
     if (paginaAtualFornecedores > 1) {
         const prevLi = document.createElement('li');
         prevLi.classList.add('page-item');
@@ -111,9 +109,7 @@ function atualizarPaginacaoFornecedores(listaFornecedores = fornecedores) {
     for (let i = maxLeft; i <= maxRight; i++) {
         const li = document.createElement('li');
         li.classList.add('page-item');
-        if (i === paginaAtualFornecedores) {
-            li.classList.add('active');
-        }
+        if (i === paginaAtualFornecedores) li.classList.add('active');
 
         const a = document.createElement('a');
         a.classList.add('page-link');
@@ -123,7 +119,6 @@ function atualizarPaginacaoFornecedores(listaFornecedores = fornecedores) {
         pagination.appendChild(li);
     }
 
-    // Botão "Próximo"
     if (paginaAtualFornecedores < totalPaginas) {
         const nextLi = document.createElement('li');
         nextLi.classList.add('page-item');
@@ -133,21 +128,37 @@ function atualizarPaginacaoFornecedores(listaFornecedores = fornecedores) {
     }
 }
 
+function aplicarOrdenacaoFornecedores() {
+    if (!ordemAtualFornecedores.coluna) return;
+
+    fornecedoresFiltrados.sort((a, b) => {
+        let valorA = a[ordemAtualFornecedores.coluna];
+        let valorB = b[ordemAtualFornecedores.coluna];
+
+        if (typeof valorA === 'string') {
+            valorA = valorA.toLowerCase();
+            valorB = valorB.toLowerCase();
+        }
+
+        return ordemAtualFornecedores.crescente
+            ? (valorA > valorB ? 1 : valorA < valorB ? -1 : 0)
+            : (valorA < valorB ? 1 : valorA > valorB ? -1 : 0);
+    });
+}
+
 // Função para buscar fornecedores com base no nome
-function buscarFornecedor(fornecedores) {
+function buscarFornecedor() {
     const inputBuscarFornecedor = document.getElementById('buscarFornecedor');
 
     inputBuscarFornecedor.addEventListener('input', function () {
         const termoBusca = inputBuscarFornecedor.value.toLowerCase();
 
-        // Filtra os fornecedores com base no termo de busca
-        const fornecedoresFiltrados = fornecedores.filter(fornecedor =>
+        fornecedoresFiltrados = fornecedores.filter(fornecedor =>
             fornecedor.nome.toLowerCase().includes(termoBusca) ||
             fornecedor.cnpj.toLowerCase().includes(termoBusca)
         );
 
-        // Mostra a primeira página da lista filtrada
-        mostrarPaginaFornecedores(1, fornecedoresFiltrados);
+        mostrarPaginaFornecedores(1);
     });
 }
 
@@ -263,11 +274,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-let ordemAtualFornecedores = {
-    coluna: null,
-    crescente: true
-};
-
 // Função para ordenar a tabela de fornecedores
 function ordenarTabelaFornecedores(coluna, idSeta) {
     if (ordemAtualFornecedores.coluna === coluna) {
@@ -277,31 +283,12 @@ function ordenarTabelaFornecedores(coluna, idSeta) {
         ordemAtualFornecedores.crescente = true;
     }
 
-    // Atualizar setas
     document.querySelectorAll(".seta").forEach(seta => (seta.textContent = "⬍"));
     const setaAtual = document.getElementById(idSeta);
     setaAtual.textContent = ordemAtualFornecedores.crescente ? "⬆" : "⬇";
 
-    // Ordenar os fornecedores
-    const fornecedoresOrdenados = [...fornecedores].sort((a, b) => {
-        let valorA = a[coluna];
-        let valorB = b[coluna];
-
-        // Se for uma string, converter para minúscula para comparar corretamente
-        if (typeof valorA === "string") {
-            valorA = valorA.toLowerCase();
-            valorB = valorB.toLowerCase();
-        }
-
-        // Comparar de acordo com a ordem crescente ou decrescente
-        if (ordemAtualFornecedores.crescente) {
-            return valorA > valorB ? 1 : valorA < valorB ? -1 : 0;
-        } else {
-            return valorA < valorB ? 1 : valorA > valorB ? -1 : 0;
-        }
-    });
-
-    mostrarPaginaFornecedores(1, fornecedoresOrdenados); // Atualiza a tabela com os dados ordenados
+    aplicarOrdenacaoFornecedores();
+    mostrarPaginaFornecedores(1); // Sempre volta para a primeira página após uma nova ordenação
 }
 
 // Adicionando eventos de clique para ordenar as colunas de fornecedores

@@ -22,9 +22,10 @@ async function fetchCategorias() {
 async function fetchClientes() {
     const response = await fetch(`${BASE_URL}/getClientes`);
     clientes = await response.json();
-    buscarCliente(clientes);
-    ordenarTabelaClientes('nome', 'setaNomeCliente');
-    mostrarPaginaClientes(paginaAtualClientes); // Exibir corretamente a primeira página de clientes
+    clientesFiltrados = [...clientes];
+    aplicarOrdenacaoClientes();
+    mostrarPaginaClientes(paginaAtualClientes);
+    buscarCliente()
 }
 
 async function fetchEntradas() {
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function preencherTabelaClientes(clientesPaginados) {
     const tabela = document.querySelector("#tabelaClientes tbody");
-    tabela.innerHTML = ""; // Limpa a tabela
+    tabela.innerHTML = "";
 
     clientesPaginados.forEach(cliente => {
         const linha = document.createElement("tr");
@@ -72,32 +73,32 @@ function preencherTabelaClientes(clientesPaginados) {
     });
 }
 
-function mostrarPaginaClientes(pagina, listaClientes = clientes) {
-    paginaAtualClientes = pagina; // Atualizar a página atual
-    const inicio = (pagina - 1) * itensPorPaginaClientes; // Cálculo do início da página
+function mostrarPaginaClientes(pagina) {
+    paginaAtualClientes = pagina;
+
+    const inicio = (pagina - 1) * itensPorPaginaClientes;
     const fim = inicio + itensPorPaginaClientes;
 
-    // Ordenar apenas a lista global, caso não seja fornecida uma ordenada
-    if (listaClientes === clientes) {
-        listaClientes.sort((a, b) => b.id - a.id);
+    const clientesPaginados = clientesFiltrados.slice(inicio, fim);
+
+    if (clientesPaginados.length === 0 && paginaAtualClientes > 1) {
+        // Retroceder uma página se a atual ficar vazia após a exclusão
+        mostrarPaginaClientes(paginaAtualClientes - 1);
+        return;
     }
 
-    const clientesPaginados = listaClientes.slice(inicio, fim); // Pegando apenas os clientes da página atual
-    preencherTabelaClientes(clientesPaginados); // Preenchendo a tabela com os clientes paginados
-    atualizarPaginacaoClientes(listaClientes); // Atualizando a paginação
+    preencherTabelaClientes(clientesPaginados);
+    atualizarPaginacaoClientes();
 }
 
-
-
-function atualizarPaginacaoClientes(listaClientes = clientes) {
-    const totalPaginas = Math.ceil(listaClientes.length / itensPorPaginaClientes);
+function atualizarPaginacaoClientes() {
+    const totalPaginas = Math.ceil(clientesFiltrados.length / itensPorPaginaClientes);
     const pagination = document.getElementById('paginationClientes');
     pagination.innerHTML = '';
 
     const maxLeft = Math.max(paginaAtualClientes - Math.floor(maxBotoesPaginacaoClientes / 2), 1);
     const maxRight = Math.min(maxLeft + maxBotoesPaginacaoClientes - 1, totalPaginas);
 
-    // Botão "Anterior"
     if (paginaAtualClientes > 1) {
         const prevLi = document.createElement('li');
         prevLi.classList.add('page-item');
@@ -121,7 +122,6 @@ function atualizarPaginacaoClientes(listaClientes = clientes) {
         pagination.appendChild(li);
     }
 
-    // Botão "Próximo"
     if (paginaAtualClientes < totalPaginas) {
         const nextLi = document.createElement('li');
         nextLi.classList.add('page-item');
@@ -131,20 +131,21 @@ function atualizarPaginacaoClientes(listaClientes = clientes) {
     }
 }
 
-function buscarCliente(clientes) {
-    const inputBuscarCliente = document.getElementById('buscarCliente');
+function buscarCliente() {
+    const inputBuscarCliente = document.getElementById("buscarCliente");
 
-    inputBuscarCliente.addEventListener('input', function () {
+    inputBuscarCliente.addEventListener("input", function () {
         const termoBusca = inputBuscarCliente.value.toLowerCase();
 
-        // Filtra os clientes com base no termo de busca
-        const clientesFiltrados = clientes.filter(cliente =>
+        // Atualiza clientesFiltrados com base no termo de busca
+        clientesFiltrados = clientes.filter(cliente =>
             cliente.nome.toLowerCase().includes(termoBusca) ||
             cliente.cpf.toLowerCase().includes(termoBusca)
         );
 
-        // Atualiza a exibição com a lista filtrada
-        mostrarPaginaClientes(1, clientesFiltrados); // Mostra a página 1 dos clientes filtrados
+        // Reseta a paginação para a primeira página e exibe os resultados
+        paginaAtualClientes = 1;
+        mostrarPaginaClientes(paginaAtualClientes);
     });
 }
 
@@ -225,7 +226,6 @@ let ordemAtualClientes = {
     crescente: true
 };
 
-// Função para ordenar a tabela de clientes
 function ordenarTabelaClientes(coluna, idSeta) {
     if (ordemAtualClientes.coluna === coluna) {
         ordemAtualClientes.crescente = !ordemAtualClientes.crescente;
@@ -234,32 +234,30 @@ function ordenarTabelaClientes(coluna, idSeta) {
         ordemAtualClientes.crescente = true;
     }
 
-    // Atualizar setas
     document.querySelectorAll(".seta").forEach(seta => (seta.textContent = "⬍"));
     const setaAtual = document.getElementById(idSeta);
     setaAtual.textContent = ordemAtualClientes.crescente ? "⬆" : "⬇";
 
-    // Ordenar os clientes
-    const clientesOrdenados = [...clientes].sort((a, b) => {
-        let valorA = a[coluna];
-        let valorB = b[coluna];
+    aplicarOrdenacaoClientes();
+    mostrarPaginaClientes(1);
+}
 
-        // Se for uma string, converter para minúscula para comparar corretamente
-        if (typeof valorA === "string") {
+function aplicarOrdenacaoClientes() {
+    clientesFiltrados.sort((a, b) => {
+        let valorA = a[ordemAtualClientes.coluna];
+        let valorB = b[ordemAtualClientes.coluna];
+
+        if (typeof valorA === 'string') {
             valorA = valorA.toLowerCase();
             valorB = valorB.toLowerCase();
         }
 
-        // Comparar de acordo com a ordem crescente ou decrescente
-        if (ordemAtualClientes.crescente) {
-            return valorA > valorB ? 1 : valorA < valorB ? -1 : 0;
-        } else {
-            return valorA < valorB ? 1 : valorA > valorB ? -1 : 0;
-        }
+        return ordemAtualClientes.crescente
+            ? (valorA > valorB ? 1 : valorA < valorB ? -1 : 0)
+            : (valorA < valorB ? 1 : valorA > valorB ? -1 : 0);
     });
-
-    mostrarPaginaClientes(1, clientesOrdenados); // Atualiza a tabela com os dados ordenados
 }
+
 
 
 
