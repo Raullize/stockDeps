@@ -1274,7 +1274,7 @@ class App
     
         if (!isset($_FILES['arquivoNota']) || $_FILES['arquivoNota']['error'] != UPLOAD_ERR_OK) {
             header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(['error' => 'Erro no upload do arquivo XML']);
+            echo json_encode(['type' => 'error', 'message' => 'Erro no upload do arquivo XML']);
             return;
         }
     
@@ -1284,7 +1284,7 @@ class App
     
         if (!$xml) {
             header('Content-Type: application/json; charset=utf-8');
-            echo json_encode(['error' => 'Arquivo XML inválido']);
+            echo json_encode(['type' => 'error', 'message' => 'Arquivo XML inválido']);
             return;
         }
     
@@ -1297,7 +1297,7 @@ class App
         // Extrair informações do fornecedor
         $emit = $xml->xpath('//nfe:emit')[0] ?? null;
         if (!$emit) {
-            echo json_encode(['error' => 'Dados do fornecedor não encontrados no XML']);
+            echo json_encode(['type' => 'error', 'message' => 'Dados do fornecedor não encontrados no XML']);
             return;
         }
     
@@ -1316,7 +1316,7 @@ class App
         $detElements = $xml->xpath('//nfe:det');
         
         if (!$detElements || count($detElements) < 1) {
-            echo json_encode(['error' => 'Nenhum produto encontrado no XML']);
+            echo json_encode(['type' => 'error', 'message' => 'Nenhum produto encontrado no XML']);
             return;
         }
     
@@ -1324,7 +1324,7 @@ class App
             $prod = $det->prod ?? null;
     
             if (!$prod) {
-                echo json_encode(['warning' => 'Produto com estrutura inválida ignorado']);
+                echo json_encode(['type' => 'warning', 'message' => 'Produto com estrutura inválida ignorado']);
                 continue;
             }
     
@@ -1339,7 +1339,7 @@ class App
     
             // Validações dos campos obrigatórios
             if (empty($produto['codigo_produto']) || empty($produto['nome']) || $produto['quantidade'] <= 0) {
-                echo json_encode(['error' => 'Produto inválido: ' . json_encode($produto)]);
+                echo json_encode(['type' => 'error', 'message' => 'Produto inválido: ' . json_encode($produto)]);
                 continue;
             }
     
@@ -1347,7 +1347,7 @@ class App
         }
     
         if (count($produtos) === 0) {
-            echo json_encode(['error' => 'Nenhum produto válido encontrado no XML']);
+            echo json_encode(['type' => 'error', 'message' => 'Nenhum produto válido encontrado no XML']);
             return;
         }
     
@@ -1369,6 +1369,12 @@ class App
         $stmtFornecedor = $pdo->prepare($queryFornecedor);
         $stmtFornecedor->execute(['cnpj' => $fornecedorData['CNPJ']]);
         $fornecedorId = $stmtFornecedor->fetchColumn();
+
+        // Obter o primeiro idCategoria disponível
+        $queryFirstCategory = "SELECT id FROM categorias ORDER BY id ASC LIMIT 1";
+        $stmtFirstCategory = $pdo->prepare($queryFirstCategory);
+        $stmtFirstCategory->execute();
+        $firstCategoryId = $stmtFirstCategory->fetchColumn();
 
         if (!$fornecedorId) {
             $queryInsertFornecedor = "
@@ -1403,7 +1409,7 @@ class App
                 ";
                 $stmtInsertProduto = $pdo->prepare($queryInsertProduto);
                 $stmtInsertProduto->execute([
-                    'idCategoria' => 1,
+                    'idCategoria' => $firstCategoryId,
                     'nome' => $produto['nome'],
                     'descricao' => $produto['descricao'],
                     'preco' => 0, // Insere o preço como 0 no banco
