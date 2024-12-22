@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - StockDeps</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/jquery.inputmask.min.js"></script>
     <style>
         body {
             height: 100vh;
@@ -85,13 +87,13 @@
 <body>
     <div class="login-container">
         <div class="logo-text">StockDeps</div>
-        <form action="/login" method="POST">
+        <form id="form-login" method="POST">
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="username" name="username" placeholder="Usuário" required>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Usuário">
                 <label for="username">Usuário</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Senha" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Senha">
                 <label for="password">Senha</label>
             </div>
             <button type="submit" class="btn btn-custom w-100 mt-2">Login</button>
@@ -102,3 +104,6 @@
 </body>
 
 </html>
+
+<script src="<?= url('assets/web/js/login.js') ?>" async></script>
+<script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>

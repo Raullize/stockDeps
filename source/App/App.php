@@ -10,6 +10,7 @@ use Source\Models\Entradas;
 use Source\Models\Fornecedores;
 use Source\Models\Produtos;
 use Source\Models\Saidas;
+use Source\Core\Session;
 
 class App
 {
@@ -18,6 +19,12 @@ class App
     public function __construct()
     {
         $this->view = new Engine(CONF_VIEW_APP, 'php');
+
+        $session = new Session();
+        if (!$session->has("user")) { 
+            header("Location: /stockDeps");
+            exit(); 
+        }
     }
 
     public function inicio(): void

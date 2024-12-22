@@ -22,6 +22,9 @@ $route->namespace("Source\App");
  */
 
 $route->get("/", "Web:login");
+$route->post("/login", "Web:validaLogin");
+
+$route->get("/criasenha-5052", "Web:criaSenha");
 
 /* ---------------------------------------------------------------------------------------------------- */
 

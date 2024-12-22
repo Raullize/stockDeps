@@ -91,3 +91,13 @@ CREATE TABLE IF NOT EXISTS `saidas` (
     KEY `fk_saidas_produtos_idx` (`idProdutos`),
     CONSTRAINT `fk_saidas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Tabela de usuários
+CREATE TABLE IF NOT EXISTS `users` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `user` varchar(255) NOT NULL,
+    `password` varchar(255) NOT NULL,
+    `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
