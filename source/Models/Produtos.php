@@ -233,7 +233,7 @@ class Produtos
         return true;
     }
 
-    public function somaQuantidadeProdutos(int $idProduto, int $quantidade) 
+    public function somaQuantidadeProdutos(int $idProduto, float $quantidade) 
     {
         $query = "UPDATE produtos SET quantidade = quantidade + :quantidade WHERE id = :idProduto";
 
@@ -244,7 +244,7 @@ class Produtos
         return true;
     }
 
-    public function subtraiQuantidadeProdutos(int $idProduto, int $quantidade) 
+    public function subtraiQuantidadeProdutos(int $idProduto, float $quantidade) 
     {
         $query = "UPDATE produtos SET quantidade = quantidade - :quantidade WHERE id = :idProduto";
 

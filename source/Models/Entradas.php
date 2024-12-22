@@ -16,7 +16,7 @@ class Entradas
         int $id = NULL,
         int $idFornecedor = NULL,
         int $idProdutos = NULL,
-        int $quantidade = NULL,
+        float $quantidade = NULL,
         float $preco = NULL
     )
     {

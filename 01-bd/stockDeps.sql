@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `produtos` (
     `nome` varchar(255) NOT NULL,
     `descricao` text NOT NULL,
     `preco` float NOT NULL,
-    `quantidade` int(11) NOT NULL DEFAULT 0,
+    `quantidade` DOUBLE NOT NULL DEFAULT 0,
     `imagem` varchar(255) DEFAULT NULL,
     `unidade_medida` varchar(50) NOT NULL,
     `codigo_produto` varchar(50) NOT NULL UNIQUE,
@@ -29,6 +29,10 @@ CREATE TABLE IF NOT EXISTS `produtos` (
     CONSTRAINT `fk_produtos_categorias` FOREIGN KEY (`idCategoria`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Alterar a tabela de saídas
+ALTER TABLE `produtos`
+MODIFY `quantidade` DOUBLE NOT NULL;
+
 -- Adicionar coluna 'unidade_medida' caso ela não exista
 ALTER TABLE `produtos` 
 ADD COLUMN IF NOT EXISTS `unidade_medida` varchar(50) NOT NULL;
@@ -38,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `nome` varchar(255) NOT NULL,
     `cpf` varchar(14) NOT NULL,
-    `celular` varchar(14) NOT NULL,
+    `celular` varchar(15) NOT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`)
@@ -65,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `entradas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `idFornecedor` int(11) NOT NULL,
     `idProdutos` int(11) NOT NULL,
-    `quantidade` int(11) NOT NULL,
+    `quantidade` DOUBLE NOT NULL,
     `preco` float NOT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
@@ -76,12 +80,16 @@ CREATE TABLE IF NOT EXISTS `entradas` (
     CONSTRAINT `fk_entradas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Alterar a tabela de entradas
+ALTER TABLE `entradas`
+MODIFY `quantidade` DOUBLE NOT NULL;
+
 -- Tabela de saídas
 CREATE TABLE IF NOT EXISTS `saidas` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `idClientes` int(11) DEFAULT NULL,  -- Permite NULL
     `idProdutos` int(11) NOT NULL,
-    `quantidade` int(11) NOT NULL,
+    `quantidade` DOUBLE NOT NULL,
     `preco` float NOT NULL,
     `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
@@ -91,6 +99,11 @@ CREATE TABLE IF NOT EXISTS `saidas` (
     KEY `fk_saidas_produtos_idx` (`idProdutos`),
     CONSTRAINT `fk_saidas_produtos` FOREIGN KEY (`idProdutos`) REFERENCES `produtos` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Alterar a tabela de saídas
+ALTER TABLE `saidas`
+MODIFY `quantidade` DOUBLE NOT NULL;
+
 
 -- Tabela de usuários
 CREATE TABLE IF NOT EXISTS `users` (

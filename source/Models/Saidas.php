@@ -16,7 +16,7 @@ class Saidas
         ?int $id = NULL,
         ?int $idClientes = NULL,
         ?int $idProdutos = NULL,
-        ?int $quantidade = NULL,
+        ?float $quantidade = NULL,
         ?float $preco = NULL
     )
     {

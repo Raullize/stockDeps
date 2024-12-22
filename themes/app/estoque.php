@@ -369,7 +369,7 @@ $this->layout("_theme");
                         </div>
                         <div class="mb-3">
                             <label for="quantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" class="form-control" id="quantidade" placeholder="Digite a quantidade">
+                            <input name="quantidade" type="number" step="0.1" class="form-control" id="quantidade" placeholder="Digite a quantidade">
                         </div>
                         <div class="mb-3">
                             <label for="precoEntrada" class="form-label">Preço</label>
@@ -418,7 +418,7 @@ $this->layout("_theme");
                         <!-- Campo Quantidade -->
                         <div class="mb-3">
                             <label for="quantidadeSaida" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="float" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
+                            <input name="quantidade" type="number" step="0.1" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
                         </div>
                         <!-- Campo Preço -->
                         <div class="mb-3">
@@ -500,7 +500,7 @@ $this->layout("_theme");
                         <!-- Quantidade -->
                         <div class="mb-3">
                             <label for="entradaQuantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" class="form-control" id="entradaQuantidade" min="0">
+                            <input name="quantidade" type="number" step="0.1" class="form-control" id="entradaQuantidade" min="0">
                         </div>
 
                         <!-- Preço -->
@@ -575,7 +575,7 @@ $this->layout("_theme");
                         <!-- Quantidade -->
                         <div class="mb-3">
                             <label for="saidaQuantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" class="form-control" id="saidaQuantidade" min="0">
+                            <input name="quantidade" type="number" step="0.1" class="form-control" id="saidaQuantidade" min="0">
                         </div>
 
                         <!-- Preço -->
