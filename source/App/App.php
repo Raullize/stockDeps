@@ -10,17 +10,14 @@ use Source\Models\Entradas;
 use Source\Models\Fornecedores;
 use Source\Models\Produtos;
 use Source\Models\Saidas;
-use Source\Models\EstoqueFeatures;
 
 class App
 {
     private $view;
-    private EstoqueFeatures $estoqueFeatures;
 
     public function __construct()
     {
         $this->view = new Engine(CONF_VIEW_APP, 'php');
-        $this->estoqueFeatures = new EstoqueFeatures();
     }
 
     public function inicio(): void
@@ -211,15 +208,6 @@ class App
     {
         if (!empty($data)) {
 
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "Informe todos os campos para atualizar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
             $newpreco = $data["preco"];
             $newpreco = str_replace('R$', '', $newpreco);
             $newpreco = str_replace('.', '', $newpreco);
@@ -358,15 +346,6 @@ class App
     {
 
         if (!empty($data)) {
-
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "Informe todos os campos para cadastrar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
 
             $categoria = new Categorias();
             $categoriaAtualizar = $categoria->update(
@@ -521,15 +500,6 @@ class App
     {
 
         if (!empty($data)) {
-
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "Informe todos os campos para cadastrar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
 
             $entrada = new Entradas();
             $produto = new Produtos();
@@ -708,15 +678,6 @@ class App
     {
         if (!empty($data)) {
 
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "Informe todos os campos para cadastrar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
             $saida = new Saidas();
             $produto = new Produtos();
 
@@ -852,15 +813,6 @@ class App
     {
         if (!empty($data)) {
 
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "Informe todos os campos para atualizar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
             $cliente = new Clientes();
             $clienteAtualizado = $cliente->update(
                 $data["idClienteUpdate"],
@@ -992,15 +944,6 @@ class App
     public function updateFornecedores(?array $data): void
     {
         if (!empty($data)) {
-
-            if (in_array("", $data)) {
-                $json = [
-                    "message" => "Informe todos os campos para atualizar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
 
             $fornecedor = new Fornecedores();
             $fornecedorAtualizado = $fornecedor->update(
