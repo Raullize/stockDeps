@@ -33,6 +33,8 @@ class Web
             return;
         }
 
+        // teste
+
         $session = new Session();
         $user = new Users();
         $userDados = $user->selectUserByName($data["username"]);
