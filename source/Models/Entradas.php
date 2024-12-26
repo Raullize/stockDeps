@@ -127,7 +127,6 @@ class Entradas
     }
 }
 
-
     public function selectInfoEntradaById($id)
     {
         $query = "SELECT * FROM entradas WHERE id = :id";
