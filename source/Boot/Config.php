@@ -19,6 +19,7 @@ define("CONF_URL_TEST", "http://127.0.0.1/stockDeps"); // depois da / deve vir o
 
 define("CONF_VIEW_WEB", __DIR__ . "/../../themes/web");
 define("CONF_VIEW_APP", __DIR__ . "/../../themes/app");
+define("CONF_VIEW_ADM", __DIR__ . "/../../themes/adm");
 
 
 // SITE

@@ -33,8 +33,6 @@ class Web
             return;
         }
 
-        // teste 
-
         $session = new Session();
         $user = new Users();
         $userDados = $user->selectUserByName($data["username"]);
@@ -46,6 +44,29 @@ class Web
             ];
             echo json_encode($json);
             return;
+        }
+
+        if($userDados->user == "demoAdmin") {
+            if (password_verify($data["password"], $userDados->password)) {
+                $session->set("admin", [
+                    "id" => $userDados->id,
+                    "username" => $userDados->user,
+                ]);
+                $json = [
+                    "user" => "Admin",
+                    "message" => "Usuário Logado!",
+                    "type" => "success"
+                ];
+                echo json_encode($json);
+                return;
+            } else {
+                $json = [
+                    "message" => "Usuário e/ou senha incorretos!",
+                    "type" => "error"
+                ];
+                echo json_encode($json);
+                return;
+            }
         }
 
         if (password_verify($data["password"], $userDados->password)) {
