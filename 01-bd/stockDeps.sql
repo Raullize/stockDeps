@@ -114,3 +114,5 @@ CREATE TABLE IF NOT EXISTS `users` (
     `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `users` (`user`, `password`) VALUES ('demoAdmin', '$2y$10$jWcEaY.P2uJ4W2dBktTuG.mlwCIfqLH2dLqWVLkDzWiYdTytDDMaG');

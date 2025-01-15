@@ -69,7 +69,7 @@ $this->layout("_theme");
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <form id="produto-cadastro" name="produto-cadastro" method="post">
+                <form id="produto-cadastro" name="produto-cadastro" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="codigoProdutoAdicionar" class="form-label">Código do Produto</label>
