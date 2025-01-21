@@ -116,3 +116,4 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `users` (`user`, `password`) VALUES ('demoAdmin', '$2y$10$jWcEaY.P2uJ4W2dBktTuG.mlwCIfqLH2dLqWVLkDzWiYdTytDDMaG');
+INSERT INTO `users` (`user`, `password`) VALUES ('teste', '$2y$10$qmkpQaRQefMkfOpymV5WDONiz0zbvEwD4lHJLt9sDNmz3d5FCUZ9S');
