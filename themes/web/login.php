@@ -59,14 +59,11 @@
             animation: shake 0.3s ease-in-out;
         }
 
-    
-
         form .field .input-area {
             height: 50px;
             width: 100%;
             position: relative;
         }
-
         form input {
             width: 100%;
             height: 100%;
@@ -150,7 +147,7 @@
 
         form input[type="submit"] {
             height: 50px;
-            margin-top: 30px;
+            margin-top: 1rem;
             color: #fff;
             padding: 0;
             border: none;
@@ -167,8 +164,6 @@
 </head>
 
 <body>
-
-
     <div class="wrapper">
         <header>Login</header>
         <form id="form-login" method="POST">
@@ -186,7 +181,6 @@
                     <i class="error error-icon fas fa-exclamation-circle"></i>
                 </div>
             </div>
-            <div class="pass-txt"><a href="#">Forgot password?</a></div>
             <input type="submit" value="Login">
         </form>
     </div>
