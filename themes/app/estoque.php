@@ -42,9 +42,9 @@ $this->layout("_theme");
                             <th id="ordenarDescricao">Descrição</th>
                             <th id="ordenarPreco">Preço <span class="seta" id="setaPreco">⬍</span></th>
                             <th id="ordenarQuantidade">Quantidade <span class="seta" id="setaQuantidade">⬍</span></th>
-                            <th id="ordenarQuantidade">Unidade</th>
-                            <th>Status</th>
-                            <th class="text-center" colspan="2">Ações</th>
+                            <th id="ordenarUnidade">Unidade</th>
+                            <th id="ordernarStatus">Status</th>
+                            <th id="acoesProdutos" class="text-center" colspan="2">Ações</th>
                         </tr>
                     </thead>
                     <tbody id="corpoTabela">

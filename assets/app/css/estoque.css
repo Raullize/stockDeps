@@ -63,6 +63,20 @@
   padding: 12px 15px;
 }
 
+#ordenarCodigo,
+#ordenarNome,
+#ordenarPreco,
+#ordenarQuantidade {
+  cursor: pointer;
+}
+
+#ordenarDescricao,
+#ordenarUnidade,
+#ordernarStatus,
+#acoesProdutos {
+  cursor: default;
+}
+
 .table td {
   padding: 12px 15px;
 }
@@ -105,7 +119,7 @@ button:active {
   color: gray;
 }
 
-.seta:hover {
+th:hover .seta {
   color: black;
 }
 

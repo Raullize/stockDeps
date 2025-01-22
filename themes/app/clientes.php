@@ -28,7 +28,7 @@ $this->layout("_theme");
                             <th id="ordenarNomeCliente">Nome <span class="seta" id="setaNomeCliente">⬍</span></th>
                             <th id="ordenarCpfCliente">CPF</th>
                             <th id="ordenarCelularCliente">Celular</th>
-                            <th>Ações</th>
+                            <th id="acoesClientes">Ações</th>
                         </tr>
                     </thead>
                     <tbody>

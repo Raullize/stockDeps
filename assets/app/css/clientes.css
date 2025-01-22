@@ -60,6 +60,17 @@
   padding: 12px 15px;
 }
 
+#ordenarNomeCliente {
+  cursor: pointer;
+}
+
+#ordenarCpfCliente,
+#ordenarCelularCliente,
+#ordernarStatus,
+#acoesClientes {
+  cursor: default;
+}
+
 .table tr {
   background-color: #f2f2f2;
 }
@@ -111,6 +122,6 @@ button:active {
   color: gray;
 }
 
-.seta:hover {
+th:hover .seta {
   color: black;
 }

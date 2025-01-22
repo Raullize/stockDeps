@@ -32,7 +32,7 @@ $this->layout("_theme");
                             <th id="ordenarMunicipioFornecedor">Município</th>
                             <th id="ordenarCepFornecedor">CEP</th>
                             <th id="ordenarUfFornecedor">UF</th>
-                            <th>Ações</th>
+                            <th id="acoesFornecedores">Ações</th>
                         </tr>
                     </thead>
                     <tbody>
