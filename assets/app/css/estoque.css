@@ -34,6 +34,10 @@
   transform: scale(0.95);
 }
 
+.btn-info:hover {
+  color: #fff;
+}
+
 .headerTabelaProdutos input[type="text"],
 .headerTabelaProdutos select {
   padding: 0.5rem;
@@ -58,7 +62,6 @@
   vertical-align: middle;
   padding: 12px 15px;
 }
-
 
 .table td {
   padding: 12px 15px;

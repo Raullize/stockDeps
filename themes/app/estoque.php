@@ -26,7 +26,7 @@ $this->layout("_theme");
                     <button class="btn btn-info" id="consultarEntradasBtn">Consultar Entradas</button>
                     <button class="btn btn-info" id="consultarSaidasBtn">Consultar Saídas</button>
                     <div>
-                        <label for="categoria" class="px-2">Procurar produto: </label>
+                        <label for="buscarProduto" class="px-2">Procurar produto: </label>
                         <input type="text" name="buscarProduto" id="buscarProduto" placeholder="Procurar produto">
                     </div>
                     <div>
