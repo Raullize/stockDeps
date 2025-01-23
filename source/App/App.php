@@ -11,6 +11,7 @@ use Source\Models\Fornecedores;
 use Source\Models\Produtos;
 use Source\Models\Saidas;
 use Source\Core\Session;
+use CoffeeCode\Uploader\Image;
 
 class App
 {
@@ -128,13 +129,23 @@ class App
                 return;
             }
 
+            $image = new Image("uploads", "images", true);
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $site = "https://stockdeps.com/";
+                $upload = $image->upload($_FILES['image'], $data['nome']);
+                $link = $site . $upload;
+            } else {
+                $link = null;
+            }
+
             $produto = new Produtos(
                 NULL,
                 $data["categoria"],
                 $data["nome"],
                 $data["descricao"],
                 $precoFloat,
-                NULL,
+                $link,
                 $data["unidade"],
                 $data["codigo"]
             );
@@ -144,6 +155,7 @@ class App
                 $json = [
                     "produtos" => $produto->selectAll(),
                     "nome" => $data["nome"],
+                    "imagem" => $link,
                     "categoria" => $data["categoria"],
                     "preco" => $precoFloat,
                     "descricao" => $data["descricao"],
@@ -218,6 +230,24 @@ class App
             $entradas = new Entradas();
             $saidas = new Saidas();
 
+            $image = new Image("uploads", "images", true);
+
+            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $site = "https://stockdeps.com/";
+                
+                // Extrair a extensão do arquivo
+                $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                
+                // Gerar um novo nome de arquivo único
+                $uniqueFileName = $data['nome'] . "_" . time() . "." . $fileExtension;
+            
+                // Upload com o nome único
+                $upload = $image->upload($_FILES['image'], $uniqueFileName);
+                $link = $site . $upload;
+            } else {
+                $link = null;
+            }
+
             $produtos = new Produtos();
             $produtoAtualizado = $produtos->update(
                 $data["idProdutoUpdate"],
@@ -225,6 +255,7 @@ class App
                 $data["descricao"],
                 $data["categoria"],
                 $precoFloat,
+                $link,
                 $data["unidade"]
             );
 

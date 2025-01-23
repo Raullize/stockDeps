@@ -220,13 +220,14 @@ class Produtos
 
     public function insert() : bool
     {
-        $query = "INSERT INTO produtos (idCategoria, nome, descricao, preco, unidade_medida, codigo_produto) 
-                    VALUES (:idCategoria, :nome, :descricao, :preco, :unidade_medida, :codigo_produto)";
+        $query = "INSERT INTO produtos (idCategoria, nome, descricao, preco, imagem, unidade_medida, codigo_produto) 
+                    VALUES (:idCategoria, :nome, :descricao, :preco, :imagem, :unidade_medida, :codigo_produto)";
         $stmt = Connect::getInstance()->prepare($query);
         $stmt->bindParam(":idCategoria", $this->idCategoria);
         $stmt->bindParam(":nome", $this->nome);
         $stmt->bindValue(":descricao", $this->descricao);
         $stmt->bindParam(":preco", $this->preco);
+        $stmt->bindParam(":imagem", $this->imagem);
         $stmt->bindParam(":unidade_medida", $this->unidade_medida);
         $stmt->bindParam(":codigo_produto", $this->codigo_produto);
         $stmt->execute();
@@ -271,11 +272,11 @@ class Produtos
         }
     }
 
-    public function update($id, $nome, $descricao, $idCategoria, $preco, $unidade_medida)
+    public function update($id, $nome, $descricao, $idCategoria, $preco, $imagem, $unidade_medida)
     {
         // Query de atualização
         $query = "UPDATE produtos 
-                SET nome = :nome, descricao = :descricao, idCategoria = :idCategoria, preco = :preco, unidade_medida = :unidade_medida
+                SET nome = :nome, descricao = :descricao, idCategoria = :idCategoria, preco = :preco, imagem = :imagem, unidade_medida = :unidade_medida
                 WHERE id = :id";
 
         // Prepara a conexão
@@ -287,6 +288,7 @@ class Produtos
         $stmt->bindParam(":descricao", $descricao);
         $stmt->bindParam(":idCategoria", $idCategoria);
         $stmt->bindParam(":preco", $preco);
+        $stmt->bindParam(":imagem", $imagem);
         $stmt->bindParam(":unidade_medida", $unidade_medida);
 
         // Executa a query

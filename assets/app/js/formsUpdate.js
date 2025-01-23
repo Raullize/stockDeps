@@ -3,12 +3,14 @@ function handleEditFormSubmission(formSelector, url, callback) {
     form.on("submit", function (e) {
         e.preventDefault();
 
-        const serializedData = form.serialize();
+        const formData = new FormData(this);
 
         $.ajax({
             type: "POST",
             url: url,
-            data: serializedData,
+            data: formData,
+            processData: false, // Impede o jQuery de tentar processar os dados
+            contentType: false, // Impede o jQuery de definir o tipo de conteúdo automaticamente
             dataType: "json",
             success: function (response) {
                 if (response.type === 'error') {

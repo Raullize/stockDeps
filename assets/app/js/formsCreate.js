@@ -1,14 +1,18 @@
 // Cadastro de produtos
+// Cadastro de produtos
 const form_pc = $("#produto-cadastro");
 form_pc.on("submit", function (e) {
     e.preventDefault();
 
-    const serializedData = form_pc.serialize();
+    // Cria o objeto FormData e adiciona os dados do formulário
+    const formData = new FormData(form_pc[0]); // Passa o formulário como referência
 
     $.ajax({
         type: "POST",
         url: `${BASE_URL}/estoque-pc`,
-        data: serializedData,
+        data: formData,
+        processData: false, // Impede o jQuery de tentar processar os dados
+        contentType: false, // Impede o jQuery de definir o tipo de conteúdo automaticamente
         dataType: "json",
         success: function (response) {
             if (response.type === 'error') {

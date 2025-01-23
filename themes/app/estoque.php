@@ -113,7 +113,7 @@ $this->layout("_theme");
                         </div>
                         <div class="mb-3">
                             <label for="fotoProdutoAdicionar" class="form-label">Foto do Produto</label>
-                            <input type="file" id="fotoProdutoAdicionar" class="form-control" accept="image/*">
+                            <input name="image" type="file" id="fotoProdutoAdicionar" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -133,7 +133,7 @@ $this->layout("_theme");
                     <h5 class="modal-title">Editar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="produto-update" name="produto-update" method="post">
+                <form id="produto-update" name="produto-update" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <input type="hidden" name="idProdutoUpdate" id="idProdutoUpdate">
                         <!-- Campo de Código do Produto -->
@@ -175,7 +175,7 @@ $this->layout("_theme");
                         <!-- Campo para adicionar foto do produto -->
                         <div class="mb-3">
                             <label for="fotoProduto" class="form-label">Foto do Produto</label>
-                            <input type="file" id="fotoProduto" class="form-control" accept="image/*">
+                            <input name="image" type="file" id="fotoProduto" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">
