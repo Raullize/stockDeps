@@ -95,8 +95,6 @@ form_ec.on("submit", function (e) {
             }
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
-
-                // Recarrega entradas e produtos
                 fetchEntradas();
                 fetchProdutos();
             }
