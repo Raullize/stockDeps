@@ -20,13 +20,10 @@ async function fetchProdutos() {
     produtosOriginais = await response.json(); // Salva os produtos originais
     produtosFiltrados = [...produtosOriginais]; // Inicializa os filtrados com todos os produtos
     produtosOrdenados = [...produtosFiltrados]; // Inicializa os ordenados com os produtos filtrados
-
     console.log(produtosOriginais);
-
     buscarProduto(); // Inicializa o evento de busca
     mostrarPagina(paginaAtual); // Mostra a primeira página
 }
-
 
 async function fetchCategorias() {
     const response = await fetch(`${BASE_URL}/getCategorias`);
@@ -62,6 +59,7 @@ async function fetchSaidas() {
     console.log(saidas); // Verifique no console se as saídas estão sendo carregadas corretamente
     saidasFiltradas = [...saidas]; // Inicializa as filtradas
     mostrarPaginaSaidas(paginaAtualSaidas);
+    filtrarSaidasPorData()
 }
 
 function loadAllData() {
@@ -206,25 +204,33 @@ function mostrarPaginaEntradas(pagina) {
 
 function mostrarPaginaSaidas(pagina) {
     console.log('Mostrando página das saídas:', pagina);
-    
+
+    // Calcula o intervalo de itens a exibir
     const inicio = (pagina - 1) * itensPorPagina;
     const fim = inicio + itensPorPagina;
 
+    // Verifica se há saídas e as ordena
     saidasFiltradas = [...saidas].sort((a, b) => b.id - a.id);
 
+    // Pagina os resultados
     const saidasPagina = saidasFiltradas.slice(inicio, fim);
 
+    // Seleciona a tabela e limpa seu conteúdo
     const tabela = document.querySelector("#tabelaSaidas tbody");
-    tabela.innerHTML = ''; // Limpa a tabela
+    tabela.innerHTML = '';
 
+    // Caso não haja saídas, exibe mensagem na tabela
     if (saidasPagina.length === 0) {
         tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma saída encontrada.</td></tr>`;
         return;
     }
 
+    // Preenche a tabela com as saídas paginadas
     saidasPagina.forEach(saida => {
-        const nomeProduto = produtosOriginais.find(p => p.id === saida.idProdutos)?.nome || 'Produto não encontrado';
-        const nomeCliente = clientes.find(c => c.id === saida.idClientes)?.nome || 'Cliente não encontrado';
+        const nomeProduto = produtosOriginais.find(p => p.id == saida.idProdutos)?.nome || 'Produto não encontrado';
+        const nomeCliente = Array.isArray(clientes) 
+            ? clientes.find(c => c.id == saida.idClientes)?.nome || 'Cliente não encontrado' 
+            : 'Cliente não cadastrado';
 
         const row = `
             <tr>
@@ -241,8 +247,10 @@ function mostrarPaginaSaidas(pagina) {
         tabela.insertAdjacentHTML('beforeend', row);
     });
 
+    // Configura a paginação
     configurarPaginacao(saidasFiltradas.length, mostrarPaginaSaidas, '#paginacaoSaidas', pagina);
 }
+
 
 
 function filtrarEntradasPorData() {

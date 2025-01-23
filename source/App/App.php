@@ -21,9 +21,9 @@ class App
         $this->view = new Engine(CONF_VIEW_APP, 'php');
 
         $session = new Session();
-        if (!$session->has("user")) { 
+        if (!$session->has("user")) {
             header("Location: /stockDeps");
-            exit(); 
+            exit();
         }
     }
 
@@ -180,15 +180,17 @@ class App
 
             $entradas = new Entradas();
             $saidas = new Saidas();
-
             $produtos = new Produtos();
-            $produtoDeletado = $produtos->delete($data["idProdutoExcluir"]);
+
+            $produtoId = $data["idProdutoExcluir"]; // Obtém o ID do produto a ser excluído
+            $produtoDeletado = $produtos->delete($produtoId);
 
             if ($produtoDeletado) {
                 $json = [
                     "entradas" => $entradas->selectAll(),
                     "saidas" => $saidas->selectAll(),
                     "produtos" => $produtos->selectAll(),
+                    "produtoExcluidoId" => $produtoId, // Envia o ID do produto excluído de volta ao frontend
                     "message" => "Produto deletado com sucesso!",
                     "type" => "success"
                 ];
@@ -204,6 +206,7 @@ class App
             }
         }
     }
+
 
     public function estoquePu(?array $data): void
     {
@@ -458,9 +461,8 @@ class App
 
     public function estoqueEd(?array $data): void
     {
-
         if (!empty($data)) {
-
+    
             if (in_array("", $data)) {
                 $json = [
                     "message" => "Informe todos os campos para cadastrar!",
@@ -469,18 +471,19 @@ class App
                 echo json_encode($json);
                 return;
             }
-
+    
             $entrada = new Entradas();
             $valoresEntrada = $entrada->selectInfoEntradaById($data["idEntradaExcluir"]);
             $entradaDeletada = $entrada->delete($data["idEntradaExcluir"]);
-
+    
             if ($entradaDeletada) {
-
                 $produto = new Produtos();
                 $produto->subtraiQuantidadeProdutos($valoresEntrada->idProdutos, $valoresEntrada->quantidade);
-
+    
+                // Incluindo produtos atualizados na resposta
                 $json = [
-                    "entradas" => $entrada->selectAll(),
+                    "entradas" => $entrada->selectAll(), // Lista atualizada de entradas
+                    "produtos" => $produto->selectAll(), // Lista atualizada de produtos
                     "message" => "Entrada deletada com sucesso!",
                     "type" => "success"
                 ];
@@ -637,7 +640,7 @@ class App
     public function estoqueSd(?array $data): void
     {
         if (!empty($data)) {
-
+    
             if (in_array("", $data)) {
                 $json = [
                     "message" => "Informe todos os campos para cadastrar!",
@@ -646,22 +649,23 @@ class App
                 echo json_encode($json);
                 return;
             }
-
+    
             $saida = new Saidas();
             $valoresSaida = $saida->selectInfoSaidaById($data["idSaidaExcluir"]);
             $saidaDelete = $saida->delete($data["idSaidaExcluir"]);
-
+    
             if ($saidaDelete) {
-
                 $produto = new Produtos();
                 $produto->somaQuantidadeProdutos($valoresSaida->idProdutos, $valoresSaida->quantidade);
-
+    
+                // Incluindo produtos atualizados na resposta
                 $json = [
-                    "saidas" => $saida->selectAll(),
+                    "saidas" => $saida->selectAll(), // Lista atualizada de saídas
+                    "produtos" => $produto->selectAll(), // Lista atualizada de produtos
                     "message" => "Saída deletada com sucesso!",
                     "type" => "success"
                 ];
-
+    
                 echo json_encode($json);
                 return;
             } else {
@@ -1352,36 +1356,36 @@ class App
     public function processarXmlNota($request)
     {
         $pdo = \Source\Core\Connect::getInstance();
-    
+
         if (!isset($_FILES['arquivoNota']) || $_FILES['arquivoNota']['error'] != UPLOAD_ERR_OK) {
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['type' => 'error', 'message' => 'Erro no upload do arquivo XML']);
             return;
         }
-    
+
         $xmlPath = $_FILES['arquivoNota']['tmp_name'];
         $xmlContent = file_get_contents($xmlPath);
         $xml = simplexml_load_string($xmlContent);
-    
+
         if (!$xml) {
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['type' => 'error', 'message' => 'Arquivo XML inválido']);
             return;
         }
-    
+
         // Registrar namespace do XML
         $namespaces = $xml->getNamespaces(true);
         if (isset($namespaces[''])) {
             $xml->registerXPathNamespace('nfe', $namespaces['']);
         }
-    
+
         // Extrair informações do fornecedor
         $emit = $xml->xpath('//nfe:emit')[0] ?? null;
         if (!$emit) {
             echo json_encode(['type' => 'error', 'message' => 'Dados do fornecedor não encontrados no XML']);
             return;
         }
-    
+
         $fornecedor = [
             'CNPJ' => (string)($emit->CNPJ ?? ''),
             'Nome' => (string)($emit->xNome ?? ''),
@@ -1391,24 +1395,24 @@ class App
             'UF' => (string)($emit->enderEmit->UF ?? ''),
             'Telefone' => (string)($emit->enderEmit->fone ?? ''),
         ];
-    
+
         // Processar produtos
         $produtos = [];
         $detElements = $xml->xpath('//nfe:det');
-        
+
         if (!$detElements || count($detElements) < 1) {
             echo json_encode(['type' => 'error', 'message' => 'Nenhum produto encontrado no XML']);
             return;
         }
-    
+
         foreach ($detElements as $det) {
             $prod = $det->prod ?? null;
-    
+
             if (!$prod) {
                 echo json_encode(['type' => 'warning', 'message' => 'Produto com estrutura inválida ignorado']);
                 continue;
             }
-    
+
             $produto = [
                 'codigo_produto' => (string)($prod->cProd ?? ''),
                 'nome' => (string)($prod->xProd ?? ''),
@@ -1417,113 +1421,112 @@ class App
                 'preco' => (float)($prod->vUnCom ?? 0),
                 'unidade_medida' => (string)($prod->uCom ?? ''),
             ];
-    
+
             // Validações dos campos obrigatórios
             if (empty($produto['codigo_produto']) || empty($produto['nome']) || $produto['quantidade'] <= 0) {
                 echo json_encode(['type' => 'error', 'message' => 'Produto inválido: ' . json_encode($produto)]);
                 continue;
             }
-    
+
             $produtos[] = $produto;
         }
-    
+
         if (count($produtos) === 0) {
             echo json_encode(['type' => 'error', 'message' => 'Nenhum produto válido encontrado no XML']);
             return;
         }
-    
+
         // Registrar dados no banco de dados
         $this->cadastrarNota($fornecedor, $produtos);
-    
+
         echo json_encode(['type' => 'success', 'message' => 'Nota processada com sucesso!']);
     }
-    
+
     public function cadastrarNota(array $fornecedorData, array $produtosData): void
-{
-    $pdo = \Source\Core\Connect::getInstance();
+    {
+        $pdo = \Source\Core\Connect::getInstance();
 
-    try {
-        $pdo->beginTransaction();
+        try {
+            $pdo->beginTransaction();
 
-        // Verifica se o fornecedor já existe
-        $queryFornecedor = "SELECT id FROM fornecedores WHERE cnpj = :cnpj LIMIT 1";
-        $stmtFornecedor = $pdo->prepare($queryFornecedor);
-        $stmtFornecedor->execute(['cnpj' => $fornecedorData['CNPJ']]);
-        $fornecedorId = $stmtFornecedor->fetchColumn();
+            // Verifica se o fornecedor já existe
+            $queryFornecedor = "SELECT id FROM fornecedores WHERE cnpj = :cnpj LIMIT 1";
+            $stmtFornecedor = $pdo->prepare($queryFornecedor);
+            $stmtFornecedor->execute(['cnpj' => $fornecedorData['CNPJ']]);
+            $fornecedorId = $stmtFornecedor->fetchColumn();
 
-        // Obter o primeiro idCategoria disponível
-        $queryFirstCategory = "SELECT id FROM categorias ORDER BY id ASC LIMIT 1";
-        $stmtFirstCategory = $pdo->prepare($queryFirstCategory);
-        $stmtFirstCategory->execute();
-        $firstCategoryId = $stmtFirstCategory->fetchColumn();
+            // Obter o primeiro idCategoria disponível
+            $queryFirstCategory = "SELECT id FROM categorias ORDER BY id ASC LIMIT 1";
+            $stmtFirstCategory = $pdo->prepare($queryFirstCategory);
+            $stmtFirstCategory->execute();
+            $firstCategoryId = $stmtFirstCategory->fetchColumn();
 
-        if (!$fornecedorId) {
-            $queryInsertFornecedor = "
+            if (!$fornecedorId) {
+                $queryInsertFornecedor = "
             INSERT INTO fornecedores (nome, cnpj, telefone, endereco, municipio, cep, uf, created_at) 
             VALUES (:nome, :cnpj, :telefone, :endereco, :municipio, :cep, :uf, NOW())
             ";
-            $stmtInsertFornecedor = $pdo->prepare($queryInsertFornecedor);
-            $stmtInsertFornecedor->execute([
-                'nome' => $fornecedorData['Nome'],
-                'cnpj' => $fornecedorData['CNPJ'],
-                'telefone' => $fornecedorData['Telefone'],
-                'endereco' => $fornecedorData['Endereco'],
-                'municipio' => $fornecedorData['Municipio'],
-                'cep' => $fornecedorData['CEP'],
-                'uf' => $fornecedorData['UF'],
-            ]);
-            $fornecedorId = $pdo->lastInsertId();
-        }
+                $stmtInsertFornecedor = $pdo->prepare($queryInsertFornecedor);
+                $stmtInsertFornecedor->execute([
+                    'nome' => $fornecedorData['Nome'],
+                    'cnpj' => $fornecedorData['CNPJ'],
+                    'telefone' => $fornecedorData['Telefone'],
+                    'endereco' => $fornecedorData['Endereco'],
+                    'municipio' => $fornecedorData['Municipio'],
+                    'cep' => $fornecedorData['CEP'],
+                    'uf' => $fornecedorData['UF'],
+                ]);
+                $fornecedorId = $pdo->lastInsertId();
+            }
 
-        // Processar produtos
-        foreach ($produtosData as $produto) {
-            $queryProduto = "SELECT id FROM produtos WHERE codigo_produto = :codigo_produto LIMIT 1";
-            $stmtProduto = $pdo->prepare($queryProduto);
-            $stmtProduto->execute(['codigo_produto' => $produto['codigo_produto']]);
-            $produtoId = $stmtProduto->fetchColumn();
+            // Processar produtos
+            foreach ($produtosData as $produto) {
+                $queryProduto = "SELECT id FROM produtos WHERE codigo_produto = :codigo_produto LIMIT 1";
+                $stmtProduto = $pdo->prepare($queryProduto);
+                $stmtProduto->execute(['codigo_produto' => $produto['codigo_produto']]);
+                $produtoId = $stmtProduto->fetchColumn();
 
-            if (!$produtoId) {
-                // Produto não existe, inserir um novo registro
-                $queryInsertProduto = "
+                if (!$produtoId) {
+                    // Produto não existe, inserir um novo registro
+                    $queryInsertProduto = "
                 INSERT INTO produtos (idCategoria, nome, descricao, preco, quantidade, codigo_produto, unidade_medida, created_at)
                 VALUES (:idCategoria, :nome, :descricao, :preco, :quantidade, :codigo_produto, :unidade_medida, NOW())
                 ";
-                $stmtInsertProduto = $pdo->prepare($queryInsertProduto);
-                $stmtInsertProduto->execute([
-                    'idCategoria' => $firstCategoryId,
-                    'nome' => $produto['nome'],
-                    'descricao' => $produto['descricao'],
-                    'preco' => 0, // Insere o preço como 0 no banco
-                    'quantidade' => $produto['quantidade'],
-                    'codigo_produto' => $produto['codigo_produto'],
-                    'unidade_medida' => $produto['unidade_medida'],
-                ]);
-                $produtoId = $pdo->lastInsertId();
-            } else {
-                // Produto já existe, apenas soma a quantidade
-                $produtos = new Produtos();
-                $produtos->somaQuantidadeProdutos($produtoId, $produto['quantidade']);
-            }
+                    $stmtInsertProduto = $pdo->prepare($queryInsertProduto);
+                    $stmtInsertProduto->execute([
+                        'idCategoria' => $firstCategoryId,
+                        'nome' => $produto['nome'],
+                        'descricao' => $produto['descricao'],
+                        'preco' => 0, // Insere o preço como 0 no banco
+                        'quantidade' => $produto['quantidade'],
+                        'codigo_produto' => $produto['codigo_produto'],
+                        'unidade_medida' => $produto['unidade_medida'],
+                    ]);
+                    $produtoId = $pdo->lastInsertId();
+                } else {
+                    // Produto já existe, apenas soma a quantidade
+                    $produtos = new Produtos();
+                    $produtos->somaQuantidadeProdutos($produtoId, $produto['quantidade']);
+                }
 
-            $queryInsertEntrada = "
+                $queryInsertEntrada = "
             INSERT INTO entradas (idFornecedor, idProdutos, quantidade, preco, created_at)
             VALUES (:idFornecedor, :idProdutos, :quantidade, :preco, NOW())
             ";
-            $stmtInsertEntrada = $pdo->prepare($queryInsertEntrada);
-            $stmtInsertEntrada->execute([
-                'idFornecedor' => $fornecedorId,
-                'idProdutos' => $produtoId,
-                'quantidade' => $produto['quantidade'],
-                'preco' => $produto['preco'],
-            ]);
+                $stmtInsertEntrada = $pdo->prepare($queryInsertEntrada);
+                $stmtInsertEntrada->execute([
+                    'idFornecedor' => $fornecedorId,
+                    'idProdutos' => $produtoId,
+                    'quantidade' => $produto['quantidade'],
+                    'preco' => $produto['preco'],
+                ]);
+            }
+
+            $pdo->commit();
+        } catch (\Exception $e) {
+            $pdo->rollBack();
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(['error' => "Erro ao processar a nota: " . $e->getMessage()]);
         }
-
-        $pdo->commit();
-    } catch (\Exception $e) {
-        $pdo->rollBack();
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode(['error' => "Erro ao processar a nota: " . $e->getMessage()]);
     }
-}
-
 }
