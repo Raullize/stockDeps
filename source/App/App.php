@@ -444,6 +444,24 @@ class App
             $fornecedor = new Fornecedores();
             $idFonecedor = $fornecedor->findByIdName($data["nome"]);
 
+            if($data["quantidade"] <= 0){
+                $json = [
+                    "message" => "Quantidade Inválida!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            if($precoFloat <= 0){
+                $json = [
+                    "message" => "Preço Inválido!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
             if ($idFonecedor == false) {
                 $json = [
                     "message" => "Fornecedor não encontrado!",
@@ -539,6 +557,24 @@ class App
             $entrada = new Entradas();
             $produto = new Produtos();
 
+            if($data["quantidade"] <= 0){
+                $json = [
+                    "message" => "Quantidade Inválida!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            if($data["preco"] <= 0){
+                $json = [
+                    "message" => "Preço Inválido!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
             $entradaDados = $entrada->selectInfoEntradaById($data["idEntradaEditar"]);
 
             $produto->subtraiQuantidadeProdutos($entradaDados->idProdutos, $entradaDados->quantidade);
@@ -613,6 +649,24 @@ class App
 
             $cliente = new Clientes();
             $idCliente = $cliente->findByIdName($data["nome"]);
+
+            if($data["quantidade"] <= 0){
+                $json = [
+                    "message" => "Quantidade Inválida!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            if($precoFloat <= 0){
+                $json = [
+                    "message" => "Preço Inválido!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
 
             if ($idCliente == false) {
                 $idCliente = null;
@@ -716,6 +770,24 @@ class App
 
             $saida = new Saidas();
             $produto = new Produtos();
+
+            if($data["quantidade"] <= 0){
+                $json = [
+                    "message" => "Quantidade Inválida!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
+
+            if($data["preco"] <= 0){
+                $json = [
+                    "message" => "Preço Inválido!",
+                    "type" => "warning"
+                ];
+                echo json_encode($json);
+                return;
+            }
 
             $saidaDados = $saida->selectInfoSaidaById($data["idEditarSaida"]);
 
