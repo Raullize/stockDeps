@@ -143,4 +143,3 @@ function formatarPreco(input) {
 
     input.value = `R$ ${inteirosFormatados || "0"},${centavos}`;
 }
-

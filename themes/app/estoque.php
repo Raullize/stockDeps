@@ -68,7 +68,6 @@ $this->layout("_theme");
                     <h5 class="modal-title" id="modalAdicionarProdutoLabel">Adicionar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <form id="produto-cadastro" name="produto-cadastro" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="mb-3">
@@ -200,7 +199,6 @@ $this->layout("_theme");
                     <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria">
                         Adicionar Categoria
                     </button>
-
                     <!-- Tabela de categorias -->
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped" id="tabelaCategorias">

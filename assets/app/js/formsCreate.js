@@ -1,18 +1,17 @@
 // Cadastro de produtos
-// Cadastro de produtos
 const form_pc = $("#produto-cadastro");
+
 form_pc.on("submit", function (e) {
     e.preventDefault();
 
-    // Cria o objeto FormData e adiciona os dados do formulário
-    const formData = new FormData(form_pc[0]); // Passa o formulário como referência
+    const formData = new FormData(form_pc[0]);
 
     $.ajax({
         type: "POST",
         url: `${BASE_URL}/estoque-pc`,
         data: formData,
-        processData: false, // Impede o jQuery de tentar processar os dados
-        contentType: false, // Impede o jQuery de definir o tipo de conteúdo automaticamente
+        processData: false,
+        contentType: false,
         dataType: "json",
         success: function (response) {
             if (response.type === 'error') {
@@ -26,8 +25,11 @@ form_pc.on("submit", function (e) {
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
 
-                // Recarrega os produtos dinamicamente
-                fetchProdutos(); // Recarrega os produtos e atualiza a tabela
+                // Limpa os campos do formulário
+                limparCamposFormulario();
+
+                // Recarrega categorias dinamicamente
+                fetchProdutos();
             }
         },
         error: function (xhr, status, error) {
@@ -59,9 +61,12 @@ form_cc.on("submit", function (e) {
                 return;
             }
             if (response.type === 'success') {
-                exibirMensagemTemporariaSucesso(response.message);
+                exibirMensagemTemporariaSucesso(response.message, form_cc); // Limpa o formulário
 
-                // Recarrega as categorias dinamicamente
+                // Limpa os campos do formulário
+                limparCamposFormulario("#categoria-cadastro");
+
+                // Recarrega categorias dinamicamente
                 fetchCategorias();
             }
         },
@@ -95,6 +100,11 @@ form_ec.on("submit", function (e) {
             }
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
+
+                // Limpa os campos do formulário
+                limparCamposFormulario("#entrada-cadastro");
+
+                // Recarrega entradas e produtos
                 fetchEntradas();
                 fetchProdutos();
             }
@@ -129,6 +139,9 @@ form_sc.on("submit", function (e) {
             }
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
+
+                // Limpa os campos do formulário
+                limparCamposFormulario("#saida-cadastro");
 
                 // Recarrega saídas e produtos
                 fetchSaidas();
@@ -166,6 +179,9 @@ form_cadastro_clientes.on("submit", function (e) {
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
 
+                // Limpa os campos do formulário
+                limparCamposFormulario("#cadastro-clientes");
+
                 // Recarrega os clientes dinamicamente
                 fetchClientes();
             }
@@ -176,6 +192,7 @@ form_cadastro_clientes.on("submit", function (e) {
         }
     });
 });
+
 
 // Cadastro de fornecedores
 const form_cadastro_fornecedores = $("#formAdicionarFornecedor");
@@ -201,7 +218,10 @@ form_cadastro_fornecedores.on("submit", function (e) {
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
 
-                // Recarrega os fornecedores dinamicamente
+                // Limpa os campos do formulário
+                limparCamposFormulario("#formAdicionarFornecedor");
+
+                // Recarrega fornecedores dinamicamente
                 fetchFornecedores();
             }
         },
@@ -212,7 +232,7 @@ form_cadastro_fornecedores.on("submit", function (e) {
     });
 });
 
-
+// Cadastro via XML
 const form = document.querySelector('form[action="processarXmlNota"]');
 form.addEventListener('submit', handleFormSubmit);   
 
@@ -242,4 +262,19 @@ function handleFormSubmit(e) {
             // Exibe erro genérico
             exibirMensagemTemporariaErro("Ocorreu um erro ao processar a nota.");
         });
+}
+
+// Função para limpar campos do formulário
+function limparCamposFormulario(formSelector) {
+    // Limpa todos os inputs de texto, email e textarea
+    $(formSelector).find('input[type="text"], input[type="email"], textarea').val('');
+
+    // Limpa campos de arquivo
+    $(formSelector).find('input[type="file"]').val('');
+
+    // Reseta selects para o valor padrão
+    $(formSelector).find('select').prop('selectedIndex', 0);
+
+    // Limpa o campo de preço e define o valor padrão (se aplicável)
+    $(formSelector).find('.preco').val('R$ 0,00');
 }
