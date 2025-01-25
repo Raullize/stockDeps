@@ -1,3 +1,4 @@
+// Exclusão de Produtos
 const form_produto_excluir = $("#produto-excluir");
 form_produto_excluir.on("submit", function (e) {
     e.preventDefault();
@@ -16,6 +17,9 @@ form_produto_excluir.on("submit", function (e) {
             }
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
+
+                // Fecha o modal de exclusão
+                $('#modalExcluir').modal('hide');  // Fecha o modal de produto
 
                 // Recarrega os produtos dinamicamente
                 fetchProdutos();
@@ -47,6 +51,9 @@ form_categoria_excluir.on("submit", function (e) {
             }
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
+
+                // Fecha o modal de exclusão
+                $('#modalExcluirCategoria').modal('hide');  // Fecha o modal de categoria
 
                 // Recarrega as categorias dinamicamente
                 fetchCategorias();
@@ -80,6 +87,9 @@ form_entrada_excluir.on("submit", function (e) {
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
 
+                // Fecha o modal de exclusão
+                $('#modalExcluirEntrada').modal('hide');  // Fecha o modal de entrada
+
                 // Recarrega entradas e produtos dinamicamente
                 fetchEntradas();
                 fetchProdutos();
@@ -111,6 +121,9 @@ form_saida_excluir.on("submit", function (e) {
             }
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
+
+                // Fecha o modal de exclusão
+                $('#modalExcluirSaida').modal('hide');  // Fecha o modal de saída
 
                 // Recarrega saídas e produtos dinamicamente
                 fetchSaidas();
@@ -144,6 +157,9 @@ form_cliente_excluir.on("submit", function (e) {
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
 
+                // Fecha o modal de exclusão
+                $('#modalExcluir').modal('hide');  // Fecha o modal de cliente
+
                 // Recarrega os clientes dinamicamente
                 fetchClientes();
             }
@@ -174,6 +190,9 @@ form_fornecedor_excluir.on("submit", function (e) {
             }
             if (response.type === 'success') {
                 exibirMensagemTemporariaSucesso(response.message);
+
+                // Fecha o modal de exclusão
+                $('#modalExcluir').modal('hide');  // Fecha o modal de fornecedor
 
                 // Recarrega os fornecedores dinamicamente
                 fetchFornecedores();
