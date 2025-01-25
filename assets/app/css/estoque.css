@@ -123,3 +123,7 @@ th:hover .seta {
   color: black;
 }
 
+#btn-edit,
+#btn-delete {
+  width: 90%;
+}
