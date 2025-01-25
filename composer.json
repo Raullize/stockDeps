@@ -49,11 +49,5 @@
     "coffeecode/uploader": "1.0.11",
     "league/plates": "v3.4.0",
     "smalot/pdfparser": "^2.11"
-  },
-  "repositories": [
-  {
-    "type": "vcs",
-    "url": "https://github.com/depsModels/stockDeps"
   }
-]
 }
