@@ -1,11 +1,8 @@
 # Ignorar pasta de uploads
-uploads/
+uploads
 
 # Ignorar dependências do Node.js
-node_modules/
+node_modules
 
 # Ignorar dependências do Composer
-/vendor/
-
-composer.lock
-package-lock.json
+vendor
