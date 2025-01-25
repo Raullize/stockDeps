@@ -43,6 +43,40 @@ O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, 
 
 ---
 
+## 🧪 Testando o Projeto
+
+Para testar o projeto em seu ambiente local, siga os passos abaixo:
+
+### 1. **Instalar as dependências do PHP**
+   
+Se você ainda não tem as dependências do Composer instaladas, execute o comando abaixo para instalar ou atualizar:
+
+```bash
+composer install
+```
+ou, se precisar atualizar:
+
+```bash
+composer update
+```
+
+### 2. **Instalar as dependências do Node.js**
+
+Em seguida, instale ou atualize as dependências do Node.js:
+
+```bash
+npm install
+```
+ou, para atualizar as dependências:
+
+```bash
+npm update
+```
+
+Após esses passos, todas as dependências necessárias para rodar o projeto estarão instaladas e você poderá iniciar o servidor e testar o sistema.
+
+---
+
 ## 📈 Benefícios Reais: Já Utilizado no Dia a Dia Empresarial
 
 O **Stock DEPS** está sendo utilizado no dia a dia de uma empresa real, proporcionando uma gestão mais eficiente e precisa. Com a utilização do sistema, foi possível:
