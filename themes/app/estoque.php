@@ -6,7 +6,6 @@ $this->layout("_theme");
 <link rel="stylesheet" href="<?= url('assets/app/css/estoque.css') ?>">
 
 <body>
-
     <div class="container-fluid mt-2">
         <div class="row justify-content-center">
             <div class="tabelaProdutos">
@@ -48,7 +47,6 @@ $this->layout("_theme");
                         </tr>
                     </thead>
                     <tbody id="corpoTabela">
-                        <!-- As linhas serão adicionadas dinamicamente via JavaScript -->
                     </tbody>
                 </table>
             </div>
@@ -85,7 +83,6 @@ $this->layout("_theme");
                         <div class="mb-3">
                             <label for="categoriaProdutoAdicionar" class="form-label">Categoria</label>
                             <select name="categoria" class="form-control" id="categoriaProdutoAdicionar">
-                                <!-- As categorias serão preenchidas dinamicamente -->
                             </select>
                         </div>
                         <div class="mb-3">
@@ -135,7 +132,6 @@ $this->layout("_theme");
                 <form id="produto-update" name="produto-update" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <input type="hidden" name="idProdutoUpdate" id="idProdutoUpdate">
-                        <!-- Campo de Código do Produto -->
                         <div class="mb-3">
                             <label for="codigoProdutoEditar" class="form-label">Código do Produto</label>
                             <input name="codigo" type="text" class="form-control" id="codigoProdutoEditar" placeholder="Digite o código do produto">
@@ -151,7 +147,6 @@ $this->layout("_theme");
                         <div class="mb-3">
                             <label for="categoriaProdutoEditar" class="form-label">Categoria</label>
                             <select name="categoria" class="form-control" id="categoriaProdutoEditar">
-                                <!-- As categorias serão preenchidas dinamicamente -->
                             </select>
                         </div>
                         <div class="mb-3">
@@ -159,7 +154,6 @@ $this->layout("_theme");
                             <input name="preco" type="text" class="form-control" id="precoProduto" value="R$ 0,00" oninput="formatarPreco(this)">
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
-                        <!-- Campo Unidade de Medida -->
                         <div class="mb-3">
                             <label for="unidadeProdutoEditar" class="form-label">Unidade de Medida</label>
                             <select name="unidade" class="form-control" id="unidadeProdutoEditar">
@@ -171,7 +165,6 @@ $this->layout("_theme");
                                 <option value="UN">Unidade (un)</option>
                             </select>
                         </div>
-                        <!-- Campo para adicionar foto do produto -->
                         <div class="mb-3">
                             <label for="fotoProduto" class="form-label">Foto do Produto</label>
                             <input name="image" type="file" id="fotoProduto" class="form-control">
