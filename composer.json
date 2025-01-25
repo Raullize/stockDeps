@@ -1,8 +1,16 @@
 {
   "name": "depsmodels/stockdeps",
-  "description": "stockDeps",
+  "description": "StockDeps - Sistema de controle de estoque desenvolvido pela DEPS",
+  "version": "1.0.0",
+  "type": "project",
   "minimum-stability": "stable",
   "license": "proprietary",
+  "keywords": [
+    "controle de estoque",
+    "stockdeps",
+    "depsmodels",
+    "php"
+  ],
   "authors": [
     {
       "name": "Elano Tavares do Nascimento",
@@ -41,5 +49,11 @@
     "coffeecode/uploader": "1.0.11",
     "league/plates": "v3.4.0",
     "smalot/pdfparser": "^2.11"
+  },
+  "repositories": [
+  {
+    "type": "vcs",
+    "url": "https://github.com/depsModels/stockDeps"
   }
+]
 }

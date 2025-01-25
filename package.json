@@ -1,4 +1,34 @@
 {
+  "name": "stockdeps",
+  "description": "StockDeps - Sistema de controle de estoque desenvolvido pela DEPS",
+  "version": "1.0.0",
+  "license": "proprietary",
+  "keywords": [
+    "controle",
+    "estoque",
+    "stockdeps",
+    "depsmodels"
+  ],
+  "authors": [
+    {
+      "name": "Elano Tavares do Nascimento",
+      "email": "elano.tavares.ncs@gmail.com",
+      "homepage": "https://depsmodels.com",
+      "role": "Developer"
+  },
+  {
+      "name": "Miguel Leonardo Strapazon Lewandowski",
+      "email": "miguelstrapazonl@gmail.com",
+      "homepage": "https://depsmodels.com",
+      "role": "Developer"
+  },
+  {
+      "name": "Raul Lize Teixeira",
+      "email": "raullizeteixeira@gmail.com",
+      "homepage": "https://depsmodels.com",
+      "role": "Developer"
+  }
+],
   "dependencies": {
     "bootstrap": "^5.2.3"
   }
