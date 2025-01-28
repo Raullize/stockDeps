@@ -16,13 +16,13 @@ async function fetchProdutos() {
 async function fetchEntradas() {
   const response = await fetch(`${BASE_URL}/getEntradas`);
   entradas = await response.json();  // Defina a variável `entradas` no escopo global
-  console.log(entradas); 
+  console.log(entradas);
   calcularLucro(entradas, saidas);
 }
 
 async function fetchSaidas() {
   const response = await fetch(`${BASE_URL}/getSaidas`);
-  saidas = await response.json(); 
+  saidas = await response.json();
   calcularLucro(entradas, saidas);
 }
 
@@ -57,7 +57,7 @@ async function loadDashboardData() {
     ]);
     atualizarCaixas();
     atualizarProdutosMaisVendidos();
-  atualizarGraficoCategorias(categorias);
+    atualizarGraficoCategorias(categorias);
   } catch (error) {
     console.error('Erro ao carregar os dados do dashboard:', error);
   }
@@ -130,6 +130,7 @@ function atualizarProdutosMaisVendidos() {
       return {
         nome: produto ? produto.nome : 'Desconhecido',
         quantidade: dados.quantidade,
+        unidade_medida: produto ? produto.unidade_medida : '', // Adiciona unidade de medida
         vendas: dados.vendas
       };
     })
@@ -138,11 +139,11 @@ function atualizarProdutosMaisVendidos() {
 
   const produtosMaisVendidosList = document.querySelector("#produtos-mais-vendidos");
   produtosMaisVendidosList.innerHTML = maisVendidos
-    .map(item => `
+    .map(item => `  
           <li class="list-group-item">
               ${item.nome}
               <span class="badge bg-success float-end">
-                  ${item.quantidade} vendido(s) - ${item.vendas} venda(s)
+                ${parseFloat(Number(item.quantidade).toFixed(3))} ${item.unidade_medida} vendido(s) - ${item.vendas} venda(s)
               </span>
           </li>
       `)
@@ -215,7 +216,6 @@ async function calcularLucro() {
   document.getElementById('lucro-bruto').textContent = `R$ ${lucroBruto.toFixed(2)}`;
   document.getElementById('lucro-liquido').textContent = `R$ ${lucroLiquido.toFixed(2)}`;
 }
-
 
 function calcularLucroBruto(saidas) {
   if (saidas.length === 0) return 0; // Sem vendas, lucro bruto é zero

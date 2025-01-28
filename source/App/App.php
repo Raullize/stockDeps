@@ -132,7 +132,7 @@ class App
             $image = new Image("uploads", "images", true);
 
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $site = "https://stockdeps.com/";
+                $site = "http://127.0.0.1/stockDeps/";
                 $upload = $image->upload($_FILES['image'], $data['nome']);
                 $link = $site . $upload;
             } else {
@@ -236,14 +236,14 @@ class App
             $image = new Image("uploads", "images", true);
 
             if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $site = "https://stockdeps.com/";
-                
+                $site = "http://127.0.0.1/stockDeps/";
+
                 // Extrair a extensão do arquivo
                 $fileExtension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                
+
                 // Gerar um novo nome de arquivo único
                 $uniqueFileName = $data['nome'] . "_" . time() . "." . $fileExtension;
-            
+
                 // Upload com o nome único
                 $upload = $image->upload($_FILES['image'], $uniqueFileName);
                 $link = $site . $upload;
@@ -416,8 +416,10 @@ class App
 
     public function estoqueEc(?array $data): void
     {
-        if (!empty($data)) {
 
+
+        if (!empty($data)) {
+            $data["quantidade"] = round((float)$data["quantidade"], 3);
             if (in_array("", $data)) {
                 $json = [
                     "message" => "Informe todos os campos para cadastrar!",
@@ -444,7 +446,7 @@ class App
             $fornecedor = new Fornecedores();
             $idFonecedor = $fornecedor->findByIdName($data["nome"]);
 
-            if($data["quantidade"] <= 0){
+            if ($data["quantidade"] <= 0) {
                 $json = [
                     "message" => "Quantidade Inválida!",
                     "type" => "warning"
@@ -453,7 +455,7 @@ class App
                 return;
             }
 
-            if($precoFloat <= 0){
+            if ($precoFloat <= 0) {
                 $json = [
                     "message" => "Preço Inválido!",
                     "type" => "warning"
@@ -511,7 +513,7 @@ class App
     public function estoqueEd(?array $data): void
     {
         if (!empty($data)) {
-    
+
             if (in_array("", $data)) {
                 $json = [
                     "message" => "Informe todos os campos para cadastrar!",
@@ -520,15 +522,15 @@ class App
                 echo json_encode($json);
                 return;
             }
-    
+
             $entrada = new Entradas();
             $valoresEntrada = $entrada->selectInfoEntradaById($data["idEntradaExcluir"]);
             $entradaDeletada = $entrada->delete($data["idEntradaExcluir"]);
-    
+
             if ($entradaDeletada) {
                 $produto = new Produtos();
                 $produto->subtraiQuantidadeProdutos($valoresEntrada->idProdutos, $valoresEntrada->quantidade);
-    
+
                 // Incluindo produtos atualizados na resposta
                 $json = [
                     "entradas" => $entrada->selectAll(), // Lista atualizada de entradas
@@ -553,11 +555,11 @@ class App
     {
 
         if (!empty($data)) {
-
+            $data["quantidade"] = round((float)$data["quantidade"], 3);
             $entrada = new Entradas();
             $produto = new Produtos();
 
-            if($data["quantidade"] <= 0){
+            if ($data["quantidade"] <= 0) {
                 $json = [
                     "message" => "Quantidade Inválida!",
                     "type" => "warning"
@@ -566,7 +568,7 @@ class App
                 return;
             }
 
-            if($data["preco"] <= 0){
+            if ($data["preco"] <= 0) {
                 $json = [
                     "message" => "Preço Inválido!",
                     "type" => "warning"
@@ -608,15 +610,12 @@ class App
     }
 
 
-
-
-
     /*------------ CRUD SAÍDAS ------------*/
 
     public function estoqueSc(?array $data): void
     {
         if (!empty($data)) {
-
+            $data["quantidade"] = round((float)$data["quantidade"], 3);
             if (($data["produtoId2"] && $data["quantidade"] && $data["preco"]) == null) {
                 $json = [
                     "nome" => $data["nome"],
@@ -650,7 +649,7 @@ class App
             $cliente = new Clientes();
             $idCliente = $cliente->findByIdName($data["nome"]);
 
-            if($data["quantidade"] <= 0){
+            if ($data["quantidade"] <= 0) {
                 $json = [
                     "message" => "Quantidade Inválida!",
                     "type" => "warning"
@@ -659,7 +658,7 @@ class App
                 return;
             }
 
-            if($precoFloat <= 0){
+            if ($precoFloat <= 0) {
                 $json = [
                     "message" => "Preço Inválido!",
                     "type" => "warning"
@@ -725,7 +724,7 @@ class App
     public function estoqueSd(?array $data): void
     {
         if (!empty($data)) {
-    
+
             if (in_array("", $data)) {
                 $json = [
                     "message" => "Informe todos os campos para cadastrar!",
@@ -734,15 +733,15 @@ class App
                 echo json_encode($json);
                 return;
             }
-    
+
             $saida = new Saidas();
             $valoresSaida = $saida->selectInfoSaidaById($data["idSaidaExcluir"]);
             $saidaDelete = $saida->delete($data["idSaidaExcluir"]);
-    
+
             if ($saidaDelete) {
                 $produto = new Produtos();
                 $produto->somaQuantidadeProdutos($valoresSaida->idProdutos, $valoresSaida->quantidade);
-    
+
                 // Incluindo produtos atualizados na resposta
                 $json = [
                     "saidas" => $saida->selectAll(), // Lista atualizada de saídas
@@ -750,7 +749,7 @@ class App
                     "message" => "Saída deletada com sucesso!",
                     "type" => "success"
                 ];
-    
+
                 echo json_encode($json);
                 return;
             } else {
@@ -767,11 +766,11 @@ class App
     public function estoqueSu(?array $data): void
     {
         if (!empty($data)) {
-
+            $data["quantidade"] = round((float)$data["quantidade"], 3);
             $saida = new Saidas();
             $produto = new Produtos();
 
-            if($data["quantidade"] <= 0){
+            if ($data["quantidade"] <= 0) {
                 $json = [
                     "message" => "Quantidade Inválida!",
                     "type" => "warning"
@@ -780,7 +779,7 @@ class App
                 return;
             }
 
-            if($data["preco"] <= 0){
+            if ($data["preco"] <= 0) {
                 $json = [
                     "message" => "Preço Inválido!",
                     "type" => "warning"

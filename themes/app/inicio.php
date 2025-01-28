@@ -106,9 +106,6 @@ $this->layout("_theme");
                                     <option value="mes">Mês</option>
                                 </select>
                             </div>
-                            <div>
-                                <button class="btn btn-primary mt-5" onclick="calcularLucro()">Calcular</button>
-                            </div>
                         </div>
                     </div>
                     <!-- Exibindo Lucro Bruto e Lucro Líquido -->

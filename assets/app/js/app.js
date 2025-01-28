@@ -20,7 +20,7 @@ async function fetchProdutos() {
   produtosOriginais = await response.json(); // Salva os produtos originais
   produtosFiltrados = [...produtosOriginais]; // Inicializa os filtrados com todos os produtos
   produtosOrdenados = [...produtosFiltrados]; // Inicializa os ordenados com os produtos filtrados
-  console.log(produtosOriginais);
+
   buscarProduto(); // Inicializa o evento de busca
   mostrarPagina(paginaAtual); // Mostra a primeira página
 }
@@ -28,7 +28,6 @@ async function fetchProdutos() {
 async function fetchCategorias() {
   const response = await fetch(`${BASE_URL}/getCategorias`);
   categorias = await response.json();
-  console.log(categorias);
   preencherCategorias(categorias, () => alterarTabelaPorCategoriaSelecionada());
   renderizarTabela(categorias);
 }
@@ -36,19 +35,18 @@ async function fetchClientes() {
   const response = await fetch(`${BASE_URL}/getClientes`);
   clientes = await response.json();
   preencherClientes(clientes);
-  console.log(clientes);
+
 }
 async function fetchFornecedores() {
   const response = await fetch(`${BASE_URL}/getFornecedores`);
   fornecedores = await response.json();
   preencherFornecedores(fornecedores);
-  console.log(fornecedores);
 }
 
 async function fetchEntradas() {
   const response = await fetch(`${BASE_URL}/getEntradas`);
   entradas = await response.json();
-  console.log(entradas);
+
   entradasFiltradas = [...entradas]; // Inicializa as filtradas
   mostrarPaginaEntradas(paginaAtualEntradas);
   filtrarEntradasPorData();
@@ -56,8 +54,7 @@ async function fetchEntradas() {
 async function fetchSaidas() {
   const response = await fetch(`${BASE_URL}/getSaidas`);
   saidas = await response.json();
-  console.log(saidas); // Verifique no console se as saídas estão sendo carregadas corretamente
-  saidasFiltradas = [...saidas]; // Inicializa as filtradas
+  saidasFiltradas = [...saidas];
   mostrarPaginaSaidas(paginaAtualSaidas);
   filtrarSaidasPorData();
 }
@@ -228,9 +225,6 @@ function mostrarPaginaEntradas(pagina) {
 }
 
 function mostrarPaginaSaidas(pagina) {
-  console.log("Mostrando página das saídas:", pagina);
-
-  // Calcula o intervalo de itens a exibir
   const inicio = (pagina - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
 
@@ -295,13 +289,13 @@ function filtrarEntradasPorData() {
   const dataFiltro = document.querySelector("#filtroDataEntrada").value; // Pega a data do filtro
   if (!dataFiltro) return; // Não faz nada se o campo de data estiver vazio
 
-  console.log("Data selecionada no filtro:", dataFiltro);
+
 
   // Filtra as entradas com a data selecionada
   entradasFiltradas = entradas.filter((entrada) => {
     // Extrai a parte da data de created_at (formato YYYY-MM-DD)
     const dataEntrada = entrada.created_at.split(" ")[0]; // Pega a data sem a hora (ex: 2024-12-22)
-    console.log("Data formatada da entrada:", dataEntrada);
+
 
     // Compara as datas no formato YYYY-MM-DD
     return dataEntrada === dataFiltro;
@@ -326,13 +320,12 @@ function filtrarSaidasPorData() {
   const dataFiltro = document.querySelector("#filtroDataSaida").value; // Pega a data do filtro
   if (!dataFiltro) return; // Não faz nada se o campo de data estiver vazio
 
-  console.log("Data selecionada no filtro:", dataFiltro);
 
   // Filtra as saídas com a data selecionada
   saidasFiltradas = saidas.filter((saida) => {
     // Extrai a parte da data de created_at (formato YYYY-MM-DD)
     const dataSaida = saida.created_at.split(" ")[0]; // Pega a data sem a hora (ex: 2024-12-22)
-    console.log("Data formatada da saída:", dataSaida);
+
 
     // Compara as datas no formato YYYY-MM-DD
     return dataSaida === dataFiltro;
@@ -903,7 +896,6 @@ document
       clienteInput.readOnly = false; // Atualiza o campo oculto com o valor do input
     }
 
-    console.log(clienteInput.value);
   });
 
 function createButtonGroup(produto) {
@@ -955,7 +947,9 @@ function openModal(tipo, produto) {
       produto.codigo_produto;
     document.getElementById("nomeProduto").value = produto.nome;
     document.getElementById("descricaoProduto").value = produto.descricao;
-
+    document.getElementById("fotoProduto").value = ""; // Limpa o campo (opcional)
+    document.getElementById("previewImagem").src = produto.imagem; // Define o src da imagem
+    document.getElementById("previewImagem").style.display = "block"; // Mostra a imagem
     // Configurar unidade de medida
     const unidadeSelect = document.getElementById("unidadeProdutoEditar");
     const unidadeMedida = produto.unidade_medida;

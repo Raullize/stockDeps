@@ -168,6 +168,7 @@ $this->layout("_theme");
                         <div class="mb-3">
                             <label for="fotoProduto" class="form-label">Foto do Produto</label>
                             <input name="image" type="file" id="fotoProduto" class="form-control">
+                            <img id="previewImagem" src="" alt="Imagem do Produto" style="max-width: 150px; display: none; margin:10px auto; display: block;">
                         </div>
                     </div>
                     <div class="modal-footer">

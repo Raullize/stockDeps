@@ -25,6 +25,7 @@ function handleEditFormSubmission(formSelector, url, callback) {
             },
             error: function (xhr, status, error) {
                 console.error("Erro no AJAX:", error);
+                console.error("Resposta do servidor:", xhr.responseText); // Loga o conteúdo retornado
                 exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
             }
         });
