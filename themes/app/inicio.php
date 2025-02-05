@@ -128,7 +128,16 @@ $this->layout("_theme");
                             </div>
                         </div>
                     </div>
-
+                    <div class="row mt-auto mb-4 mx-1">
+    <div class="col">
+        <div class="card h-100 p-2">
+            <div class="card-body">
+                <h5 class="card-title">Valor Total do Estoque</h5>
+                <h3 id="valor-estoque">R$ 0,00</h3>
+            </div>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
             <div class="col-md-3">
