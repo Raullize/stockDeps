@@ -301,5 +301,36 @@ document.getElementById('periodo').addEventListener('change', (event) => {
 window.onload = async () => {
   await loadDashboardData();
   calcularLucroPorPeriodo('total'); // Exibe lucro total ao carregar a página
+  carregarProdutosBaixoEstoque();
 };
 
+async function carregarProdutosBaixoEstoque() {
+  try {
+      const response = await fetch(`${BASE_URL}/getProdutos`);
+      const produtos = await response.json();
+      
+      const produtosBaixoEstoque = produtos.filter(p => p.quantidade <= 5);
+      
+      const lista = document.getElementById("lista-estoque-baixo");
+      lista.innerHTML = ""; // Limpa a lista antes de adicionar novos itens
+
+      if (produtosBaixoEstoque.length === 0) {
+          lista.innerHTML = '<li class="list-group-item text-center text-success">Todos os produtos estão em estoque!</li>';
+          return;
+      }
+      
+      produtosBaixoEstoque.forEach(produto => {
+          const item = document.createElement("li");
+          item.className = `list-group-item d-flex justify-content-between align-items-center ${produto.quantidade === 0 ? 'list-group-item-danger' : 'list-group-item-warning'} fw-bold`;
+          item.innerHTML = `
+              <span>${produto.nome} - ${produto.unidade_medida}(Qtd: ${produto.quantidade})</span>
+              <span class="badge bg-${produto.quantidade === 0 ? 'danger' : 'warning'} rounded-pill p-2">
+                  ${produto.quantidade === 0 ? 'Sem estoque' : 'Estoque baixo'}
+              </span>
+          `;
+          lista.appendChild(item);
+      });
+  } catch (error) {
+      console.error("Erro ao carregar produtos de estoque baixo:", error);
+  }
+}

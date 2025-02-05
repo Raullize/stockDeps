@@ -142,19 +142,30 @@ $this->layout("_theme");
                 </div>
             </div>
             <div class="col-md-4">
-    <div class="card h-100 produtos-mais-vendidos-card">
-        <div class="card-body">
-            <h5 class="card-title text-center">Produtos Mais Vendidos</h5>
-            <div class="produtos-mais-vendidos-container">
-                <ul class="list-group list-group-flush" id="produtos-mais-vendidos">
-                    <!-- Os itens serão inseridos dinamicamente pelo JavaScript -->
-                </ul>
+                <div class="card h-100 produtos-mais-vendidos-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Produtos Mais Vendidos</h5>
+                        <div class="produtos-mais-vendidos-container">
+                            <ul class="list-group list-group-flush" id="produtos-mais-vendidos">
+                                <!-- Os itens serão inseridos dinamicamente pelo JavaScript -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+
         </div>
-    </div>
-</div>
-
-
+        <div class="container mt-4 mb-5">
+            <h3 class="text-center text-danger fw-bold">Produtos com Estoque Baixo</h3>
+            <div class="card border-danger">
+                <div class="card-body " style="max-height: 500px; overflow-y: auto;">
+                    <ul class="list-group" id="lista-estoque-baixo">
+                        <!-- Itens inseridos dinamicamente -->
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
