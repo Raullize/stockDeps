@@ -81,6 +81,9 @@ $route->post("/update-fornecedores", "App:updateFornecedores");
 $route->get("/pdf-r-c", "App:relatorioClientes");
 $route->get("/pdf-r-f", "App:relatorioFornecedores");
 $route->get("/pdf-r-p", "App:relatorioProdutos");
+$route->get("/excel-r-c", "App:relatorioClientesExcel");
+$route->get("/excel-r-f", "App:relatorioFornecedoresExcel");
+$route->get("/excel-r-p", "App:relatorioProdutosExcel");
 
 /* HISTORICO DO CLIENTE */
 $route->post("/historico-cliente", "App:getHistoricoCliente");

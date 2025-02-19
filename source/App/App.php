@@ -12,6 +12,8 @@ use Source\Models\Produtos;
 use Source\Models\Saidas;
 use Source\Core\Session;
 use CoffeeCode\Uploader\Image;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class App
 {
@@ -85,9 +87,6 @@ class App
     {
         echo $this->view->render("clientes");
     }
-
-
-
 
     /*------------ CRUD PRODUTOS ------------*/
 
@@ -219,8 +218,6 @@ class App
         }
     }
 
-
-  
     public function estoquePu(?array $data): void
     {
         if (!empty($data)) {
@@ -276,9 +273,6 @@ class App
             echo json_encode($json);
         }
     }
-    
-
-
 
     /*------------ CRUD CATEGORIA ------------*/
 
@@ -402,14 +396,10 @@ class App
         }
     }
 
-
-
-
     /*------------ CRUD ENTRADAS ------------*/
 
     public function estoqueEc(?array $data): void
     {
-
 
         if (!empty($data)) {
             $data["quantidade"] = round((float)$data["quantidade"], 3);
@@ -601,7 +591,6 @@ class App
             }
         }
     }
-
 
     /*------------ CRUD SAÍDAS ------------*/
 
@@ -815,10 +804,6 @@ class App
         }
     }
 
-
-
-
-
     /*------------ CRUD CLIENTES ------------*/
 
     public function cadastroClientes(?array $data): void
@@ -941,10 +926,6 @@ class App
             }
         }
     }
-
-
-
-
 
     /*------------ CRUD FORNECEDORES ------------*/
 
@@ -1090,10 +1071,6 @@ class App
         }
     }
 
-
-
-
-
     /*------------ RELATORIOS ------------*/
     public function relatorio(): void
     {
@@ -1192,7 +1169,6 @@ class App
         $dompdf->stream("relatório-clientes.pdf");
     }
 
-
     public function relatorioFornecedores(): void
     {
         $fornecedor = new Fornecedores();
@@ -1277,7 +1253,7 @@ class App
         }
 
     </style>
-
+    
     </html>");
 
         // (Optional) Setup the paper size and orientation
@@ -1294,7 +1270,6 @@ class App
     {
         $produto = new Produtos();
         $produtos = $produto->selectAll();
-
         $categoria = new Categorias();
 
         $produtoList = "";
@@ -1392,9 +1367,165 @@ class App
         $dompdf->stream("relatório-produtos.pdf");
     }
 
+    /*------------ RELATORIOS EXCEL ------------*/
+    public function relatorioClientesExcel(): void
+    {
+        $cliente = new Clientes();
+        $clientes = $cliente->selectAll();
 
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
+        // Cabeçalho
+        $sheet->setCellValue('A1', 'Nome');
+        $sheet->setCellValue('B1', 'CPF');
+        $sheet->setCellValue('C1', 'Celular');
 
+        // Estilo do cabeçalho
+        $headerStyle = [
+            'font' => ['bold' => true],
+            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
+        ];
+        $sheet->getStyle('A1:C1')->applyFromArray($headerStyle);
+
+        // Dados
+        $row = 2;
+        foreach ($clientes as $cliente) {
+            $sheet->setCellValue('A' . $row, $cliente->nome);
+            $sheet->setCellValue('B' . $row, $cliente->cpf);
+            $sheet->setCellValue('C' . $row, $cliente->celular);
+            $row++;
+        }
+
+        // Auto-size columns
+        foreach (range('A', 'C') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // Create Excel file
+        $writer = new Xlsx($spreadsheet);
+        
+        // Headers para download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="relatorio-clientes.xlsx"');
+        header('Cache-Control: max-age=0');
+        
+        $writer->save('php://output');
+        exit;
+    }
+
+    public function relatorioFornecedoresExcel(): void
+    {
+        $fornecedor = new Fornecedores();
+        $fornecedores = $fornecedor->selectAll();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Cabeçalho
+        $sheet->setCellValue('A1', 'Nome');
+        $sheet->setCellValue('B1', 'CNPJ');
+        $sheet->setCellValue('C1', 'Email');
+        $sheet->setCellValue('D1', 'Telefone');
+        $sheet->setCellValue('E1', 'Endereço');
+        $sheet->setCellValue('F1', 'Município');
+        $sheet->setCellValue('G1', 'CEP');
+        $sheet->setCellValue('H1', 'UF');
+
+        // Estilo do cabeçalho
+        $headerStyle = [
+            'font' => ['bold' => true],
+            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
+        ];
+        $sheet->getStyle('A1:H1')->applyFromArray($headerStyle);
+
+        // Dados
+        $row = 2;
+        foreach ($fornecedores as $fornecedor) {
+            $sheet->setCellValue('A' . $row, $fornecedor->nome);
+            $sheet->setCellValue('B' . $row, $fornecedor->cnpj);
+            $sheet->setCellValue('C' . $row, $fornecedor->email);
+            $sheet->setCellValue('D' . $row, $fornecedor->telefone);
+            $sheet->setCellValue('E' . $row, $fornecedor->endereco);
+            $sheet->setCellValue('F' . $row, $fornecedor->municipio);
+            $sheet->setCellValue('G' . $row, $fornecedor->cep);
+            $sheet->setCellValue('H' . $row, $fornecedor->uf);
+            $row++;
+        }
+
+        // Auto-size columns
+        foreach (range('A', 'H') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // Create Excel file
+        $writer = new Xlsx($spreadsheet);
+        
+        // Headers para download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="relatorio-fornecedores.xlsx"');
+        header('Cache-Control: max-age=0');
+        
+        $writer->save('php://output');
+        exit;
+    }
+
+    public function relatorioProdutosExcel(): void
+    {
+        $produto = new Produtos();
+        $produtos = $produto->selectAll();
+        $categoria = new Categorias();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Cabeçalho
+        $sheet->setCellValue('A1', 'Código');
+        $sheet->setCellValue('B1', 'Nome');
+        $sheet->setCellValue('C1', 'Descrição');
+        $sheet->setCellValue('D1', 'Categoria');
+        $sheet->setCellValue('E1', 'Preço');
+        $sheet->setCellValue('F1', 'Quantidade');
+        $sheet->setCellValue('G1', 'Unidade');
+
+        // Estilo do cabeçalho
+        $headerStyle = [
+            'font' => ['bold' => true],
+            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
+        ];
+        $sheet->getStyle('A1:G1')->applyFromArray($headerStyle);
+
+        // Dados
+        $row = 2;
+        foreach ($produtos as $produto) {
+            $categoriaNome = $categoria->findNameById($produto->idCategoria) ?? 'N/A';
+            
+            $sheet->setCellValue('A' . $row, $produto->codigo_produto);
+            $sheet->setCellValue('B' . $row, $produto->nome);
+            $sheet->setCellValue('C' . $row, $produto->descricao);
+            $sheet->setCellValue('D' . $row, $categoriaNome);
+            $sheet->setCellValue('E' . $row, $produto->preco);
+            $sheet->setCellValue('F' . $row, $produto->quantidade);
+            $sheet->setCellValue('G' . $row, $produto->unidade_medida);
+            $row++;
+        }
+
+        // Auto-size columns
+        foreach (range('A', 'G') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // Create Excel file
+        $writer = new Xlsx($spreadsheet);
+        
+        // Headers para download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="relatorio-produtos.xlsx"');
+        header('Cache-Control: max-age=0');
+        
+        $writer->save('php://output');
+        exit;
+    }
 
     /*------------ FUNÇÕES GET ------------*/
     public function getHistoricoCliente(?array $data)
@@ -1442,10 +1573,6 @@ class App
         $saidas = new Saidas();
         echo json_encode($saidas->selectAll());
     }
-
-
-
-
 
     /*------------ NOTAS ------------*/
     public function processarXmlNota($request)

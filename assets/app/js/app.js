@@ -1073,11 +1073,107 @@ document
     ordenarTabela("quantidade", "setaQuantidade")
   );
 
+// Funções de exportação para Excel
+async function exportarClientesExcel() {
+  try {
+    const response = await fetch(`${BASE_URL}/excel-r-c`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'relatorio-clientes.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  } catch (error) {
+    console.error('Erro ao exportar clientes:', error);
+    alert('Erro ao gerar relatório Excel de clientes');
+  }
+}
 
+async function exportarFornecedoresExcel() {
+  try {
+    const response = await fetch(`${BASE_URL}/excel-r-f`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'relatorio-fornecedores.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  } catch (error) {
+    console.error('Erro ao exportar fornecedores:', error);
+    alert('Erro ao gerar relatório Excel de fornecedores');
+  }
+}
 
+async function exportarProdutosExcel() {
+  try {
+    const response = await fetch(`${BASE_URL}/excel-r-p`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'relatorio-produtos.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  } catch (error) {
+    console.error('Erro ao exportar produtos:', error);
+    alert('Erro ao gerar relatório Excel de produtos');
+  }
+}
 
+// Adiciona event listeners para os botões de Excel
+document.addEventListener('DOMContentLoaded', function() {
+  const excelClientesBtn = document.querySelector('a[href*="excel-r-c"]');
+  const excelFornecedoresBtn = document.querySelector('a[href*="excel-r-f"]');
+  const excelProdutosBtn = document.querySelector('a[href*="excel-r-p"]');
 
+  if (excelClientesBtn) {
+    excelClientesBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      exportarClientesExcel();
+    });
+  }
 
+  if (excelFornecedoresBtn) {
+    excelFornecedoresBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      exportarFornecedoresExcel();
+    });
+  }
+
+  if (excelProdutosBtn) {
+    excelProdutosBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      exportarProdutosExcel();
+    });
+  }
+});
+
+// Função de exportação para Excel
+async function exportarRelatorioExcel(tipo) {
+  try {
+    const response = await fetch(`${BASE_URL}/excel-r-${tipo}`);
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `relatorio-${tipo}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  } catch (error) {
+    console.error(`Erro ao exportar ${tipo}:`, error);
+    alert(`Erro ao gerar relatório Excel de ${tipo}`);
+  }
+}
 
 document
   .getElementById("categoria-cadastro")
