@@ -90,7 +90,7 @@ $this->layout("_theme");
                             <input
                                 name="preco"
                                 type="text"
-                                class="form-control"
+                                class="form-control preco"
                                 id="precoSaidaProdutoAdicionar"
                                 value="R$ 0,00"
                                 oninput="formatarPreco(this)">
@@ -151,7 +151,7 @@ $this->layout("_theme");
                         </div>
                         <div class="mb-3">
                             <label for="precoProduto" class="form-label">Preço</label>
-                            <input name="preco" type="text" class="form-control" id="precoProduto" value="R$ 0,00" oninput="formatarPreco(this)">
+                            <input name="preco" type="text" class="form-control preco" id="precoProduto" value="R$ 0,00" oninput="formatarPreco(this)">
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                         <div class="mb-3">
@@ -369,7 +369,7 @@ $this->layout("_theme");
                                 min="0"
                                 name="preco"
                                 type="text"
-                                class="form-control"
+                                class="form-control preco"
                                 id="precoEntrada"
                                 value="R$ 0,00"
                                 oninput="formatarPreco(this)">
@@ -420,7 +420,7 @@ $this->layout("_theme");
                                 min="0"
                                 name="preco"
                                 type="text"
-                                class="form-control"
+                                class="form-control preco"
                                 id="precoSaida"
                                 value="R$ 0,00"
                                 oninput="formatarPreco(this)">
