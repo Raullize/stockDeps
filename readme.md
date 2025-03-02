@@ -2,18 +2,6 @@
 
 O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, desenvolvido para facilitar a organização e controle de produtos, clientes, fornecedores e movimentações de estoque. O sistema foi projetado com tecnologias modernas e utiliza a arquitetura **MVC** (Model-View-Controller) para oferecer uma solução escalável e eficiente.
 
----
-
-## 🔧 Tecnologias Utilizadas
-
-- **PHP**: Para a lógica de back-end e comunicação com o banco de dados.
-- **CSS**: Para estilização e apresentação visual.
-- **JavaScript**: Para a interatividade e funcionalidades dinâmicas.
-- **Bootstrap**: Para garantir uma interface moderna e responsiva.
-- **Arquitetura MVC**: Para manter a organização modular do sistema, separando dados (Model), interface (View) e lógica de aplicação (Controller).
-
----
-
 ## 🖥 Funcionalidades Principais
 
 ### Dashboard
@@ -41,7 +29,13 @@ O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, 
 ### Relatórios
 - Geração de relatórios em **PDF** contendo informações relevantes, como movimentações do estoque, clientes cadastrados e fornecedores.
 
----
+## 🔧 Tecnologias Utilizadas
+
+- **PHP**: Para a lógica de back-end e comunicação com o banco de dados.
+- **CSS**: Para estilização e apresentação visual.
+- **JavaScript**: Para a interatividade e funcionalidades dinâmicas.
+- **Bootstrap**: Para garantir uma interface moderna e responsiva.
+- **Arquitetura MVC**: Para manter a organização modular do sistema, separando dados (Model), interface (View) e lógica de aplicação (Controller).
 
 ## 🧪 Testando o Projeto
 
@@ -75,8 +69,6 @@ npm update
 
 Após esses passos, todas as dependências necessárias para rodar o projeto estarão instaladas e você poderá iniciar o servidor e testar o sistema.
 
----
-
 ## 📈 Benefícios Reais: Já Utilizado no Dia a Dia Empresarial
 
 O **Stock DEPS** está sendo utilizado no dia a dia de uma empresa real, proporcionando uma gestão mais eficiente e precisa. Com a utilização do sistema, foi possível:
@@ -86,8 +78,6 @@ O **Stock DEPS** está sendo utilizado no dia a dia de uma empresa real, proporc
 - Manter a operação organizada e controlada.
 
 Essa experiência comprova que o **Stock DEPS** é uma solução robusta, confiável e capaz de atender às necessidades do seu negócio.
-
----
 
 ## 🌟 Por Que Escolher o Stock DEPS?
 
