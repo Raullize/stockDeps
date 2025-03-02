@@ -2,14 +2,6 @@
 
 O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, desenvolvido para facilitar a organização e controle de produtos, clientes, fornecedores e movimentações de estoque. O sistema foi projetado com tecnologias modernas e utiliza a arquitetura **MVC** (Model-View-Controller) para oferecer uma solução escalável e eficiente.
 
-## 🔧 Tecnologias Utilizadas
-
-- **PHP**: Para a lógica de back-end e comunicação com o banco de dados.
-- **CSS**: Para estilização e apresentação visual.
-- **JavaScript**: Para a interatividade e funcionalidades dinâmicas.
-- **Bootstrap**: Para garantir uma interface moderna e responsiva.
-- **Arquitetura MVC**: Para manter a organização modular do sistema, separando dados (Model), interface (View) e lógica de aplicação (Controller).
-
 ## 🖥 Funcionalidades Principais
 
 ### Dashboard
@@ -36,6 +28,14 @@ O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, 
 
 ### Relatórios
 - Geração de relatórios em **PDF** contendo informações relevantes, como movimentações do estoque, clientes cadastrados e fornecedores.
+
+## 🔧 Tecnologias Utilizadas
+
+- **PHP**: Para a lógica de back-end e comunicação com o banco de dados.
+- **CSS**: Para estilização e apresentação visual.
+- **JavaScript**: Para a interatividade e funcionalidades dinâmicas.
+- **Bootstrap**: Para garantir uma interface moderna e responsiva.
+- **Arquitetura MVC**: Para manter a organização modular do sistema, separando dados (Model), interface (View) e lógica de aplicação (Controller).
 
 ## 🧪 Testando o Projeto
 
