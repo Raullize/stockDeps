@@ -7,7 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Toggle sidebar no desktop
     if (toggleBtn) {
-        toggleBtn.addEventListener('click', function() {
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault(); // Previne comportamento padrão
             sidebar.classList.toggle('collapsed');
             
             // Salvar estado no localStorage
@@ -71,4 +72,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Atualizar link ativo quando a página muda
     window.addEventListener('popstate', setActiveLink);
+
+    // Adicionar evento de transição para evitar problemas de layout
+    sidebar.addEventListener('transitionend', function(e) {
+        if (e.propertyName === 'width') {
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Prevenir que a transição da sidebar afete o layout durante a navegação
+    menuLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const isSidebarCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebarCollapsed', isSidebarCollapsed);
+        });
+    });
 }); 
