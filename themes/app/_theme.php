@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="<?= url('assets/app/css/globals.css') ?>">
   <link rel="stylesheet" href="<?= url('assets/app/css/sidebar.css') ?>">
+  <link rel="stylesheet" href="<?= url('assets/app/css/loading.css') ?>">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Ícone do site -->
@@ -18,6 +19,12 @@
 </head>
 
 <body>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Carregando...</div>
+  </div>
+  
   <div class="layout-wrapper">
     <!-- Sidebar -->
     <aside class="sidebar">
@@ -103,6 +110,21 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
   <script src="<?= url('assets/app/js/sidebar.js') ?>"></script>
   <script src="<?= url('assets/app/js/logout.js') ?>"></script>
+  
+  <script>
+    // Adiciona o loading nas transições de página
+    document.addEventListener('DOMContentLoaded', function() {
+      const links = document.querySelectorAll('a:not([target="_blank"]):not([href^="#"]):not([href^="javascript"])');
+      const loadingOverlay = document.querySelector('.loading-overlay');
+      
+      links.forEach(link => {
+        link.addEventListener('click', function(e) {
+          if (!this.href.includes(window.location.origin)) return;
+          loadingOverlay.style.display = 'flex';
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>

@@ -607,6 +607,7 @@ body {
 .sidebar.collapsed .menu-item {
   display: flex;
   justify-content: center;
+  position: relative;
 }
 
 .sidebar.collapsed .menu-link {
@@ -649,4 +650,40 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
+}
+
+/* Tooltips para sidebar minimizada */
+.sidebar.collapsed .menu-item {
+  position: relative;
+}
+
+.sidebar.collapsed .menu-link:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 70px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar.collapsed .menu-link:hover::before {
+  content: "";
+  position: absolute;
+  left: 63px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent rgba(0, 0, 0, 0.75) transparent transparent;
+  pointer-events: none;
+  z-index: 1000;
 } 
