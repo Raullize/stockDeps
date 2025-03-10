@@ -1186,7 +1186,8 @@ function createButtonGroup(produto) {
   tdAcoes.classList.add("text-center");
   
   const actionButtonsContainer = document.createElement("div");
-  actionButtonsContainer.classList.add("d-flex", "gap-2", "justify-content-center");
+  actionButtonsContainer.classList.add("d-flex", "justify-content-center", "align-items-center");
+  actionButtonsContainer.style.gap = "10px";
   
   actions.forEach(({ text, icon, class: btnClass, tooltip, action }) => {
     const btn = document.createElement("button");
