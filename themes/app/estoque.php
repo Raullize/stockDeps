@@ -658,11 +658,30 @@ $this->layout("_theme");
         // Carrega todos os dados necessários
         loadAllData();
         
+        // Função para limpar o backdrop e restaurar o scroll
+        function limparBackdrop() {
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            const backdrops = document.getElementsByClassName('modal-backdrop');
+            while(backdrops.length > 0) {
+                backdrops[0].remove();
+            }
+        }
+
+        // Adiciona evento para limpar backdrop quando qualquer modal for fechado
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('hidden.bs.modal', function() {
+                limparBackdrop();
+            });
+        });
+        
         // Inicializa eventos para botões de modais
         const botaoAdicionarCategoria = document.getElementById('adicionarCategoriaBtn');
         if (botaoAdicionarCategoria) {
             botaoAdicionarCategoria.addEventListener('click', function() {
                 console.log('Botão Gerenciar Categorias clicado');
+                limparBackdrop(); // Limpa qualquer backdrop existente
                 const modalTabelaCategorias = new bootstrap.Modal(document.getElementById('modalTabelaCategorias'));
                 modalTabelaCategorias.show();
             });
@@ -672,6 +691,7 @@ $this->layout("_theme");
         if (consultarEntradasBtn) {
             consultarEntradasBtn.addEventListener('click', function() {
                 console.log('Botão Consultar Entradas clicado');
+                limparBackdrop(); // Limpa qualquer backdrop existente
                 const entradasModal = new bootstrap.Modal(document.getElementById('entradasModal'));
                 entradasModal.show();
             });
@@ -681,6 +701,7 @@ $this->layout("_theme");
         if (consultarSaidasBtn) {
             consultarSaidasBtn.addEventListener('click', function() {
                 console.log('Botão Consultar Saídas clicado');
+                limparBackdrop(); // Limpa qualquer backdrop existente
                 const saidasModal = new bootstrap.Modal(document.getElementById('saidasModal'));
                 saidasModal.show();
             });
