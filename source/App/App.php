@@ -1751,4 +1751,20 @@ class App
             echo json_encode(['error' => "Erro ao processar a nota: " . $e->getMessage()]);
         }
     }
+
+    /**
+     * Método para realizar o logout do usuário
+     */
+    public function logout(): void
+    {
+        $session = new \Source\Core\Session();
+        $session->destroy();
+        
+        $json = [
+            "message" => "Logout realizado com sucesso!",
+            "type" => "success"
+        ];
+        
+        echo json_encode($json);
+    }
 }

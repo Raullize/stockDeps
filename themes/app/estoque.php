@@ -318,7 +318,7 @@ $this->layout("_theme");
             </div>
         </div>
     </div>
-
+            
     <!-- Modal Adicionar Nota -->
     <div class="modal" id="modalAdicionarDANFE" tabindex="-1">
         <div class="modal-dialog">
@@ -514,7 +514,7 @@ $this->layout("_theme");
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                     <button type="submit" class="btn btn-primary">Salvar alterações</button>
                 </div>
-                </form>
+             </form>
             </div>
         </div>
     </div>
@@ -645,9 +645,55 @@ $this->layout("_theme");
         </div>
     </div>
 
-    <script src="<?= url('assets/app/js/app.js') ?>"></script>
-    <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
-    <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
-    <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>
-    <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>" async></script>
+<script src="<?= url('assets/app/js/app.js') ?>"></script>
+<script src="<?= url('assets/app/js/formsCreate.js') ?>"></script>
+<script src="<?= url('assets/app/js/formsDelete.js') ?>"></script>
+<script src="<?= url('assets/app/js/formsUpdate.js') ?>"></script>
+<script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
+<script>
+    // Carregar dados quando a página for carregada
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM fully loaded');
+        
+        // Carrega todos os dados necessários
+        loadAllData();
+        
+        // Inicializa eventos para botões de modais
+        const botaoAdicionarCategoria = document.getElementById('adicionarCategoriaBtn');
+        if (botaoAdicionarCategoria) {
+            botaoAdicionarCategoria.addEventListener('click', function() {
+                console.log('Botão Gerenciar Categorias clicado');
+                const modalTabelaCategorias = new bootstrap.Modal(document.getElementById('modalTabelaCategorias'));
+                modalTabelaCategorias.show();
+            });
+        }
+        
+        const consultarEntradasBtn = document.getElementById('consultarEntradasBtn');
+        if (consultarEntradasBtn) {
+            consultarEntradasBtn.addEventListener('click', function() {
+                console.log('Botão Consultar Entradas clicado');
+                const entradasModal = new bootstrap.Modal(document.getElementById('entradasModal'));
+                entradasModal.show();
+            });
+        }
+        
+        const consultarSaidasBtn = document.getElementById('consultarSaidasBtn');
+        if (consultarSaidasBtn) {
+            consultarSaidasBtn.addEventListener('click', function() {
+                console.log('Botão Consultar Saídas clicado');
+                const saidasModal = new bootstrap.Modal(document.getElementById('saidasModal'));
+                saidasModal.show();
+            });
+        }
+        
+        // Verificar se as categorias foram carregadas
+        setTimeout(function() {
+            const selectCategoria = document.getElementById('categoria');
+            if (selectCategoria && selectCategoria.options.length <= 1) {
+                console.log('Recarregando categorias...');
+                fetchCategorias();
+            }
+        }, 1000);
+    });
+</script>
 </body>

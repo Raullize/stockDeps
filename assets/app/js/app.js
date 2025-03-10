@@ -650,51 +650,46 @@ function ordenarProdutos(produtos) {
   return produtos; // Retorna os produtos ordenados
 }
 
-function preencherCategorias(categorias, callbackMostrarProdutos) {
-  const selectElement = document.getElementById("categoria");
-  const selectElementModal = document.getElementById(
-    "categoriaProdutoAdicionar"
-  );
-  const selectElementEditar = document.getElementById("categoriaProdutoEditar");
+function preencherCategorias(categorias, onChangeCallback) {
+  // Encontre todos os selects de categoria na página
+  const selectsCategorias = [
+    document.getElementById("categoria"),                  // Filtro principal
+    document.getElementById("categoriaProdutoAdicionar"),  // Modal adicionar
+    document.getElementById("categoriaProdutoEditar")      // Modal editar
+  ];
 
-  // Limpar as opções existentes nos selects antes de adicionar novas
-  selectElement.innerHTML = "";
-  selectElementModal.innerHTML = "";
-  selectElementEditar.innerHTML = "";
+  // Iterar sobre todos os selects encontrados e preencher cada um
+  selectsCategorias.forEach(select => {
+    if (select) {
+      // Limpar as opções existentes
+      select.innerHTML = "";
 
-  // Adiciona a opção "Todas" no select principal
-  const optionAll = document.createElement("option");
-  optionAll.value = ""; // Valor vazio para identificar a exibição de todos os produtos
-  optionAll.textContent = "Todas";
-  selectElement.appendChild(optionAll);
+      // Adicionar a opção vazia para filtro (apenas no filtro principal)
+      if (select.id === "categoria") {
+        const optionVazia = document.createElement("option");
+        optionVazia.value = "";
+        optionVazia.textContent = "Todas as categorias";
+        select.appendChild(optionVazia);
+      }
 
-  // Adiciona o placeholder "Selecione a categoria" no modal select
-  const placeholderModal = document.createElement("option");
-  placeholderModal.value = ""; // Valor vazio para validação
-  placeholderModal.textContent = "Selecione a categoria";
-  placeholderModal.disabled = true;
-  placeholderModal.selected = true;
-  selectElementModal.appendChild(placeholderModal);
+      // Adicionar as categorias
+      if (Array.isArray(categorias)) {
+        categorias.forEach(categoria => {
+          const option = document.createElement("option");
+          option.value = categoria.id;
+          option.textContent = categoria.nome;
+          select.appendChild(option);
+        });
+      }
 
-  // Preenche as opções de categorias no select principal e no modal
-  categorias.forEach((categoria) => {
-    // Para o select principal
-    const optionPrincipal = document.createElement("option");
-    optionPrincipal.value = categoria.id;
-    optionPrincipal.textContent = categoria.nome;
-    selectElement.appendChild(optionPrincipal);
-
-    // Para o select do modal
-    const optionModal = document.createElement("option");
-    optionModal.value = categoria.id;
-    optionModal.textContent = categoria.nome;
-    selectElementModal.appendChild(optionModal);
-
-    const optionEditar = document.createElement("option");
-    optionEditar.value = categoria.id;
-    optionEditar.textContent = categoria.nome;
-    selectElementEditar.appendChild(optionEditar);
+      // Adicionar o evento de change, se fornecido
+      if (onChangeCallback && typeof onChangeCallback === 'function') {
+        select.addEventListener("change", onChangeCallback);
+      }
+    }
   });
+
+  console.log("Categorias carregadas:", categorias);
 }
 
 function preencherFornecedores(fornecedores) {
