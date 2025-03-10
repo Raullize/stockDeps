@@ -564,61 +564,6 @@ th:hover .seta {
   color: #fff;
 }
 
-/* Larguras específicas para cada coluna */
-.table th:nth-child(1), .table td:nth-child(1) { /* Código */
-  width: 8%;
-}
-
-.table th:nth-child(2), .table td:nth-child(2) { /* Nome */
-  width: 15%;
-}
-
-.table th:nth-child(3), .table td:nth-child(3) { /* Descrição */
-  width: 25%;
-  max-width: 250px;
-}
-
-.table td:nth-child(3) {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: relative;
-}
-
-.table td:nth-child(3):hover {
-  white-space: normal;
-  overflow: visible;
-  position: absolute;
-  background-color: #fff;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  z-index: 1;
-  padding: 10px;
-  border-radius: 5px;
-  min-width: 250px;
-  max-width: 400px;
-  word-wrap: break-word;
-}
-
-.table th:nth-child(4), .table td:nth-child(4) { /* Preço */
-  width: 10%;
-}
-
-.table th:nth-child(5), .table td:nth-child(5) { /* Quantidade */
-  width: 10%;
-}
-
-.table th:nth-child(6), .table td:nth-child(6) { /* Unidade */
-  width: 8%;
-}
-
-.table th:nth-child(7), .table td:nth-child(7) { /* Status */
-  width: 10%;
-}
-
-.table th:nth-child(8), .table td:nth-child(8) { /* Ações */
-  width: 14%;
-}
-
 /* Melhorando o estilo dos botões de ação nas tabelas de entradas e saídas */
 .action-btn {
   width: 32px;
@@ -716,60 +661,6 @@ th:hover .seta {
   padding: 8px 4px;
 }
 
-/* Remove efeito de hover das células de ação na tabela de categorias */
-#tabelaCategorias td:last-child {
-  white-space: nowrap;
-  overflow: visible;
-}
-
-/* Adiciona efeito de hover na descrição da tabela de categorias */
-#tabelaCategorias td:nth-child(2) {
-  max-width: 200px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: relative;
-}
-
-#tabelaCategorias td:nth-child(2):hover {
-  white-space: normal;
-  overflow: visible;
-  position: absolute;
-  background-color: #fff;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  z-index: 10;
-  padding: 10px;
-  border-radius: 5px;
-  min-width: 200px;
-  max-width: 300px;
-  word-wrap: break-word;
-}
-
-/* Adiciona efeito de hover no nome do produto nas tabelas de entradas e saídas */
-#tabelaEntradas td:nth-child(1),
-#tabelaSaidas td:nth-child(1) {
-  max-width: 150px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  position: relative;
-}
-
-#tabelaEntradas td:nth-child(1):hover,
-#tabelaSaidas td:nth-child(1):hover {
-  white-space: normal;
-  overflow: visible;
-  position: absolute;
-  background-color: #fff;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  z-index: 10;
-  padding: 10px;
-  border-radius: 5px;
-  min-width: 150px;
-  max-width: 250px;
-  word-wrap: break-word;
-}
-
 .d-flex.justify-content-center.align-items-center {
   display: flex !important;
   flex-wrap: nowrap !important;
@@ -778,3 +669,25 @@ th:hover .seta {
   gap: 8px !important;
   padding: 4px 0 !important;
 }
+
+/* Ajuste para garantir que a barra de pesquisa e o filtro de categorias tenham o mesmo tamanho */
+.headerTabelaProdutos .d-flex.flex-wrap.gap-2 .input-group {
+  width: 300px;
+  flex: 0 0 300px;
+  margin: 0;
+}
+
+.headerTabelaProdutos .form-select,
+.headerTabelaProdutos .form-control {
+  height: 38px;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+@media (max-width: 767px) {
+  .headerTabelaProdutos .d-flex.flex-wrap.gap-2 .input-group {
+    width: 100%;
+    flex: 0 0 100%;
+    margin-bottom: 8px;
+  }
+}
+
