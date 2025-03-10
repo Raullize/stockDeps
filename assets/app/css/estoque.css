@@ -6,8 +6,7 @@
 
 .headerTabelaProdutos {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   gap: 1rem;
   padding: 1.5rem;
   border-radius: 5px;
@@ -53,9 +52,8 @@
 }
 
 .table {
+  table-layout: fixed;
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
 }
 
 .table th,
@@ -63,6 +61,9 @@
   text-align: center;
   vertical-align: middle;
   padding: 12px 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 #ordenarCodigo,
@@ -355,64 +356,80 @@ th:hover .seta {
 
 /* Status Badges */
 .status-badge {
-  display: inline-flex;
-  padding: 0.35rem 0.8rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 600;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  display: inline-block;
 }
 
 .status-badge.disponivel {
-  background-color: rgba(40, 167, 69, 0.15);
-  color: #28a745;
+  background-color: #e0f7e9;
+  color: #06d6a0;
 }
 
-.status-badge.pouco {
-  background-color: rgba(255, 193, 7, 0.15);
-  color: #ffc107;
-}
-
-.status-badge.esgotado {
-  background-color: rgba(220, 53, 69, 0.15);
-  color: #dc3545;
+.status-badge.indisponivel {
+  background-color: #fee8ee;
+  color: #ef476f;
 }
 
 /* Action Buttons in Table */
 .action-btn {
-  width: 32px;
-  height: 32px;
-  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  color: #6c757d;
-  background-color: rgba(0, 0, 0, 0.03);
-  border: none;
-  transition: all 0.2s;
-  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 4px;
 }
 
 .action-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05);
   transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.action-btn.edit:hover {
-  color: var(--primary-color);
+.action-btn.btn-primary {
+  background-color: #4361ee;
+  border-color: #4361ee;
 }
 
-.action-btn.delete:hover {
-  color: #dc3545;
+.action-btn.btn-danger {
+  background-color: #ef476f;
+  border-color: #ef476f;
 }
 
-.action-btn.entrada:hover {
-  color: #28a745;
+.action-btn.btn-success {
+  background-color: #06d6a0;
+  border-color: #06d6a0;
 }
 
-.action-btn.saida:hover {
-  color: #ffc107;
+.action-btn.btn-warning {
+  background-color: #ffd166;
+  border-color: #ffd166;
+  color: #212529;
+}
+
+.action-btn i {
+  font-size: 1rem;
+}
+
+.table th {
+  font-weight: 600;
+  color: #495057;
+}
+
+.table th i.fas {
+  color: #6c757d;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.table th:hover i.fas {
+  color: #0d6efd;
 }
 
 /* Responsive Adjustments */
@@ -448,6 +465,13 @@ th:hover .seta {
   }
 }
 
+@media (min-width: 768px) {
+  .headerTabelaProdutos {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
 /* Overrides */
 .btn-outline-primary {
   color: var(--primary-color);
@@ -469,13 +493,265 @@ th:hover .seta {
   color: white;
 }
 
-.form-control:focus {
-  border-color: var(--primary-color);
+.form-control:focus,
+.form-select:focus {
   box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+  border-color: #4361ee;
 }
 
 /* Correção de bug */
 .form-control::placeholder {
   color: #adb5bd;
   opacity: 1;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-title {
+  margin-bottom: 0;
+}
+
+.pagination .page-item .page-link {
+  border-radius: 5px;
+  margin: 0 3px;
+  color: #4361ee;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #4361ee;
+  border-color: #4361ee;
+}
+
+.btn-primary {
+  background-color: #4361ee;
+  border-color: #4361ee;
+}
+
+.btn-primary:hover {
+  background-color: #3a56d4;
+  border-color: #3a56d4;
+}
+
+.btn-info {
+  background-color: #4cc9f0;
+  border-color: #4cc9f0;
+  color: #fff;
+}
+
+.btn-info:hover {
+  background-color: #3db8df;
+  border-color: #3db8df;
+  color: #fff;
+}
+
+/* Larguras específicas para cada coluna */
+.table th:nth-child(1), .table td:nth-child(1) { /* Código */
+  width: 8%;
+}
+
+.table th:nth-child(2), .table td:nth-child(2) { /* Nome */
+  width: 15%;
+}
+
+.table th:nth-child(3), .table td:nth-child(3) { /* Descrição */
+  width: 25%;
+  max-width: 250px;
+}
+
+.table td:nth-child(3) {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+.table td:nth-child(3):hover {
+  white-space: normal;
+  overflow: visible;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  z-index: 1;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 250px;
+  max-width: 400px;
+  word-wrap: break-word;
+}
+
+.table th:nth-child(4), .table td:nth-child(4) { /* Preço */
+  width: 10%;
+}
+
+.table th:nth-child(5), .table td:nth-child(5) { /* Quantidade */
+  width: 10%;
+}
+
+.table th:nth-child(6), .table td:nth-child(6) { /* Unidade */
+  width: 8%;
+}
+
+.table th:nth-child(7), .table td:nth-child(7) { /* Status */
+  width: 10%;
+}
+
+.table th:nth-child(8), .table td:nth-child(8) { /* Ações */
+  width: 14%;
+}
+
+/* Melhorando o estilo dos botões de ação nas tabelas de entradas e saídas */
+.action-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 4px;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn i {
+  font-size: 1rem;
+}
+
+/* Aumentar espaçamento entre os botões de ação */
+.d-flex.gap-2.justify-content-center {
+  gap: 8px !important;
+}
+
+/* Estilização específica para botões nas tabelas de entradas e saídas */
+#tabelaEntradas .action-btn,
+#tabelaSaidas .action-btn {
+  width: 36px;  /* Tamanho ajustado para aparência mais circular */
+  height: 36px; /* Tamanho ajustado para aparência mais circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-width: 0;
+  margin: 0 4px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+#tabelaEntradas .action-btn i,
+#tabelaSaidas .action-btn i {
+  font-size: 0.9rem; /* Tamanho reduzido para melhor proporção */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Estilo para hover dos botões nos modais */
+#tabelaEntradas .action-btn:hover,
+#tabelaSaidas .action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Melhorar a exibição das tabelas dentro dos modais */
+#tabelaEntradas,
+#tabelaSaidas {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#tabelaEntradas th,
+#tabelaSaidas th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  padding: 12px 8px;
+}
+
+#tabelaEntradas td,
+#tabelaSaidas td {
+  padding: 12px 8px;
+  vertical-align: middle;
+}
+
+/* Melhorar a aparência das células de ação */
+#tabelaEntradas td:last-child,
+#tabelaSaidas td:last-child {
+  padding: 8px 4px;
+}
+
+/* Remove efeito de hover das células de ação na tabela de categorias */
+#tabelaCategorias td:last-child {
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* Adiciona efeito de hover na descrição da tabela de categorias */
+#tabelaCategorias td:nth-child(2) {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+#tabelaCategorias td:nth-child(2):hover {
+  white-space: normal;
+  overflow: visible;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  z-index: 10;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 200px;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+/* Adiciona efeito de hover no nome do produto nas tabelas de entradas e saídas */
+#tabelaEntradas td:nth-child(1),
+#tabelaSaidas td:nth-child(1) {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+}
+
+#tabelaEntradas td:nth-child(1):hover,
+#tabelaSaidas td:nth-child(1):hover {
+  white-space: normal;
+  overflow: visible;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  z-index: 10;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 150px;
+  max-width: 250px;
+  word-wrap: break-word;
 }
