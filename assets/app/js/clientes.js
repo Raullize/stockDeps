@@ -61,11 +61,17 @@ function preencherTabelaClientes(clientesPaginados) {
             <td>${cliente.nome}</td>
             <td>${cliente.cpf}</td>
             <td>${cliente.celular}</td>
-            <td>
-                <div class="btn-group w-100">
-                    <button class="btn btn-primary text-light" onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
-                    <button class="btn btn-danger" onclick="openModalExcluir(${cliente.id})">Excluir</button>
-                    <button class="btn btn-success" onclick="abrirModalHistorico(${cliente.id})">Histórico</button>
+            <td class="text-center">
+                <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn btn-primary action-btn" onclick="abrirModalEditarCliente(${cliente.id})" title="Editar cliente">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger action-btn" onclick="openModalExcluir(${cliente.id})" title="Excluir cliente">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button class="btn btn-success action-btn" onclick="abrirModalHistorico(${cliente.id})" title="Histórico de compras">
+                        <i class="fas fa-history"></i>
+                    </button>
                 </div>
             </td>
         `;

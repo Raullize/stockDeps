@@ -125,3 +125,35 @@ button:active {
 th:hover .seta {
   color: black;
 }
+
+/* Adicionar estilos para os botões de ação */
+.action-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0 3px;
+    border-radius: 50%;
+}
+
+.action-btn i {
+    font-size: 0.9rem;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+}
+
+/* Ajustar o espaçamento entre os botões */
+.d-flex.gap-2.justify-content-center {
+    gap: 8px !important;
+}
+
+/* Garantir que os botões fiquem bem espaçados na tabela */
+.table td:last-child {
+    padding: 8px 4px;
+    min-width: 150px;
+}

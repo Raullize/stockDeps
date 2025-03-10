@@ -7,34 +7,47 @@ $this->layout("_theme");
 <link rel="stylesheet" href="<?= url('assets/app/css/clientes.css') ?>">
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid mt-3">
         <div class="row justify-content-center">
-            <div class="tabelaClientes">
-                <h1 class="text-center p-4">
-                    Clientes
-                </h1>
-                <div class="headerTabelaClientes p-3">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarCliente" id="adicionarClienteBtn">
-                        Adicionar Cliente
-                    </button>
-                    <div class="d-flex">
-                        <label for="buscarCliente" class="p-2">Procurar cliente:</label>
-                        <input type="text" name="buscarCliente" id="buscarCliente" placeholder="Procurar cliente" class="form-control">
+            <div class="col-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h3 class="card-title text-primary fw-bold mb-0">
+                            <i class="fas fa-users me-2"></i>Gestão de Clientes
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="headerTabelaClientes p-3 bg-light rounded mb-3">
+                            <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                                <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalAdicionarCliente" id="adicionarClienteBtn">
+                                    <i class="fas fa-user-plus me-2"></i>
+                                    <span>Adicionar Cliente</span>
+                                </button>
+                                <div class="input-group" style="max-width: 300px;">
+                                    <span class="input-group-text bg-white">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
+                                    <input type="text" name="buscarCliente" id="buscarCliente" placeholder="Procurar cliente" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="tabelaClientes" class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th id="ordenarNomeCliente">Nome <i class="fas fa-sort ms-1" id="setaNomeCliente"></i></th>
+                                        <th id="ordenarCpfCliente">CPF</th>
+                                        <th id="ordenarCelularCliente">Celular</th>
+                                        <th id="acoesClientes" class="text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Linhas serão inseridas dinamicamente aqui -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-                <table id="tabelaClientes" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th id="ordenarNomeCliente">Nome <span class="seta" id="setaNomeCliente">⬍</span></th>
-                            <th id="ordenarCpfCliente">CPF</th>
-                            <th id="ordenarCelularCliente">Celular</th>
-                            <th id="acoesClientes">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Linhas serão inseridas dinamicamente aqui -->
-                    </tbody>
-                </table>
             </div>
         </div>
         <nav>
@@ -46,28 +59,49 @@ $this->layout("_theme");
     <div class="modal fade" id="modalAdicionarCliente" tabindex="-1" aria-labelledby="modalAdicionarClienteLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg"> <!-- Aumentando a largura do modal -->
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAdicionarClienteLabel">Adicionar Cliente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalAdicionarClienteLabel">
+                        <i class="fas fa-user-plus me-2"></i>Adicionar Cliente
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="cadastro-clientes" name="cadastro-clientes" method="post">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="nomeCliente" class="form-label">Nome</label>
-                            <input name="nome" type="text" class="form-control" id="nomeCliente" placeholder="Digite o nome do cliente">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input name="nome" type="text" class="form-control" id="nomeCliente" placeholder="Digite o nome do cliente">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="cpfCliente" class="form-label">CPF</label>
-                            <input name="cpf" type="text" class="form-control" id="cpfCliente" placeholder="Digite o CPF do cliente" maxlength="14" oninput="formatarCPF(event)">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-id-card"></i>
+                                </span>
+                                <input name="cpf" type="text" class="form-control" id="cpfCliente" placeholder="Digite o CPF do cliente" maxlength="14" oninput="formatarCPF(event)">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="telefoneCliente" class="form-label">Celular</label>
-                            <input name="celular" type="text" class="form-control" id="telefoneCliente" placeholder="Digite o celular do cliente">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </span>
+                                <input name="celular" type="text" class="form-control" id="telefoneCliente" placeholder="Digite o celular do cliente">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary">Salvar Cliente</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Salvar Cliente
+                        </button>
                     </div>
                 </form>
             </div>
@@ -76,31 +110,52 @@ $this->layout("_theme");
 
     <!-- Modal Editar Cliente -->
     <div class="modal fade" id="modalEditarCliente" tabindex="-1" aria-labelledby="modalEditarClienteLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarClienteLabel">Editar Cliente</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalEditarClienteLabel">
+                        <i class="fas fa-user-edit me-2"></i>Editar Cliente
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="cliente-update" method="post">
                     <div class="modal-body">
                             <input type="hidden" id="idClienteUpdate" name="idClienteUpdate"> <!-- Campo oculto para armazenar o id -->
                         <div class="mb-3">
                             <label for="editarNomeCliente" class="form-label">Nome</label>
-                            <input name="nome" type="text" class="form-control" id="editarNomeCliente">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input name="nome" type="text" class="form-control" id="editarNomeCliente">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="editarCpfCliente" class="form-label">CPF</label>
-                            <input name="cpf" type="text" class="form-control" id="editarCpfCliente">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-id-card"></i>
+                                </span>
+                                <input name="cpf" type="text" class="form-control" id="editarCpfCliente">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="editarTelefoneCliente" class="form-label">Celular</label>
-                            <input name="celular" type="text" class="form-control" id="editarTelefoneCliente">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </span>
+                                <input name="celular" type="text" class="form-control" id="editarTelefoneCliente">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Salvar Alterações
+                        </button>
                     </div>
                 </form>
             </div>
@@ -109,21 +164,33 @@ $this->layout("_theme");
 
     <!-- Modal Excluir -->
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirLabel">Excluir Produto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Cliente
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="cliente-excluir" name="cliente-excluir" method="post">
-                    <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir este cliente?  
-                        Ao confirmar, todas as vendas, transações e outros registros relacionados a ele também serão removidos.</p>
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir este cliente?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Ao confirmar, todas as vendas, transações e outros registros relacionados a ele também serão removidos.
+                        </div>
                         <input type="hidden" id="idClienteExcluir" name="idClienteExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger" id="confirmarExcluir">Excluir</button>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluir">
+                            <i class="fas fa-trash-alt me-2"></i>Excluir
+                        </button>
                     </div>
                 </form>
             </div>

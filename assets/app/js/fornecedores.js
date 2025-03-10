@@ -64,11 +64,17 @@ function preencherTabelaFornecedores(fornecedoresPaginados) {
             <td>${fornecedor.municipio}</td>
             <td>${fornecedor.cep}</td>
             <td>${fornecedor.uf}</td>
-            <td>
-                <div class="btn-group">
-                    <button class="btn btn-primary" onclick="editarFornecedor(${fornecedor.id})" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" id="editarFornecedorBtn">Editar</button>
-                    <button class="btn btn-danger" onclick="openModalExcluir(${fornecedor.id})">Excluir</button>
-                    <button class="btn btn-success" onclick="abrirModalHistorico(${fornecedor.id})">Histórico</button>
+            <td class="text-center">
+                <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn btn-primary action-btn" onclick="editarFornecedor(${fornecedor.id})" data-bs-toggle="modal" data-bs-target="#modalEditarFornecedor" title="Editar fornecedor">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger action-btn" onclick="openModalExcluir(${fornecedor.id})" title="Excluir fornecedor">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button class="btn btn-success action-btn" onclick="abrirModalHistorico(${fornecedor.id})" title="Histórico de compras">
+                        <i class="fas fa-history"></i>
+                    </button>
                 </div>
             </td>
         `;
