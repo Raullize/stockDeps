@@ -38,6 +38,12 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.table th {
+  text-align: center;
+  vertical-align: middle;
+  font-weight: 600;
+}
+
 .btn-quick-action {
   background-color: #007bff;
   color: #fff;
