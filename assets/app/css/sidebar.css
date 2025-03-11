@@ -371,61 +371,56 @@ body {
 @media (max-width: 991px) {
   .sidebar {
     transform: translateX(-100%);
-    transition: transform var(--transition-speed) ease;
-    width: 260px !important;
+    box-shadow: none;
   }
   
   .sidebar.show {
     transform: translateX(0);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--sidebar-shadow);
   }
   
   .sidebar.collapsed,
-  .sidebar.collapsed .menu-text,
+  .sidebar.collapsed ~ .main-content {
+    transform: translateX(-100%);
+    margin-left: 0;
+    width: 100%;
+  }
+  
   .sidebar.collapsed .logo span,
-  .sidebar.collapsed .user-details,
-  .sidebar.collapsed .logout-text {
-    width: 260px !important;
+  .sidebar.collapsed .menu-text,
+  .sidebar.collapsed .logout-text,
+  .sidebar.collapsed .user-details {
+    display: block;
     opacity: 1;
+    width: auto;
     visibility: visible;
   }
   
   .main-content {
-    width: 100% !important;
-    margin-left: 0 !important;
+    margin-left: 0;
+    width: 100%;
   }
   
-  .toggle-btn {
-    display: none; /* Escondemos o botão toggle em dispositivos móveis */
-  }
-}
-
-/* Fix para garantir que o conteúdo seja visível em telas pequenas */
-.content-container {
-  width: 100%;
-  padding: 20px;
-  overflow-x: auto;
-}
-
-/* Ajustes para tabelas em dispositivos móveis */
-@media (max-width: 767px) {
-  .table-responsive {
-    overflow-x: auto;
-  }
-  
-  .headerTabelaProdutos {
-    flex-direction: column;
+  .mobile-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transition: transform var(--transition-speed) ease;
   }
   
-  .headerTabelaProdutos .d-flex {
-    flex-wrap: wrap;
-    gap: 8px !important;
-    margin-bottom: 8px;
-  }
-  
-  .btn {
-    padding: 0.4rem 0.75rem;
-    font-size: 0.875rem;
+  .mobile-toggle:hover {
+    transform: scale(1.05);
   }
 }
 
@@ -574,33 +569,4 @@ body {
 .chart-container {
   position: relative;
   height: 300px;
-}
-
-/* Mobile Toggle Button - Modificado para ficar no canto inferior direito */
-.mobile-toggle {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: var(--primary-color);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  transform: scale(1);
-}
-
-.mobile-toggle:hover {
-  transform: scale(1.1);
-  background-color: var(--primary-color-dark);
-}
-
-.mobile-toggle i {
-  font-size: 1.5rem;
 } 
