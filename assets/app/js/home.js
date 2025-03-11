@@ -227,15 +227,55 @@ function calcularLucroBruto(saidas) {
 }
 
 function calcularLucroLiquido(entradas, saidas) {
+  // O lucro bruto continua o mesmo - soma de todas as receitas de vendas
   const lucroBruto = calcularLucroBruto(saidas);
-
-  const totalEntradas = entradas.reduce((total, entrada) => {
-    const preco = parseFloat(entrada.preco.toString().replace(',', '.')) || 0;
-    const quantidade = parseFloat(entrada.quantidade.toString().replace(',', '.')) || 0;
-    return total + (preco * quantidade);
-  }, 0);
-
-  return lucroBruto - totalEntradas; // Receita - Custo
+  
+  // Calcula o custo das mercadorias vendidas (CMV)
+  let custoMercadoriasVendidas = 0;
+  
+  // Mapa para armazenar preço médio por produto
+  const precoMedioPorProduto = {};
+  
+  // Calcula o preço médio ponderado para cada produto
+  produtos.forEach(produto => {
+    const entradasProduto = entradas.filter(e => e.idProdutos == produto.id);
+    
+    if (entradasProduto.length > 0) {
+      const totalValorEntradas = entradasProduto.reduce((total, entrada) => {
+        const preco = parseFloat(entrada.preco.toString().replace(',', '.')) || 0;
+        const quantidade = parseFloat(entrada.quantidade.toString().replace(',', '.')) || 0;
+        return total + (preco * quantidade);
+      }, 0);
+      
+      const totalQuantidadeEntradas = entradasProduto.reduce((total, entrada) => {
+        const quantidade = parseFloat(entrada.quantidade.toString().replace(',', '.')) || 0;
+        return total + quantidade;
+      }, 0);
+      
+      if (totalQuantidadeEntradas > 0) {
+        precoMedioPorProduto[produto.id] = totalValorEntradas / totalQuantidadeEntradas;
+      }
+    }
+  });
+  
+  // Calcula o CMV usando o preço médio para cada produto vendido
+  saidas.forEach(saida => {
+    const idProduto = saida.idProdutos;
+    const quantidade = parseFloat(saida.quantidade.toString().replace(',', '.')) || 0;
+    
+    // Se temos o custo médio deste produto, usamos ele
+    if (precoMedioPorProduto[idProduto]) {
+      custoMercadoriasVendidas += precoMedioPorProduto[idProduto] * quantidade;
+    } else {
+      // Se não temos um custo médio registrado, estimamos como 70% do preço de venda
+      // (Este é um valor heurístico e pode ser ajustado conforme a realidade do negócio)
+      const precoVenda = parseFloat(saida.preco.toString().replace(',', '.')) || 0;
+      custoMercadoriasVendidas += (precoVenda * 0.7) * quantidade;
+    }
+  });
+  
+  // Lucro líquido = Lucro Bruto - Custo das Mercadorias Vendidas
+  return lucroBruto - custoMercadoriasVendidas;
 }
 
 async function calcularValorEstoque() {
@@ -248,12 +288,28 @@ async function calcularValorEstoque() {
     let valorTotal = 0;
 
     produtos.forEach(produto => {
-      const entradasProduto = entradas.filter(e => e.idProdutos === produto.id);
-
+      // Filtra entradas deste produto
+      const entradasProduto = entradas.filter(e => e.idProdutos == produto.id);
+      
       if (entradasProduto.length > 0) {
-        const precoMedio = entradasProduto.reduce((total, entrada) => total + (entrada.preco * entrada.quantidade), 0) /
-          entradasProduto.reduce((total, entrada) => total + entrada.quantidade, 0);
+        // Calcula preço médio ponderado para produtos com entradas
+        const totalValorEntradas = entradasProduto.reduce((total, entrada) => {
+          const preco = parseFloat(entrada.preco.toString().replace(',', '.')) || 0;
+          const quantidade = parseFloat(entrada.quantidade.toString().replace(',', '.')) || 0;
+          return total + (preco * quantidade);
+        }, 0);
+        
+        const totalQuantidadeEntradas = entradasProduto.reduce((total, entrada) => {
+          const quantidade = parseFloat(entrada.quantidade.toString().replace(',', '.')) || 0;
+          return total + quantidade;
+        }, 0);
+        
+        const precoMedio = totalValorEntradas / totalQuantidadeEntradas;
         valorTotal += produto.quantidade * precoMedio;
+      } else {
+        // Para produtos sem entradas registradas, usa o preço de venda como estimativa
+        const precoProduto = parseFloat(produto.preco.toString().replace(',', '.')) || 0;
+        valorTotal += produto.quantidade * precoProduto;
       }
     });
 
