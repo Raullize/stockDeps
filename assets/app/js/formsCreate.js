@@ -126,10 +126,14 @@ form_sc.on("submit", function (e) {
         success: function (response) {
             if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
+                // Garantir que o campo cliente esteja habilitado mesmo com erro
+                $("#cliente").prop('readOnly', false);
                 return;
             }
             if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
+                // Garantir que o campo cliente esteja habilitado mesmo com aviso
+                $("#cliente").prop('readOnly', false);
                 return;
             }
             if (response.type === 'success') {
@@ -144,6 +148,8 @@ form_sc.on("submit", function (e) {
         error: function (xhr, status, error) {
             console.error("Erro no AJAX:", error);
             exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
+            // Garantir que o campo cliente esteja habilitado mesmo com erro
+            $("#cliente").prop('readOnly', false);
         }
     });
 });
@@ -271,9 +277,18 @@ function limparCamposFormulario(formSelector) {
 
 function limparCamposSaida() {
     const form = $("#saida-cadastro");
+    const clienteInput = form.find("#cliente");
 
-    form.find("#cliente").val(''); 
+    // Limpa o valor do campo cliente
+    clienteInput.val('');
+    
+    // Garante que o campo cliente fique editável
+    clienteInput.prop('readOnly', false);
+    
+    // Desmarca o checkbox de cliente não cadastrado
     form.find("#clienteNaoCadastrado").prop('checked', false);
+    
+    // Limpa o campo de quantidade
     form.find("#quantidadeSaida").val('');
 }
 

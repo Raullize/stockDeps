@@ -1015,12 +1015,18 @@ document
     const clienteInput = document.getElementById("cliente");
 
     if (this.checked) {
-      clienteInput.readOnly = true; // Torna o campo somente leitura
-      clienteInput.value = null; // Defina o valor desejado
+      // Cliente não cadastrado selecionado
+      clienteInput.readOnly = true;
+      clienteInput.value = "Cliente não cadastrado";
+      clienteInput.placeholder = "Cliente não cadastrado";
+      clienteInput.classList.add("text-muted");
     } else {
-      clienteInput.readOnly = false; // Atualiza o campo oculto com o valor do input
+      // Cliente cadastrado selecionado
+      clienteInput.readOnly = false;
+      clienteInput.value = "";
+      clienteInput.placeholder = "Digite o nome do cliente";
+      clienteInput.classList.remove("text-muted");
     }
-
   });
 
 function createButtonGroup(produto) {
