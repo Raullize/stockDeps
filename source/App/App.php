@@ -2,7 +2,11 @@
 
 namespace Source\App;
 
-use Dompdf\Dompdf;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Source\Support\PdfGenerator;
+use Source\Support\DocumentGenerator;
 use League\Plates\Engine;
 use Source\Models\Categorias;
 use Source\Models\Clientes;
@@ -12,8 +16,6 @@ use Source\Models\Produtos;
 use Source\Models\Saidas;
 use Source\Core\Session;
 use CoffeeCode\Uploader\Image;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class App
 {
@@ -1082,188 +1084,18 @@ class App
     {
         $cliente = new Clientes();
         $clientes = $cliente->selectAll();
-
-        $clienteList = "";
-        foreach ($clientes as $cliente) {
-            $clienteList .= "
-            <tr>
-                <td>{$cliente->nome}</td>
-                <td>{$cliente->cpf}</td>
-                <td>{$cliente->celular}</td>
-            </tr>
-        ";
-        }
-
-        $dompdf = new Dompdf();
-
-        $dompdf->loadHtml("<html>
-        <body>
-        <div>
-            <h1>Relatório de Clientes</h1>
-        </div>
         
-        <h2>Lista de Clientes Cadastrados:</h2>
-        <table>
-            <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>Celular</th>
-            </tr>
-            $clienteList
-        </table>
-        </body>
-        
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-
-            h1 {
-                text-align: center;
-                margin-bottom: 40px;
-            }
-
-            h2 {
-                font-size: 18px;
-                margin-bottom: 20px;
-            }
-
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-bottom: 40px;
-            }
-
-            th, td {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 10px;
-                font-size: 10px;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-
-            td {
-                word-wrap: break-word;
-                max-width: 150px;
-            }
-        </style>
-        
-        </html>");
-
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait'); // Utiliza o formato A4 e orientação retrato
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream("relatório-clientes.pdf");
+        $docGenerator = new DocumentGenerator();
+        $docGenerator->gerarRelatorioClientesPdf($clientes);
     }
 
     public function relatorioFornecedores(): void
     {
         $fornecedor = new Fornecedores();
         $fornecedores = $fornecedor->selectAll();
-
-        $fornecedorList = "";
-        foreach ($fornecedores as $fornecedor) {
-            $fornecedorList .= "
-            <tr>
-                <td>{$fornecedor->nome}</td>
-                <td>{$fornecedor->cnpj}</td>
-                <td>{$fornecedor->email}</td>
-                <td>{$fornecedor->telefone}</td>
-                <td>{$fornecedor->endereco}</td>
-                <td>{$fornecedor->municipio}</td>
-                <td>{$fornecedor->cep}</td>
-                <td>{$fornecedor->uf}</td>
-            </tr>
-        ";
-        }
-
-        $dompdf = new Dompdf();
-
-        $dompdf->loadHtml("<html>
-    <body>
-    <div>
-        <h1>Relatório de Fornecedores</h1>
-    </div>
-
-    <h2>Lista de Fornecedores em Estoque:</h2>
-    <table>
-        <tr>
-            <th>Nome</th>
-            <th>Cnpj</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Endereço</th>
-            <th>Município</th>
-            <th>CEP</th>
-            <th>UF</th>
-        </tr>
-        $fornecedorList
-    </table>
-    </body>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 30px;
-        }
-
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 5px;
-            font-size: 10px; /* Reduzir o tamanho da fonte para caber mais conteúdo */
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        td {
-            word-wrap: break-word; /* Quebra de linha nas células caso o conteúdo seja grande */
-            max-width: 100px; /* Limita a largura das células */
-        }
-
-    </style>
-    
-    </html>");
-
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'landscape'); // Mude para 'landscape' para um layout mais largo
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream("relatório-fornecedores");
+        
+        $docGenerator = new DocumentGenerator();
+        $docGenerator->gerarRelatorioFornecedoresPdf($fornecedores);
     }
 
     public function relatorioProdutos(): void
@@ -1271,100 +1103,14 @@ class App
         $produto = new Produtos();
         $produtos = $produto->selectAll();
         $categoria = new Categorias();
-
-        $produtoList = "";
-        foreach ($produtos as $produto) {
-            $categoriaNome = $categoria->findNameById($produto->idCategoria);
-            $produtoList .= "
-            <tr>
-                <td>{$produto->codigo_produto}</td>
-                <td>{$produto->nome}</td>
-                <td>{$categoriaNome}</td>
-                <td>{$produto->descricao}</td>
-                <td>{$produto->preco}</td>
-                <td>{$produto->quantidade}</td>
-                <td>{$produto->unidade_medida}</td>
-            </tr>
-        ";
+        
+        // Adicionar informação da categoria a cada produto
+        foreach ($produtos as &$produto) {
+            $produto->categoria = $categoria->findNameById($produto->idCategoria);
         }
-
-        $dompdf = new Dompdf();
-
-        $dompdf->loadHtml("<html>
-        <body>
-        <div>
-            <h1>Relatório de Produtos</h1>
-        </div>
         
-        <h2>Lista de Produtos em Estoque:</h2>
-        <table>
-            <tr>
-                <th>Código</th>
-                <th>Nome</th>
-                <th>Categoria</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Quantidade</th>
-                <th>Unidade</th>
-            </tr>
-            $produtoList
-        </table>
-        </body>
-        
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-
-            h1 {
-                text-align: center;
-                margin-bottom: 40px;
-            }
-
-            h2 {
-                font-size: 18px;
-                margin-bottom: 20px;
-            }
-
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-bottom: 40px;
-            }
-
-            th, td {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 10px;
-                font-size: 10px;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-
-            td {
-                word-wrap: break-word;
-                max-width: 150px;
-            }
-        </style>
-        
-        </html>");
-
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait'); // Utiliza o formato A4 e orientação retrato
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream("relatório-produtos.pdf");
+        $docGenerator = new DocumentGenerator();
+        $docGenerator->gerarRelatorioProdutosPdf($produtos);
     }
 
     /*------------ RELATORIOS EXCEL ------------*/
@@ -1372,102 +1118,18 @@ class App
     {
         $cliente = new Clientes();
         $clientes = $cliente->selectAll();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Cabeçalho
-        $sheet->setCellValue('A1', 'Nome');
-        $sheet->setCellValue('B1', 'CPF');
-        $sheet->setCellValue('C1', 'Celular');
-
-        // Estilo do cabeçalho
-        $headerStyle = [
-            'font' => ['bold' => true],
-            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
-        ];
-        $sheet->getStyle('A1:C1')->applyFromArray($headerStyle);
-
-        // Dados
-        $row = 2;
-        foreach ($clientes as $cliente) {
-            $sheet->setCellValue('A' . $row, $cliente->nome);
-            $sheet->setCellValue('B' . $row, $cliente->cpf);
-            $sheet->setCellValue('C' . $row, $cliente->celular);
-            $row++;
-        }
-
-        // Auto-size columns
-        foreach (range('A', 'C') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-        }
-
-        // Create Excel file
-        $writer = new Xlsx($spreadsheet);
         
-        // Headers para download
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="relatorio-clientes.xlsx"');
-        header('Cache-Control: max-age=0');
-        
-        $writer->save('php://output');
-        exit;
+        $docGenerator = new DocumentGenerator();
+        $docGenerator->gerarRelatorioClientesExcel($clientes);
     }
 
     public function relatorioFornecedoresExcel(): void
     {
         $fornecedor = new Fornecedores();
         $fornecedores = $fornecedor->selectAll();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Cabeçalho
-        $sheet->setCellValue('A1', 'Nome');
-        $sheet->setCellValue('B1', 'CNPJ');
-        $sheet->setCellValue('C1', 'Email');
-        $sheet->setCellValue('D1', 'Telefone');
-        $sheet->setCellValue('E1', 'Endereço');
-        $sheet->setCellValue('F1', 'Município');
-        $sheet->setCellValue('G1', 'CEP');
-        $sheet->setCellValue('H1', 'UF');
-
-        // Estilo do cabeçalho
-        $headerStyle = [
-            'font' => ['bold' => true],
-            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
-        ];
-        $sheet->getStyle('A1:H1')->applyFromArray($headerStyle);
-
-        // Dados
-        $row = 2;
-        foreach ($fornecedores as $fornecedor) {
-            $sheet->setCellValue('A' . $row, $fornecedor->nome);
-            $sheet->setCellValue('B' . $row, $fornecedor->cnpj);
-            $sheet->setCellValue('C' . $row, $fornecedor->email);
-            $sheet->setCellValue('D' . $row, $fornecedor->telefone);
-            $sheet->setCellValue('E' . $row, $fornecedor->endereco);
-            $sheet->setCellValue('F' . $row, $fornecedor->municipio);
-            $sheet->setCellValue('G' . $row, $fornecedor->cep);
-            $sheet->setCellValue('H' . $row, $fornecedor->uf);
-            $row++;
-        }
-
-        // Auto-size columns
-        foreach (range('A', 'H') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-        }
-
-        // Create Excel file
-        $writer = new Xlsx($spreadsheet);
         
-        // Headers para download
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="relatorio-fornecedores.xlsx"');
-        header('Cache-Control: max-age=0');
-        
-        $writer->save('php://output');
-        exit;
+        $docGenerator = new DocumentGenerator();
+        $docGenerator->gerarRelatorioFornecedoresExcel($fornecedores);
     }
 
     public function relatorioProdutosExcel(): void
@@ -1475,56 +1137,14 @@ class App
         $produto = new Produtos();
         $produtos = $produto->selectAll();
         $categoria = new Categorias();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Cabeçalho
-        $sheet->setCellValue('A1', 'Código');
-        $sheet->setCellValue('B1', 'Nome');
-        $sheet->setCellValue('C1', 'Descrição');
-        $sheet->setCellValue('D1', 'Categoria');
-        $sheet->setCellValue('E1', 'Preço');
-        $sheet->setCellValue('F1', 'Quantidade');
-        $sheet->setCellValue('G1', 'Unidade');
-
-        // Estilo do cabeçalho
-        $headerStyle = [
-            'font' => ['bold' => true],
-            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
-        ];
-        $sheet->getStyle('A1:G1')->applyFromArray($headerStyle);
-
-        // Dados
-        $row = 2;
-        foreach ($produtos as $produto) {
-            $categoriaNome = $categoria->findNameById($produto->idCategoria) ?? 'N/A';
-            
-            $sheet->setCellValue('A' . $row, $produto->codigo_produto);
-            $sheet->setCellValue('B' . $row, $produto->nome);
-            $sheet->setCellValue('C' . $row, $produto->descricao);
-            $sheet->setCellValue('D' . $row, $categoriaNome);
-            $sheet->setCellValue('E' . $row, $produto->preco);
-            $sheet->setCellValue('F' . $row, $produto->quantidade);
-            $sheet->setCellValue('G' . $row, $produto->unidade_medida);
-            $row++;
-        }
-
-        // Auto-size columns
-        foreach (range('A', 'G') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-        }
-
-        // Create Excel file
-        $writer = new Xlsx($spreadsheet);
         
-        // Headers para download
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="relatorio-produtos.xlsx"');
-        header('Cache-Control: max-age=0');
+        // Adicionar informação da categoria a cada produto
+        foreach ($produtos as &$produto) {
+            $produto->categoria = $categoria->findNameById($produto->idCategoria);
+        }
         
-        $writer->save('php://output');
-        exit;
+        $docGenerator = new DocumentGenerator();
+        $docGenerator->gerarRelatorioProdutosExcel($produtos);
     }
 
     /*------------ FUNÇÕES GET ------------*/

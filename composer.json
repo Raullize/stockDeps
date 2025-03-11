@@ -49,6 +49,6 @@
     "coffeecode/uploader": "1.0.11",
     "league/plates": "v3.4.0",
     "smalot/pdfparser": "^2.11",
-    "phpoffice/phpspreadsheet": "^4.0"
+    "phpoffice/phpspreadsheet": "^4.1"
   }
 }
