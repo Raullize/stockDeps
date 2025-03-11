@@ -16,40 +16,42 @@ let ordemAtualClientes = {
 };
 
 async function fetchProdutos() {
-    const response = await fetch(`${BASE_URL}/getProdutos`);
-    produtos = await response.json();
+    try {
+        produtos = await (await fetch(`${BASE_URL}/getProdutos`)).json();
+    } catch (error) {
+        console.error("Erro ao carregar produtos:", error);
+    }
 }
 
 async function fetchCategorias() {
-    const response = await fetch(`${BASE_URL}/getCategorias`);
-    categorias = await response.json();
+    try {
+        categorias = await (await fetch(`${BASE_URL}/getCategorias`)).json();
+    } catch (error) {
+        console.error("Erro ao carregar categorias:", error);
+    }
 }
 
 async function fetchClientes() {
     try {
-        console.log("Iniciando fetchClientes");
-    const response = await fetch(`${BASE_URL}/getClientes`);
+        const response = await fetch(`${BASE_URL}/getClientes`);
         
         if (!response.ok) {
             throw new Error(`Erro ao buscar clientes: ${response.status} ${response.statusText}`);
         }
         
-    clientes = await response.json();
-        console.log("Clientes recebidos:", clientes);
+        clientes = await response.json();
         
         if (!Array.isArray(clientes)) {
             console.error("Dados recebidos não são um array:", clientes);
             clientes = [];
         }
         
-    clientesFiltrados = [...clientes];
-        console.log("clientesFiltrados inicializado:", clientesFiltrados);
+        clientesFiltrados = [...clientes];
         
-    aplicarOrdenacaoClientes();
-    mostrarPaginaClientes(paginaAtualClientes);
+        aplicarOrdenacaoClientes();
+        mostrarPaginaClientes(paginaAtualClientes);
         buscarCliente();
         
-        console.log("fetchClientes concluído com sucesso");
     } catch (error) {
         console.error("Erro ao carregar clientes:", error);
         alert("Ocorreu um erro ao carregar os clientes. Verifique o console para mais detalhes.");
@@ -57,62 +59,45 @@ async function fetchClientes() {
 }
 
 async function fetchEntradas() {
-    const response = await fetch(`${BASE_URL}/getEntradas`);
-    const entradas = await response.json();
+    try {
+        entradas = await (await fetch(`${BASE_URL}/getEntradas`)).json();
+    } catch (error) {
+        console.error("Erro ao carregar entradas:", error);
+    }
 }
 
 async function fetchSaidas() {
-    console.log("Iniciando fetchSaidas");
     try {
-    const response = await fetch(`${BASE_URL}/getSaidas`);
-        
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar saídas: ${response.status} ${response.statusText}`);
-        }
-        
+        const response = await fetch(`${BASE_URL}/getSaidas`);
         saidas = await response.json();
         
-        console.log("Saídas recebidas:", saidas);
-        
-        // Verificar o formato das datas nas saídas
-        if (Array.isArray(saidas) && saidas.length > 0) {
-            console.log("Exemplo de saída:", saidas[0]);
-            console.log("Formato da data em saídas:", typeof saidas[0].data, saidas[0].data);
-            
-            // Tentar converter a primeira data para verificar compatibilidade
-            const dataTeste = new Date(saidas[0].data);
-            console.log("Conversão de teste da data:", dataTeste, "É válida?", !isNaN(dataTeste.getTime()));
-        } else {
-            console.log("Nenhuma saída disponível para análise");
+        // Verificar se há saídas para processar datas
+        if (saidas && saidas.length > 0) {
+            // Teste de conversão de data
+            if (saidas[0] && saidas[0].data) {
+                const dataTeste = new Date(saidas[0].data);
+            }
         }
     } catch (error) {
         console.error("Erro ao carregar saídas:", error);
-        saidas = [];
     }
 }
 
 async function loadAllData() {
-    console.log("Iniciando carregamento de dados");
-    try {
-        await fetchProdutos();
-        console.log("Produtos carregados");
-        
-        await fetchCategorias();
-        console.log("Categorias carregadas");
-        
-        await fetchClientes();
-        console.log("Clientes carregados");
-        
-        await fetchEntradas();
-        console.log("Entradas carregadas");
-        
-        await fetchSaidas();
-        console.log("Saídas carregadas");
-        
-        console.log("Todos os dados foram carregados com sucesso");
-    } catch (error) {
-        console.error("Erro ao carregar dados:", error);
-    }
+    // Carregar produtos
+    await fetchProdutos();
+    
+    // Carregar categorias
+    await fetchCategorias();
+    
+    // Carregar clientes
+    await fetchClientes();
+    
+    // Carregar entradas
+    await fetchEntradas();
+    
+    // Carregar saídas
+    await fetchSaidas();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -156,89 +141,75 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function preencherTabelaClientes(clientesPaginados) {
-    console.log("Preenchendo tabela de clientes", clientesPaginados);
+    const tabela = document.getElementById('tabelaClientes');
     
-    const tabela = document.querySelector("#tabelaClientes tbody");
-    if (!tabela) {
-        console.error("Elemento da tabela não encontrado!");
-        return;
-    }
+    // Limpar tabela
+    const tbody = tabela.querySelector('tbody');
+    tbody.innerHTML = '';
     
-    // Limpar a tabela
-    tabela.innerHTML = "";
-
-    // Verificar se há dados para exibir
+    // Verificar se há clientes para exibir
     if (!clientesPaginados || clientesPaginados.length === 0) {
-        console.log("Nenhum cliente para exibir na tabela");
-        tabela.innerHTML = `<tr><td colspan="4" class="text-center">Nenhum cliente encontrado</td></tr>`;
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td colspan="6" class="text-center">Nenhum cliente encontrado</td>';
+        tbody.appendChild(tr);
         return;
     }
-
-    // Preencher com os dados dos clientes
+    
+    // Adicionar cada cliente à tabela
     clientesPaginados.forEach((cliente, index) => {
-        console.log(`Adicionando cliente ${index+1}:`, cliente.nome);
+        const tr = document.createElement('tr');
         
-        const linha = document.createElement("tr");
-        linha.innerHTML = `
-            <td>${cliente.nome || 'N/A'}</td>
-            <td>${cliente.cpf || 'N/A'}</td>
-            <td>${cliente.celular || 'N/A'}</td>
-            <td class="text-center">
-                <div class="d-flex gap-2 justify-content-center">
-                    <button class="btn btn-primary action-btn" onclick="abrirModalEditarCliente(${cliente.id})" title="Editar cliente">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger action-btn" onclick="openModalExcluir(${cliente.id})" title="Excluir cliente">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                    <button class="btn btn-success action-btn btn-historico-cliente" data-id="${cliente.id}" title="Histórico de compras">
-                        <i class="fas fa-history"></i>
-                    </button>
-                </div>
+        // Construindo as células da tabela
+        tr.innerHTML = `
+            <td>${cliente.nome}</td>
+            <td>${cliente.cpf}</td>
+            <td>${cliente.celular || '-'}</td>
+            <td>${cliente.email || '-'}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalEditarCliente(${cliente.id})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-info btn-sm" onclick="abrirModalHistorico(${cliente.id})">
+                    <i class="fas fa-history"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="openModalExcluir(${cliente.id})">
+                    <i class="fas fa-trash"></i>
+                </button>
             </td>
         `;
-        tabela.appendChild(linha);
-    });
-    
-    console.log(`Total de ${clientesPaginados.length} clientes adicionados à tabela`);
-    
-    // Adicionar eventos aos botões de histórico após criá-los
-    document.querySelectorAll('.btn-historico-cliente').forEach(botao => {
-        botao.addEventListener('click', function() {
-            const id = Number(this.getAttribute('data-id'));
-            abrirModalHistorico(id);
-        });
+        
+        tbody.appendChild(tr);
     });
 }
 
 function mostrarPaginaClientes(pagina) {
-    console.log(`Exibindo página ${pagina} de clientes`);
-    paginaAtualClientes = pagina;
-
-    // Verificar se há dados para exibir
-    if (!clientesFiltrados || clientesFiltrados.length === 0) {
-        console.log("Nenhum cliente para exibir");
-        const tabela = document.querySelector("#tabelaClientes tbody");
-        tabela.innerHTML = `<tr><td colspan="4" class="text-center">Nenhum cliente encontrado</td></tr>`;
-        document.getElementById('paginationClientes').innerHTML = '';
+    // Verificar se há clientes para exibir
+    if (clientesFiltrados.length === 0) {
+        preencherTabelaClientes([]);
+        atualizarPaginacaoClientes();
         return;
     }
-
+    
+    // Calcular índice inicial e final para paginação
     const inicio = (pagina - 1) * itensPorPaginaClientes;
-    const fim = inicio + itensPorPaginaClientes;
+    const fim = Math.min(inicio + itensPorPaginaClientes, clientesFiltrados.length);
+    
+    // Verificar se a página está vazia
+    if (fim <= inicio && pagina > 1) {
+        // Se estiver vazia, voltar para a página anterior
+        mostrarPaginaClientes(pagina - 1);
+        return;
+    }
+    
+    // Obter os clientes para a página atual
     const clientesPaginados = clientesFiltrados.slice(inicio, fim);
     
-    console.log(`Exibindo ${clientesPaginados.length} clientes (do índice ${inicio} ao ${fim-1})`);
-
-    if (clientesPaginados.length === 0 && paginaAtualClientes > 1) {
-        // Retroceder uma página se a atual ficar vazia após a exclusão
-        console.log("Página vazia, retrocedendo...");
-        mostrarPaginaClientes(paginaAtualClientes - 1);
-        return;
-    }
-
+    // Atualizar a tabela e a paginação
     preencherTabelaClientes(clientesPaginados);
     atualizarPaginacaoClientes();
+    
+    // Atualizar a página atual
+    paginaAtualClientes = pagina;
 }
 
 function atualizarPaginacaoClientes() {
@@ -282,50 +253,34 @@ function atualizarPaginacaoClientes() {
 }
 
 function buscarCliente() {
-    console.log("Configurando busca de clientes");
-    const inputBuscarCliente = document.getElementById("buscarCliente");
-    
-    if (!inputBuscarCliente) {
-        console.error("Campo de busca de clientes não encontrado!");
-        return;
-    }
+    const buscaInput = document.getElementById('buscaClientes');
+    if (!buscaInput) return;
 
-    inputBuscarCliente.addEventListener("input", function () {
-        const termoBusca = inputBuscarCliente.value.toLowerCase();
-        console.log(`Buscando clientes com termo: "${termoBusca}"`);
-
-        try {
-            // Verificar se a variável clientes está inicializada
-            if (!Array.isArray(clientes)) {
-                console.error("A variável clientes não é um array válido para busca");
-                return;
-            }
-
-        // Atualiza clientesFiltrados com base no termo de busca
+    buscaInput.addEventListener('input', function() {
+        const termo = this.value.toLowerCase().trim();
+        
+        if (termo === '') {
+            // Se o termo de busca estiver vazio, mostrar todos
+            clientesFiltrados = [...clientes];
+        } else {
+            // Filtrar pelos campos
             clientesFiltrados = clientes.filter(cliente => {
-                if (!cliente) return false;
-                
-                const nome = (cliente.nome || "").toLowerCase();
-                const cpf = (cliente.cpf || "").toLowerCase();
-                
-                return nome.includes(termoBusca) || cpf.includes(termoBusca);
+                return (
+                    (cliente.nome && cliente.nome.toLowerCase().includes(termo)) ||
+                    (cliente.cpf && cliente.cpf.toLowerCase().includes(termo)) ||
+                    (cliente.celular && cliente.celular.toLowerCase().includes(termo)) ||
+                    (cliente.email && cliente.email.toLowerCase().includes(termo))
+                );
             });
-            
-            console.log(`Encontrados ${clientesFiltrados.length} clientes correspondentes à busca`);
-
-        // Reseta a paginação para a primeira página e exibe os resultados
-        paginaAtualClientes = 1;
-        mostrarPaginaClientes(paginaAtualClientes);
-        } catch (error) {
-            console.error("Erro ao buscar clientes:", error);
         }
+        
+        // Aplicar ordenação e atualizar tabela
+        aplicarOrdenacaoClientes();
+        mostrarPaginaClientes(1);
     });
-    
-    console.log("Busca de clientes configurada");
 }
 
 function abrirModalEditarCliente(id) {
-    console.log(clientes)
     const cliente = clientes.find(c => c.id === id);
     if (!cliente) {
         alert("Cliente não encontrado");
@@ -342,47 +297,20 @@ function abrirModalEditarCliente(id) {
 }
 
 function abrirModalHistorico(id) {
-    console.log("Abrindo modal histórico do cliente ID:", id);
-    
-    try {
-        // Garantir que o id seja um número
-        id = Number(id);
-        
     const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoCliente"));
 
-        // Armazenar ID do cliente selecionado
-        document.getElementById("clienteIdHistorico").value = id;
-        
-        // Limpar filtros
-        document.getElementById("filtroDataHistoricoCliente").value = "";
-        document.getElementById("buscarHistoricoCliente").value = "";
-        
-        // Carregar dados do histórico
-        carregarHistoricoCliente(id);
-        
-        // Mostrar modal
-        modalHistorico.show();
-        
-        // Adicionar eventos para os filtros
-        const btnFiltrar = document.getElementById("filtrarHistoricoClienteBtn");
-        const btnLimpar = document.getElementById("limparFiltroHistoricoClienteBtn");
-        const inputBuscar = document.getElementById("buscarHistoricoCliente");
-        
-        // Remover eventos antigos antes de adicionar novos
-        btnFiltrar.removeEventListener("click", filtrarHistoricoCliente);
-        btnLimpar.removeEventListener("click", limparFiltrosHistoricoCliente);
-        inputBuscar.removeEventListener("keyup", filtrarHistoricoCliente);
-        
-        // Adicionar eventos novos
-        btnFiltrar.addEventListener("click", filtrarHistoricoCliente);
-        btnLimpar.addEventListener("click", limparFiltrosHistoricoCliente);
-        inputBuscar.addEventListener("keyup", filtrarHistoricoCliente);
-        
-        console.log("Modal aberto com sucesso");
-    } catch (error) {
-        console.error("Erro ao abrir modal de histórico:", error);
-        alert("Houve um erro ao abrir o histórico. Por favor, tente novamente.");
-    }
+    // Armazenar ID do cliente selecionado
+    document.getElementById("clienteIdHistorico").value = id;
+    
+    // Limpar filtros
+    document.getElementById("filtroDataHistoricoCliente").value = "";
+    document.getElementById("buscarHistoricoCliente").value = "";
+    
+    // Carregar dados do histórico
+    carregarHistoricoCliente(id);
+    
+    // Mostrar modal
+    modalHistorico.show();
 }
 
 // Variáveis para controle da paginação e dados do histórico
@@ -392,11 +320,8 @@ let paginaAtualHistoricoCliente = 1;
 const itensPorPaginaHistoricoCliente = 5;
 
 function carregarHistoricoCliente(clienteId) {
-    console.log("Carregando histórico do cliente ID:", clienteId);
-    
     // Verificar se temos dados de saídas
     if (!Array.isArray(saidas) || saidas.length === 0) {
-        console.warn("Não há saídas disponíveis para carregar o histórico");
         historicoClienteDados = [];
         historicoClienteFiltrado = [];
         atualizarTabelaHistoricoCliente();
@@ -418,11 +343,8 @@ function carregarHistoricoCliente(clienteId) {
             return dataB - dataA;
         });
         
-        console.log("Saídas ordenadas por data (primeiras 3):", saidasOrdenadas.slice(0, 3));
-        
         // Filtrar saídas do cliente
         const saidasCliente = saidasOrdenadas.filter(saida => saida.idClientes === clienteId);
-        console.log(`Encontradas ${saidasCliente.length} saídas para o cliente ID ${clienteId}`);
         
         // Transformar dados para exibição
         historicoClienteDados = saidasCliente.map(saida => {
@@ -446,15 +368,12 @@ function carregarHistoricoCliente(clienteId) {
             };
         });
         
-        console.log("Dados de histórico preparados:", historicoClienteDados);
-        
         // Aplicar filtros iniciais (sem filtro)
         historicoClienteFiltrado = [...historicoClienteDados];
         
         // Atualizar exibição
         atualizarTabelaHistoricoCliente();
     } catch (error) {
-        console.error("Erro ao carregar histórico do cliente:", error);
         historicoClienteDados = [];
         historicoClienteFiltrado = [];
         atualizarTabelaHistoricoCliente();
@@ -561,75 +480,58 @@ function atualizarPaginacaoHistoricoCliente() {
 }
 
 function filtrarHistoricoCliente() {
-    console.log("Aplicando filtros ao histórico do cliente");
     const filtroData = document.getElementById("filtroDataHistoricoCliente").value;
     const filtroProduto = document.getElementById("buscarHistoricoCliente").value.toLowerCase();
     
-    console.log(`Filtros aplicados - Data: "${filtroData}", Produto: "${filtroProduto}"`);
-    
     try {
-        // Verificar se temos dados para filtrar
+        // Verificar se temos dados
         if (!Array.isArray(historicoClienteDados)) {
-            console.warn("Dados de histórico não disponíveis para filtragem");
             historicoClienteFiltrado = [];
-            atualizarTabelaHistoricoCliente();
             return;
         }
         
-        // Aplicar filtros
+        // Se não há filtros, retornar todos os itens
+        if (!filtroData && !filtroProduto) {
+            historicoClienteFiltrado = [...historicoClienteDados];
+            return historicoClienteFiltrado;
+        }
+        
+        // Filtrar por data e/ou produto
         historicoClienteFiltrado = historicoClienteDados.filter(item => {
             let passaFiltroData = true;
             let passaFiltroProduto = true;
             
             // Filtrar por data
             if (filtroData) {
-                try {
-                    // Converter data do filtro para objeto Date
+                if (item.data) {
+                    const dataSaida = new Date(item.data);
                     const dataFiltro = new Date(filtroData);
                     
-                    if (!isNaN(dataFiltro.getTime())) {
-                        // Normalizar para comparar apenas a data (sem hora)
-                        const dataFiltroStr = dataFiltro.toISOString().split('T')[0];
-                        
-                        // Tentar converter a data do item para comparar
-                        let dataSaidaStr = "";
-                        
-                        if (item.dataOriginal) {
-                            const dataSaida = new Date(item.dataOriginal);
-                            if (!isNaN(dataSaida.getTime())) {
-                                dataSaidaStr = dataSaida.toISOString().split('T')[0];
-                            }
-                        }
-                        
-                        passaFiltroData = dataSaidaStr === dataFiltroStr;
-                        console.log(`Comparando datas - Filtro: ${dataFiltroStr}, Item: ${dataSaidaStr}, Passa: ${passaFiltroData}`);
-    } else {
-                        console.warn("Data do filtro inválida:", filtroData);
-                    }
-                } catch (error) {
-                    console.error("Erro ao filtrar por data:", error);
-                    passaFiltroData = false;
+                    // Converter para string no formato YYYY-MM-DD para comparação
+                    const dataSaidaStr = dataSaida.toISOString().split('T')[0];
+                    const dataFiltroStr = dataFiltro.toISOString().split('T')[0];
+                    
+                    passaFiltroData = dataSaidaStr === dataFiltroStr;
                 }
             }
             
             // Filtrar por produto
             if (filtroProduto) {
-                const nomeProduto = (item.produtoNome || "").toLowerCase();
-                passaFiltroProduto = nomeProduto.includes(filtroProduto);
+                const produtoNome = String(item.produtoNome || '').toLowerCase();
+                passaFiltroProduto = produtoNome.includes(filtroProduto);
             }
             
-            // Deve passar em ambos os filtros
+            // Retornar apenas itens que passam por ambos os filtros
             return passaFiltroData && passaFiltroProduto;
         });
         
-        console.log(`Filtro resultou em ${historicoClienteFiltrado.length} itens`);
-        
-        // Resetar para primeira página e atualizar tabela
-        paginaAtualHistoricoCliente = 1;
+        // Atualizar tabela com os dados filtrados
         atualizarTabelaHistoricoCliente();
+        
+        return historicoClienteFiltrado;
     } catch (error) {
-        console.error("Erro ao aplicar filtros:", error);
-        alert("Ocorreu um erro ao aplicar os filtros. Consulte o console para mais detalhes.");
+        console.error("Erro ao filtrar histórico:", error);
+        return [];
     }
 }
 
@@ -726,59 +628,42 @@ function formatarData(dataString) {
 }
 
 function aplicarOrdenacaoClientes() {
-    console.log("Aplicando ordenação nos clientes");
+    const { coluna, crescente } = ordemAtualClientes;
     
-    if (!clientesFiltrados || !Array.isArray(clientesFiltrados)) {
-        console.error("clientesFiltrados não é um array válido para ordenação");
-        return;
-    }
-    
-    clientesFiltrados.sort((a, b) => {
-        if (!a || !b || !ordemAtualClientes.coluna) {
-            return 0;
-        }
+    clientesOrdenados = [...clientesFiltrados].sort((a, b) => {
+        // Tratar valores nulos ou undefined
+        let valorA = a[coluna] || '';
+        let valorB = b[coluna] || '';
         
-        let valorA = a[ordemAtualClientes.coluna];
-        let valorB = b[ordemAtualClientes.coluna];
+        // Converter para minúsculas se for string
+        if (typeof valorA === 'string') valorA = valorA.toLowerCase();
+        if (typeof valorB === 'string') valorB = valorB.toLowerCase();
         
-        // Tratar valores undefined ou null
-        valorA = valorA || '';
-        valorB = valorB || '';
-
-        if (typeof valorA === 'string') {
-            valorA = valorA.toLowerCase();
-            valorB = valorB.toLowerCase();
-        }
-
-        if (ordemAtualClientes.crescente) {
-            return valorA > valorB ? 1 : valorA < valorB ? -1 : 0;
-        } else {
-            return valorA < valorB ? 1 : valorA > valorB ? -1 : 0;
-        }
+        // Ordenar
+        if (valorA < valorB) return crescente ? -1 : 1;
+        if (valorA > valorB) return crescente ? 1 : -1;
+        return 0;
     });
-    
-    console.log("Ordenação aplicada:", ordemAtualClientes);
 }
 
 function ordenarTabelaClientes(coluna, idSeta) {
-    console.log(`Ordenando por ${coluna}`);
-    
+    // Se clicar na mesma coluna que já está ordenada, inverter a direção
     if (ordemAtualClientes.coluna === coluna) {
         ordemAtualClientes.crescente = !ordemAtualClientes.crescente;
     } else {
         ordemAtualClientes.coluna = coluna;
         ordemAtualClientes.crescente = true;
     }
-
-    // Atualizar ícones de ordenação
-    document.querySelectorAll(".seta").forEach(seta => (seta.textContent = "⬍"));
-    const setaAtual = document.getElementById(idSeta);
-    if (setaAtual) {
-    setaAtual.textContent = ordemAtualClientes.crescente ? "⬆" : "⬇";
-    }
-
+    
+    // Aplicar ordenação e atualizar tabela
     aplicarOrdenacaoClientes();
-    mostrarPaginaClientes(1);
+    mostrarPaginaClientes(1); // Voltar para a primeira página
+    
+    // Atualizar ícone de ordenação
+    const seta = document.getElementById(idSeta);
+    if (seta) {
+        seta.className = `fas fa-sort-${ordemAtualClientes.crescente ? 'up' : 'down'}`;
+    }
 }
 
 function openModalExcluir(clienteId) {

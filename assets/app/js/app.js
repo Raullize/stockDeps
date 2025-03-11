@@ -993,8 +993,6 @@ function preencherCategorias(categorias, onChangeCallback) {
       }
     }
   });
-
-  console.log("Categorias carregadas:", categorias);
 }
 
 function preencherFornecedores(fornecedores) {
@@ -1571,15 +1569,11 @@ function excluirCategoria(id) {
  * Inicializa todos os campos de preço na página com eventos de formatação
  */
 function inicializarCamposPreco() {
-    console.log("Inicializando campos de preço");
-    
     // Aplicar formatação a todos os campos com a classe 'preco'
     const camposPreco = document.querySelectorAll('.preco');
     
     // Percorrer e adicionar eventos para cada campo
     camposPreco.forEach(campo => {
-        console.log("Inicializando campo de preço:", campo.id);
-        
         // Garantir que o campo tenha um valor inicial
         if (!campo.value || campo.value === "0" || campo.value === "0.00") {
             campo.value = "R$ 0,00";
@@ -1606,14 +1600,10 @@ function inicializarCamposPreco() {
         // Formatar o valor inicial
         formatarPreco(campo);
     });
-    
-    console.log(`${camposPreco.length} campos de preço inicializados`);
 }
 
 // Função que inicializa todos os componentes da aplicação
 function inicializarComponentes() {
-  console.log("Inicializando componentes da aplicação...");
   loadAllData();
   inicializarCamposPreco();
-  console.log("Inicialização concluída!");
 }

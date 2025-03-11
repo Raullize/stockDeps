@@ -960,70 +960,63 @@ $this->layout("_theme");
 <script src="<?= url('assets/app/js/formsUpdate.js') ?>"></script>
 <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
 <script>
-    // Carregar dados quando a página for carregada
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM fully loaded');
-        
-        // Carrega todos os dados necessários
+        // Inicialização de componentes
+        initializeButtons();
         loadAllData();
         
-        // Função para limpar o backdrop e restaurar o scroll
-        function limparBackdrop() {
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
-            document.body.style.paddingRight = '';
-            const backdrops = document.getElementsByClassName('modal-backdrop');
-            while(backdrops.length > 0) {
-                backdrops[0].remove();
+        // Inicialização de botões e seções
+        function initializeButtons() {
+            // Botão de gerenciar categorias
+            document.getElementById('adicionarCategoriaBtn')?.addEventListener('click', function() {
+                const modalCategorias = new bootstrap.Modal(document.getElementById('modalTabelaCategorias'));
+                modalCategorias.show();
+            });
+            
+            // Botão de consultar entradas
+            document.getElementById('consultarEntradasBtn')?.addEventListener('click', function() {
+                carregarEntradas();
+                const modalEntradas = new bootstrap.Modal(document.getElementById('entradasModal'));
+                modalEntradas.show();
+            });
+            
+            // Botão de consultar saídas
+            document.getElementById('consultarSaidasBtn')?.addEventListener('click', function() {
+                carregarSaidas();
+                const modalSaidas = new bootstrap.Modal(document.getElementById('saidasModal'));
+                modalSaidas.show();
+            });
+            
+            // Inicializar tabela de produtos
+            initializeProductTable();
+        }
+        
+        // Função para inicializar a tabela de produtos
+        function initializeProductTable() {
+            // Configurar a tabela de produtos
+            const tabelaProdutos = document.getElementById('tabelaProdutos');
+            if (tabelaProdutos) {
+                // Atualizar a tabela quando os dados forem carregados
+                renderizarTabelaProdutos();
+                
+                // Configurar a busca na tabela
+                const campoBusca = document.getElementById('buscarProduto');
+                if (campoBusca) {
+                    campoBusca.addEventListener('input', function() {
+                        filtrarProdutos(this.value);
+                    });
+                }
+                
+                // Configurar ordenação nas colunas
+                const cabecalhosColunas = tabelaProdutos.querySelectorAll('th[data-sort]');
+                cabecalhosColunas.forEach(cabecalho => {
+                    cabecalho.addEventListener('click', function() {
+                        const coluna = this.getAttribute('data-sort');
+                        ordenarTabelaProdutos(coluna);
+                    });
+                });
             }
         }
-
-        // Adiciona evento para limpar backdrop quando qualquer modal for fechado
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('hidden.bs.modal', function() {
-                limparBackdrop();
-            });
-        });
-        
-        // Inicializa eventos para botões de modais
-        const botaoAdicionarCategoria = document.getElementById('adicionarCategoriaBtn');
-        if (botaoAdicionarCategoria) {
-            botaoAdicionarCategoria.addEventListener('click', function() {
-                console.log('Botão Gerenciar Categorias clicado');
-                limparBackdrop(); // Limpa qualquer backdrop existente
-                const modalTabelaCategorias = new bootstrap.Modal(document.getElementById('modalTabelaCategorias'));
-                modalTabelaCategorias.show();
-            });
-        }
-        
-        const consultarEntradasBtn = document.getElementById('consultarEntradasBtn');
-        if (consultarEntradasBtn) {
-            consultarEntradasBtn.addEventListener('click', function() {
-                console.log('Botão Consultar Entradas clicado');
-                limparBackdrop(); // Limpa qualquer backdrop existente
-                const entradasModal = new bootstrap.Modal(document.getElementById('entradasModal'));
-                entradasModal.show();
-            });
-        }
-        
-        const consultarSaidasBtn = document.getElementById('consultarSaidasBtn');
-        if (consultarSaidasBtn) {
-            consultarSaidasBtn.addEventListener('click', function() {
-                console.log('Botão Consultar Saídas clicado');
-                limparBackdrop(); // Limpa qualquer backdrop existente
-                const saidasModal = new bootstrap.Modal(document.getElementById('saidasModal'));
-                saidasModal.show();
-            });
-        }
-        
-        // Verificar se as categorias foram carregadas
-        setTimeout(function() {
-            const selectCategoria = document.getElementById('categoria');
-            if (selectCategoria && selectCategoria.options.length <= 1) {
-                console.log('Recarregando categorias...');
-                fetchCategorias();
-            }
-        }, 1000);
     });
 
     // Processar os formulários de edição para formatar corretamente os valores antes do envio

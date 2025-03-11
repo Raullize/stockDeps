@@ -27,21 +27,43 @@ async function fetchSaidas() {
     saidas = await response.json(); // Preenche a variável global saídas
 }
 async function fetchFornecedores() {
-    try {
-        const response = await fetch(`${BASE_URL}/getFornecedores`);
-        if (!response.ok) throw new Error(`Erro ao buscar fornecedores: ${response.statusText}`);
-
-        fornecedores = await response.json();
-        fornecedoresFiltrados = [...fornecedores];
-        aplicarOrdenacaoFornecedores();
-        mostrarPaginaFornecedores(paginaAtualFornecedores);
-        buscarFornecedor()
-    } catch (error) {
-        console.error('Erro em fetchFornecedores:', error);
-        fornecedores = [];
-        fornecedoresFiltrados = [];
-        mostrarPaginaFornecedores(1);
+    // Exibir spinner de carregamento
+    const spinner = document.getElementById('spinnerFornecedores');
+    if (spinner) {
+        spinner.classList.remove('d-none');
     }
+    
+    // Fazer requisição AJAX
+    $.ajax({
+        url: `${BASE_URL}/getFornecedores`,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Armazenar dados nas variáveis globais
+            fornecedores = data;
+            fornecedoresFiltrados = [...fornecedores];
+            
+            // Ocultar spinner
+            if (spinner) {
+                spinner.classList.add('d-none');
+            }
+            
+            // Atualizar tabela
+            aplicarOrdenacaoFornecedores();
+            mostrarPaginaFornecedores(paginaAtualFornecedores);
+        },
+        error: function(xhr, status, error) {
+            console.error("Erro ao buscar fornecedores:", error);
+            
+            // Ocultar spinner
+            if (spinner) {
+                spinner.classList.add('d-none');
+            }
+            
+            // Mostrar mensagem de erro
+            alert("Ocorreu um erro ao carregar fornecedores. Tente novamente mais tarde.");
+        }
+    });
 }
 
 async function fetchEntradas() {
