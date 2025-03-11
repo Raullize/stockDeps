@@ -76,7 +76,7 @@ $this->layout("_theme");
                                     <div class="alert alert-info">
                                         <i class="fas fa-info-circle me-2"></i>
                                         <strong>Versão Beta:</strong> Esta funcionalidade está em desenvolvimento. Os relatórios de Clientes, Fornecedores e Produtos estão disponíveis para exportação em PDF e Excel.
-                                    </div>
+            </div>
         </div>
     </div>
                             <div class="d-flex flex-wrap gap-2 align-items-center">

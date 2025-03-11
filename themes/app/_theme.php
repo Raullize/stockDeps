@@ -20,6 +20,7 @@
   <link rel="stylesheet" href="<?= url('assets/app/css/globals.css') ?>">
   <link rel="stylesheet" href="<?= url('assets/app/css/sidebar.css') ?>">
   <link rel="stylesheet" href="<?= url('assets/app/css/loading.css') ?>">
+  <link rel="stylesheet" href="<?= url('assets/app/css/global.css') ?>">
   
   <title>StockDeps</title>
 </head>
