@@ -101,25 +101,13 @@ function renderizarTabela() {
     tr.innerHTML = `
             <td>${categoria.nome}</td>
             <td>${categoria.descricao}</td>
-            <td class="text-center">
-                <div class="d-flex justify-content-center align-items-center gap-2">
-                    <button class="btn btn-primary btn-sm action-btn" onclick="editarCategoria(${categoria.id})" data-bs-toggle="tooltip" title="Editar categoria">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm action-btn" onclick="excluirCategoria(${categoria.id})" data-bs-toggle="tooltip" title="Excluir categoria">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+            <td>
+                <button class="btn btn-primary btn-sm" onclick="editarCategoria(${categoria.id})">Editar</button>
+                <button class="btn btn-danger btn-sm" onclick="excluirCategoria(${categoria.id})">Excluir</button>
             </td>
         `;
 
     tbody.appendChild(tr);
-  });
-
-  // Inicializa os tooltips
-  const tooltips = document.querySelectorAll('#tabelaCategorias [data-bs-toggle="tooltip"]');
-  tooltips.forEach(tooltip => {
-    new bootstrap.Tooltip(tooltip);
   });
 }
 

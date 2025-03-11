@@ -39,7 +39,7 @@ $this->layout("_theme");
                                     <span>Saídas</span>
                                 </button>
                             </div>
-                            <div class="d-flex flex-wrap gap-2 align-items-center mt-3 mt-md-0">
+                            <div class="d-flex flex-wrap gap-3 align-items-center mt-3 mt-md-0">
                                 <div class="input-group">
                                     <span class="input-group-text bg-white border-end-0">
                                         <i class="fas fa-search text-muted"></i>
@@ -154,9 +154,12 @@ $this->layout("_theme");
                                 <span class="input-group-text bg-light">
                                     <i class="fas fa-weight"></i>
                                 </span>
-                                <select name="unidade" class="form-control" id="unidadeProdutoAdicionar" required>
-                                    <option value="" disabled selected>Escolha a Unidade de Medida</option>
+                                <select name="unidade" class="form-control" id="unidadeProdutoAdicionar">
                                     <option value="KG">Kilograma (kg)</option>
+                                    <option value="G">Grama (g)</option>
+                                    <option value="L">Litro (l)</option>
+                                    <option value="ML">Mililitro (ml)</option>
+                                    <option value="PACOTE">Pacote</option>
                                     <option value="UN">Unidade (un)</option>
                                 </select>
                             </div>
@@ -250,9 +253,12 @@ $this->layout("_theme");
                                 <span class="input-group-text bg-light">
                                     <i class="fas fa-weight"></i>
                                 </span>
-                                <select name="unidade" class="form-control" id="unidadeProdutoEditar" required>
-                                    <option value="" disabled>Escolha a Unidade de Medida</option>
+                                <select name="unidade" class="form-control" id="unidadeProdutoEditar">
                                     <option value="KG">Kilograma (kg)</option>
+                                    <option value="G">Grama (g)</option>
+                                    <option value="L">Litro (l)</option>
+                                    <option value="ML">Mililitro (ml)</option>
+                                    <option value="PACOTE">Pacote</option>
                                     <option value="UN">Unidade (un)</option>
                                 </select>
                             </div>
@@ -295,12 +301,9 @@ $this->layout("_theme");
                 </div>
                 <div class="modal-body">
                     <!-- Botão para adicionar uma nova categoria -->
-                    <div class="d-flex justify-content-end mb-3">
-                        <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria">
-                            <i class="fas fa-plus me-2"></i>
-                            <span>Adicionar Categoria</span>
-                        </button>
-                    </div>
+                    <button class="btn btn-success mb-3 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria">
+                        <i class="fas fa-plus-circle me-2"></i>Adicionar Categoria
+                    </button>
                     <!-- Tabela de categorias -->
                     <div class="table-responsive">
                         <table class="table table-hover align-middle" id="tabelaCategorias">
@@ -330,40 +333,24 @@ $this->layout("_theme");
     <div class="modal fade" id="modalAdicionarCategoria" tabindex="-1" aria-labelledby="modalAdicionarCategoriaLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalAdicionarCategoriaLabel">
-                        <i class="fas fa-plus-circle me-2"></i>Adicionar Categoria
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalAdicionarCategoriaLabel">Adicionar Categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="categoria-cadastro" name="categoria-cadastro" method="post">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="nomeCategoriaAdicionar" class="form-label">Nome</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">
-                                    <i class="fas fa-tag"></i>
-                                </span>
-                                <input name="nome" type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria">
-                            </div>
+                            <input name="nome" type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria">
                         </div>
                         <div class="mb-3">
                             <label for="descricaoCategoriaAdicionar" class="form-label">Descrição</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">
-                                    <i class="fas fa-align-left"></i>
-                                </span>
-                                <textarea name="descricao" class="form-control" id="descricaoCategoriaAdicionar" rows="3" placeholder="Digite a descrição da categoria"></textarea>
-                            </div>
+                            <textarea name="descricao" class="form-control" id="descricaoCategoriaAdicionar" placeholder="Digite a descrição da categoria"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i>Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-primary" id="salvarCategoria">
-                            <i class="fas fa-save me-2"></i>Salvar Categoria
-                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
                     </div>
                 </form>
             </div>
@@ -374,41 +361,25 @@ $this->layout("_theme");
     <div class="modal fade" id="modalEditarCategoria" tabindex="-1" aria-labelledby="modalEditarCategoriaLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalEditarCategoriaLabel">
-                        <i class="fas fa-edit me-2"></i>Editar Categoria
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarCategoriaLabel">Editar Categoria</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="categoria-editar" name="categoria-editar" method="post">
                     <div class="modal-body">
                         <input name="idCategoriaEditar" id="idCategoriaEditar" type="hidden">
                         <div class="mb-3">
                             <label for="nomeCategoriaEditar" class="form-label">Nome</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">
-                                    <i class="fas fa-tag"></i>
-                                </span>
-                                <input name="nome" type="text" class="form-control" id="nomeCategoriaEditar" placeholder="Digite o nome da categoria">
-                            </div>
+                            <input name="nome" type="text" class="form-control" id="nomeCategoriaEditar" placeholder="Digite o nome da categoria">
                         </div>
                         <div class="mb-3">
                             <label for="descricaoCategoriaEditar" class="form-label">Descrição</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light">
-                                    <i class="fas fa-align-left"></i>
-                                </span>
-                                <textarea name="descricao" class="form-control" id="descricaoCategoriaEditar" rows="3" placeholder="Digite a descrição da categoria"></textarea>
-                            </div>
+                            <textarea name="descricao" class="form-control" id="descricaoCategoriaEditar" placeholder="Digite a descrição da categoria"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i>Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-primary" id="salvarEdicaoCategoria">
-                            <i class="fas fa-save me-2"></i>Salvar Alterações
-                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarEdicaoCategoria">Salvar Alterações</button>
                     </div>
                 </form>
             </div>
