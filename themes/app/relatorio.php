@@ -90,10 +90,52 @@ $this->layout("_theme");
     margin-bottom: 1rem;
     color: #3498db;
 }
+
+.details-list {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+}
+
+.details-list li {
+    padding: 0.3rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.details-list li i {
+    color: #3498db;
+    margin-right: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.report-header {
+    text-align: center;
+    margin: 2rem 0;
+    color: #2c3e50;
+}
+
+.report-header p {
+    max-width: 800px;
+    margin: 0 auto;
+    color: #666;
+}
+
+.download-info {
+    font-size: 0.8rem;
+    text-align: center;
+    color: #666;
+    margin-top: 0.5rem;
+}
 </style>
 
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<div class="report-header">
+    <h2>Relatórios do Sistema</h2>
+    <p>Aqui você pode gerar e baixar relatórios em PDF ou Excel para diferentes áreas do sistema. Clique no botão correspondente ao formato desejado.</p>
+</div>
 
 <div class="reports-container">
     <div class="report-card">
@@ -103,17 +145,25 @@ $this->layout("_theme");
                 <i class="fas fa-file-alt"></i>
                 Relatório de Clientes
             </h5>
-            <p class="card-text">Relatório com as informações de cada cliente do sistema, incluindo nome, CPF e celular.</p>
+            <p class="card-text">Relatório completo com as informações de todos os clientes cadastrados no sistema.</p>
+            
+            <ul class="details-list">
+                <li><i class="fas fa-circle"></i> Nome completo do cliente</li>
+                <li><i class="fas fa-circle"></i> CPF</li>
+                <li><i class="fas fa-circle"></i> Número de celular</li>
+            </ul>
+            
             <div class="report-actions">
-                <a href="<?= url("app/pdf-r-c") ?>" class="btn btn-report btn-pdf">
+                <a href="<?= url("app/pdf-r-c") ?>" class="btn btn-report btn-pdf" target="_blank">
                     <i class="fas fa-file-pdf"></i>
                     PDF
                 </a>
-                <a href="<?= url("app/excel-r-c") ?>" class="btn btn-report btn-excel">
+                <a href="<?= url("app/excel-r-c") ?>" class="btn btn-report btn-excel" target="_blank">
                     <i class="fas fa-file-excel"></i>
                     Excel
                 </a>
             </div>
+            <div class="download-info">O download iniciará em uma nova aba</div>
         </div>
     </div>
 
@@ -124,17 +174,26 @@ $this->layout("_theme");
                 <i class="fas fa-file-alt"></i>
                 Relatório de Fornecedores
             </h5>
-            <p class="card-text">Relatório com as informações de cada fornecedor do sistema, incluindo nome, CNPJ, endereço e outros dados.</p>
+            <p class="card-text">Relatório completo com todos os dados de fornecedores registrados no sistema.</p>
+            
+            <ul class="details-list">
+                <li><i class="fas fa-circle"></i> Nome/Razão social</li>
+                <li><i class="fas fa-circle"></i> CNPJ</li>
+                <li><i class="fas fa-circle"></i> Email e telefone</li>
+                <li><i class="fas fa-circle"></i> Endereço completo</li>
+            </ul>
+            
             <div class="report-actions">
-                <a href="<?= url("app/pdf-r-f") ?>" class="btn btn-report btn-pdf">
+                <a href="<?= url("app/pdf-r-f") ?>" class="btn btn-report btn-pdf" target="_blank">
                     <i class="fas fa-file-pdf"></i>
                     PDF
                 </a>
-                <a href="<?= url("app/excel-r-f") ?>" class="btn btn-report btn-excel">
+                <a href="<?= url("app/excel-r-f") ?>" class="btn btn-report btn-excel" target="_blank">
                     <i class="fas fa-file-excel"></i>
                     Excel
                 </a>
             </div>
+            <div class="download-info">O download iniciará em uma nova aba</div>
         </div>
     </div>
 
@@ -145,17 +204,27 @@ $this->layout("_theme");
                 <i class="fas fa-file-alt"></i>
                 Relatório de Produtos
             </h5>
-            <p class="card-text">Relatório com as informações de cada produto do sistema, incluindo nome, preço, descrição e outros detalhes.</p>
+            <p class="card-text">Relatório detalhado com as informações de todos os produtos em estoque.</p>
+            
+            <ul class="details-list">
+                <li><i class="fas fa-circle"></i> Código do produto</li>
+                <li><i class="fas fa-circle"></i> Nome e descrição</li>
+                <li><i class="fas fa-circle"></i> Preço unitário</li>
+                <li><i class="fas fa-circle"></i> Quantidade em estoque</li>
+                <li><i class="fas fa-circle"></i> Unidade de medida</li>
+            </ul>
+            
             <div class="report-actions">
-                <a href="<?= url("app/pdf-r-p") ?>" class="btn btn-report btn-pdf">
+                <a href="<?= url("app/pdf-r-p") ?>" class="btn btn-report btn-pdf" target="_blank">
                     <i class="fas fa-file-pdf"></i>
                     PDF
                 </a>
-                <a href="<?= url("app/excel-r-p") ?>" class="btn btn-report btn-excel">
+                <a href="<?= url("app/excel-r-p") ?>" class="btn btn-report btn-excel" target="_blank">
                     <i class="fas fa-file-excel"></i>
                     Excel
                 </a>
             </div>
+            <div class="download-info">O download iniciará em uma nova aba</div>
         </div>
     </div>
 </div>
