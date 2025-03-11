@@ -120,35 +120,8 @@
       links.forEach(link => {
         link.addEventListener('click', function(e) {
           if (!this.href.includes(window.location.origin)) return;
-          
-          // Não mostrar loading para downloads de arquivos (PDF, Excel, etc)
-          if (this.href.includes('pdf-') || this.href.includes('excel-') || 
-              this.href.match(/\.(pdf|xlsx?|csv|zip|docx?|txt)$/i)) {
-            // Para downloads, escondemos o loading após um curto período
-            loadingOverlay.style.display = 'flex';
-            setTimeout(function() {
-              loadingOverlay.style.display = 'none';
-            }, 1500);
-          } else {
-            // Para navegação normal, mostrar loading
-            loadingOverlay.style.display = 'flex';
-          }
+          loadingOverlay.style.display = 'flex';
         });
-      });
-      
-      // Proteção adicional: esconder o loading após um tempo máximo
-      // para prevenir loading infinito em qualquer situação
-      window.addEventListener('load', function() {
-        loadingOverlay.style.display = 'none';
-      });
-      
-      // Timeout de segurança - esconde o loading após 10 segundos, independente do que aconteça
-      document.addEventListener('click', function(e) {
-        if (loadingOverlay.style.display === 'flex') {
-          setTimeout(function() {
-            loadingOverlay.style.display = 'none';
-          }, 10000);
-        }
       });
     });
   </script>
