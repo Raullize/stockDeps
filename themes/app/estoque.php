@@ -559,7 +559,8 @@ $this->layout("_theme");
                                 <span class="input-group-text bg-light">
                                     <i class="fas fa-dollar-sign"></i>
                                 </span>
-                                <input name="preco" type="text" class="form-control preco" id="precoEntrada" placeholder="R$ 0,00" value="R$ 0,00">
+                                <input type="text" class="form-control preco" id="precoEntrada" name="precoEntrada" 
+                                    placeholder="R$ 0,00" value="R$ 0,00">
                             </div>
                         </div>
                     </div>
@@ -621,7 +622,8 @@ $this->layout("_theme");
                                 <span class="input-group-text bg-light">
                                     <i class="fas fa-dollar-sign"></i>
                                 </span>
-                                <input name="preco" type="text" class="form-control preco" id="precoSaida" placeholder="R$ 0,00" value="R$ 0,00">
+                                <input type="text" class="form-control preco" id="precoSaida" name="precoSaida" 
+                                    placeholder="R$ 0,00" value="R$ 0,00">
                             </div>
                         </div>
                     </div>

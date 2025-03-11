@@ -136,24 +136,37 @@ th:hover .seta {
     padding: 0;
     margin: 0 3px;
     border-radius: 50%;
+    cursor: pointer;
+    position: static !important; /* Garantir que não haja problemas de posicionamento */
+    z-index: 1; /* Garantir que o botão fique acima de outros elementos */
 }
 
 .action-btn i {
     font-size: 0.9rem;
+    pointer-events: none; /* Impedir que o ícone interfira no clique do botão */
 }
 
 .action-btn:hover {
-    transform: translateY(-2px);
-    transition: transform 0.3s ease;
+    opacity: 0.9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transform: none !important; /* Remover qualquer transformação que possa afetar a interatividade */
 }
 
-/* Ajustar o espaçamento entre os botões */
+/* Garantir que os containers dos botões não interfiram nos cliques */
 .d-flex.gap-2.justify-content-center {
     gap: 8px !important;
 }
 
-/* Garantir que os botões fiquem bem espaçados na tabela */
+/* Garantir que a célula da tabela não impeça o clique nos botões */
 .table td:last-child {
     padding: 8px 4px;
     min-width: 150px;
+    position: static;
+}
+
+/* Botão de histórico específico */
+.btn-historico, 
+.btn-historico-cliente {
+    z-index: 5 !important; /* Garantir que este botão especificamente tenha alta prioridade */
+    pointer-events: auto !important; /* Forçar a captura de eventos */
 }

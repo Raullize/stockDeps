@@ -324,29 +324,32 @@ $this->layout("_theme");
 
     <!-- Modal Excluir -->
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="modalExcluirLabel">
-                        <i class="fas fa-trash-alt me-2"></i>Excluir Fornecedor
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Fornecedor
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="fornecedor-excluir" name="fornecedor-excluir" method="post">
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir este fornecedor?</p>
                         <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            <strong>Atenção:</strong> Tem certeza de que deseja excluir este fornecedor?  
-                            <p class="mb-0 mt-2">Ao confirmar, todas as entradas, compras e outros registros relacionados a ele também serão removidos.</p>
+                            <i class="fas fa-info-circle me-2"></i>
+                            Ao confirmar, todas as entradas, compras e outros registros relacionados a ele também serão removidos.
                         </div>
                         <input type="hidden" id="idFornecedorExcluir" name="idFornecedorExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
                             <i class="fas fa-times me-2"></i>Cancelar
                         </button>
-                        <button type="submit" class="btn btn-danger" id="confirmarExcluir">
-                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluir">
+                            <i class="fas fa-trash-alt me-2"></i>Excluir
                         </button>
                     </div>
                 </form>
@@ -356,17 +359,70 @@ $this->layout("_theme");
 
     <!-- Modal Histórico -->
     <div class="modal fade" id="modalHistoricoFornecedor" tabindex="-1" aria-labelledby="modalHistoricoFornecedorLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalHistoricoFornecedorLabel">Histórico de Compras</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalHistoricoFornecedorLabel">
+                        <i class="fas fa-history me-2"></i>Histórico de Compras
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p id="historicoFornecedor"></p>
+                    <input type="hidden" id="fornecedorIdHistorico" value="">
+                    
+                    <!-- Filtros e Busca -->
+                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+                        <div class="input-group" style="max-width: 300px;">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-calendar"></i>
+                            </span>
+                            <input type="date" class="form-control" id="filtroDataHistoricoFornecedor">
+                            <button class="btn btn-outline-secondary" type="button" id="filtrarHistoricoFornecedorBtn">
+                                <i class="fas fa-filter"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary" type="button" id="limparFiltroHistoricoFornecedorBtn">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="input-group" style="max-width: 300px;">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control" id="buscarHistoricoFornecedor" placeholder="Buscar por produto...">
+                        </div>
+                    </div>
+                    
+                    <!-- Tabela de Histórico -->
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle" id="tabelaHistoricoFornecedor">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Total</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpoTabelaHistoricoFornecedor">
+                                <!-- Dados do histórico serão inseridos aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Mensagem para quando não houver dados -->
+                    <div class="text-center mt-3" id="mensagemNenhumHistoricoFornecedor" style="display: none;">
+                        <p class="text-muted">Nenhum registro de compra encontrado para este fornecedor.</p>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <nav>
+                        <ul class="pagination justify-content-center pagination-sm mb-0" id="paginacaoHistoricoFornecedor"></ul>
+                    </nav>
+                    <button type="button" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Fechar
+                    </button>
                 </div>
             </div>
         </div>
