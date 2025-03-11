@@ -22,11 +22,11 @@ $this->layout("_theme");
                                     <i class="fas fa-plus me-2"></i>
                                     <span>Adicionar Fornecedor</span>
                                 </button>
-                                <div class="d-flex" style="max-width: 300px;">
+                                <div class="input-group" style="max-width: 300px;">
+                                    <span class="input-group-text bg-white">
+                                        <i class="fas fa-search text-muted"></i>
+                                    </span>
                                     <input type="text" name="buscarFornecedor" id="buscarFornecedor" placeholder="Procurar fornecedor" class="form-control">
-                                    <button class="btn btn-light ms-1 border">
-                                        <i class="fas fa-search"></i>
-                                    </button>
                                 </div>
                             </div>
                         </div>
