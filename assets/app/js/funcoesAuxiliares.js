@@ -143,35 +143,3 @@ function formatarPreco(input) {
 
     input.value = `R$ ${inteirosFormatados || "0"},${centavos}`;
 }
-
-/**
- * Formata um número para exibição como preço no formato brasileiro (R$ x.xxx,xx)
- * @param {number|string} valor - O valor numérico ou string a ser formatado
- * @returns {string} - O valor formatado como moeda brasileira
- */
-function formatarPrecoParaExibicao(valor) {
-    // Garantir que o valor é um número
-    let valorNumerico = 0;
-    
-    if (typeof valor === 'string') {
-        // Remove caracteres não numéricos, exceto ponto decimal
-        const valorLimpo = valor.replace(/[^\d,.]/g, '').replace(',', '.');
-        valorNumerico = parseFloat(valorLimpo);
-    } else if (typeof valor === 'number') {
-        valorNumerico = valor;
-    }
-    
-    if (isNaN(valorNumerico)) {
-        valorNumerico = 0;
-    }
-    
-    // Formatar o valor como moeda brasileira
-    const valorFormatado = valorNumerico.toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    
-    return valorFormatado;
-}
