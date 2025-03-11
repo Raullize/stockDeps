@@ -2,14 +2,21 @@ const BASE_URL = '/stockDeps/app';
 const itensPorPagina = 8;
 const maxBotoesPaginacao = 5; // Limite de botões de página exibidos
 
-// Medição de performance
-for(let i = 0; i < 10; i++) {
-    console.time('operacao');
-    // Operação não otimizada aqui
-    console.timeEnd('operacao');
+// Função de debounce para otimizar buscas
+function debounce(func, wait = 300) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
 let produtos = [];
+let produtosOriginais = [];
 let clientes = [];
 let fornecedores = [];
 let entradas = [];
@@ -109,14 +116,17 @@ function renderizarTabela() {
 
 function buscarProduto() {
   const inputBuscarProduto = document.getElementById("buscarProduto");
-  inputBuscarProduto.addEventListener("input", function () {
+  if (!inputBuscarProduto) return;
+  
+  // Remover event listener anterior para evitar duplicações
+  const buscarProdutoHandler = debounce(function(e) {
     console.time('busca-produto');
-    const termoBusca = inputBuscarProduto.value.toLowerCase();
+    const termoBusca = e.target.value.toLowerCase();
 
     produtosFiltrados = produtosOriginais.filter(
       (produto) =>
-        produto.nome.toLowerCase().includes(termoBusca) ||
-        produto.codigo_produto.toLowerCase().includes(termoBusca)
+        (produto.nome?.toLowerCase() || '').includes(termoBusca) ||
+        (produto.codigo_produto?.toLowerCase() || '').includes(termoBusca)
     );
 
     // Reiniciar a ordenação com os produtos filtrados
@@ -124,97 +134,159 @@ function buscarProduto() {
     paginaAtual = 1; // Reinicia na primeira página
     mostrarPagina(paginaAtual); // Atualiza a tabela
     console.timeEnd('busca-produto');
-  });
+  }, 300);
+  
+  // Remover event listeners antigos e adicionar o novo
+  inputBuscarProduto.removeEventListener("input", buscarProdutoHandler);
+  inputBuscarProduto.addEventListener("input", buscarProdutoHandler);
 }
 
 function removerAcentos(str) {
+  if (!str) return '';
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 function buscarEntrada() {
   const inputBuscarEntrada = document.getElementById("buscarEntrada");
-  inputBuscarEntrada.addEventListener("input", function () {
-    const termoBusca = removerAcentos(inputBuscarEntrada.value.toLowerCase());
+  if (!inputBuscarEntrada) return;
+  
+  const buscarEntradaHandler = debounce(function(e) {
+    const termoBusca = removerAcentos(e.target.value.toLowerCase());
+    
+    // Usar um mapa para acesso mais rápido aos produtos e fornecedores
+    const produtosMap = new Map();
+    const fornecedoresMap = new Map();
+    
+    // Preencher mapas para busca rápida
+    produtosOriginais.forEach(p => produtosMap.set(p.id, p));
+    fornecedores.forEach(f => fornecedoresMap.set(f.id, f));
 
     entradasFiltradas = entradas.filter((entrada) => {
-      const produto = produtosOriginais.find((p) => p.id == entrada.idProdutos);
-      const fornecedor = fornecedores.find((f) => f.id == entrada.idFornecedor);
+      const produto = produtosMap.get(entrada.idProdutos);
+      const fornecedor = fornecedoresMap.get(entrada.idFornecedor);
       
       return (
-        removerAcentos(produto?.nome?.toLowerCase()).includes(termoBusca) ||
-        removerAcentos(fornecedor?.nome?.toLowerCase()).includes(termoBusca)
+        removerAcentos((produto?.nome || '').toLowerCase()).includes(termoBusca) ||
+        removerAcentos((fornecedor?.nome || '').toLowerCase()).includes(termoBusca)
       );
     });
 
     paginaAtualEntradas = 1;
     mostrarPaginaEntradas(paginaAtualEntradas); // Atualiza a tabela com os resultados filtrados
-  });
+  }, 300);
+  
+  // Remover event listeners antigos e adicionar o novo
+  inputBuscarEntrada.removeEventListener("input", buscarEntradaHandler);
+  inputBuscarEntrada.addEventListener("input", buscarEntradaHandler);
 }
 
 function buscarSaida() {
   const inputBuscarSaida = document.getElementById("buscarSaida");
-  inputBuscarSaida.addEventListener("input", function () {
-    const termoBusca = removerAcentos(inputBuscarSaida.value.toLowerCase());
+  if (!inputBuscarSaida) return;
+  
+  const buscarSaidaHandler = debounce(function(e) {
+    const termoBusca = removerAcentos(e.target.value.toLowerCase());
+    
+    // Usar um mapa para acesso mais rápido aos produtos e clientes
+    const produtosMap = new Map();
+    const clientesMap = new Map();
+    
+    // Preencher mapas para busca rápida
+    produtosOriginais.forEach(p => produtosMap.set(p.id, p));
+    if (Array.isArray(clientes)) {
+      clientes.forEach(c => clientesMap.set(c.id, c));
+    }
 
     saidasFiltradas = saidas.filter((saida) => {
-      const produto = produtosOriginais.find((p) => p.id == saida.idProdutos);
-      const cliente = Array.isArray(clientes)
-        ? clientes.find((c) => c.id == saida.idClientes)?.nome || "Cliente não encontrado"
-        : "Cliente não cadastrado";
+      const produto = produtosMap.get(saida.idProdutos);
+      const cliente = clientesMap.get(saida.idClientes);
+      const nomeCliente = cliente?.nome || "Cliente não encontrado";
 
       return (
-        removerAcentos(produto?.nome?.toLowerCase()).includes(termoBusca) ||
-        removerAcentos(cliente.toLowerCase()).includes(termoBusca)
+        removerAcentos((produto?.nome || '').toLowerCase()).includes(termoBusca) ||
+        removerAcentos(nomeCliente.toLowerCase()).includes(termoBusca)
       );
     });
 
     paginaAtualSaidas = 1;
     mostrarPaginaSaidas(paginaAtualSaidas); // Atualiza a tabela com os resultados filtrados
-  });
+  }, 300);
+  
+  // Remover event listeners antigos e adicionar o novo
+  inputBuscarSaida.removeEventListener("input", buscarSaidaHandler);
+  inputBuscarSaida.addEventListener("input", buscarSaidaHandler);
 }
+
 
 
 function mostrarPaginaEntradas(pagina) {
   const inicio = (pagina - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
-entradasFiltradas.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  // Paginar os resultados corretamente
-  const entradasPagina = entradasFiltradas.slice(inicio, fim);
-
+  
+  // Ordenar as entradas da mais recente para a mais antiga
+  // Usar uma cópia para não modificar o array original diretamente
+  const entradasOrdenadas = [...entradasFiltradas].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
+  
+  // Paginar os resultados
+  const entradasPagina = entradasOrdenadas.slice(inicio, fim);
+  
   // Selecionar a tabela e limpar seu conteúdo
   const tabela = document.querySelector("#tabelaEntradas tbody");
-  tabela.innerHTML = "";
-
+  if (!tabela) return;
+  
+  // Criar mapas para acesso rápido
+  const produtosMap = new Map();
+  const fornecedoresMap = new Map();
+  
+  produtosOriginais.forEach(p => produtosMap.set(p.id, p));
+  fornecedores.forEach(f => fornecedoresMap.set(f.id, f));
+  
+  // Criar fragment para otimizar inserções no DOM
+  const fragment = document.createDocumentFragment();
+  
   // Exibir mensagem caso não haja entradas
   if (entradasPagina.length === 0) {
-    tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma entrada encontrada.</td></tr>`;
-    return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma entrada encontrada.</td></tr>`;
+    fragment.appendChild(tr);
+  } else {
+    // Preencher a tabela com as entradas paginadas
+    entradasPagina.forEach((entrada) => {
+      const produto = produtosMap.get(entrada.idProdutos);
+      const fornecedor = fornecedoresMap.get(entrada.idFornecedor);
+      
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${fornecedor?.nome || "Fornecedor não encontrado"}</td>
+        <td>${produto?.nome || "Produto não encontrado"}</td>
+        <td>${entrada.quantidade}</td>
+        <td>${entrada.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
+        <td>${formatarData(entrada.created_at)}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" onclick="editarEntrada(${entrada.id})">Editar</button>
+          <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirEntrada" onclick="excluirEntrada(${entrada.id})">Excluir</button>
+        </td>
+      `;
+      fragment.appendChild(tr);
+    });
   }
-
-  // Preencher a tabela com as entradas paginadas
-  entradasPagina.forEach((entrada) => {
-    const produto = produtosOriginais.find((p) => p.id == entrada.idProdutos);
-    const fornecedor = fornecedores.find((f) => f.id == entrada.idFornecedor);
-
-    
-
-    const row = `
-            <tr>
-                <td>${fornecedor?.nome || "Fornecedor não encontrado"}</td>
-                <td>${produto?.nome || "Produto não encontrado"}</td>
-                <td>${entrada.quantidade}</td>
-                <td>${entrada.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
-                <td>${formatarData(entrada.created_at)}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm" onclick="editarEntrada(${entrada.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirEntrada" onclick="excluirEntrada(${entrada.id})">Excluir</button>
-                </td>
-            </tr>`;
-    tabela.insertAdjacentHTML("beforeend", row);
-  });
-
+  
+  // Limpar a tabela e adicionar o fragment
+  tabela.innerHTML = '';
+  tabela.appendChild(fragment);
+  
   // Configurar a paginação
-  configurarPaginacao(entradasFiltradas.length, mostrarPaginaEntradas, "#paginacaoEntradas", pagina);
+  configurarPaginacao(
+    entradasFiltradas.length, 
+    mostrarPaginaEntradas, 
+    "#paginacaoEntradas", 
+    pagina
+  );
+  
+  // Atualizar página atual
+  paginaAtualEntradas = pagina;
 }
 
 function mostrarPaginaSaidas(pagina) {
@@ -222,46 +294,71 @@ function mostrarPaginaSaidas(pagina) {
   const fim = inicio + itensPorPagina;
 
   // Ordenar as saídas da mais recente para a mais antiga
-  saidasFiltradas.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const saidasOrdenadas = [...saidasFiltradas].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
 
-  // Paginar os resultados corretamente
-  const saidasPagina = saidasFiltradas.slice(inicio, fim);
+  // Paginar os resultados
+  const saidasPagina = saidasOrdenadas.slice(inicio, fim);
 
   // Selecionar a tabela e limpar seu conteúdo
   const tabela = document.querySelector("#tabelaSaidas tbody");
-  tabela.innerHTML = "";
+  if (!tabela) return;
+  
+  // Criar mapas para acesso rápido
+  const produtosMap = new Map();
+  const clientesMap = new Map();
+  
+  produtosOriginais.forEach(p => produtosMap.set(p.id, p));
+  if (Array.isArray(clientes)) {
+    clientes.forEach(c => clientesMap.set(c.id, c));
+  }
+  
+  // Criar fragment para otimizar inserções no DOM
+  const fragment = document.createDocumentFragment();
 
   // Exibir mensagem caso não haja saídas
   if (saidasPagina.length === 0) {
-    tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma saída encontrada.</td></tr>`;
-    return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="6" class="text-center">Nenhuma saída encontrada.</td>`;
+    fragment.appendChild(tr);
+  } else {
+    // Preencher a tabela com as saídas paginadas
+    saidasPagina.forEach((saida) => {
+      const produto = produtosMap.get(saida.idProdutos);
+      const cliente = clientesMap.get(saida.idClientes);
+      const nomeCliente = cliente?.nome || "Cliente não encontrado";
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${nomeCliente}</td>
+        <td>${produto?.nome || "Produto não encontrado"}</td>
+        <td>${saida.quantidade}</td>
+        <td>${saida.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
+        <td>${formatarData(saida.created_at)}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" onclick="editarSaida(${saida.id})">Editar</button>
+          <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
+        </td>
+      `;
+      fragment.appendChild(tr);
+    });
   }
-
-  // Preencher a tabela com as saídas paginadas
-  saidasPagina.forEach((saida) => {
-    const produto = produtosOriginais.find((p) => p.id == saida.idProdutos);
-    const cliente = Array.isArray(clientes)
-    ? clientes.find((c) => c.id == saida.idClientes)?.nome ||
-      "Cliente não encontrado"
-    : "Cliente não cadastrado";
-
-    const row = `
-            <tr>
-                <td>${cliente?.nome || "Cliente não identificado"}</td>
-                <td>${produto?.nome || "Produto não encontrado"}</td>
-                <td>${saida.quantidade}</td>
-                <td>${saida.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
-                <td>${formatarData(saida.created_at)}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm" onclick="editarSaida(${saida.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
-                </td>
-            </tr>`;
-    tabela.insertAdjacentHTML("beforeend", row);
-  });
+  
+  // Limpar a tabela e adicionar o fragment
+  tabela.innerHTML = '';
+  tabela.appendChild(fragment);
 
   // Configurar a paginação
-  configurarPaginacao(saidasFiltradas.length, mostrarPaginaSaidas, "#paginacaoSaidas", pagina);
+  configurarPaginacao(
+    saidasFiltradas.length, 
+    mostrarPaginaSaidas, 
+    "#paginacaoSaidas", 
+    pagina
+  );
+  
+  // Atualizar página atual
+  paginaAtualSaidas = pagina;
 }
 
 
@@ -334,45 +431,75 @@ function configurarPaginacao(
   paginaAtual
 ) {
   const totalPaginas = Math.ceil(totalItens / itensPorPagina);
-  const paginacaoContainer = document.querySelector(seletorPaginacao);
-  paginacaoContainer.innerHTML = ""; // Limpa a navegação
-
-  if (totalPaginas <= 1) return; // Se há apenas uma página, não exibe paginação
-
-  const paginaInicial = Math.max(1, paginaAtual - Math.floor(maxBotoesPaginacao / 2));
-  const paginaFinal = Math.min(totalPaginas, paginaInicial + maxBotoesPaginacao - 1);
+  const container = document.querySelector(seletorPaginacao);
+  if (!container) return;
+  
+  // Criar um fragment para otimizar as inserções no DOM
+  const fragment = document.createDocumentFragment();
+  
+  // Se não houver itens ou apenas uma página, não mostrar paginação
+  if (totalPaginas <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+  
+  // Calcular o intervalo de botões a exibir
+  let startPage = Math.max(1, paginaAtual - Math.floor(maxBotoesPaginacao / 2));
+  let endPage = Math.min(totalPaginas, startPage + maxBotoesPaginacao - 1);
+  
+  // Ajustar startPage se não tivermos suficientes no final
+  if (endPage - startPage + 1 < maxBotoesPaginacao) {
+    startPage = Math.max(1, endPage - maxBotoesPaginacao + 1);
+  }
 
   // Botão "Anterior"
-  const botaoAnterior = document.createElement("li");
-  botaoAnterior.classList.add("page-item");
+  const btnAnterior = document.createElement('li');
+  btnAnterior.className = `page-item ${paginaAtual === 1 ? 'disabled' : ''}`;
+  btnAnterior.innerHTML = `<a class="page-link" href="#">Anterior</a>`;
+  
   if (paginaAtual > 1) {
-    botaoAnterior.innerHTML = `<a class="page-link" href="#" onclick="${callback.name}(${paginaAtual - 1})">&laquo;</a>`;
-  } else {
-    botaoAnterior.classList.add("disabled");
-    botaoAnterior.innerHTML = `<span class="page-link">&laquo;</span>`;
+    const link = btnAnterior.querySelector('a');
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      callback(paginaAtual - 1);
+    });
   }
-  paginacaoContainer.appendChild(botaoAnterior);
+  
+  fragment.appendChild(btnAnterior);
 
-  // Botões de páginas
-  for (let i = paginaInicial; i <= paginaFinal; i++) {
-    const botaoPagina = document.createElement("li");
-    botaoPagina.classList.add("page-item");
-    if (i === paginaAtual) botaoPagina.classList.add("active");
-
-    botaoPagina.innerHTML = `<a class="page-link" href="#" onclick="${callback.name}(${i})">${i}</a>`;
-    paginacaoContainer.appendChild(botaoPagina);
+  // Botões de número de página
+  for (let i = startPage; i <= endPage; i++) {
+    const btnPagina = document.createElement('li');
+    btnPagina.className = `page-item ${i === paginaAtual ? 'active' : ''}`;
+    btnPagina.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+    
+    const link = btnPagina.querySelector('a');
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      callback(i);
+    });
+    
+    fragment.appendChild(btnPagina);
   }
 
   // Botão "Próximo"
-  const botaoProximo = document.createElement("li");
-  botaoProximo.classList.add("page-item");
+  const btnProximo = document.createElement('li');
+  btnProximo.className = `page-item ${paginaAtual === totalPaginas ? 'disabled' : ''}`;
+  btnProximo.innerHTML = `<a class="page-link" href="#">Próximo</a>`;
+  
   if (paginaAtual < totalPaginas) {
-    botaoProximo.innerHTML = `<a class="page-link" href="#" onclick="${callback.name}(${paginaAtual + 1})">&raquo;</a>`;
-  } else {
-    botaoProximo.classList.add("disabled");
-    botaoProximo.innerHTML = `<span class="page-link">&raquo;</span>`;
+    const link = btnProximo.querySelector('a');
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      callback(paginaAtual + 1);
+    });
   }
-  paginacaoContainer.appendChild(botaoProximo);
+  
+  fragment.appendChild(btnProximo);
+
+  // Limpar o container e adicionar o fragment
+  container.innerHTML = '';
+  container.appendChild(fragment);
 }
 
 function editarEntrada(id) {
@@ -558,15 +685,64 @@ function preencherTabelaProdutos(produtosPaginados) {
 }
 
 function mostrarPagina(pagina) {
-  paginaAtual = pagina;
-
   const inicio = (pagina - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
-
-  const produtosNaPagina = produtosOrdenados.slice(inicio, fim); // Paginar com a lista ordenada
-  preencherTabelaProdutos(produtosNaPagina);
-
-  atualizarPaginacao(produtosOrdenados.length, paginaAtual); // Atualiza paginação com a lista ordenada
+  
+  // Paginar os resultados
+  const produtosPagina = produtosOrdenados.slice(inicio, fim);
+  
+  // Selecionar a tabela e limpar seu conteúdo
+  const tabela = document.getElementById("corpoTabela");
+  if (!tabela) return;
+  
+  // Criar um fragment para otimizar as inserções no DOM
+  const fragment = document.createDocumentFragment();
+  
+  // Exibir mensagem caso não haja produtos
+  if (produtosPagina.length === 0) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="8" class="text-center">Nenhum produto encontrado.</td>`;
+    fragment.appendChild(tr);
+  } else {
+    // Criar mapa de categorias para acesso mais rápido
+    const categoriasMap = new Map();
+    categorias.forEach(c => categoriasMap.set(c.id, c));
+    
+    // Preencher a tabela com os produtos paginados
+    produtosPagina.forEach((produto) => {
+      const categoria = categoriasMap.get(produto.idCategorias);
+      const status = produto.quantidade > 0 ? "Disponível" : "Indisponível";
+      
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${produto.codigo_produto || ''}</td>
+        <td>${produto.nome || ''}</td>
+        <td>${produto.descricao || ''}</td>
+        <td>${produto.preco ? produto.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : 'R$ 0,00'}</td>
+        <td>${produto.quantidade || 0}</td>
+        <td>${produto.unidade_medida || ''}</td>
+        <td>${status}</td>
+        <td>
+          <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="prepararEdicaoProduto(${produto.id})">Editar</button>
+          <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluir" onclick="prepararExclusao(${produto.id})">Excluir</button>
+          <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalEntrada" onclick="prepararEntrada(${produto.id})">Entrada</button>
+          <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalSaida" onclick="prepararSaida(${produto.id})">Saída</button>
+        </td>
+      `;
+      
+      fragment.appendChild(tr);
+    });
+  }
+  
+  // Limpar a tabela e adicionar o fragmento
+  tabela.innerHTML = '';
+  tabela.appendChild(fragment);
+  
+  // Atualizar a paginação
+  atualizarPaginacao(produtosOrdenados.length, pagina);
+  
+  // Atualizar página atual
+  paginaAtual = pagina;
 }
 
 function atualizarPaginacao(totalProdutos, paginaAtual) {
@@ -974,14 +1150,6 @@ function openModalEntrada(id) {
   new bootstrap.Modal(document.getElementById("modalEntrada")).show();
 }
 
-document
-  .getElementById("saida-cadastro")
-  .addEventListener("submit", function (event) {
-    const inputPrecoSaida = document.getElementById("precoSaida");
-
-    inputPrecoSaida.value = preco;
-  });
-
 function openModalSaida(id, preco) {
   const inputProdutoId = document.getElementById("produtoId2");
   const inputPrecoSaida = document.getElementById("precoSaida");
@@ -1235,6 +1403,45 @@ function excluirCategoria(id) {
 
   // Mostra o modal de exclusão
   new bootstrap.Modal(document.getElementById("modalExcluirCategoria")).show();
+}
+
+// Adicionando as funções prepararEntrada e prepararSaida que são chamadas pelos botões
+function prepararEntrada(id) {
+  openModalEntrada(id);
+}
+
+function prepararSaida(id) {
+  // Encontrar o produto pelo ID para obter o preço
+  const produto = produtosOriginais.find(p => p.id == id);
+  const preco = produto ? produto.preco : 0;
+  
+  openModalSaida(id, preco);
+}
+
+// Função para preparar a edição de um produto
+function prepararEdicaoProduto(id) {
+  // Encontrar o produto pelo ID
+  const produto = produtosOriginais.find(p => p.id == id);
+  
+  // Se encontrou o produto, abrir o modal para edição
+  if (produto) {
+    openModal("Editar", produto);
+  } else {
+    console.error("Produto não encontrado:", id);
+  }
+}
+
+// Função para preparar a exclusão de um produto
+function prepararExclusao(id) {
+  // Definir o ID do produto a ser excluído no campo oculto
+  const inputIdProdutoExcluir = document.getElementById("idProdutoExcluir");
+  if (inputIdProdutoExcluir) {
+    inputIdProdutoExcluir.value = id;
+  }
+  
+  // Abrir o modal de exclusão
+  const modalExcluir = new bootstrap.Modal(document.getElementById("modalExcluir"));
+  modalExcluir.show();
 }
 
 window.onload = loadAllData;
