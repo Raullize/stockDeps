@@ -1,11 +1,9 @@
-/* Estilos base para tabelas */
 .tabelaProdutos {
   height: auto;
   overflow-x: auto;
   width: 100%;
 }
 
-/* Cabeçalho da tabela com filtros e ações */
 .headerTabelaProdutos {
   display: flex;
   flex-direction: column;
@@ -14,7 +12,6 @@
   border-radius: 5px;
 }
 
-/* Botões de ação no cabeçalho */
 .headerTabelaProdutos button {
   background-color: #007bff;
   color: #fff;
@@ -36,12 +33,10 @@
   transform: scale(0.95);
 }
 
-/* Substituindo hover para botões info */
 .btn-info:hover {
   color: #fff;
 }
 
-/* Campos de busca e filtros */
 .inputsBusca,
 .headerTabelaProdutos select {
   height: 100%;
@@ -52,16 +47,13 @@
   border-radius: 5px;
 }
 
-.headerTabelaProdutos select {
+.headerTabelaProdutos select{
   cursor: pointer;
 }
 
-/* Configurações da tabela */
 .table {
   table-layout: fixed;
   width: 100%;
-  margin-bottom: 0;
-  border-color: rgba(0, 0, 0, 0.125);
 }
 
 .table th,
@@ -74,7 +66,6 @@
   white-space: nowrap;
 }
 
-/* Colunas clicáveis para ordenação */
 #ordenarCodigo,
 #ordenarNome,
 #ordenarPreco,
@@ -82,7 +73,6 @@
   cursor: pointer;
 }
 
-/* Colunas não clicáveis */
 #ordenarDescricao,
 #ordenarUnidade,
 #ordernarStatus,
@@ -90,14 +80,41 @@
   cursor: default;
 }
 
-/* Agrupamentos de botões nas tabelas */
+.table td {
+  padding: 12px 15px;
+}
+
+.table td .btn-group {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10px;
+}
+
+button {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  margin: 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:active {
+  background-color: #004085;
+}
+
 .btn-group {
   display: flex;
   justify-content: space-evenly;
   gap: 10px;
 }
 
-/* Indicadores de ordenação */
 .seta {
   cursor: pointer;
   margin-left: 5px;
@@ -109,35 +126,81 @@ th:hover .seta {
   color: black;
 }
 
-/* Botões de edição e exclusão */
 #btn-edit,
 #btn-delete {
   width: 90%;
 }
 
-/* Estilos para cards e cabeçalhos */
-.card {
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
+/* Estilos modernos para a página de estoque */
 
-.card:hover {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
-.card-header {
-  background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  padding: 1rem 1.5rem;
+/* Dashboard Header */
+.dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.5rem;
 }
 
-.card-body {
-  padding: 1.25rem;
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  position: relative;
+}
+
+.page-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 40px;
+  height: 4px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-top: 0.8rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.btn-icon i {
+  font-size: 0.9rem;
+}
+
+.btn-icon:hover {
+  transform: translateY(-2px);
+}
+
+/* Card Header com Ações */
+.card-header-actions {
+  margin-bottom: 1.5rem;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .card-title {
@@ -149,13 +212,12 @@ th:hover .seta {
   align-items: center;
 }
 
-/* Componentes de ação */
 .action-buttons {
   display: flex;
   gap: 0.5rem;
 }
 
-/* Filtros e buscas */
+/* Filtros */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -163,15 +225,13 @@ th:hover .seta {
   margin-bottom: 1rem;
 }
 
-.search-box, 
-.filter-box {
+.search-box, .filter-box {
   position: relative;
   flex: 1;
   min-width: 200px;
 }
 
-.search-box i, 
-.filter-box i {
+.search-box i, .filter-box i {
   position: absolute;
   left: 12px;
   top: 50%;
@@ -190,9 +250,9 @@ th:hover .seta {
 }
 
 .search-input:focus {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  border-color: #86b7fe;
-  outline: 0;
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
 }
 
 .filter-select {
@@ -202,21 +262,20 @@ th:hover .seta {
   border-radius: 8px;
   font-size: 0.9rem;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236c757d' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 16px 12px;
-  cursor: pointer;
   transition: all 0.3s;
 }
 
 .filter-select:focus {
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  border-color: #86b7fe;
-  outline: 0;
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
 }
 
-/* Paginação */
+/* Pagination */
 .pagination-container {
   display: flex;
   justify-content: center;
@@ -225,65 +284,56 @@ th:hover .seta {
 
 .pagination {
   display: flex;
-  padding-left: 0;
   list-style: none;
-  border-radius: 0.25rem;
+  padding: 0;
+  margin: 0;
   gap: 0.3rem;
 }
 
 .pagination .page-item .page-link {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 0.75rem;
-  color: #007bff;
-  background-color: #fff;
-  border: 1px solid #dee2e6;
-  border-radius: 5px;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+  border-radius: 4px;
+  transition: all 0.2s;
 }
 
 .pagination .page-item.active .page-link {
-  z-index: 3;
-  color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: var(--primary-color);
+  color: white;
 }
 
 .pagination .page-item .page-link:hover {
-  background-color: #e9ecef;
-  border-color: #dee2e6;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .pagination .page-item.active .page-link:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
+  background-color: var(--primary-color-dark);
 }
 
-/* Contêineres responsivos */
+/* Table Responsiveness */
 .table-responsive {
-  border-radius: 0 0 8px 8px;
-  overflow: hidden;
-  padding: 0;
-  border: 0;
+  overflow-x: auto;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
 }
 
-/* Modais */
+/* Modal Improvements */
 .modal-content {
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  overflow: hidden;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
 .modal-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.2rem 1.5rem;
 }
 
 .modal-header .modal-title {
+  font-size: 1.2rem;
   font-weight: 600;
-  font-size: 1.25rem;
-  color: #343a40;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -294,145 +344,132 @@ th:hover .seta {
 }
 
 .modal-footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1rem 1.5rem;
 }
 
-/* Campos e grupos de input */
 .input-group-text {
-  background-color: #f8f9fa;
-  border: 1px solid rgba(0, 0, 0, 0.125);
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   color: #6c757d;
 }
 
-/* Indicadores de status */
+/* Status Badges */
 .status-badge {
-  display: inline-block;
-  padding: 0.3rem 0.6rem;
+  padding: 0.25rem 0.75rem;
   border-radius: 50px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  text-align: center;
-  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
 }
 
 .status-badge.disponivel {
-  background-color: #d4edda;
-  color: #155724;
+  background-color: #e0f7e9;
+  color: #06d6a0;
 }
 
 .status-badge.indisponivel {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: #fee8ee;
+  color: #ef476f;
 }
 
-/* Botões de ação nas tabelas */
+/* Action Buttons in Table */
 .action-btn {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
   padding: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all 0.2s;
-  border: none;
-  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
   position: relative;
-  z-index: 1;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .action-btn.btn-primary {
-  background-color: #007bff;
-  color: white;
+  background-color: #4361ee;
+  border-color: #4361ee;
 }
 
 .action-btn.btn-danger {
-  background-color: #dc3545;
-  color: white;
+  background-color: #ef476f;
+  border-color: #ef476f;
 }
 
 .action-btn.btn-success {
-  background-color: #28a745;
-  color: white;
+  background-color: #06d6a0;
+  border-color: #06d6a0;
 }
 
 .action-btn.btn-warning {
-  background-color: #ffc107;
+  background-color: #ffd166;
+  border-color: #ffd166;
   color: #212529;
 }
 
 .action-btn i {
-  font-size: 0.9rem;
-  pointer-events: none;
+  font-size: 12px;
+  display: block;
+  line-height: 1;
+  width: auto;
+  height: auto;
 }
 
-/* Cabeçalhos de tabela */
 .table th {
-  background-color: #f8f9fa;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+  font-weight: 600;
+  color: #495057;
 }
 
 .table th i.fas {
-  margin-left: 0.3rem;
-  opacity: 0.5;
-  transition: opacity 0.2s;
+  color: #6c757d;
+  cursor: pointer;
+  transition: color 0.2s;
 }
 
 .table th:hover i.fas {
-  opacity: 1;
+  color: #0d6efd;
 }
 
-/* Padronização de componentes de formulário */
-.form-control, 
-.form-select, 
-.input-group-text {
-  border-color: rgba(0, 0, 0, 0.125);
-}
-
-/* Ajuste para headers e fundos */
-.bg-light {
-  background-color: #f8f9fa !important;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-}
-
-/* Media queries - Responsive designs */
+/* Responsive Adjustments */
 @media (max-width: 767px) {
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    padding: 1rem;
   }
   
   .header-actions {
+    margin-top: 1rem;
     width: 100%;
-    justify-content: space-between;
   }
   
   .btn-icon {
-    padding: 0.5rem 0.8rem;
+    padding: 0.5rem;
   }
   
   .card-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
   }
   
   .action-buttons {
-    width: 100%;
-    justify-content: flex-start;
     margin-top: 0.5rem;
+    width: 100%;
+    justify-content: flex-start !important;
   }
   
   .filters {
     flex-direction: column;
+    align-items: flex-start;
   }
   
   .headerTabelaProdutos {
@@ -440,15 +477,18 @@ th:hover .seta {
   }
   
   .headerTabelaProdutos button {
-    width: 100%;
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
   }
   
   .headerTabelaProdutos .d-flex.flex-wrap.gap-2 {
-    flex-direction: column;
+    width: 100%;
+    justify-content: flex-start;
   }
   
   .headerTabelaProdutos .d-flex.flex-wrap.gap-2 .input-group {
     width: 100%;
+    margin-bottom: 0.5rem;
   }
   
   .tabelaProdutos {
@@ -472,14 +512,16 @@ th:hover .seta {
   }
 }
 
+/* Media query para tablets */
 @media (min-width: 768px) and (max-width: 991px) {
   .headerTabelaProdutos {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 1rem;
   }
   
   .headerTabelaProdutos .d-flex.flex-wrap.gap-2 {
-    justify-content: space-between;
+    flex: 1 1 48%;
   }
   
   .tabelaProdutos {
@@ -491,14 +533,15 @@ th:hover .seta {
   }
 }
 
+/* Garantir visualização correta em dispositivos pequenos */
 @media (max-width: 576px) {
   .card {
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    margin: 0.5rem 0;
+    padding: 0.5rem;
   }
   
   .card-header {
-    padding: 0.8rem;
+    padding: 0.75rem 1rem;
   }
   
   .card-body {
@@ -506,44 +549,370 @@ th:hover .seta {
   }
   
   .headerTabelaProdutos button {
-    padding: 0.4rem 0.6rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
   }
   
   .headerTabelaProdutos .d-flex {
-    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .table td, .table th {
-    padding: 8px 10px;
+    padding: 0.5rem;
+    font-size: 0.875rem;
   }
   
   .action-btn {
-    width: 32px;
-    height: 32px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
   }
   
   .action-btn i {
-    font-size: 0.8rem;
+    font-size: 0.875rem;
   }
 }
 
-/* Layout container */
+/* Ajustes globais de container para responsividade */
 .container-fluid {
-  padding: 1rem;
-  transition: all 0.3s ease;
+  padding-right: 1rem;
+  padding-left: 1rem;
 }
 
 @media (max-width: 992px) {
   .container-fluid {
-    padding: 0.8rem;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
   }
 }
 
-/* Botões de ação específicos para table de entradas/saídas */
+/* Melhorias para tabelas responsivas */
+.table-responsive {
+  border: 0;
+  margin-bottom: 0;
+}
+
+/* Estilos para garantir que o conteúdo seja visível com sidebar recolhida */
+@media (min-width: 992px) {
+  .sidebar.collapsed ~ .main-content .container-fluid {
+    width: 100%;
+  }
+}
+
+/* Overrides */
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-outline-info {
+  color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.btn-outline-info:hover {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+  border-color: #4361ee;
+}
+
+/* Correção de bug */
+.form-control::placeholder {
+  color: #adb5bd;
+  opacity: 1;
+}
+
+.card {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+  background-color: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 1rem 1.5rem;
+}
+
+.card-title {
+  margin-bottom: 0;
+}
+
+.pagination .page-item .page-link {
+  border-radius: 5px;
+  margin: 0 3px;
+  color: #4361ee;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #4361ee;
+  border-color: #4361ee;
+}
+
+.btn-primary {
+  background-color: #4361ee;
+  border-color: #4361ee;
+}
+
+.btn-primary:hover {
+  background-color: #3a56d4;
+  border-color: #3a56d4;
+}
+
+.btn-info {
+  background-color: #4cc9f0;
+  border-color: #4cc9f0;
+  color: #fff;
+}
+
+.btn-info:hover {
+  background-color: #3db8df;
+  border-color: #3db8df;
+  color: #fff;
+}
+
+/* Melhorando o estilo dos botões de ação nas tabelas de entradas e saídas */
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn i {
+  font-size: 12px;
+  display: block;
+  line-height: 1;
+  width: auto;
+  height: auto;
+}
+
+/* Aumentar espaçamento entre os botões de ação */
+.d-flex.gap-2.justify-content-center {
+  gap: 8px !important;
+}
+
+/* Estilização específica para botões nas tabelas de entradas e saídas */
 #tabelaEntradas .action-btn,
 #tabelaSaidas .action-btn {
-    z-index: 5;
-    pointer-events: auto;
-    position: relative;
+  width: 36px;  /* Tamanho ajustado para aparência mais circular */
+  height: 36px; /* Tamanho ajustado para aparência mais circular */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-width: 0;
+  margin: 0 4px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+#tabelaEntradas .action-btn i,
+#tabelaSaidas .action-btn i {
+  font-size: 0.9rem; /* Tamanho reduzido para melhor proporção */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Estilo para hover dos botões nos modais */
+#tabelaEntradas .action-btn:hover,
+#tabelaSaidas .action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Melhorar a exibição das tabelas dentro dos modais */
+#tabelaEntradas,
+#tabelaSaidas {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#tabelaEntradas th,
+#tabelaSaidas th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  padding: 12px 8px;
+}
+
+#tabelaEntradas td,
+#tabelaSaidas td {
+  padding: 12px 8px;
+  vertical-align: middle;
+}
+
+/* Melhorar a aparência das células de ação */
+#tabelaEntradas td:last-child,
+#tabelaSaidas td:last-child {
+  padding: 8px 4px;
+}
+
+.d-flex.justify-content-center.align-items-center {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 4px 0 !important;
+}
+
+/* Ajuste para garantir que a barra de pesquisa e o filtro de categorias tenham o mesmo tamanho */
+.headerTabelaProdutos .d-flex.flex-wrap.gap-2 .input-group {
+  width: 300px;
+  flex: 0 0 300px;
+  margin: 0;
+}
+
+.headerTabelaProdutos .form-select,
+.headerTabelaProdutos .form-control {
+  height: 38px;
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+@media (max-width: 767px) {
+  .headerTabelaProdutos .d-flex.flex-wrap.gap-2 .input-group {
+    width: 100%;
+    flex: 0 0 100%;
+    margin-bottom: 8px;
+  }
+}
+
+/* Ajustes adicionais para garantir compatibilidade com o menu móvel */
+@media (max-width: 991px) {
+  /* Garante que os botões na parte inferior não sejam cobertos pelo menu hambúrguer */
+  .fixed-bottom-actions {
+    bottom: 80px !important;
+  }
+  
+  /* Ajuste do espaçamento na parte inferior das tabelas para não ficar sob o botão do menu */
+  .table-container {
+    margin-bottom: 70px;
+  }
+  
+  /* Ajusta a largura máxima dos modais em telas pequenas */
+  .modal-dialog {
+    max-width: 96%;
+    margin: 10px auto;
+  }
+  
+  /* Garante que os botões nos formulários não fiquem juntos demais */
+  .modal-footer .btn {
+    margin: 5px;
+  }
+  
+  /* Melhora a experiência de rolagem em modais grandes */
+  .modal {
+    overflow-y: auto !important;
+  }
+  
+  .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+/* Melhorias para o layout em dispositivos extremamente pequenos */
+@media (max-width: 359px) {
+  .headerTabelaProdutos button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .headerTabelaProdutos .d-flex.flex-wrap.gap-2 {
+    gap: 5px !important;
+  }
+  
+  .form-control, .form-select {
+    font-size: 0.875rem;
+  }
+  
+  .action-btn {
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .action-btn i {
+    font-size: 0.75rem;
+  }
+}
+
+/* Ajustes para padronização das bordas e design dos cards */
+.card-body {
+  padding: 1.25rem;
+}
+
+.table {
+  margin-bottom: 0;
+  border-color: rgba(0, 0, 0, 0.125);
+}
+
+.table-responsive {
+  border-radius: 0 0 8px 8px;
+  overflow: hidden;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
+  font-weight: 600;
+}
+
+.modal-content {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Padronização dos estilos de borda em vários componentes */
+.form-control, 
+.form-select, 
+.input-group-text {
+  border-color: rgba(0, 0, 0, 0.125);
+}
+
+/* Ajuste para os headers de tabelas e outros elementos */
+.bg-light {
+  background-color: #f8f9fa !important;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+@media (max-width: 576px) {
+  .card {
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+  }
 }
 

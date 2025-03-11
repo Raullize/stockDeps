@@ -27,35 +27,41 @@ $this->layout("_theme");
     position: fixed;
     bottom: 20px;
     right: 20px;
-    padding: 12px 20px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #28a745;
     color: white;
-    border-radius: 4px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     z-index: 9999;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    animation: slide-in 0.3s ease-out;
+    animation: slideIn 0.3s ease forwards;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
 }
 
-.download-feedback.bg-danger {
-    background-color: rgba(220, 53, 69, 0.9);
+@keyframes slideIn {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-.download-feedback.bg-success {
-    background-color: rgba(25, 135, 84, 0.9);
+.download-feedback.fade-out {
+    animation: fadeOut 0.5s ease forwards;
 }
 
-.fade-out {
-    animation: fade-out 0.5s ease-out forwards;
-}
-
-@keyframes slide-in {
-    from { transform: translateX(100px); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-}
-
-@keyframes fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 }
 </style>
 
@@ -69,34 +75,27 @@ $this->layout("_theme");
                             <i class="fas fa-chart-line me-2"></i>Gestão de Relatórios
                         </h3>
                     </div>
-        <div class="card-body">
+                    <div class="card-body">
                         <div class="p-3 bg-light rounded mb-3">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="alert alert-info">
                                         <i class="fas fa-info-circle me-2"></i>
-                                        <strong>Versão Beta:</strong> Esta funcionalidade está em desenvolvimento. Os relatórios de Clientes, Fornecedores e Produtos estão disponíveis para exportação em PDF e Excel.
+                                        <strong>Versão Beta:</strong> Esta funcionalidade está em desenvolvimento. Por enquanto, apenas os relatórios de Clientes, Fornecedores e Produtos estão disponíveis para exportação em PDF.
                                     </div>
-        </div>
-    </div>
+                                </div>
+                            </div>
                             <div class="d-flex flex-wrap gap-2 align-items-center">
                                 <div class="dropdown me-2">
                                     <button class="btn btn-primary dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-file-export me-2"></i>
+                                        <i class="fas fa-file-pdf me-2"></i>
                                         <span>Exportar Relatório</span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><h6 class="dropdown-header">Formato PDF</h6></li>
-                                        <li><a class="dropdown-item" href="<?= url("app/pdf-r-c") ?>"><i class="fas fa-file-pdf text-danger me-2"></i>Relatório de Clientes</a></li>
-                                        <li><a class="dropdown-item" href="<?= url("app/pdf-r-f") ?>"><i class="fas fa-file-pdf text-danger me-2"></i>Relatório de Fornecedores</a></li>
-                                        <li><a class="dropdown-item" href="<?= url("app/pdf-r-p") ?>"><i class="fas fa-file-pdf text-danger me-2"></i>Relatório de Produtos</a></li>
+                                        <li><a class="dropdown-item" href="<?= url("app/pdf-r-c") ?>"><i class="fas fa-users me-2"></i>Relatório de Clientes</a></li>
+                                        <li><a class="dropdown-item" href="<?= url("app/pdf-r-f") ?>"><i class="fas fa-building me-2"></i>Relatório de Fornecedores</a></li>
+                                        <li><a class="dropdown-item" href="<?= url("app/pdf-r-p") ?>"><i class="fas fa-box me-2"></i>Relatório de Produtos</a></li>
                                         <li><hr class="dropdown-divider"></li>
-                                        <li><h6 class="dropdown-header">Formato Excel</h6></li>
-                                        <li><a class="dropdown-item" href="<?= url("app/excel-r-c") ?>"><i class="fas fa-file-excel text-success me-2"></i>Relatório de Clientes</a></li>
-                                        <li><a class="dropdown-item" href="<?= url("app/excel-r-f") ?>"><i class="fas fa-file-excel text-success me-2"></i>Relatório de Fornecedores</a></li>
-                                        <li><a class="dropdown-item" href="<?= url("app/excel-r-p") ?>"><i class="fas fa-file-excel text-success me-2"></i>Relatório de Produtos</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><h6 class="dropdown-header">Em desenvolvimento</h6></li>
                                         <li><a class="dropdown-item disabled" href="#"><i class="fas fa-boxes-stacked me-2"></i>Relatório de Estoque (Em breve)</a></li>
                                         <li><a class="dropdown-item disabled" href="#"><i class="fas fa-chart-line me-2"></i>Análise Financeira (Em breve)</a></li>
                                     </ul>
@@ -113,9 +112,9 @@ $this->layout("_theme");
                                     <button class="btn btn-light ms-1 border" id="buscarRelatorio">
                                         <i class="fas fa-search"></i>
                                     </button>
-            </div>
-        </div>
-    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Tabela de relatórios -->
                         <div class="table-responsive">
@@ -139,7 +138,7 @@ $this->layout("_theme");
                                             <a href="<?= url("app/pdf-r-c") ?>" class="btn btn-sm btn-danger me-1">
                                                 <i class="fas fa-file-pdf"></i> PDF
                                             </a>
-                                            <a href="<?= url("app/excel-r-c") ?>" class="btn btn-sm btn-success">
+                                            <a href="#" class="btn btn-sm btn-secondary disabled">
                                                 <i class="fas fa-file-excel"></i> Excel
                                             </a>
                                         </td>
@@ -153,7 +152,7 @@ $this->layout("_theme");
                                             <a href="<?= url("app/pdf-r-f") ?>" class="btn btn-sm btn-danger me-1">
                                                 <i class="fas fa-file-pdf"></i> PDF
                                             </a>
-                                            <a href="<?= url("app/excel-r-f") ?>" class="btn btn-sm btn-success">
+                                            <a href="#" class="btn btn-sm btn-secondary disabled">
                                                 <i class="fas fa-file-excel"></i> Excel
                                             </a>
                                         </td>
@@ -167,7 +166,7 @@ $this->layout("_theme");
                                             <a href="<?= url("app/pdf-r-p") ?>" class="btn btn-sm btn-danger me-1">
                                                 <i class="fas fa-file-pdf"></i> PDF
                                             </a>
-                                            <a href="<?= url("app/excel-r-p") ?>" class="btn btn-sm btn-success">
+                                            <a href="#" class="btn btn-sm btn-secondary disabled">
                                                 <i class="fas fa-file-excel"></i> Excel
                                             </a>
                                         </td>
@@ -205,10 +204,10 @@ $this->layout("_theme");
                         </div>
                         
                         <div class="card-footer bg-white p-3 d-flex justify-content-end">
-                            <div class="alert alert-success mb-0 me-auto" style="max-width: 600px;">
+                            <div class="alert alert-warning mb-0 me-auto" style="max-width: 600px;">
                                 <small>
-                                    <i class="fas fa-check-circle me-1"></i>
-                                    <strong>Atualização:</strong> As opções de exportação para Excel já estão disponíveis! Os relatórios de Estoque e Financeiro serão implementados nas próximas atualizações.
+                                    <i class="fas fa-exclamation-triangle me-1"></i>
+                                    <strong>Nota:</strong> As opções de exportação para Excel e os relatórios de Estoque e Financeiro estarão disponíveis nas próximas atualizações.
                                 </small>
                             </div>
                             <button type="button" class="btn btn-outline-primary btn-sm ms-2">
@@ -243,12 +242,11 @@ $this->layout("_theme");
             $('tbody tr').eq(tipo - 1).addClass('table-primary');
         });
 
-        // Resolver o problema do loading infinito ao baixar documentos (PDF e Excel)
+        // Resolver o problema do loading infinito ao baixar PDFs
         // Seletor abrangendo tanto os botões da tabela quanto os itens do dropdown
-        $('a[href*="pdf-r-"], a[href*="excel-r-"]').on('click', function(e) {
-            // Identifica o tipo de relatório e formato
+        $('a[href*="pdf-r-"]').on('click', function(e) {
+            // Identifica o tipo de relatório
             let tipoRelatorio = "";
-            let formato = $(this).find('i').hasClass('fa-file-pdf') ? 'PDF' : 'Excel';
             
             // Verificar se é um item do dropdown ou um botão da tabela
             if ($(this).hasClass('dropdown-item')) {
@@ -258,9 +256,7 @@ $this->layout("_theme");
             }
             
             // Mostra um feedback temporário
-            const icone = formato === 'PDF' ? 'fa-file-pdf' : 'fa-file-excel';
-            const corFundo = formato === 'PDF' ? 'bg-danger' : 'bg-success';
-            const downloadMsg = $('<div class="download-feedback ' + corFundo + '">').html(`<i class="fas ${icone} me-2"></i>Download iniciado: ${tipoRelatorio} (${formato})`);
+            const downloadMsg = $('<div class="download-feedback">').html(`<i class="fas fa-file-pdf me-2"></i>Download iniciado: ${tipoRelatorio}`);
             $('body').append(downloadMsg);
             
             // Esconde o overlay de loading após um curto período

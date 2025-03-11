@@ -1,8 +1,14 @@
 const BASE_URL = '/stockDeps/app';
-const ITENS_POR_PAGINA = 8;
-const MAX_BOTOES_PAGINACAO = 5;
+const itensPorPagina = 8;
+const maxBotoesPaginacao = 5; // Limite de botões de página exibidos
 
-// Variáveis de estado global
+// Medição de performance
+for(let i = 0; i < 10; i++) {
+    console.time('operacao');
+    // Operação não otimizada aqui
+    console.timeEnd('operacao');
+}
+
 let produtos = [];
 let clientes = [];
 let fornecedores = [];
@@ -10,113 +16,63 @@ let entradas = [];
 let saidas = [];
 let categorias = [];
 
-// Variáveis de paginação
 let paginaAtual = 1;
 let paginaAtualEntradas = 1;
 let paginaAtualSaidas = 1;
 
-// Dados para filtros
 let entradasFiltradas = [];
 let saidasFiltradas = [];
 let produtosFiltrados = [];
+
 let produtosOrdenados = [];
 let produtosOriginais = [];
 let entradasOriginais = [];
 let saidasOriginais = [];
 
-/**
- * Carrega produtos da API e inicializa tabela
- */
 async function fetchProdutos() {
-  try {
-    const response = await fetch(`${BASE_URL}/getProdutos`);
-    produtosOriginais = await response.json();
-    produtosFiltrados = [...produtosOriginais];
-    produtosOrdenados = [...produtosFiltrados];
-    buscarProduto();
-    mostrarPagina(paginaAtual);
-  } catch (error) {
-    console.error('Erro ao carregar produtos:', error);
-  }
+  const response = await fetch(`${BASE_URL}/getProdutos`);
+  produtosOriginais = await response.json(); // Salva os produtos originais
+  produtosFiltrados = [...produtosOriginais]; // Inicializa os filtrados com todos os produtos
+  produtosOrdenados = [...produtosFiltrados]; // Inicializa os ordenados com os produtos filtrados
+  buscarProduto(); // Inicializa o evento de busca 
+  mostrarPagina(paginaAtual); // Mostra a primeira página
 }
-
-/**
- * Carrega categorias da API e inicializa componentes
- */
 async function fetchCategorias() {
-  try {
-    const response = await fetch(`${BASE_URL}/getCategorias`);
-    categorias = await response.json();
-    preencherCategorias(categorias, alterarTabelaPorCategoriaSelecionada);
-    renderizarTabela();
-  } catch (error) {
-    console.error('Erro ao carregar categorias:', error);
-  }
+  const response = await fetch(`${BASE_URL}/getCategorias`);
+  categorias = await response.json();
+  preencherCategorias(categorias, () => alterarTabelaPorCategoriaSelecionada());
+  renderizarTabela(categorias);
 }
-
-/**
- * Carrega clientes da API
- */
 async function fetchClientes() {
-  try {
-    const response = await fetch(`${BASE_URL}/getClientes`);
-    clientes = await response.json();
-    preencherClientes(clientes);
-  } catch (error) {
-    console.error('Erro ao carregar clientes:', error);
-  }
-}
+  const response = await fetch(`${BASE_URL}/getClientes`);
+  clientes = await response.json();
+  preencherClientes(clientes);
 
-/**
- * Carrega fornecedores da API
- */
+}
 async function fetchFornecedores() {
-  try {
-    const response = await fetch(`${BASE_URL}/getFornecedores`);
-    fornecedores = await response.json();
-    preencherFornecedores(fornecedores);
-  } catch (error) {
-    console.error('Erro ao carregar fornecedores:', error);
-  }
+  const response = await fetch(`${BASE_URL}/getFornecedores`);
+  fornecedores = await response.json();
+  preencherFornecedores(fornecedores);
 }
-
-/**
- * Carrega entradas da API e inicializa tabela
- */
 async function fetchEntradas() {
-  try {
-    const response = await fetch(`${BASE_URL}/getEntradas`);
-    entradas = await response.json();
-    entradasOriginais = [...entradas];
-    entradasFiltradas = [...entradas];
-    mostrarPaginaEntradas(paginaAtualEntradas);
-    buscarEntrada();
-    filtrarEntradasPorData();
-  } catch (error) {
-    console.error('Erro ao carregar entradas:', error);
-  }
+  const response = await fetch(`${BASE_URL}/getEntradas`);
+  entradas = await response.json();
+  entradasOriginais = [...entradas]; // Copia os dados originais
+  entradasFiltradas = [...entradas];
+  mostrarPaginaEntradas(paginaAtualEntradas);
+  buscarEntrada();
+  filtrarEntradasPorData();
 }
-
-/**
- * Carrega saídas da API e inicializa tabela
- */
 async function fetchSaidas() {
-  try {
-    const response = await fetch(`${BASE_URL}/getSaidas`);
-    saidas = await response.json();
-    saidasOriginais = [...saidas];
-    saidasFiltradas = [...saidas];
-    mostrarPaginaSaidas(paginaAtualSaidas);
-    buscarSaida();
-    filtrarSaidasPorData();
-  } catch (error) {
-    console.error('Erro ao carregar saídas:', error);
-  }
+  const response = await fetch(`${BASE_URL}/getSaidas`);
+  saidas = await response.json();
+  saidasOriginais = [...saidas]; // Copia os dados originais
+  saidasFiltradas = [...saidas];
+  mostrarPaginaSaidas(paginaAtualSaidas);
+  buscarSaida();
+  filtrarSaidasPorData();
 }
 
-/**
- * Carrega todos os dados necessários
- */
 function loadAllData() {
   fetchProdutos();
   fetchCategorias();
@@ -126,11 +82,6 @@ function loadAllData() {
   fetchSaidas();
 }
 
-/**
- * Formata data ISO para formato brasileiro
- * @param {string} dataISO - Data em formato ISO
- * @returns {string} Data formatada
- */
 function formatarData(dataISO) {
   const data = new Date(dataISO);
   return data.toLocaleDateString("pt-BR", {
@@ -140,31 +91,28 @@ function formatarData(dataISO) {
   });
 }
 
-/**
- * Renderiza tabela de categorias
- */
 function renderizarTabela() {
   const tbody = document.getElementById("corpoTabelaCategorias");
-  if (!tbody) return;
-  
   tbody.innerHTML = "";
 
   categorias.forEach((categoria) => {
     const tr = document.createElement("tr");
+
     tr.innerHTML = `
-      <td>${categoria.nome}</td>
-      <td>${categoria.descricao}</td>
-      <td class="text-center">
-        <div class="d-flex justify-content-center align-items-center gap-2">
-          <button class="btn btn-primary btn-sm action-btn" onclick="editarCategoria(${categoria.id})" data-bs-toggle="tooltip" title="Editar categoria">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="btn btn-danger btn-sm action-btn" onclick="excluirCategoria(${categoria.id})" data-bs-toggle="tooltip" title="Excluir categoria">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
-      </td>
-    `;
+            <td>${categoria.nome}</td>
+            <td>${categoria.descricao}</td>
+            <td class="text-center">
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                    <button class="btn btn-primary btn-sm action-btn" onclick="editarCategoria(${categoria.id})" data-bs-toggle="tooltip" title="Editar categoria">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger btn-sm action-btn" onclick="excluirCategoria(${categoria.id})" data-bs-toggle="tooltip" title="Excluir categoria">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </td>
+        `;
+
     tbody.appendChild(tr);
   });
 
@@ -175,14 +123,11 @@ function renderizarTabela() {
   });
 }
 
-/**
- * Configura a busca de produtos
- */
+
 function buscarProduto() {
   const inputBuscarProduto = document.getElementById("buscarProduto");
-  if (!inputBuscarProduto) return;
-  
   inputBuscarProduto.addEventListener("input", function () {
+    console.time('busca-produto');
     const termoBusca = inputBuscarProduto.value.toLowerCase();
 
     produtosFiltrados = produtosOriginais.filter(
@@ -191,28 +136,20 @@ function buscarProduto() {
         produto.codigo_produto.toLowerCase().includes(termoBusca)
     );
 
+    // Reiniciar a ordenação com os produtos filtrados
     produtosOrdenados = [...produtosFiltrados];
-    paginaAtual = 1;
-    mostrarPagina(paginaAtual);
+    paginaAtual = 1; // Reinicia na primeira página
+    mostrarPagina(paginaAtual); // Atualiza a tabela
+    console.timeEnd('busca-produto');
   });
 }
 
-/**
- * Remove acentos de uma string
- * @param {string} str - String original
- * @returns {string} String sem acentos
- */
 function removerAcentos(str) {
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-/**
- * Configura a busca de entradas
- */
 function buscarEntrada() {
   const inputBuscarEntrada = document.getElementById("buscarEntrada");
-  if (!inputBuscarEntrada) return;
-  
   inputBuscarEntrada.addEventListener("input", function () {
     const termoBusca = removerAcentos(inputBuscarEntrada.value.toLowerCase());
 
@@ -221,23 +158,18 @@ function buscarEntrada() {
       const fornecedor = fornecedores.find((f) => f.id == entrada.idFornecedor);
       
       return (
-        removerAcentos((produto?.nome || "").toLowerCase()).includes(termoBusca) ||
-        removerAcentos((fornecedor?.nome || "").toLowerCase()).includes(termoBusca)
+        removerAcentos(produto?.nome?.toLowerCase()).includes(termoBusca) ||
+        removerAcentos(fornecedor?.nome?.toLowerCase()).includes(termoBusca)
       );
     });
 
     paginaAtualEntradas = 1;
-    mostrarPaginaEntradas(paginaAtualEntradas);
+    mostrarPaginaEntradas(paginaAtualEntradas); // Atualiza a tabela com os resultados filtrados
   });
 }
 
-/**
- * Configura a busca de saídas
- */
 function buscarSaida() {
   const inputBuscarSaida = document.getElementById("buscarSaida");
-  if (!inputBuscarSaida) return;
-  
   inputBuscarSaida.addEventListener("input", function () {
     const termoBusca = removerAcentos(inputBuscarSaida.value.toLowerCase());
 
@@ -248,99 +180,163 @@ function buscarSaida() {
         : "Cliente não cadastrado";
 
       return (
-        removerAcentos((produto?.nome || "").toLowerCase()).includes(termoBusca) ||
+        removerAcentos(produto?.nome?.toLowerCase()).includes(termoBusca) ||
         removerAcentos(cliente.toLowerCase()).includes(termoBusca)
       );
     });
 
     paginaAtualSaidas = 1;
-    mostrarPaginaSaidas(paginaAtualSaidas);
+    mostrarPaginaSaidas(paginaAtualSaidas); // Atualiza a tabela com os resultados filtrados
   });
 }
 
-/**
- * Mostra uma página específica de entradas
- * @param {number} pagina - Número da página
- * @param {Array} entradasParam - Opcional: dados para sobrescrever entradasFiltradas
- */
-function mostrarPaginaEntradas(pagina, entradasParam) {
-  const entradasAExibir = entradasParam || entradasFiltradas;
-  const tabela = document.getElementById("corpoTabelaEntradas");
-  
-  if (!tabela) return;
-  
-  const inicio = (pagina - 1) * ITENS_POR_PAGINA;
-  const fim = inicio + ITENS_POR_PAGINA;
-  
-  // Ordenar entradas da mais recente para a mais antiga
-  const entradasOrdenadas = [...entradasAExibir].sort((a, b) => 
-    new Date(b.created_at) - new Date(a.created_at)
-  );
-  
-  const entradasPagina = entradasOrdenadas.slice(inicio, fim);
-  tabela.innerHTML = "";
 
-  // Exibir mensagem se não houver entradas
-  const mensagemNenhumaEntrada = document.getElementById("mensagemNenhumaEntrada");
-  if (mensagemNenhumaEntrada) {
-    mensagemNenhumaEntrada.style.display = entradasPagina.length === 0 ? "block" : "none";
+
+function mostrarPaginaEntradas(pagina, entradasParam) {
+  // Usar os dados passados como parâmetro ou os filtrados
+  const entradasAExibir = entradasParam || entradasFiltradas;
+  
+  const inicio = (pagina - 1) * itensPorPagina;
+  const fim = inicio + itensPorPagina;
+  
+  // Ordenar as entradas da mais recente para a mais antiga
+  entradasAExibir.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  
+  // Paginar os resultados corretamente
+  const entradasPagina = entradasAExibir.slice(inicio, fim);
+
+  // Selecionar a tabela e limpar seu conteúdo - corrigindo o seletor para corpoTabelaEntradas
+  const tabela = document.getElementById("corpoTabelaEntradas");
+  if (!tabela) {
+    console.error("Elemento com ID 'corpoTabelaEntradas' não encontrado");
+    return;
   }
   
-  if (entradasPagina.length === 0) return;
+  tabela.innerHTML = "";
 
-  // Preencher tabela
+  // Exibir mensagem caso não haja entradas
+  if (entradasPagina.length === 0) {
+    const mensagemNenhumaEntrada = document.getElementById("mensagemNenhumaEntrada");
+    if (mensagemNenhumaEntrada) {
+      mensagemNenhumaEntrada.style.display = "block";
+    }
+    return;
+  } else {
+    const mensagemNenhumaEntrada = document.getElementById("mensagemNenhumaEntrada");
+    if (mensagemNenhumaEntrada) {
+      mensagemNenhumaEntrada.style.display = "none";
+    }
+  }
+
+  // Preencher a tabela com as entradas paginadas
   entradasPagina.forEach((entrada) => {
     const produto = produtosOriginais.find((p) => p.id == entrada.idProdutos);
     const fornecedor = fornecedores ? fornecedores.find((f) => f.id == entrada.idFornecedor) : null;
     
     const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${produto?.nome || "Produto não encontrado"}</td>
-      <td>${fornecedor?.nome || entrada.fornecedor || "Fornecedor não encontrado"}</td>
-      <td>${entrada.quantidade}</td>
-      <td>R$ ${parseFloat(entrada.preco).toFixed(2)}</td>
-      <td>${formatarData(entrada.created_at)}</td>
-      <td class="text-center">
-        <div class="d-flex gap-2 justify-content-center">
-          <button class="btn btn-primary btn-sm action-btn" onclick="editarEntrada(${entrada.id})" data-bs-toggle="tooltip" title="Editar entrada">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="btn btn-danger btn-sm action-btn" onclick="excluirEntrada(${entrada.id})" data-bs-toggle="tooltip" title="Excluir entrada">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
-      </td>
-    `;
+    
+    // Criar célula para produto
+    const tdProduto = document.createElement("td");
+    tdProduto.textContent = produto?.nome || "Produto não encontrado";
+    tr.appendChild(tdProduto);
+    
+    // Criar célula para fornecedor
+    const tdFornecedor = document.createElement("td");
+    tdFornecedor.textContent = fornecedor?.nome || entrada.fornecedor || "Fornecedor não encontrado";
+    tr.appendChild(tdFornecedor);
+    
+    // Criar célula para quantidade
+    const tdQuantidade = document.createElement("td");
+    tdQuantidade.textContent = entrada.quantidade;
+    tr.appendChild(tdQuantidade);
+    
+    // Criar célula para preço
+    const tdPreco = document.createElement("td");
+    tdPreco.textContent = entrada.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    tr.appendChild(tdPreco);
+    
+    // Criar célula para data
+    const tdData = document.createElement("td");
+    tdData.textContent = formatarData(entrada.created_at);
+    tr.appendChild(tdData);
+    
+    // Criar célula de ações
+    const tdAcoes = document.createElement("td");
+    tdAcoes.className = "text-center";
+    
+    // Criar container para botões
+    const acoesBtns = document.createElement("div");
+    acoesBtns.className = "d-flex gap-2 justify-content-center";
+    
+    // Botão editar
+    const btnEditar = document.createElement("button");
+    btnEditar.className = "btn btn-primary btn-sm action-btn";
+    btnEditar.setAttribute("data-bs-toggle", "tooltip");
+    btnEditar.setAttribute("title", "Editar entrada");
+    btnEditar.setAttribute("data-entrada-id", entrada.id);
+    
+    // Usar uma função anônima para evitar problemas com o escopo
+    btnEditar.addEventListener("click", function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      editarEntrada(entrada.id);
+    });
+    
+    const iconEditar = document.createElement("i");
+    iconEditar.className = "fas fa-edit";
+    btnEditar.appendChild(iconEditar);
+    
+    // Botão excluir
+    const btnExcluir = document.createElement("button");
+    btnExcluir.className = "btn btn-danger btn-sm action-btn";
+    btnExcluir.setAttribute("data-bs-toggle", "modal");
+    btnExcluir.setAttribute("data-bs-target", "#modalExcluirEntrada");
+    btnExcluir.setAttribute("data-bs-toggle", "tooltip");
+    btnExcluir.setAttribute("title", "Excluir entrada");
+    btnExcluir.onclick = () => excluirEntrada(entrada.id);
+    
+    const iconExcluir = document.createElement("i");
+    iconExcluir.className = "fas fa-trash";
+    btnExcluir.appendChild(iconExcluir);
+    
+    // Adicionar botões ao container
+    acoesBtns.appendChild(btnEditar);
+    acoesBtns.appendChild(btnExcluir);
+    
+    // Adicionar container à célula
+    tdAcoes.appendChild(acoesBtns);
+    
+    // Adicionar célula à linha
+    tr.appendChild(tdAcoes);
+    
+    // Adicionar linha à tabela
     tabela.appendChild(tr);
   });
 
-  // Inicializa tooltips
-  const tooltips = document.querySelectorAll('#tabelaEntradas [data-bs-toggle="tooltip"]');
-  tooltips.forEach(tooltip => {
-    new bootstrap.Tooltip(tooltip);
-  });
+  // Inicializar tooltips
+  setTimeout(() => {
+    const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltips.forEach(tooltip => {
+      new bootstrap.Tooltip(tooltip);
+    });
+  }, 100);
 
-  // Atualizar paginação
-  configurarPaginacao(
-    entradasAExibir.length,
-    mostrarPaginaEntradas,
-    "paginacaoEntradas",
-    pagina
-  );
+  // Configurar a paginação
+  configurarPaginacao(entradasAExibir.length, (p) => mostrarPaginaEntradas(p, entradasAExibir), "#paginacaoEntradas", pagina);
 }
 
 function mostrarPaginaSaidas(pagina, saidasParam) {
   // Usar os dados passados como parâmetro ou os filtrados
   const saidasAExibir = saidasParam || saidasFiltradas;
   
-  const inicio = (pagina - 1) * ITENS_POR_PAGINA;
-  const fim = inicio + ITENS_POR_PAGINA;
+  const inicio = (pagina - 1) * itensPorPagina;
+  const fim = inicio + itensPorPagina;
 
   // Ordenar as saídas da mais recente para a mais antiga
-  const saidasOrdenadas = [...saidasAExibir].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  saidasAExibir.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
   // Paginar os resultados corretamente
-  const saidasPagina = saidasOrdenadas.slice(inicio, fim);
+  const saidasPagina = saidasAExibir.slice(inicio, fim);
 
   // Selecionar a tabela e limpar seu conteúdo - corrigindo o seletor para corpoTabelaSaidas
   const tabela = document.getElementById("corpoTabelaSaidas");
@@ -352,9 +348,17 @@ function mostrarPaginaSaidas(pagina, saidasParam) {
   tabela.innerHTML = "";
 
   // Exibir mensagem caso não haja saídas
-  const mensagemNenhumaSaida = document.getElementById("mensagemNenhumaSaida");
-  if (mensagemNenhumaSaida) {
-    mensagemNenhumaSaida.style.display = saidasPagina.length === 0 ? "block" : "none";
+  if (saidasPagina.length === 0) {
+    const mensagemNenhumaSaida = document.getElementById("mensagemNenhumaSaida");
+    if (mensagemNenhumaSaida) {
+      mensagemNenhumaSaida.style.display = "block";
+    }
+    return;
+  } else {
+    const mensagemNenhumaSaida = document.getElementById("mensagemNenhumaSaida");
+    if (mensagemNenhumaSaida) {
+      mensagemNenhumaSaida.style.display = "none";
+    }
   }
 
   // Preencher a tabela com as saídas paginadas
@@ -461,14 +465,19 @@ function mostrarPaginaSaidas(pagina, saidasParam) {
   configurarPaginacao(saidasAExibir.length, (p) => mostrarPaginaSaidas(p, saidasAExibir), "#paginacaoSaidas", pagina);
 }
 
+
+
 function filtrarEntradasPorData() {
   const dataFiltro = document.querySelector("#filtroDataEntrada").value; // Pega a data do filtro
   if (!dataFiltro) return; // Não faz nada se o campo de data estiver vazio
+
+
 
   // Filtra as entradas com a data selecionada
   entradasFiltradas = entradas.filter((entrada) => {
     // Extrai a parte da data de created_at (formato YYYY-MM-DD)
     const dataEntrada = entrada.created_at.split(" ")[0]; // Pega a data sem a hora (ex: 2024-12-22)
+
 
     // Compara as datas no formato YYYY-MM-DD
     return dataEntrada === dataFiltro;
@@ -493,10 +502,12 @@ function filtrarSaidasPorData() {
   const dataFiltro = document.querySelector("#filtroDataSaida").value; // Pega a data do filtro
   if (!dataFiltro) return; // Não faz nada se o campo de data estiver vazio
 
+
   // Filtra as saídas com a data selecionada
   saidasFiltradas = saidas.filter((saida) => {
     // Extrai a parte da data de created_at (formato YYYY-MM-DD)
     const dataSaida = saida.created_at.split(" ")[0]; // Pega a data sem a hora (ex: 2024-12-22)
+
 
     // Compara as datas no formato YYYY-MM-DD
     return dataSaida === dataFiltro;
@@ -523,7 +534,7 @@ function configurarPaginacao(
   seletorPaginacao,
   paginaAtual
 ) {
-  const totalPaginas = Math.ceil(totalItens / ITENS_POR_PAGINA);
+  const totalPaginas = Math.ceil(totalItens / itensPorPagina);
   const paginacaoContainer = document.querySelector(seletorPaginacao);
   
   if (!paginacaoContainer) return; // Verifica se o container existe
@@ -532,8 +543,8 @@ function configurarPaginacao(
 
   if (totalPaginas <= 1) return; // Se há apenas uma página, não exibe paginação
 
-  const paginaInicial = Math.max(1, paginaAtual - Math.floor(MAX_BOTOES_PAGINACAO / 2));
-  const paginaFinal = Math.min(totalPaginas, paginaInicial + MAX_BOTOES_PAGINACAO - 1);
+  const paginaInicial = Math.max(1, paginaAtual - Math.floor(maxBotoesPaginacao / 2));
+  const paginaFinal = Math.min(totalPaginas, paginaInicial + maxBotoesPaginacao - 1);
 
   // Botão "Anterior"
   const botaoAnterior = document.createElement("li");
@@ -866,8 +877,8 @@ function preencherTabelaProdutos(produtosPaginados) {
 function mostrarPagina(pagina) {
   paginaAtual = pagina;
 
-  const inicio = (pagina - 1) * ITENS_POR_PAGINA;
-  const fim = inicio + ITENS_POR_PAGINA;
+  const inicio = (pagina - 1) * itensPorPagina;
+  const fim = inicio + itensPorPagina;
 
   const produtosNaPagina = produtosOrdenados.slice(inicio, fim); // Paginar com a lista ordenada
   preencherTabelaProdutos(produtosNaPagina);
@@ -876,17 +887,17 @@ function mostrarPagina(pagina) {
 }
 
 function atualizarPaginacao(totalProdutos, paginaAtual) {
-  const totalPaginas = Math.ceil(totalProdutos / ITENS_POR_PAGINA);
+  const totalPaginas = Math.ceil(totalProdutos / itensPorPagina);
   const pagination = document.getElementById("pagination");
   pagination.innerHTML = ""; // Limpa o container de paginação
 
   const paginaInicial = Math.max(
     1,
-    paginaAtual - Math.floor(MAX_BOTOES_PAGINACAO / 2)
+    paginaAtual - Math.floor(maxBotoesPaginacao / 2)
   );
   const paginaFinal = Math.min(
     totalPaginas,
-    paginaInicial + MAX_BOTOES_PAGINACAO - 1
+    paginaInicial + maxBotoesPaginacao - 1
   );
 
   // Botão "Anterior"
@@ -931,6 +942,7 @@ function atualizarPaginacao(totalProdutos, paginaAtual) {
     pagination.appendChild(liNext);
   }
 }
+
 
 function alterarTabelaPorCategoriaSelecionada() {
   const categoriaSelecionada = document.getElementById("categoria").value;
@@ -1251,6 +1263,7 @@ function openModal(tipo, produto) {
     // Selecionar a unidade do produto
     unidadeSelect.value = unidadeMedida;
 
+
     const precoProduto = document.getElementById("precoProduto");
 
     // Garante que `produto.preco` seja um número válido antes de formatar
@@ -1261,6 +1274,7 @@ function openModal(tipo, produto) {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
+
 
     // Configurar categorias no select
     const categoria = categorias.find(
