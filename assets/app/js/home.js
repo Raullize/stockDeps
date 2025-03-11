@@ -8,6 +8,60 @@ let clientes = [];
 let fornecedores = [];
 let chartCategorias = null;
 
+// Função para animar a contagem dos números
+function animateCounter(element, finalValue) {
+  const duration = 1500; // Duração da animação em milissegundos
+  const startTime = performance.now();
+  const startValue = 0;
+  
+  function updateCounter(currentTime) {
+    const elapsedTime = currentTime - startTime;
+    const progress = Math.min(elapsedTime / duration, 1);
+    
+    // Easing function para uma animação mais suave
+    const easeOutQuad = progress => 1 - (1 - progress) * (1 - progress);
+    const easedProgress = easeOutQuad(progress);
+    
+    const currentValue = Math.floor(startValue + (finalValue - startValue) * easedProgress);
+    element.textContent = currentValue;
+    
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    } else {
+      element.textContent = finalValue; // Garante que o valor final seja exato
+    }
+  }
+  
+  requestAnimationFrame(updateCounter);
+}
+
+// Função para animar valores monetários
+function animateMoneyCounter(element, finalValue) {
+  const duration = 1500; // Duração da animação em milissegundos
+  const startTime = performance.now();
+  const startValue = 0;
+  
+  function updateCounter(currentTime) {
+    const elapsedTime = currentTime - startTime;
+    const progress = Math.min(elapsedTime / duration, 1);
+    
+    // Easing function para uma animação mais suave
+    const easeOutQuad = progress => 1 - (1 - progress) * (1 - progress);
+    const easedProgress = easeOutQuad(progress);
+    
+    const currentValue = startValue + (finalValue - startValue) * easedProgress;
+    element.textContent = `R$ ${currentValue.toFixed(2)}`;
+    
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    } else {
+      element.textContent = `R$ ${finalValue.toFixed(2)}`; // Garante que o valor final seja exato
+    }
+  }
+  
+  requestAnimationFrame(updateCounter);
+}
+
 async function fetchProdutos() {
   const response = await fetch(`${BASE_URL}/getProdutos`);
   produtos = await response.json();
@@ -58,6 +112,8 @@ async function loadDashboardData() {
     atualizarCaixas();
     atualizarProdutosMaisVendidos();
     atualizarGraficoCategorias(categorias);
+    calcularValorEstoque();
+    carregarProdutosBaixoEstoque();
   } catch (error) {
     console.error('Erro ao carregar os dados do dashboard:', error);
   }
@@ -76,30 +132,36 @@ async function fetchAndUpdateData(resource, updateFunction) {
 
 function atualizarProdutos(data) {
   produtos = data || [];
-  document.getElementById('total-produtos').textContent = produtos.length || 0;
-  document.getElementById('produtos-estoque').textContent = produtos.filter(p => p.quantidade > 0).length;
-  document.getElementById('estoque-baixo').textContent = produtos.filter(p => p.quantidade >= 0 && p.quantidade <= 1).length;
-  document.getElementById('produtos-sem-estoque').textContent = produtos.filter(p => p.quantidade == 0).length;
+  const totalProdutos = produtos.length || 0;
+  const produtosComEstoque = produtos.filter(p => p.quantidade > 0).length;
+  const produtosBaixoEstoque = produtos.filter(p => p.quantidade > 0 && p.quantidade <= 1).length;
+  const produtosSemEstoque = produtos.filter(p => p.quantidade == 0).length;
+  
+  // Animar contadores
+  animateCounter(document.getElementById('total-produtos'), totalProdutos);
+  animateCounter(document.getElementById('produtos-estoque'), produtosComEstoque);
+  animateCounter(document.getElementById('estoque-baixo'), produtosBaixoEstoque);
+  animateCounter(document.getElementById('produtos-sem-estoque'), produtosSemEstoque);
 }
 
 function atualizarEntradas(data) {
   entradas = data || [];
-  document.getElementById('total-entradas').textContent = entradas.length || 0;
+  animateCounter(document.getElementById('total-entradas'), entradas.length || 0);
 }
 
 function atualizarSaidas(data) {
   saidas = data || [];
-  document.getElementById('total-saidas').textContent = saidas.length || 0;
+  animateCounter(document.getElementById('total-saidas'), saidas.length || 0);
 }
 
 function atualizarClientes(data) {
   clientes = data || [];
-  document.getElementById('total-clientes').textContent = clientes.length || 0;
+  animateCounter(document.getElementById('total-clientes'), clientes.length || 0);
 }
 
 function atualizarFornecedores(data) {
   fornecedores = data || [];
-  document.getElementById('total-fornecedores').textContent = fornecedores.length || 0;
+  animateCounter(document.getElementById('total-fornecedores'), fornecedores.length || 0);
 }
 
 function atualizarCaixas() {
@@ -210,13 +272,6 @@ function atualizarGraficoCategorias(categorias) {
   });
 }
 
-async function calcularLucro() {
-  const lucroBruto = calcularLucroBruto(saidas);
-  const lucroLiquido = calcularLucroLiquido(entradas, saidas);
-  document.getElementById('lucro-bruto').textContent = `R$ ${lucroBruto.toFixed(2)}`;
-  document.getElementById('lucro-liquido').textContent = `R$ ${lucroLiquido.toFixed(2)}`;
-}
-
 function calcularLucroBruto(saidas) {
   if (saidas.length === 0) return 0; // Sem vendas, lucro bruto é zero
   return saidas.reduce((total, saida) => {
@@ -229,13 +284,46 @@ function calcularLucroBruto(saidas) {
 function calcularLucroLiquido(entradas, saidas) {
   const lucroBruto = calcularLucroBruto(saidas);
 
-  const totalEntradas = entradas.reduce((total, entrada) => {
-    const preco = parseFloat(entrada.preco.toString().replace(',', '.')) || 0;
-    const quantidade = parseFloat(entrada.quantidade.toString().replace(',', '.')) || 0;
-    return total + (preco * quantidade);
-  }, 0);
+  // Calcular o custo das mercadorias vendidas (CMV)
+  // Vamos usar apenas as entradas que correspondem aos produtos vendidos
+  let custoMercadoriaVendida = 0;
+  const produtosVendidos = new Map(); // Mapa para rastrear produtos vendidos e suas quantidades
 
-  return lucroBruto - totalEntradas; // Receita - Custo
+  // Primeiro, identificamos todos os produtos vendidos e suas quantidades
+  saidas.forEach(saida => {
+    const produtoId = saida.idProdutos;
+    const quantidade = parseFloat(saida.quantidade.toString().replace(',', '.')) || 0;
+    
+    // Adicionamos ao mapa ou incrementamos a quantidade
+    if (produtosVendidos.has(produtoId)) {
+      produtosVendidos.set(produtoId, produtosVendidos.get(produtoId) + quantidade);
+    } else {
+      produtosVendidos.set(produtoId, quantidade);
+    }
+  });
+
+  // Para cada produto vendido, calculamos o custo com base nas entradas
+  produtosVendidos.forEach((quantidadeVendida, produtoId) => {
+    // Filtrar entradas do produto atual
+    const entradasDoProduto = entradas.filter(entrada => entrada.idProdutos == produtoId);
+    
+    if (entradasDoProduto.length > 0) {
+      // Se houver entradas, calculamos o preço médio de entrada
+      const valorTotalEntradas = entradasDoProduto.reduce((total, entrada) => {
+        const preco = parseFloat(entrada.preco.toString().replace(',', '.')) || 0;
+        return total + preco;
+      }, 0);
+      
+      const precoMedio = valorTotalEntradas / entradasDoProduto.length;
+      custoMercadoriaVendida += precoMedio * quantidadeVendida;
+    } else {
+      // Se não houver entradas registradas, estimamos com base no preço atual do produto
+      // (Isso é uma aproximação, idealmente sempre teríamos registros de entrada)
+      // Neste caso, assumimos lucro zero para este produto
+    }
+  });
+
+  return lucroBruto - custoMercadoriaVendida;
 }
 
 async function calcularValorEstoque() {
@@ -248,18 +336,28 @@ async function calcularValorEstoque() {
     let valorTotal = 0;
 
     produtos.forEach(produto => {
-      const entradasProduto = entradas.filter(e => e.idProdutos === produto.id);
-
+      // Buscamos as entradas para este produto
+      const entradasProduto = entradas.filter(entrada => entrada.idProdutos == produto.id);
+      
       if (entradasProduto.length > 0) {
-        const precoMedio = entradasProduto.reduce((total, entrada) => total + (entrada.preco * entrada.quantidade), 0) /
-          entradasProduto.reduce((total, entrada) => total + entrada.quantidade, 0);
-        valorTotal += produto.quantidade * precoMedio;
+        // Se houver entradas, usamos o preço médio de entrada
+        const valorTotalEntradas = entradasProduto.reduce((total, entrada) => {
+          return total + (parseFloat(entrada.preco.toString().replace(',', '.')) || 0);
+        }, 0);
+        
+        const precoMedio = valorTotalEntradas / entradasProduto.length;
+        valorTotal += precoMedio * parseFloat(produto.quantidade.toString().replace(',', '.') || 0);
+      } else {
+        // Se não houver entradas, usamos o preço de saída como estimativa
+        valorTotal += parseFloat(produto.preco.toString().replace(',', '.') || 0) * parseFloat(produto.quantidade.toString().replace(',', '.') || 0);
       }
     });
 
-    document.getElementById('valor-estoque').textContent = `R$ ${valorTotal.toFixed(2)}`;
+    // Atualizar com animação
+    animateMoneyCounter(document.getElementById('valor-estoque'), valorTotal);
   } catch (error) {
-    console.error("Erro ao calcular o valor total do estoque:", error);
+    console.error('Erro ao calcular valor do estoque:', error);
+    document.getElementById('valor-estoque').textContent = 'R$ 0,00';
   }
 }
 
@@ -272,9 +370,6 @@ function calcularLucroPorPeriodo(periodo) {
     case 'dia':
       dataInicio.setDate(now.getDate() - 1); // Último dia
       break;
-    case 'tresDias':
-      dataInicio.setDate(now.getDate() - 3); // Últimos 3 dias
-      break;
     case 'semana':
       dataInicio.setDate(now.getDate() - 7); // Última semana
       break;
@@ -283,15 +378,6 @@ function calcularLucroPorPeriodo(periodo) {
       break;
     case 'mes':
       dataInicio.setMonth(now.getMonth() - 1); // Último mês
-      break;
-    case 'trimestre':
-      dataInicio.setMonth(now.getMonth() - 3); // Último trimestre
-      break;
-    case 'semestre':
-      dataInicio.setMonth(now.getMonth() - 6); // Último semestre
-      break;
-    case 'ano':
-      dataInicio.setFullYear(now.getFullYear() - 1); // Último ano
       break;
     default:
       dataInicio = null; // Período total
@@ -310,9 +396,9 @@ function calcularLucroPorPeriodo(periodo) {
   const lucroBruto = calcularLucroBruto(saidasFiltradas);
   const lucroLiquido = calcularLucroLiquido(entradasFiltradas, saidasFiltradas);
 
-  // Atualiza os valores no HTML
-  document.getElementById('lucro-bruto').textContent = `R$ ${lucroBruto.toFixed(2)}`;
-  document.getElementById('lucro-liquido').textContent = `R$ ${lucroLiquido.toFixed(2)}`;
+  // Atualiza os valores no HTML com animação
+  animateMoneyCounter(document.getElementById('lucro-bruto'), lucroBruto);
+  animateMoneyCounter(document.getElementById('lucro-liquido'), lucroLiquido);
 }
 
 // Adiciona o evento ao seletor de período
@@ -350,15 +436,35 @@ async function carregarProdutosBaixoEstoque() {
     produtosBaixoEstoque.forEach(produto => {
       const item = document.createElement("li");
       item.className = `list-group-item d-flex justify-content-between align-items-center ${produto.quantidade === 0 ? 'list-group-item-danger' : 'list-group-item-warning'} fw-bold`;
+      item.style.cursor = 'pointer';
       item.innerHTML = `
               <span>${produto.nome} (Qtd: ${produto.quantidade} ${produto.unidade_medida})</span>
               <span class="badge bg-${produto.quantidade === 0 ? 'danger' : 'warning'} rounded-pill p-2">
                   ${produto.quantidade === 0 ? 'Sem estoque' : 'Estoque baixo'}
               </span>
           `;
+      
+      // Adicionar evento de clique para direcionar para a página de estoque
+      item.addEventListener('click', () => {
+        window.location.href = `${BASE_URL}/estoque`;
+      });
+      
       lista.appendChild(item);
     });
   } catch (error) {
     console.error("Erro ao carregar produtos de estoque baixo:", error);
   }
+}
+
+// Iniciar carregamento quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', () => {
+  loadDashboardData();
+});
+
+// Alterar a função calcularLucro para usar calcularLucroPorPeriodo
+async function calcularLucro() {
+  // Esta função agora irá simplesmente chamar calcularLucroPorPeriodo
+  // com o período atualmente selecionado
+  const periodo = document.getElementById('periodo').value;
+  calcularLucroPorPeriodo(periodo);
 }
