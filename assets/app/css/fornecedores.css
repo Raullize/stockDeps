@@ -54,18 +54,7 @@
   padding: 12px 15px;
 }
 
-/* Centralizar os cabeçalhos da tabela */
-#tabelaFornecedores th,
-.tabelaFornecedores th,
-table[id="tabelaFornecedores"] th {
-  text-align: center !important;
-  vertical-align: middle !important;
-  font-weight: 600 !important;
-}
-
-/* Garantir que todos os headers estejam centralizados, independente de serem ordenáveis */
 #ordenarNomeFornecedor {
-  text-align: center !important;
   cursor: pointer;
 }
 
@@ -77,7 +66,6 @@ table[id="tabelaFornecedores"] th {
 #ordenarCepFornecedor,
 #ordenarUfFornecedor,
 #acoesFornecedores {
-  text-align: center !important;
   cursor: default;
 }
 
@@ -165,26 +153,4 @@ th:hover .seta {
 .table td:last-child {
     padding: 8px 4px;
     min-width: 150px;
-}
-
-/* Remover qualquer alinhamento à esquerda ou direita para os cabeçalhos */
-.table-light th,
-.table thead th,
-#tabelaFornecedores thead th {
-  text-align: center !important;
-}
-
-/* Garantir que o conteúdo dos cabeçalhos esteja centralizado */
-#tabelaFornecedores th *,
-.tabelaFornecedores th * {
-  display: inline-block;
-  text-align: center;
-}
-
-/* Ajustar o ícone de ordenação para alinhar corretamente */
-#tabelaFornecedores th i.fas,
-.tabelaFornecedores th i.fas,
-.seta {
-  vertical-align: middle;
-  margin-left: 5px;
 }
