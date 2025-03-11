@@ -93,7 +93,7 @@
       </div>
     </aside>
     
-    <!-- Mobile toggle button -->
+    <!-- Mobile toggle button - agora posicionado no canto inferior direito -->
     <div class="mobile-toggle d-lg-none">
       <i class="fas fa-bars"></i>
     </div>

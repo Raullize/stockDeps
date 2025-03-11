@@ -19,8 +19,21 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Toggle sidebar no mobile
     if (mobileToggle) {
-        mobileToggle.addEventListener('click', function() {
+        mobileToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // Previne propagação do evento
             sidebar.classList.toggle('show');
+            
+            // Adicionar/remover classe do botão para mostrar estado
+            if (sidebar.classList.contains('show')) {
+                mobileToggle.classList.add('active');
+                mobileToggle.innerHTML = '<i class="fas fa-times"></i>';
+                document.body.style.overflow = 'hidden'; // Previne rolagem quando menu aberto
+            } else {
+                mobileToggle.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                document.body.style.overflow = ''; // Restaura rolagem
+            }
         });
     }
     
@@ -29,17 +42,39 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function() {
             if (window.innerWidth < 992) {
                 sidebar.classList.remove('show');
+                if (mobileToggle) {
+                    mobileToggle.classList.remove('active');
+                    mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+                document.body.style.overflow = ''; // Restaura rolagem
             }
         });
     });
     
     // Fechar sidebar no mobile quando clicar fora
     document.addEventListener('click', function(e) {
-        if (window.innerWidth < 992) {
+        if (window.innerWidth < 992 && sidebar.classList.contains('show')) {
             // Verificar se o clique foi fora da sidebar e do botão toggle
             if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target)) {
                 sidebar.classList.remove('show');
+                if (mobileToggle) {
+                    mobileToggle.classList.remove('active');
+                    mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+                document.body.style.overflow = ''; // Restaura rolagem
             }
+        }
+    });
+    
+    // Verificar o tamanho da tela ao redimensionar
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 992 && sidebar.classList.contains('show')) {
+            sidebar.classList.remove('show');
+            if (mobileToggle) {
+                mobileToggle.classList.remove('active');
+                mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+            document.body.style.overflow = '';
         }
     });
     
@@ -58,11 +93,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Restaurar estado da sidebar do localStorage
+    // Restaurar estado da sidebar do localStorage (apenas em desktop)
     function restoreSidebarState() {
-        const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-        if (isSidebarCollapsed) {
-            sidebar.classList.add('collapsed');
+        if (window.innerWidth >= 992) {
+            const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (isSidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+            }
         }
     }
     
@@ -75,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Adicionar evento de transição para evitar problemas de layout
     sidebar.addEventListener('transitionend', function(e) {
-        if (e.propertyName === 'width') {
+        if (e.propertyName === 'width' || e.propertyName === 'transform') {
             document.body.style.overflow = '';
         }
     });
@@ -87,4 +124,13 @@ document.addEventListener('DOMContentLoaded', function() {
             localStorage.setItem('sidebarCollapsed', isSidebarCollapsed);
         });
     });
+    
+    // Inicializar corretamente o ícone do botão móvel
+    if (mobileToggle) {
+        if (sidebar.classList.contains('show')) {
+            mobileToggle.innerHTML = '<i class="fas fa-times"></i>';
+        } else {
+            mobileToggle.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+    }
 }); 

@@ -444,38 +444,157 @@ th:hover .seta {
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    padding: 1rem;
   }
   
   .header-actions {
+    margin-top: 1rem;
     width: 100%;
   }
   
   .btn-icon {
-    flex: 1;
-    justify-content: center;
+    padding: 0.5rem;
   }
   
   .card-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
   }
   
   .action-buttons {
+    margin-top: 0.5rem;
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start !important;
   }
   
   .filters {
     flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .headerTabelaProdutos {
+    padding: 1rem;
+  }
+  
+  .headerTabelaProdutos button {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.75rem;
+  }
+  
+  .headerTabelaProdutos .d-flex.flex-wrap.gap-2 {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .headerTabelaProdutos .d-flex.flex-wrap.gap-2 .input-group {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .tabelaProdutos {
+    overflow-x: auto;
+  }
+  
+  .table {
+    min-width: 800px;
+  }
+  
+  .modal-body {
+    padding: 1rem;
+  }
+  
+  .btn-group {
+    flex-wrap: wrap;
+  }
+  
+  .btn-group .btn {
+    margin-bottom: 0.5rem;
   }
 }
 
-@media (min-width: 768px) {
+/* Media query para tablets */
+@media (min-width: 768px) and (max-width: 991px) {
   .headerTabelaProdutos {
     flex-direction: row;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .headerTabelaProdutos .d-flex.flex-wrap.gap-2 {
+    flex: 1 1 48%;
+  }
+  
+  .tabelaProdutos {
+    overflow-x: auto;
+  }
+  
+  .table {
+    min-width: 800px;
+  }
+}
+
+/* Garantir visualização correta em dispositivos pequenos */
+@media (max-width: 576px) {
+  .card {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+  }
+  
+  .card-header {
+    padding: 0.75rem 1rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .headerTabelaProdutos button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .headerTabelaProdutos .d-flex {
+    justify-content: center;
+  }
+  
+  .table td, .table th {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .action-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .action-btn i {
+    font-size: 0.875rem;
+  }
+}
+
+/* Ajustes globais de container para responsividade */
+.container-fluid {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+@media (max-width: 992px) {
+  .container-fluid {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+}
+
+/* Melhorias para tabelas responsivas */
+.table-responsive {
+  border: 0;
+  margin-bottom: 0;
+}
+
+/* Estilos para garantir que o conteúdo seja visível com sidebar recolhida */
+@media (min-width: 992px) {
+  .sidebar.collapsed ~ .main-content .container-fluid {
+    width: 100%;
   }
 }
 
@@ -688,6 +807,64 @@ th:hover .seta {
     width: 100%;
     flex: 0 0 100%;
     margin-bottom: 8px;
+  }
+}
+
+/* Ajustes adicionais para garantir compatibilidade com o menu móvel */
+@media (max-width: 991px) {
+  /* Garante que os botões na parte inferior não sejam cobertos pelo menu hambúrguer */
+  .fixed-bottom-actions {
+    bottom: 80px !important;
+  }
+  
+  /* Ajuste do espaçamento na parte inferior das tabelas para não ficar sob o botão do menu */
+  .table-container {
+    margin-bottom: 70px;
+  }
+  
+  /* Ajusta a largura máxima dos modais em telas pequenas */
+  .modal-dialog {
+    max-width: 96%;
+    margin: 10px auto;
+  }
+  
+  /* Garante que os botões nos formulários não fiquem juntos demais */
+  .modal-footer .btn {
+    margin: 5px;
+  }
+  
+  /* Melhora a experiência de rolagem em modais grandes */
+  .modal {
+    overflow-y: auto !important;
+  }
+  
+  .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+/* Melhorias para o layout em dispositivos extremamente pequenos */
+@media (max-width: 359px) {
+  .headerTabelaProdutos button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+  
+  .headerTabelaProdutos .d-flex.flex-wrap.gap-2 {
+    gap: 5px !important;
+  }
+  
+  .form-control, .form-select {
+    font-size: 0.875rem;
+  }
+  
+  .action-btn {
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .action-btn i {
+    font-size: 0.75rem;
   }
 }
 

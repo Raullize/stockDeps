@@ -1,3 +1,100 @@
+/* Estilos Globais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fd;
+    overflow-x: hidden;
+    min-height: 100vh;
+    color: #2d3748;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Estilos específicos para dispositivos móveis */
+@media (max-width: 767px) {
+    html {
+        font-size: 14px;
+    }
+    
+    .container, .container-fluid {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .main-content {
+        padding-bottom: 70px; /* Espaço para o botão de menu fixo */
+    }
+}
+
+/* Estilos de acessibilidade */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* Ajustes para tabelas responsivas */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Evitar que elementos da interface fiquem escondidos atrás do botão de menu móvel */
+@media (max-width: 991px) {
+    .fixed-bottom, .btn-fixed {
+        bottom: 80px !important;
+    }
+}
+
+/* Ajustes para formulários em dispositivos móveis */
+@media (max-width: 576px) {
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-control {
+        padding: 0.375rem 0.5rem;
+    }
+    
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+}
+
 .navbar {
   height: 7rem;
   font-family: "Roboto", sans-serif;
@@ -9,10 +106,6 @@
 
 .nav-item {
   font-size: 1.5rem;
-}
-
-body {
-  background-color: #f4f7fc;
 }
 
 .card {
