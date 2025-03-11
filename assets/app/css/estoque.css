@@ -375,19 +375,16 @@ th:hover .seta {
 
 /* Action Buttons in Table */
 .action-btn {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   padding: 0;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 0;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
+  margin: 0 4px;
 }
 
 .action-btn:hover {
@@ -417,11 +414,7 @@ th:hover .seta {
 }
 
 .action-btn i {
-  font-size: 12px;
-  display: block;
-  line-height: 1;
-  width: auto;
-  height: auto;
+  font-size: 1rem;
 }
 
 .table th {
@@ -621,19 +614,16 @@ th:hover .seta {
 
 /* Melhorando o estilo dos botões de ação nas tabelas de entradas e saídas */
 .action-btn {
-  width: 32px;
-  height: 32px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   padding: 0;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s, box-shadow 0.2s;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 0;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
+  margin: 0 4px;
 }
 
 .action-btn:hover {
@@ -642,11 +632,7 @@ th:hover .seta {
 }
 
 .action-btn i {
-  font-size: 12px;
-  display: block;
-  line-height: 1;
-  width: auto;
-  height: auto;
+  font-size: 1rem;
 }
 
 /* Aumentar espaçamento entre os botões de ação */
@@ -768,13 +754,4 @@ th:hover .seta {
   min-width: 150px;
   max-width: 250px;
   word-wrap: break-word;
-}
-
-.d-flex.justify-content-center.align-items-center {
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 8px !important;
-  padding: 4px 0 !important;
 }
