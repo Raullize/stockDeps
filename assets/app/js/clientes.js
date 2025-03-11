@@ -156,7 +156,7 @@ function preencherTabelaClientes(clientesPaginados) {
     }
     
     // Adicionar cada cliente à tabela
-    clientesPaginados.forEach((cliente) => {
+    clientesPaginados.forEach((cliente, index) => {
         const tr = document.createElement('tr');
         
         // Construindo as células da tabela
@@ -164,31 +164,22 @@ function preencherTabelaClientes(clientesPaginados) {
             <td>${cliente.nome}</td>
             <td>${cliente.cpf}</td>
             <td>${cliente.celular || '-'}</td>
-            <td class="text-center">
-                <div class="d-flex gap-2 justify-content-center">
-                    <button class="btn btn-primary btn-sm action-btn" onclick="abrirModalEditarCliente(${cliente.id})" data-bs-toggle="tooltip" title="Editar cliente">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn btn-danger btn-sm action-btn" onclick="openModalExcluir(${cliente.id})" data-bs-toggle="tooltip" title="Excluir cliente">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                    <button class="btn btn-success btn-sm action-btn" onclick="abrirModalHistorico(${cliente.id})" data-bs-toggle="tooltip" title="Histórico de compras">
-                        <i class="fas fa-history"></i>
-                    </button>
-                </div>
+            <td>${cliente.email || '-'}</td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm" onclick="abrirModalEditarCliente(${cliente.id})">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" class="btn btn-info btn-sm" onclick="abrirModalHistorico(${cliente.id})">
+                    <i class="fas fa-history"></i>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="openModalExcluir(${cliente.id})">
+                    <i class="fas fa-trash"></i>
+                </button>
             </td>
         `;
         
         tbody.appendChild(tr);
     });
-
-    // Inicializar tooltips
-    setTimeout(() => {
-        const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        tooltips.forEach(tooltip => {
-            new bootstrap.Tooltip(tooltip);
-        });
-    }, 100);
 }
 
 function mostrarPaginaClientes(pagina) {
