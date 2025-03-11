@@ -72,7 +72,7 @@ function preencherTabelaFornecedores(fornecedoresPaginados) {
                     <button class="btn btn-danger action-btn" onclick="openModalExcluir(${fornecedor.id})" title="Excluir fornecedor">
                         <i class="fas fa-trash-alt"></i>
                     </button>
-                    <button class="btn btn-success action-btn btn-historico" data-id="${fornecedor.id}" title="Histórico de compras">
+                    <button class="btn btn-success action-btn" onclick="abrirModalHistorico(${fornecedor.id})" title="Histórico de compras">
                         <i class="fas fa-history"></i>
                     </button>
                 </div>
@@ -80,15 +80,8 @@ function preencherTabelaFornecedores(fornecedoresPaginados) {
         `;
         tabela.appendChild(linha);
     });
-    
-    // Adicionar eventos aos botões de histórico após criá-los
-    document.querySelectorAll('.btn-historico').forEach(botao => {
-        botao.addEventListener('click', function() {
-            const id = Number(this.getAttribute('data-id'));
-            abrirModalHistorico(id);
-        });
-    });
 }
+
 
 function mostrarPaginaFornecedores(pagina) {
     paginaAtualFornecedores = pagina;
@@ -236,304 +229,35 @@ function openModalExcluir(fornecedorId) {
     new bootstrap.Modal(document.getElementById('modalExcluir')).show();
 }
 
+
 function abrirModalHistorico(id) {
-    console.log("Abrindo modal histórico do fornecedor ID:", id);
-    
-    try {
-        // Garantir que o id seja um número
-        id = Number(id);
-        
     const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoFornecedor"));
 
-        // Armazenar ID do fornecedor selecionado
-        document.getElementById("fornecedorIdHistorico").value = id;
-        
-        // Limpar filtros
-        document.getElementById("filtroDataHistoricoFornecedor").value = "";
-        document.getElementById("buscarHistoricoFornecedor").value = "";
-        
-        // Carregar dados do histórico
-        carregarHistoricoFornecedor(id);
-        
-        // Mostrar modal
-        modalHistorico.show();
-        
-        // Adicionar eventos para os filtros
-        const btnFiltrar = document.getElementById("filtrarHistoricoFornecedorBtn");
-        const btnLimpar = document.getElementById("limparFiltroHistoricoFornecedorBtn");
-        const inputBuscar = document.getElementById("buscarHistoricoFornecedor");
-        
-        // Remover eventos antigos antes de adicionar novos
-        btnFiltrar.removeEventListener("click", filtrarHistoricoFornecedor);
-        btnLimpar.removeEventListener("click", limparFiltrosHistoricoFornecedor);
-        inputBuscar.removeEventListener("keyup", filtrarHistoricoFornecedor);
-        
-        // Adicionar eventos novos
-        btnFiltrar.addEventListener("click", filtrarHistoricoFornecedor);
-        btnLimpar.addEventListener("click", limparFiltrosHistoricoFornecedor);
-        inputBuscar.addEventListener("keyup", filtrarHistoricoFornecedor);
-        
-        console.log("Modal aberto com sucesso");
-    } catch (error) {
-        console.error("Erro ao abrir modal de histórico:", error);
-        alert("Houve um erro ao abrir o histórico. Por favor, tente novamente.");
-    }
-}
+    document.getElementById("historicoFornecedor").textContent = `Carregando histórico do fornecedor ID ${id}...`;
+    entradas.sort((a, b) => b.id - a.id);
+    const entradasFornecedor = entradas.filter(entrada => entrada.idFornecedor === id);
 
-// Variáveis para controle da paginação e dados do histórico
-let historicoFornecedorDados = [];
-let historicoFornecedorFiltrado = [];
-let paginaAtualHistoricoFornecedor = 1;
-const itensPorPaginaHistoricoFornecedor = 5;
-
-function carregarHistoricoFornecedor(fornecedorId) {
-    // Ordenar entradas por data (mais recentes primeiro)
-    entradas.sort((a, b) => new Date(b.data) - new Date(a.data));
-    
-    // Filtrar entradas do fornecedor
-    const entradasFornecedor = entradas.filter(entrada => entrada.idFornecedor === fornecedorId);
-    
-    // Transformar dados para exibição
-    historicoFornecedorDados = entradasFornecedor.map(entrada => {
+    let htmlHistorico = '';
+    if (entradasFornecedor.length > 0) {
+        entradasFornecedor.forEach(entrada => {
             const produto = produtos.find(p => p.id === entrada.idProdutos);
-        return {
-            produtoNome: produto ? produto.nome : 'Produto não encontrado',
-            quantidade: entrada.quantidade,
-            preco: formatarMoeda(entrada.preco),
-            total: formatarMoeda(entrada.quantidade * entrada.preco),
-            data: formatarData(entrada.data),
-            dataOriginal: entrada.data // Para usar nos filtros
-        };
-    });
-    
-    // Aplicar filtros iniciais (sem filtro)
-    historicoFornecedorFiltrado = [...historicoFornecedorDados];
-    
-    // Atualizar exibição
-    atualizarTabelaHistoricoFornecedor();
-}
+            const categoria = produto ? categorias.find(c => c.id === produto.idCategoria) : null;
 
-function atualizarTabelaHistoricoFornecedor() {
-    const tbody = document.getElementById("corpoTabelaHistoricoFornecedor");
-    const mensagemVazia = document.getElementById("mensagemNenhumHistoricoFornecedor");
-    
-    // Verificar se existem dados
-    if (historicoFornecedorFiltrado.length === 0) {
-        tbody.innerHTML = "";
-        mensagemVazia.style.display = "block";
-        document.getElementById("paginacaoHistoricoFornecedor").innerHTML = "";
-        return;
-    }
-    
-    // Esconder mensagem de vazio
-    mensagemVazia.style.display = "none";
-    
-    // Calcular paginação
-    const inicio = (paginaAtualHistoricoFornecedor - 1) * itensPorPaginaHistoricoFornecedor;
-    const fim = inicio + itensPorPaginaHistoricoFornecedor;
-    const dadosPaginados = historicoFornecedorFiltrado.slice(inicio, fim);
-    
-    // Gerar HTML das linhas
-    let html = "";
-    dadosPaginados.forEach(item => {
-        html += `
-            <tr>
-                <td>${item.produtoNome}</td>
-                <td>${item.quantidade}</td>
-                <td>${item.preco}</td>
-                <td>${item.total}</td>
-                <td>${item.data}</td>
-            </tr>
-        `;
-    });
-    
-    // Atualizar tabela
-    tbody.innerHTML = html;
-    
-    // Atualizar paginação
-    atualizarPaginacaoHistoricoFornecedor();
-}
-
-function atualizarPaginacaoHistoricoFornecedor() {
-    const paginacao = document.getElementById("paginacaoHistoricoFornecedor");
-    
-    // Calcular páginas
-    const totalPaginas = Math.ceil(historicoFornecedorFiltrado.length / itensPorPaginaHistoricoFornecedor);
-    
-    // Não exibir paginação se tiver apenas uma página
-    if (totalPaginas <= 1) {
-        paginacao.innerHTML = "";
-        return;
-    }
-    
-    // Gerar botões de paginação
-    let html = "";
-    
-    // Botão anterior
-    html += `
-        <li class="page-item ${paginaAtualHistoricoFornecedor === 1 ? 'disabled' : ''}">
-            <a class="page-link" href="#" data-pagina="${paginaAtualHistoricoFornecedor - 1}">
-                <i class="fas fa-chevron-left"></i>
-            </a>
-        </li>
-    `;
-    
-    // Páginas
-    for (let i = 1; i <= totalPaginas; i++) {
-        html += `
-            <li class="page-item ${paginaAtualHistoricoFornecedor === i ? 'active' : ''}">
-                <a class="page-link" href="#" data-pagina="${i}">${i}</a>
-            </li>
-        `;
-    }
-    
-    // Botão próximo
-    html += `
-        <li class="page-item ${paginaAtualHistoricoFornecedor === totalPaginas ? 'disabled' : ''}">
-            <a class="page-link" href="#" data-pagina="${paginaAtualHistoricoFornecedor + 1}">
-                <i class="fas fa-chevron-right"></i>
-            </a>
-        </li>
-    `;
-    
-    // Atualizar HTML
-    paginacao.innerHTML = html;
-    
-    // Adicionar eventos aos botões
-    document.querySelectorAll("#paginacaoHistoricoFornecedor .page-link").forEach(botao => {
-        botao.addEventListener("click", (e) => {
-            e.preventDefault();
-            const pagina = parseInt(e.currentTarget.getAttribute("data-pagina"));
-            if (!isNaN(pagina)) {
-                paginaAtualHistoricoFornecedor = pagina;
-                atualizarTabelaHistoricoFornecedor();
-            }
+            htmlHistorico += `
+                <p><strong>Produto:</strong> ${produto ? produto.nome : 'Desconhecido'} <br>
+                <strong>Categoria:</strong> ${categoria ? categoria.nome : 'Desconhecida'} <br>
+                <strong>Quantidade:</strong> ${entrada.quantidade} <br>
+                <strong>Preço:</strong> ${entrada.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <br>
+                <strong>Data:</strong> ${new Date(entrada.created_at).toLocaleDateString()}</p>
+            `;
         });
-    });
-}
-
-function filtrarHistoricoFornecedor() {
-    const filtroData = document.getElementById("filtroDataHistoricoFornecedor").value;
-    const filtroProduto = document.getElementById("buscarHistoricoFornecedor").value.toLowerCase();
-    
-    // Aplicar filtros
-    historicoFornecedorFiltrado = historicoFornecedorDados.filter(item => {
-        let passaFiltroData = true;
-        let passaFiltroProduto = true;
-        
-        // Filtrar por data
-        if (filtroData) {
-            const dataEntrada = new Date(item.dataOriginal);
-            const dataFiltro = new Date(filtroData);
-            
-            // Comparar apenas a data, não a hora
-            passaFiltroData = dataEntrada.toDateString() === dataFiltro.toDateString();
-        }
-        
-        // Filtrar por produto
-        if (filtroProduto) {
-            passaFiltroProduto = item.produtoNome.toLowerCase().includes(filtroProduto);
-        }
-        
-        // Deve passar em ambos os filtros
-        return passaFiltroData && passaFiltroProduto;
-    });
-    
-    // Resetar para primeira página e atualizar tabela
-    paginaAtualHistoricoFornecedor = 1;
-    atualizarTabelaHistoricoFornecedor();
-}
-
-function limparFiltrosHistoricoFornecedor() {
-    // Limpar campos de filtro
-    document.getElementById("filtroDataHistoricoFornecedor").value = "";
-    document.getElementById("buscarHistoricoFornecedor").value = "";
-    
-    // Resetar dados filtrados
-    historicoFornecedorFiltrado = [...historicoFornecedorDados];
-    
-    // Atualizar tabela
-    paginaAtualHistoricoFornecedor = 1;
-    atualizarTabelaHistoricoFornecedor();
-}
-
-// Função auxiliar para formatar moeda
-function formatarMoeda(valor) {
-    return `R$ ${valor.toFixed(2).replace('.', ',')}`;
-}
-
-// Função auxiliar para formatar data
-function formatarData(dataString) {
-    // Se não houver data, retornar mensagem amigável
-    if (!dataString) {
-        return "Data não disponível";
+    } else {
+        htmlHistorico = '<p>Nenhuma entrada registrada para este fornecedor.</p>';
     }
-    
-    try {
-        // Verificar se é um timestamp em milissegundos (número)
-        if (!isNaN(dataString) && typeof dataString === 'number') {
-            const data = new Date(dataString);
-            return data.toLocaleDateString('pt-BR');
-        }
-        
-        // Verificar se é uma string
-        if (typeof dataString === 'string') {
-            // Verificar se é formato MySQL (YYYY-MM-DD HH:MM:SS)
-            if (dataString.match(/^\d{4}-\d{2}-\d{2}(?: \d{2}:\d{2}:\d{2})?$/)) {
-                const data = new Date(dataString.replace(' ', 'T'));
-                return data.toLocaleDateString('pt-BR');
-            }
-            
-            // Verificar se é formato ISO (YYYY-MM-DDTHH:MM:SSZ)
-            if (dataString.includes('T')) {
-                const data = new Date(dataString);
-                return data.toLocaleDateString('pt-BR');
-            }
-            
-            // Verificar se é formato brasileiro (DD/MM/YYYY)
-            if (dataString.includes('/')) {
-                const partes = dataString.split('/');
-                if (partes.length === 3) {
-                    // No formato DD/MM/YYYY, precisamos converter para MM/DD/YYYY
-                    const data = new Date(`${partes[1]}/${partes[0]}/${partes[2]}`);
-                    if (!isNaN(data.getTime())) {
-                        return data.toLocaleDateString('pt-BR');
-                    }
-                }
-            }
-            
-            // Verificar se é formato com traços (DD-MM-YYYY)
-            if (dataString.match(/^\d{2}-\d{2}-\d{4}$/)) {
-                const partes = dataString.split('-');
-                const data = new Date(`${partes[1]}/${partes[0]}/${partes[2]}`);
-                if (!isNaN(data.getTime())) {
-                    return data.toLocaleDateString('pt-BR');
-                }
-            }
-            
-            // Tentar formato americano simples (YYYY/MM/DD)
-            if (dataString.match(/^\d{4}\/\d{2}\/\d{2}$/)) {
-                const data = new Date(dataString);
-                if (!isNaN(data.getTime())) {
-                    return data.toLocaleDateString('pt-BR');
-                }
-            }
-            
-            // Último recurso: tentar converter diretamente
-            const data = new Date(dataString);
-            if (!isNaN(data.getTime())) {
-                return data.toLocaleDateString('pt-BR');
-            }
-        }
-        
-        // Se chegou aqui, nenhum formato funcionou
-        console.warn("Formato de data não reconhecido:", dataString);
-        return "Data não reconhecida";
-        
-    } catch (error) {
-        console.error("Erro ao processar data:", error, dataString);
-        return "Erro na data";
-    }
+
+    document.getElementById("historicoFornecedor").innerHTML = htmlHistorico;
+
+    modalHistorico.show();
 }
 
 async function loadAllData() {
@@ -555,6 +279,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadAllData();
 });
 
+
 // Função para ordenar a tabela de fornecedores
 function ordenarTabelaFornecedores(coluna, idSeta) {
     if (ordemAtualFornecedores.coluna === coluna) {
@@ -573,6 +298,7 @@ function ordenarTabelaFornecedores(coluna, idSeta) {
 }
 
 // Adicionando eventos de clique para ordenar as colunas de fornecedores
+
 document.getElementById("ordenarNomeFornecedor").addEventListener("click", () => ordenarTabelaFornecedores("nome", "setaNomeFornecedor"));
 
 function formatarCNPJ(event) {
@@ -625,6 +351,8 @@ function formatarCEP(event) {
         input.value = valor; // Exibe os números sem máscara até 5 dígitos
     }
 }
+
+
 
 // Adiciona o evento ao campo de entrada
 document.getElementById('cepFornecedor').addEventListener('input', formatarCEP);

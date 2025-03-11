@@ -806,8 +806,6 @@ document.addEventListener("DOMContentLoaded", () => {
     saidasModal.show();
     fetchSaidas();
   });
-
-  inicializarComponentes();
 });
 
 function preencherTabelaProdutos(produtosPaginados) {
@@ -1581,53 +1579,209 @@ function excluirCategoria(id) {
   new bootstrap.Modal(document.getElementById("modalExcluirCategoria")).show();
 }
 
-/**
- * Inicializa todos os campos de preço na página com eventos de formatação
- */
-function inicializarCamposPreco() {
-    console.log("Inicializando campos de preço");
-    
-    // Aplicar formatação a todos os campos com a classe 'preco'
-    const camposPreco = document.querySelectorAll('.preco');
-    
-    // Percorrer e adicionar eventos para cada campo
-    camposPreco.forEach(campo => {
-        console.log("Inicializando campo de preço:", campo.id);
-        
-        // Garantir que o campo tenha um valor inicial
-        if (!campo.value || campo.value === "0" || campo.value === "0.00") {
-            campo.value = "R$ 0,00";
-        }
-        
-        // Adicionar evento para formatar quando o campo receber foco
-        campo.addEventListener('focus', function(e) {
-            // Se o campo tiver apenas zeros, selecionar todo o conteúdo
-            if (e.target.value === "R$ 0,00") {
-                setTimeout(() => e.target.select(), 50);
-            }
-        });
-        
-        // Adicionar evento para formatar durante a digitação
-        campo.addEventListener('input', function(e) {
-            formatarPreco(e.target);
-        });
-        
-        // Adicionar evento para formatar quando o foco sair
-        campo.addEventListener('blur', function(e) {
-            formatarPreco(e.target);
-        });
-        
-        // Formatar o valor inicial
-        formatarPreco(campo);
+window.onload = loadAllData;
+
+// Adicionar este código após o carregamento do documento
+document.addEventListener("DOMContentLoaded", function() {
+  // Elementos para Entradas
+  const filtroDataEntrada = document.getElementById("filtroDataEntrada");
+  const filtrarEntradasBtn = document.getElementById("filtrarEntradasBtn");
+  const limparFiltroEntradasBtn = document.getElementById("limparFiltroEntradasBtn");
+  const buscarEntradaProdutoInput = document.getElementById("buscarEntradaProduto");
+  
+  // Elementos para Saídas
+  const filtroDataSaida = document.getElementById("filtroDataSaida");
+  const filtrarSaidasBtn = document.getElementById("filtrarSaidasBtn");
+  const limparFiltroSaidasBtn = document.getElementById("limparFiltroSaidasBtn");
+  const buscarSaidaProdutoInput = document.getElementById("buscarSaidaProduto");
+  
+  // Configurar eventos para Entradas
+  if (filtrarEntradasBtn) {
+    filtrarEntradasBtn.addEventListener("click", filtrarEntradasPorData);
+  }
+  
+  if (limparFiltroEntradasBtn) {
+    limparFiltroEntradasBtn.addEventListener("click", function() {
+      if (filtroDataEntrada) filtroDataEntrada.value = "";
+      if (buscarEntradaProdutoInput) buscarEntradaProdutoInput.value = "";
+      buscarEntradas();
     });
+  }
+  
+  if (buscarEntradaProdutoInput) {
+    buscarEntradaProdutoInput.addEventListener("input", function() {
+      setTimeout(buscarEntradas, 300); // Adiciona um pequeno delay para melhorar a experiência
+    });
+  }
+  
+  // Configurar eventos para Saídas
+  if (filtrarSaidasBtn) {
+    filtrarSaidasBtn.addEventListener("click", filtrarSaidasPorData);
+  }
+  
+  if (limparFiltroSaidasBtn) {
+    limparFiltroSaidasBtn.addEventListener("click", function() {
+      if (filtroDataSaida) filtroDataSaida.value = "";
+      if (buscarSaidaProdutoInput) buscarSaidaProdutoInput.value = "";
+      buscarSaidas();
+    });
+  }
+  
+  if (buscarSaidaProdutoInput) {
+    buscarSaidaProdutoInput.addEventListener("input", function() {
+      setTimeout(buscarSaidas, 300); // Adiciona um pequeno delay para melhorar a experiência
+    });
+  }
+  
+  // Monitorar os eventos de abertura do modal
+  const entradasModal = document.getElementById('entradasModal');
+  if (entradasModal) {
+    entradasModal.addEventListener('shown.bs.modal', function () {
+      // Atualizar a lista quando o modal é aberto
+      buscarEntradas();
+    });
+  }
+  
+  const saidasModal = document.getElementById('saidasModal');
+  if (saidasModal) {
+    saidasModal.addEventListener('shown.bs.modal', function () {
+      // Atualizar a lista quando o modal é aberto
+      buscarSaidas();
+    });
+  }
+});
+
+// Função para buscar entradas pelo nome do produto ou fornecedor
+function buscarEntradas() {
+  const termoBusca = document.getElementById("buscarEntradaProduto");
+  if (!termoBusca) return;
+  
+  const termo = removerAcentos(termoBusca.value.toLowerCase().trim());
+  
+  if (!Array.isArray(entradasOriginais)) return;
+  
+  let entradasFiltradas = [...entradasOriginais];
+  
+  if (termo !== "") {
+    entradasFiltradas = entradasFiltradas.filter(entrada => {
+      const produto = produtosOriginais.find(p => p.id === parseInt(entrada.idProdutos));
+      const nomeProduto = produto ? removerAcentos(produto.nome.toLowerCase()) : "";
+      
+      let fornecedorNome = "";
+      if (entrada.fornecedor) {
+        fornecedorNome = removerAcentos(entrada.fornecedor.toLowerCase());
+      } else if (fornecedores && entrada.idFornecedor) {
+        const fornecedor = fornecedores.find(f => f.id === parseInt(entrada.idFornecedor));
+        fornecedorNome = fornecedor ? removerAcentos(fornecedor.nome.toLowerCase()) : "";
+      }
+      
+      return nomeProduto.includes(termo) || fornecedorNome.includes(termo);
+    });
+  }
+  
+  // Verificar também o filtro de data
+  const dataFiltro = document.getElementById("filtroDataEntrada");
+  if (dataFiltro && dataFiltro.value) {
+    const dataFormatada = new Date(dataFiltro.value);
+    dataFormatada.setHours(0, 0, 0, 0);
     
-    console.log(`${camposPreco.length} campos de preço inicializados`);
+    entradasFiltradas = entradasFiltradas.filter(entrada => {
+      const dataEntrada = new Date(entrada.created_at);
+      dataEntrada.setHours(0, 0, 0, 0);
+      return dataEntrada.getTime() === dataFormatada.getTime();
+    });
+  }
+  
+  mostrarPaginaEntradas(1, entradasFiltradas);
 }
 
-// Função que inicializa todos os componentes da aplicação
-function inicializarComponentes() {
-  console.log("Inicializando componentes da aplicação...");
-  loadAllData();
-  inicializarCamposPreco();
-  console.log("Inicialização concluída!");
+// Função para buscar saídas pelo nome do produto ou cliente
+function buscarSaidas() {
+  const termoBusca = document.getElementById("buscarSaidaProduto");
+  if (!termoBusca) return;
+  
+  const termo = removerAcentos(termoBusca.value.toLowerCase().trim());
+  
+  if (!Array.isArray(saidasOriginais)) return;
+  
+  let saidasFiltradas = [...saidasOriginais];
+  
+  if (termo !== "") {
+    saidasFiltradas = saidasFiltradas.filter(saida => {
+      const produto = produtosOriginais.find(p => p.id === parseInt(saida.idProdutos));
+      const nomeProduto = produto ? removerAcentos(produto.nome.toLowerCase()) : "";
+      
+      let clienteNome = "";
+      if (saida.cliente) {
+        clienteNome = removerAcentos(saida.cliente.toLowerCase());
+      } else if (clientes && saida.idClientes) {
+        const cliente = clientes.find(c => c.id === parseInt(saida.idClientes));
+        clienteNome = cliente ? removerAcentos(cliente.nome.toLowerCase()) : "";
+      }
+      
+      return nomeProduto.includes(termo) || clienteNome.includes(termo);
+    });
+  }
+  
+  // Verificar também o filtro de data
+  const dataFiltro = document.getElementById("filtroDataSaida");
+  if (dataFiltro && dataFiltro.value) {
+    const dataFormatada = new Date(dataFiltro.value);
+    dataFormatada.setHours(0, 0, 0, 0);
+    
+    saidasFiltradas = saidasFiltradas.filter(saida => {
+      const dataSaida = new Date(saida.created_at);
+      dataSaida.setHours(0, 0, 0, 0);
+      return dataSaida.getTime() === dataFormatada.getTime();
+    });
+  }
+  
+  mostrarPaginaSaidas(1, saidasFiltradas);
 }
+
+// Modificar as funções existentes de filtro para trabalhar em conjunto com a busca por nome
+function filtrarEntradasPorData() {
+  buscarEntradas();
+}
+
+function filtrarSaidasPorData() {
+  buscarSaidas();
+}
+
+// Adicionar este código ao final do arquivo
+document.addEventListener('DOMContentLoaded', function() {
+  // Delegate para botões de editar entrada
+  document.addEventListener('click', function(event) {
+    const target = event.target;
+    
+    // Verificar se o clique foi em um botão de editar ou em seu ícone
+    if (target.matches('.action-btn') || target.matches('.action-btn i')) {
+      const button = target.closest('.action-btn');
+      if (!button) return;
+      
+      // Se for um botão de editar entrada
+      if (button.getAttribute('title') === 'Editar entrada') {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Obter o ID da entrada do atributo data
+        const entradaId = button.getAttribute('data-entrada-id');
+        if (entradaId) {
+          editarEntrada(parseInt(entradaId));
+        }
+      }
+      
+      // Se for um botão de editar saída
+      if (button.getAttribute('title') === 'Editar saída') {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        // Obter o ID da saída do atributo data
+        const saidaId = button.getAttribute('data-saida-id');
+        if (saidaId) {
+          editarSaida(parseInt(saidaId));
+        }
+      }
+    }
+  });
+});

@@ -198,70 +198,17 @@ $this->layout("_theme");
     </div>
 
     <div class="modal fade" id="modalHistoricoCliente" tabindex="-1" aria-labelledby="modalHistoricoClienteLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title" id="modalHistoricoClienteLabel">
-                        <i class="fas fa-history me-2"></i>Histórico de Compras
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalHistoricoClienteLabel">Histórico de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="clienteIdHistorico" value="">
-                    
-                    <!-- Filtros e Busca -->
-                    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-                        <div class="input-group" style="max-width: 300px;">
-                            <span class="input-group-text bg-light">
-                                <i class="fas fa-calendar"></i>
-                            </span>
-                            <input type="date" class="form-control" id="filtroDataHistoricoCliente">
-                            <button class="btn btn-outline-secondary" type="button" id="filtrarHistoricoClienteBtn">
-                                <i class="fas fa-filter"></i>
-                            </button>
-                            <button class="btn btn-outline-secondary" type="button" id="limparFiltroHistoricoClienteBtn">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        
-                        <div class="input-group" style="max-width: 300px;">
-                            <span class="input-group-text bg-light">
-                                <i class="fas fa-search"></i>
-                            </span>
-                            <input type="text" class="form-control" id="buscarHistoricoCliente" placeholder="Buscar por produto...">
-                        </div>
-                    </div>
-                    
-                    <!-- Tabela de Histórico -->
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle" id="tabelaHistoricoCliente">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Produto</th>
-                                    <th>Quantidade</th>
-                                    <th>Preço</th>
-                                    <th>Total</th>
-                                    <th>Data</th>
-                                </tr>
-                            </thead>
-                            <tbody id="corpoTabelaHistoricoCliente">
-                                <!-- Dados do histórico serão inseridos aqui -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- Mensagem para quando não houver dados -->
-                    <div class="text-center mt-3" id="mensagemNenhumHistoricoCliente" style="display: none;">
-                        <p class="text-muted">Nenhum registro de compra encontrado para este cliente.</p>
-                    </div>
+                    <p id="historicoCliente"></p>
                 </div>
                 <div class="modal-footer">
-                    <nav>
-                        <ul class="pagination justify-content-center pagination-sm mb-0" id="paginacaoHistoricoCliente"></ul>
-                    </nav>
-                    <button type="button" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal">
-                        <i class="fas fa-times me-2"></i>Fechar
-                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                 </div>
             </div>
         </div>
