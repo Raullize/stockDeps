@@ -5,15 +5,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileToggle = document.querySelector('.mobile-toggle');
     const menuLinks = document.querySelectorAll('.menu-link');
     
-    // Toggle sidebar no desktop
+    // Toggle sidebar no desktop (apenas para telas maiores)
     if (toggleBtn) {
         toggleBtn.addEventListener('click', function(e) {
             e.preventDefault(); // Previne comportamento padrão
-            sidebar.classList.toggle('collapsed');
-            
-            // Salvar estado no localStorage
-            const isSidebarCollapsed = sidebar.classList.contains('collapsed');
-            localStorage.setItem('sidebarCollapsed', isSidebarCollapsed);
+            if (window.innerWidth >= 992) { // Apenas execute em telas grandes
+                sidebar.classList.toggle('collapsed');
+                
+                // Salvar estado no localStorage
+                const isSidebarCollapsed = sidebar.classList.contains('collapsed');
+                localStorage.setItem('sidebarCollapsed', isSidebarCollapsed);
+            }
         });
     }
     
@@ -60,9 +62,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Restaurar estado da sidebar do localStorage
     function restoreSidebarState() {
-        const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-        if (isSidebarCollapsed) {
-            sidebar.classList.add('collapsed');
+        // Aplicar o estado collapsed apenas em telas grandes
+        if (window.innerWidth >= 992) {
+            const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (isSidebarCollapsed) {
+                sidebar.classList.add('collapsed');
+            } else {
+                sidebar.classList.remove('collapsed');
+            }
         }
     }
     
@@ -72,6 +79,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Atualizar link ativo quando a página muda
     window.addEventListener('popstate', setActiveLink);
+
+    // Verificar e ajustar sidebar ao redimensionar a janela
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 992) {
+            // Em telas grandes, restaurar o estado do localStorage
+            restoreSidebarState();
+            sidebar.classList.remove('show'); // Remover classe show em telas grandes
+        } else {
+            // Em telas pequenas, garantir que a sidebar tenha largura completa
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+            }
+        }
+    });
 
     // Adicionar evento de transição para evitar problemas de layout
     sidebar.addEventListener('transitionend', function(e) {
@@ -83,8 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Prevenir que a transição da sidebar afete o layout durante a navegação
     menuLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            const isSidebarCollapsed = sidebar.classList.contains('collapsed');
-            localStorage.setItem('sidebarCollapsed', isSidebarCollapsed);
+            if (window.innerWidth >= 992) {
+                const isSidebarCollapsed = sidebar.classList.contains('collapsed');
+                localStorage.setItem('sidebarCollapsed', isSidebarCollapsed);
+            }
         });
     });
 }); 

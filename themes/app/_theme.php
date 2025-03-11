@@ -95,7 +95,7 @@
     
     <!-- Mobile toggle button -->
     <div class="mobile-toggle d-lg-none">
-      <i class="fas fa-bars"></i>
+      <i class="fas fa-bars menu-hamburger"></i>
     </div>
     
     <!-- Main Content -->
