@@ -222,72 +222,37 @@ form_cadastro_fornecedores.on("submit", function (e) {
     });
 });
 
-// Manusear o envio do formulário XML
-const formXml = document.getElementById('formXmlUpload');
-if (formXml) {
-    formXml.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Exibir spinner durante o envio
-        const submitButton = this.querySelector('button[type="submit"]');
-        const submitText = submitButton.innerHTML;
-        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...';
-        submitButton.disabled = true;
-        
-        // Obter os dados do formulário
-        const formData = new FormData(this);
-        
-        // Enviar para o servidor
-        fetch(`${BASE_URL}/xml-upload`, {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.type === 'success') {
-                // Exibir mensagem de sucesso
-                const successMessage = document.createElement('div');
-                successMessage.className = 'alert alert-success mt-3';
-                successMessage.textContent = data.message;
-                this.appendChild(successMessage);
-                
-                // Remover mensagem após alguns segundos
-                setTimeout(() => {
-                    successMessage.remove();
-                    location.reload();
-                }, 3000);
+// Cadastro via XML
+const form = document.querySelector('form[action="processarXmlNota"]');
+form.addEventListener('submit', handleFormSubmit);   
+
+function handleFormSubmit(e) {
+    e.preventDefault(); // Impede o envio do formulário de forma tradicional
+    const formData = new FormData(this); // Captura o conteúdo do formulário
+
+    fetch('processarXmlNota', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())  // Aguarda a resposta JSON
+        .then(result => {
+            // Verifica se o resultado é de sucesso
+            if (result.type === 'success') {
+                // Exibe mensagem de sucesso
+                exibirMensagemTemporariaSucesso(result.message);
+                limparCamposFormulario('form[action="processarXmlNota"]')
+                fetchFornecedores();
+                fetchProdutos();    
             } else {
-                // Exibir mensagem de erro
-                const errorMessage = document.createElement('div');
-                errorMessage.className = 'alert alert-danger mt-3';
-                errorMessage.textContent = data.message || 'Ocorreu um erro ao processar o XML.';
-                this.appendChild(errorMessage);
-                
-                // Remover mensagem após alguns segundos
-                setTimeout(() => {
-                    errorMessage.remove();
-                }, 5000);
+                // Caso haja erro ou warning, exibe a mensagem adequada
+                exibirMensagemTemporariaErro(result.message);
             }
         })
         .catch(error => {
-            console.error('Erro ao enviar XML:', error);
-            // Exibir mensagem de erro
-            const errorMessage = document.createElement('div');
-            errorMessage.className = 'alert alert-danger mt-3';
-            errorMessage.textContent = 'Erro ao comunicar com o servidor. Tente novamente.';
-            this.appendChild(errorMessage);
-            
-            // Remover mensagem após alguns segundos
-            setTimeout(() => {
-                errorMessage.remove();
-            }, 5000);
-        })
-        .finally(() => {
-            // Restaurar botão
-            submitButton.innerHTML = submitText;
-            submitButton.disabled = false;
+            console.error('Erro:', error);
+            // Exibe erro genérico
+            exibirMensagemTemporariaErro("Ocorreu um erro ao processar a nota.");
         });
-    });
 }
 
 function limparCamposFormulario(formSelector) {
