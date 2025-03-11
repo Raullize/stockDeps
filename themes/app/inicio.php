@@ -7,248 +7,172 @@ $this->layout("_theme");
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <body>
-    <div class="container-fluid mt-3">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white py-3">
-                        <h3 class="card-title text-primary fw-bold mb-0">
-                            <i class="fas fa-chart-line me-2"></i>Dashboard
-                        </h3>
+    <div class="container mt-3">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Dashboard</h1>
+        </div>
+        <!-- Cards -->
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-primary box-hover">
+                    <div class="card-body statistic-cards">
+                        <h5 class="card-title">Total de Produtos</h5>
+                        <h3 id="total-produtos">0</h3>
+                        <p><i class="fas fa-box"></i> Atualizado hoje</p>
                     </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-success box-hover">
+                    <div class="card-body statistic-cards">
+                        <h5 class="card-title">Produtos em Estoque</h5>
+                        <h3 id="produtos-estoque">0</h3>
+                        <p><i class="fas fa-check-circle"></i> Suficiente</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-warning box-hover">
+                    <div class="card-body statistic-cards">
+                        <h5 class="card-title">Estoque Baixo</h5>
+                        <h3 id="estoque-baixo">0</h3>
+                        <p><i class="fas fa-exclamation-triangle"></i> Repor itens</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-danger box-hover">
                     <div class="card-body">
-                        <!-- Cards Estatísticos -->
-                        <div class="row g-4">
-                            <div class="col-xl-3 col-md-6 mb-3">
-                                <div class="card shadow-sm text-center text-white bg-primary h-100 box-hover">
-                                    <div class="card-body d-flex flex-column statistic-cards">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title text-white mb-0">Total de Produtos</h5>
-                                            <div class="icon-wrapper">
-                                                <i class="fas fa-box fa-2x"></i>
-                                            </div>
-                                        </div>
-                                        <h3 id="total-produtos" class="mt-3 mb-2">0</h3>
-                                        <p class="mt-auto"><i class="fas fa-calendar-day"></i> Atualizado hoje</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-3">
-                                <div class="card shadow-sm text-center text-white bg-success h-100 box-hover">
-                                    <div class="card-body d-flex flex-column statistic-cards">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title text-white mb-0">Produtos em Estoque</h5>
-                                            <div class="icon-wrapper">
-                                                <i class="fas fa-check-circle fa-2x"></i>
-                                            </div>
-                                        </div>
-                                        <h3 id="produtos-estoque" class="mt-3 mb-2">0</h3>
-                                        <p class="mt-auto"><i class="fas fa-level-up-alt"></i> Suficiente</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-3">
-                                <div class="card shadow-sm text-center text-white bg-warning h-100 box-hover">
-                                    <div class="card-body d-flex flex-column statistic-cards">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title text-white mb-0">Estoque Baixo</h5>
-                                            <div class="icon-wrapper">
-                                                <i class="fas fa-exclamation-triangle fa-2x"></i>
-                                            </div>
-                                        </div>
-                                        <h3 id="estoque-baixo" class="mt-3 mb-2">0</h3>
-                                        <p class="mt-auto"><i class="fas fa-arrow-down"></i> Repor itens</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-3">
-                                <div class="card shadow-sm text-center text-white bg-danger h-100 box-hover">
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title text-white mb-0">Produtos Sem Estoque</h5>
-                                            <div class="icon-wrapper">
-                                                <i class="fas fa-times-circle fa-2x"></i>
-                                            </div>
-                                        </div>
-                                        <h3 id="produtos-sem-estoque" class="mt-3 mb-2">0</h3>
-                                        <p class="mt-auto"><i class="fas fa-exclamation-circle"></i> Reabasteça urgentemente</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-3">
-                                <div class="card shadow-sm text-center text-light bg-dark h-100 box-hover">
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title text-white mb-0">Total de Clientes</h5>
-                                            <div class="icon-wrapper">
-                                                <i class="fas fa-users fa-2x"></i>
-                                            </div>
-                                        </div>
-                                        <h3 id="total-clientes" class="mt-3 mb-2">0</h3>
-                                        <p class="mt-auto"><i class="fas fa-user-check"></i> Base ativa</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-3">
-                                <div class="card shadow-sm text-center text-white bg-secondary h-100 box-hover">
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title text-white mb-0">Total de Fornecedores</h5>
-                                            <div class="icon-wrapper">
-                                                <i class="fas fa-truck fa-2x"></i>
-                                            </div>
-                                        </div>
-                                        <h3 id="total-fornecedores" class="mt-3 mb-2">0</h3>
-                                        <p class="mt-auto"><i class="fas fa-handshake"></i> Fornecedores ativos</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-3">
-                                <div class="card shadow-sm text-center text-white bg-info h-100 box-hover">
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title text-white mb-0">Total de Entradas</h5>
-                                            <div class="icon-wrapper">
-                                                <i class="fas fa-arrow-circle-down fa-2x"></i>
-                                            </div>
-                                        </div>
-                                        <h3 id="total-entradas" class="mt-3 mb-2">0</h3>
-                                        <p class="mt-auto"><i class="fas fa-calendar-check"></i> Entradas registradas</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6 mb-3">
-                                <div class="card shadow-sm text-center bg-light h-100 box-hover">
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="d-flex justify-content-between">
-                                            <h5 class="card-title mb-0">Total de Saídas</h5>
-                                            <div class="icon-wrapper">
-                                                <i class="fas fa-arrow-circle-up fa-2x"></i>
-                                            </div>
-                                        </div>
-                                        <h3 id="total-saidas" class="mt-3 mb-2">0</h3>
-                                        <p class="mt-auto"><i class="fas fa-calendar-check"></i> Saídas registradas</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h5 class="card-title">Produtos Sem Estoque</h5>
+                        <h3 id="produtos-sem-estoque">0</h3>
+                        <p><i class="fas fa-times-circle"></i> Reabasteça urgentemente</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-light bg-dark box-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Clientes</h5>
+                        <h3 id="total-clientes">0</h3>
+                        <p><i class="fas fa-users"></i> Base ativa</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-secondary box-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Fornecedores</h5>
+                        <h3 id="total-fornecedores">0</h3>
+                        <p><i class="fas fa-truck"></i> Fornecedores ativos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center text-white bg-info box-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Entradas</h5>
+                        <h3 id="total-entradas">0</h3>
+                        <p><i class="fas fa-arrow-circle-up"></i> Entradas registradas</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center bg-light box-hover">
+                    <div class="card-body">
+                        <h5 class="card-title">Total de Saídas</h5>
+                        <h3 id="total-saidas">0</h3>
+                        <p><i class="fas fa-arrow-circle-down"></i> Saídas registradas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <!-- Gráficos e Dados Financeiros -->
-                        <div class="row mt-4">
-                            <div class="col-lg-5 mb-4">
-                                <div class="card shadow-sm h-100">
-                                    <div class="card-header bg-white py-3">
-                                        <h5 class="card-title text-primary fw-bold mb-0">
-                                            <i class="fas fa-chart-bar me-2"></i>Lucro por Período
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <!-- Filtro para selecionar o período -->
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="periodo" class="form-label fw-semibold">Selecione o Período</label>
-                                                <select id="periodo" class="form-select shadow-sm" onchange="calcularLucro()">
-                                                    <option value="total">Total</option>
-                                                    <option value="dia">Dia</option>
-                                                    <option value="semana">Semana</option>
-                                                    <option value="duasSemanas">Duas semanas</option>
-                                                    <option value="mes">Mês</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Exibindo Lucro Bruto e Lucro Líquido -->
-                                        <div class="row mt-auto mb-3">
-                                            <div class="col-md-6 mb-3">
-                                                <div class="card bg-light shadow-sm h-100">
-                                                    <div class="card-body">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h6 class="card-title fw-bold text-primary">Lucro Bruto</h6>
-                                                            <i class="fas fa-dollar-sign text-success"></i>
-                                                        </div>
-                                                        <h4 id="lucro-bruto" class="mt-2 fw-bold">R$ 0,00</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Caixa de Lucro Líquido -->
-                                            <div class="col-md-6 mb-3">
-                                                <div class="card bg-light shadow-sm h-100">
-                                                    <div class="card-body">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h6 class="card-title fw-bold text-primary">Lucro Líquido</h6>
-                                                            <i class="fas fa-dollar-sign text-success"></i>
-                                                        </div>
-                                                        <h4 id="lucro-liquido" class="mt-2 fw-bold">R$ 0,00</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row mt-auto">
-                                            <div class="col">
-                                                <div class="card bg-light shadow-sm h-100">
-                                                    <div class="card-body">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h6 class="card-title fw-bold text-primary">Valor Total do Estoque</h6>
-                                                            <i class="fas fa-boxes text-info"></i>
-                                                        </div>
-                                                        <h4 id="valor-estoque" class="mt-2 fw-bold">R$ 0,00</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+        <!-- Gráficos -->
+        <div class="row mt-5 mb-5 d-flex align-items-stretch">
+            <div class="col-md-5">
+                <div class="card h-100 d-flex flex-column">
+                    <div class="card-body">
+                        <h3 class="card-title mt-3 text-center">Lucro por Período</h3>
+                        <!-- Filtro para selecionar o período -->
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div>
+                                <label for="periodo" class="form-label mt-3">Selecione o Período</label>
+                                <select id="periodo" class="form-select" onchange="calcularLucro()">
+                                    <option value="total">Total</option>
+                                    <option value="dia">Dia</option>
+                                    <option value="semana">Semana</option>
+                                    <option value="duasSemanas">Duas semanas</option>
+                                    <option value="mes">Mês</option>
+                                </select>
                             </div>
-                            <div class="col-lg-3 mb-4">
-                                <div class="card shadow-sm h-100">
-                                    <div class="card-header bg-white py-3">
-                                        <h5 class="card-title text-primary fw-bold mb-0">
-                                            <i class="fas fa-chart-pie me-2"></i>Distribuição por Categorias
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="chart-container">
-                                            <canvas id="chart-categorias"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 mb-4">
-                                <div class="card shadow-sm h-100">
-                                    <div class="card-header bg-white py-3">
-                                        <h5 class="card-title text-primary fw-bold mb-0">
-                                            <i class="fas fa-star me-2"></i>Produtos Mais Vendidos
-                                        </h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="produtos-mais-vendidos-container">
-                                            <ul class="list-group list-group-flush" id="produtos-mais-vendidos">
-                                                <!-- Os itens serão inseridos dinamicamente pelo JavaScript -->
-                                            </ul>
-                                        </div>
-                                    </div>
+                        </div>
+                    </div>
+                    <!-- Exibindo Lucro Bruto e Lucro Líquido -->
+                    <div class="row mt-auto mb-4 mx-1">
+                        <div class="col-md-6">
+                            <div class="card h-100 p-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Lucro Bruto</h5>
+                                    <h3 id="lucro-bruto">R$ 0,00</h3> <!-- Exibirá o lucro bruto -->
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Produtos com Estoque Baixo -->
-                        <div class="row">
-                            <div class="col-12 mb-4">
-                                <div class="card shadow-sm border-danger">
-                                    <div class="card-header bg-white py-3 border-danger">
-                                        <h5 class="card-title text-danger fw-bold mb-0">
-                                            <i class="fas fa-exclamation-triangle me-2"></i>Produtos com Estoque Baixo
-                                        </h5>
-                                    </div>
-                                    <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                        <ul class="list-group" id="lista-estoque-baixo">
-                                            <!-- Itens inseridos dinamicamente -->
-                                        </ul>
-                                    </div>
+                        <!-- Caixa de Lucro Líquido -->
+                        <div class="col-md-6">
+                            <div class="card h-100 p-2">
+                                <div class="card-body">
+                                    <h5 class="card-title">Lucro Líquido</h5>
+                                    <h3 id="lucro-liquido">R$ 0,00</h3> <!-- Exibirá o lucro líquido -->
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="row mt-auto mb-4 mx-1">
+    <div class="col">
+        <div class="card h-100 p-2">
+            <div class="card-body">
+                <h5 class="card-title">Valor Total do Estoque</h5>
+                <h3 id="valor-estoque">R$ 0,00</h3>
+            </div>
+        </div>
+    </div>
+</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Distribuição por Categorias</h5>
+                        <div class="chart-container">
+                            <canvas id="chart-categorias"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 produtos-mais-vendidos-card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Produtos Mais Vendidos</h5>
+                        <div class="produtos-mais-vendidos-container">
+                            <ul class="list-group list-group-flush" id="produtos-mais-vendidos">
+                                <!-- Os itens serão inseridos dinamicamente pelo JavaScript -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="container mt-4 mb-5">
+            <h3 class="text-center text-danger fw-bold">Produtos com Estoque Baixo</h3>
+            <div class="card border-danger">
+                <div class="card-body " style="max-height: 500px; overflow-y: auto;">
+                    <ul class="list-group" id="lista-estoque-baixo">
+                        <!-- Itens inseridos dinamicamente -->
+                    </ul>
                 </div>
             </div>
         </div>
