@@ -143,3 +143,63 @@ function formatarPreco(input) {
 
     input.value = `R$ ${inteirosFormatados || "0"},${centavos}`;
 }
+
+/**
+ * Formata um input de quantidade, garantindo que apenas números e pontos/vírgulas decimais sejam aceitos
+ * Este formato é mais adequado para unidades de medida como KG, onde valores decimais são comuns
+ * 
+ * @param {HTMLElement} input - O elemento de input a ser formatado
+ */
+function formatarQuantidade(input) {
+    // Remove caracteres inválidos, permitindo apenas números e separadores decimais
+    let valor = input.value.replace(/[^\d.,]/g, "");
+    
+    // Substituir vírgulas por pontos (padrão internacional)
+    valor = valor.replace(",", ".");
+    
+    // Remover pontos extras (manter apenas o primeiro ponto decimal)
+    const partes = valor.split(".");
+    if (partes.length > 2) {
+        valor = partes[0] + "." + partes.slice(1).join("");
+    }
+    
+    // Limitar a 3 casas decimais (adequado para pesos em KG, etc.)
+    if (valor.includes(".")) {
+        const decimais = valor.split(".")[1];
+        if (decimais.length > 3) {
+            valor = valor.substring(0, valor.indexOf(".") + 4);
+        }
+    }
+    
+    // Atualizar o valor do input
+    input.value = valor;
+}
+
+// Função para inicializar todos os campos de quantidade na página
+function inicializarCamposQuantidade() {
+    // Selecionar todos os inputs de quantidade que devem usar a formatação
+    document.querySelectorAll('input[name="quantidade"]').forEach(input => {
+        // Adicionar o evento input para formatar enquanto o usuário digita
+        input.addEventListener('input', function() {
+            formatarQuantidade(this);
+        });
+        
+        // Adicionar evento de focus para garantir que o campo receba foco corretamente
+        input.addEventListener('focus', function() {
+            // Selecionar todo o texto ao receber foco
+            this.select();
+        });
+    });
+}
+
+// Inicializar campos quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function() {
+    inicializarCamposQuantidade();
+    
+    // Reinicializar quando modais forem abertos (para novos campos dinâmicos)
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('shown.bs.modal', function() {
+            inicializarCamposQuantidade();
+        });
+    });
+});

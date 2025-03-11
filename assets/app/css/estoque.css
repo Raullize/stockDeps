@@ -1,3 +1,27 @@
+/* Configurações gerais - manter coerência com home.css */
+:root {
+  --primary-color: #4361ee;
+  --secondary-color: #6c757d;
+  --success-color: #10b981;
+  --warning-color: #f59e0b;
+  --danger-color: #ef4444;
+  --info-color: #3b82f6;
+  --dark-color: #1e293b;
+  --light-color: #f8fafc;
+  --border-radius: 12px;
+  --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --transition: all 0.3s ease;
+}
+
+/* Estilo base dos cards */
+.card {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  overflow: hidden;
+}
+
 .tabelaProdutos {
   height: auto;
   overflow-x: auto;
@@ -6,10 +30,9 @@
 
 .headerTabelaProdutos {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
   gap: 1rem;
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 5px;
 }
 
@@ -18,7 +41,7 @@
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
@@ -26,7 +49,7 @@
 
 .headerTabelaProdutos button:hover {
   background-color: #0056b3;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
 .headerTabelaProdutos button:active {
@@ -38,192 +61,38 @@
   color: #fff;
 }
 
-.inputsBusca,
-.headerTabelaProdutos select {
-  height: 100%;
-  padding: 0.5rem;
-  margin: 0 .5rem;
-  font-size: 1rem;
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-}
-
-.headerTabelaProdutos select{
-  cursor: pointer;
-}
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-.table th,
-.table td {
-  text-align: center;
-  vertical-align: middle;
-  padding: 12px 15px;
-}
-
-#ordenarCodigo,
-#ordenarNome,
-#ordenarPreco,
-#ordenarQuantidade {
-  cursor: pointer;
-}
-
-#ordenarDescricao,
-#ordenarUnidade,
-#ordernarStatus,
-#acoesProdutos {
-  cursor: default;
-}
-
-.table td {
-  padding: 12px 15px;
-}
-
-.table td .btn-group {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 10px;
-}
-
-button {
-  background-color: #007bff;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  margin: 2px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-button:active {
-  background-color: #004085;
-}
-
-.btn-group {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 10px;
-}
-
-.seta {
-  cursor: pointer;
-  margin-left: 5px;
-  font-size: 14px;
-  color: gray;
-}
-
-th:hover .seta {
-  color: black;
-}
-
-#btn-edit,
-#btn-delete {
-  width: 90%;
-}
-
-/* Estilos modernos para a página de estoque */
-
-/* Dashboard Header */
+/* Estilo do header do Dashboard */
 .dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
+  border-left: 5px solid var(--primary-color);
+  animation: fadeInDown 0.7s ease-out;
+  transition: var(--transition);
 }
 
-.page-title {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #333;
-  margin: 0;
-  position: relative;
+.dashboard-header:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
 }
 
-.page-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -8px;
-  width: 40px;
-  height: 4px;
-  background-color: var(--primary-color);
-  border-radius: 2px;
+.text-gradient {
+  background: linear-gradient(90deg, var(--primary-color), var(--info-color));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--primary-color);
 }
 
-.page-subtitle {
-  font-size: 1rem;
-  color: #6c757d;
-  margin-top: 0.8rem;
+.header-divider {
+  height: 3px;
+  width: 100px;
+  background: linear-gradient(90deg, var(--primary-color), var(--info-color));
+  border-radius: 3px;
 }
 
-.header-actions {
-  display: flex;
-  gap: 0.8rem;
+.date-display {
+  color: var(--secondary-color);
+  font-size: 0.95rem;
 }
 
-.btn-icon {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 500;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  transition: all 0.3s;
-}
-
-.btn-icon i {
-  font-size: 0.9rem;
-}
-
-.btn-icon:hover {
-  transform: translateY(-2px);
-}
-
-/* Card Header com Ações */
-.card-header-actions {
-  margin-bottom: 1.5rem;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.2rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.card-title {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-  display: flex;
-  align-items: center;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-/* Filtros */
-.filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
+/* Campos de busca e filtros */
 .search-box, .filter-box {
   position: relative;
   flex: 1;
@@ -274,19 +143,189 @@ th:hover .seta {
   box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
 }
 
-/* Pagination */
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.5rem;
+/* Estilos da tabela */
+.table-responsive {
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
+  height: 600px;
+  overflow-y: auto;
 }
 
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+  table-layout: fixed;
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+  padding: 12px 15px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table th:nth-child(1) {
+  width: 10%;
+}
+
+.table th:nth-child(2) {
+  width: 15%;
+}
+
+.table th:nth-child(3) {
+  width: 30%;
+}
+
+.table th:nth-child(4) {
+  width: 10%;
+}
+
+.table th:nth-child(5) {
+  width: 10%;
+}
+
+.table th:nth-child(6) {
+  width: 8%;
+}
+
+.table th:nth-child(7) {
+  width: 10%;
+}
+
+.table th:nth-child(8) {
+  width: 15%;
+}
+
+.table td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 12px 15px;
+  border: 1px solid #f0f0f0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(67, 97, 238, 0.03);
+}
+
+.max-width-description {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+/* Ordenação */
+#ordenarCodigo,
+#ordenarNome,
+#ordenarPreco,
+#ordenarQuantidade {
+  cursor: pointer;
+}
+
+#ordenarDescricao,
+#ordenarUnidade,
+#ordernarStatus,
+#acoesProdutos {
+  cursor: default;
+}
+
+.seta {
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 14px;
+  color: gray;
+}
+
+th:hover .seta {
+  color: black;
+}
+
+/* Status badges */
+.status-badge {
+  display: inline-flex;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.disponivel {
+  background-color: rgba(40, 167, 69, 0.15);
+  color: #28a745;
+}
+
+.status-badge.pouco {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+}
+
+.status-badge.esgotado {
+  background-color: rgba(220, 53, 69, 0.15);
+  color: #dc3545;
+}
+
+/* Botões de ação */
+.action-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: white;
+  border: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  margin: 0 3px;
+  padding: 0;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn i {
+  font-size: 1rem;
+}
+
+.btn-primary.action-btn {
+  background-color: var(--primary-color);
+}
+
+.btn-danger.action-btn {
+  background-color: var(--danger-color);
+}
+
+.btn-success.action-btn {
+  background-color: var(--success-color);
+}
+
+.btn-warning.action-btn {
+  background-color: var(--warning-color);
+}
+
+/* Pagination */
 .pagination {
   display: flex;
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 1.5rem 0;
   gap: 0.3rem;
+  justify-content: center;
 }
 
 .pagination .page-item .page-link {
@@ -308,17 +347,10 @@ th:hover .seta {
 }
 
 .pagination .page-item.active .page-link:hover {
-  background-color: var(--primary-color-dark);
+  background-color: var(--primary-color);
 }
 
-/* Table Responsiveness */
-.table-responsive {
-  overflow-x: auto;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
-}
-
-/* Modal Improvements */
+/* Modals */
 .modal-content {
   border: none;
   border-radius: 12px;
@@ -347,126 +379,12 @@ th:hover .seta {
   padding: 1rem 1.5rem;
 }
 
-.input-group-text {
-  background-color: rgba(0, 0, 0, 0.02);
+/* Input customization */
+.form-control {
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  color: #6c757d;
-}
-
-/* Status Badges */
-.status-badge {
-  display: inline-flex;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.status-badge.disponivel {
-  background-color: rgba(40, 167, 69, 0.15);
-  color: #28a745;
-}
-
-.status-badge.pouco {
-  background-color: rgba(255, 193, 7, 0.15);
-  color: #ffc107;
-}
-
-.status-badge.esgotado {
-  background-color: rgba(220, 53, 69, 0.15);
-  color: #dc3545;
-}
-
-/* Action Buttons in Table */
-.action-btn {
-  width: 32px;
-  height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  color: #6c757d;
-  background-color: rgba(0, 0, 0, 0.03);
-  border: none;
-  transition: all 0.2s;
-  cursor: pointer;
-}
-
-.action-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  transform: translateY(-2px);
-}
-
-.action-btn.edit:hover {
-  color: var(--primary-color);
-}
-
-.action-btn.delete:hover {
-  color: #dc3545;
-}
-
-.action-btn.entrada:hover {
-  color: #28a745;
-}
-
-.action-btn.saida:hover {
-  color: #ffc107;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 767px) {
-  .dashboard-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .header-actions {
-    width: 100%;
-  }
-  
-  .btn-icon {
-    flex: 1;
-    justify-content: center;
-  }
-  
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .action-buttons {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .filters {
-    flex-direction: column;
-  }
-}
-
-/* Overrides */
-.btn-outline-primary {
-  color: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
-.btn-outline-primary:hover {
-  background-color: var(--primary-color);
-  color: white;
-}
-
-.btn-outline-info {
-  color: #17a2b8;
-  border-color: #17a2b8;
-}
-
-.btn-outline-info:hover {
-  background-color: #17a2b8;
-  color: white;
+  transition: all 0.3s;
 }
 
 .form-control:focus {
@@ -474,8 +392,42 @@ th:hover .seta {
   box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
 }
 
-/* Correção de bug */
-.form-control::placeholder {
-  color: #adb5bd;
-  opacity: 1;
+/* Remove spinners from number inputs */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+  .headerTabelaProdutos {
+    flex-direction: column;
+  }
+  
+  .headerTabelaProdutos button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .search-box, .filter-box {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
 }

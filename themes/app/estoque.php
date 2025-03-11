@@ -4,56 +4,90 @@ $this->layout("_theme");
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/estoque.css') ?>">
+<!-- FontAwesome (Ícones) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <body>
-    <div class="container-fluid mt-2">
-        <div class="row justify-content-center">
-            <div class="tabelaProdutos">
-                <h1 class="p-4 text-center">
-                    Produtos
-                </h1>
-                <div class="headerTabelaProdutos p-3">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
-                        Adicionar Produto
-                    </button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTabelaCategorias" id="adicionarCategoriaBtn">
-                        Gerenciar Categorias
-                    </button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarDANFE">
-                        Adicionar Notas
-                    </button>
-                    <button class="btn btn-info" id="consultarEntradasBtn">Consultar Entradas</button>
-                    <button class="btn btn-info" id="consultarSaidasBtn">Consultar Saídas</button>
-                    <div>
-                        <label for="buscarProduto" class="px-2">Procurar produto:</label>
-                        <input type="text" name="buscarProduto" class="inputsBusca" id="buscarProduto" placeholder="Procurar produto">
-                    </div>
-                    <div>
-                        <label for="categoria" class="px-2">Filtrar por categoria: </label>
-                        <select id="categoria" name="categoria"></select>
+    <div class="container-fluid mt-4">
+        <!-- Header com animação sutil e destaque -->
+        <div class="dashboard-header mb-4 p-4 bg-white shadow-sm rounded-3">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="fw-bold display-5 mb-2 text-gradient"><i class="fas fa-boxes me-2"></i>Produtos</h1>
+                    <p class="text-muted fs-5 fw-light">Gerencie o estoque do sistema</p>
+                    <div class="header-divider mt-3"></div>
+                </div>
+                <div class="col-md-4 d-flex align-items-center justify-content-end">
+                    <div class="date-display text-end">
+                        <span class="current-date fw-bold"></span>
+                        <script>
+                            // Adicionar data atual
+                            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                            document.querySelector('.current-date').textContent = new Date().toLocaleDateString('pt-BR', options);
+                        </script>
                     </div>
                 </div>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th id="ordenarCodigo">Código <span class="seta" id="setaCodigo">⬍</span></th>
-                            <th id="ordenarNome">Nome <span class="seta" id="setaNome">⬍</span></th>
-                            <th id="ordenarDescricao">Descrição</th>
-                            <th id="ordenarPreco">Preço <span class="seta" id="setaPreco">⬍</span></th>
-                            <th id="ordenarQuantidade">Quantidade <span class="seta" id="setaQuantidade">⬍</span></th>
-                            <th id="ordenarUnidade">Unidade</th>
-                            <th id="ordernarStatus">Status</th>
-                            <th id="acoesProdutos" class="text-center" colspan="2">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="corpoTabela">
-                    </tbody>
-                </table>
             </div>
         </div>
-        <nav>
-            <ul class="pagination justify-content-center" id="pagination"></ul>
-        </nav>
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="headerTabelaProdutos p-2 mb-3">
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
+                                    <i class="fas fa-plus-circle"></i> Adicionar Produto
+                                </button>
+                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalTabelaCategorias" id="adicionarCategoriaBtn">
+                                    <i class="fas fa-tags"></i> Gerenciar Categorias
+                                </button>
+                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarDANFE">
+                                    <i class="fas fa-file-invoice"></i> Adicionar Notas
+                                </button>
+                                <button class="btn btn-info d-flex align-items-center gap-2" id="consultarEntradasBtn">
+                                    <i class="fas fa-arrow-circle-down"></i> Consultar Entradas
+                                </button>
+                                <button class="btn btn-info d-flex align-items-center gap-2" id="consultarSaidasBtn">
+                                    <i class="fas fa-arrow-circle-up"></i> Consultar Saídas
+                                </button>
+                            </div>
+                            <div class="d-flex flex-wrap gap-3 align-items-center">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" name="buscarProduto" class="search-input" id="buscarProduto" placeholder="Procurar produto">
+                                </div>
+                                <div class="filter-box">
+                                    <i class="fas fa-filter"></i>
+                                    <select id="categoria" name="categoria" class="filter-select"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="sticky-top bg-white">
+                                    <tr>
+                                        <th id="ordenarCodigo">Código <span class="seta" id="setaCodigo">⬍</span></th>
+                                        <th id="ordenarNome">Nome <span class="seta" id="setaNome">⬍</span></th>
+                                        <th id="ordenarDescricao">Descrição</th>
+                                        <th id="ordenarPreco">Preço <span class="seta" id="setaPreco">⬍</span></th>
+                                        <th id="ordenarQuantidade">Quantidade <span class="seta" id="setaQuantidade">⬍</span></th>
+                                        <th id="ordenarUnidade">Unidade</th>
+                                        <th id="ordernarStatus">Status</th>
+                                        <th id="acoesProdutos" class="text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="corpoTabela">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <nav>
+                    <ul class="pagination justify-content-center" id="pagination"></ul>
+                </nav>
+            </div>
+        </div>
     </div>
 
     <!-- MODAIS -->
@@ -63,50 +97,71 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalAdicionarProdutoLabel">Adicionar Produto</h5>
+                    <h5 class="modal-title" id="modalAdicionarProdutoLabel"><i class="fas fa-plus-circle me-2"></i>Adicionar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="produto-cadastro" name="produto-cadastro" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="codigoProdutoAdicionar" class="form-label">Código do Produto</label>
-                            <input name="codigo" type="text" class="form-control" id="codigoProdutoAdicionar" placeholder="Digite o código do produto">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                <input name="codigo" type="text" class="form-control" id="codigoProdutoAdicionar" placeholder="Digite o código do produto">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="nomeProdutoAdicionar" class="form-label">Nome</label>
-                            <input name="nome" type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input name="nome" type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="descricaoProdutoAdicionar" class="form-label">Descrição</label>
-                            <textarea name="descricao" class="form-control" id="descricaoProdutoAdicionar" placeholder="Digite a descrição do produto"></textarea>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <textarea name="descricao" class="form-control" id="descricaoProdutoAdicionar" placeholder="Digite a descrição do produto"></textarea>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="categoriaProdutoAdicionar" class="form-label">Categoria</label>
-                            <select name="categoria" class="form-control" id="categoriaProdutoAdicionar">
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-folder"></i></span>
+                                <select name="categoria" class="form-control" id="categoriaProdutoAdicionar">
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="precoSaidaProdutoAdicionar" class="form-label">Preço para Saídas</label>
-                            <input
-                                name="preco"
-                                type="text"
-                                class="form-control preco"
-                                id="precoSaidaProdutoAdicionar"
-                                value="R$ 0,00"
-                                oninput="formatarPreco(this)">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                <input
+                                    name="preco"
+                                    type="text"
+                                    class="form-control preco"
+                                    id="precoSaidaProdutoAdicionar"
+                                    value="R$ 0,00"
+                                    oninput="formatarPreco(this)">
+                            </div>
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                         <div class="mb-3">
                             <label for="unidadeProdutoAdicionar" class="form-label">Unidade de Medida</label>
-                            <select name="unidade" class="form-control" id="unidadeProdutoAdicionar" required>
-                                <option value="" selected disabled>Selecionar Unidade de Medida</option>
-                                <option value="KG">Quilograma (kg)</option>
-                                <option value="UN">Unidade (un)</option>
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                <select name="unidade" class="form-control" id="unidadeProdutoAdicionar" required>
+                                    <option value="" selected disabled>Selecionar Unidade de Medida</option>
+                                    <option value="KG">Quilograma (kg)</option>
+                                    <option value="UN">Unidade (un)</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="fotoProdutoAdicionar" class="form-label">Foto do Produto</label>
-                            <input name="image" type="file" id="fotoProdutoAdicionar" class="form-control">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                <input name="image" type="file" id="fotoProdutoAdicionar" class="form-control">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -123,7 +178,7 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Editar Produto</h5>
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Editar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="produto-update" name="produto-update" method="post" enctype="multipart/form-data">
@@ -131,37 +186,58 @@ $this->layout("_theme");
                         <input type="hidden" name="idProdutoUpdate" id="idProdutoUpdate">
                         <div class="mb-3">
                             <label for="codigoProdutoEditar" class="form-label">Código do Produto</label>
-                            <input name="codigo" type="text" class="form-control" id="codigoProdutoEditar" placeholder="Digite o código do produto">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                <input name="codigo" type="text" class="form-control" id="codigoProdutoEditar" placeholder="Digite o código do produto">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="nomeProduto" class="form-label">Nome</label>
-                            <input name="nome" type="text" id="nomeProduto" class="form-control">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input name="nome" type="text" id="nomeProduto" class="form-control">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="descricaoProduto" class="form-label">Descrição</label>
-                            <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="categoriaProdutoEditar" class="form-label">Categoria</label>
-                            <select name="categoria" class="form-control" id="categoriaProdutoEditar">
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-folder"></i></span>
+                                <select name="categoria" class="form-control" id="categoriaProdutoEditar">
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="precoProduto" class="form-label">Preço</label>
-                            <input name="preco" type="text" class="form-control preco" id="precoProduto" value="R$ 0,00" oninput="formatarPreco(this)">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                <input name="preco" type="text" class="form-control preco" id="precoProduto" value="R$ 0,00" oninput="formatarPreco(this)">
+                            </div>
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                         <div class="mb-3">
                             <label for="unidadeProdutoEditar" class="form-label">Unidade de Medida</label>
-                            <select name="unidade" class="form-control" id="unidadeProdutoEditar" required>
-                                <option value="" disabled>Selecionar Unidade de Medida</option>
-                                <option value="KG">Quilograma (kg)</option>
-                                <option value="UN">Unidade (un)</option>
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                <select name="unidade" class="form-control" id="unidadeProdutoEditar" required>
+                                    <option value="" disabled>Selecionar Unidade de Medida</option>
+                                    <option value="KG">Quilograma (kg)</option>
+                                    <option value="UN">Unidade (un)</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="fotoProduto" class="form-label">Foto do Produto</label>
-                            <input name="image" type="file" id="fotoProduto" class="form-control">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                <input name="image" type="file" id="fotoProduto" class="form-control">
+                            </div>
                             <img id="previewImagem" src="" alt="Imagem do Produto" style="max-width: 150px; display: none; margin:10px auto; display: block;">
                         </div>
                     </div>
@@ -342,7 +418,7 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEntradaLabel">Adicionar Entrada</h5>
+                    <h5 class="modal-title" id="modalEntradaLabel"><i class="fas fa-arrow-circle-down me-2"></i>Adicionar Entrada</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="entrada-cadastro" name="entrada-cadastro" method="post">
@@ -350,23 +426,31 @@ $this->layout("_theme");
                         <input name="produtoId" type="hidden" id="produtoId" value=""> <!-- Campo oculto para armazenar o id -->
                         <div class="mb-3">
                             <label for="fornecedor" class="form-label">Fornecedor</label>
-                            <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-truck"></i></span>
+                                <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
+                            </div>
                             <div class="list-group mt-0 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1000;"></div>
                         </div>
                         <div class="mb-3">
                             <label for="quantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" min="0" step="0.001" class="form-control" id="quantidade" placeholder="Digite a quantidade">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                <input name="quantidade" type="text" class="form-control" id="quantidade" placeholder="Digite a quantidade">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="precoEntrada" class="form-label">Preço</label>
-                            <input
-                                min="0"
-                                name="preco"
-                                type="text"
-                                class="form-control preco"
-                                id="precoEntrada"
-                                value="R$ 0,00"
-                                oninput="formatarPreco(this)">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input
+                                    name="preco"
+                                    type="text"
+                                    class="form-control preco"
+                                    id="precoEntrada"
+                                    value="R$ 0,00"
+                                    oninput="formatarPreco(this)">
+                            </div>
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                     </div>
@@ -384,7 +468,7 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalSaidaLabel">Adicionar Saída</h5>
+                    <h5 class="modal-title" id="modalSaidaLabel"><i class="fas fa-arrow-circle-up me-2"></i>Adicionar Saída</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="saida-cadastro" name="saida-cadastro" method="post">
@@ -393,7 +477,8 @@ $this->layout("_theme");
                         <!-- Campo Cliente -->
                         <div class="mb-3">
                             <label for="cliente" class="form-label">Cliente</label>
-                            <div class="d-flex align-items-center justify-content-center" style="min-height: 100%;">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
                             </div>
                             <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
@@ -405,19 +490,25 @@ $this->layout("_theme");
                         <!-- Campo Quantidade -->
                         <div class="mb-3">
                             <label for="quantidadeSaida" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" min="0" step="0.001" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                <input name="quantidade" type="text" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
+                            </div>
                         </div>
                         <!-- Campo Preço -->
                         <div class="mb-3">
                             <label for="precoSaida" class="form-label">Preço</label>
-                            <input
-                                min="0"
-                                name="preco"
-                                type="text"
-                                class="form-control preco"
-                                id="precoSaida"
-                                value="R$ 0,00"
-                                oninput="formatarPreco(this)">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input
+                                    min="0"
+                                    name="preco"
+                                    type="text"
+                                    class="form-control preco"
+                                    id="precoSaida"
+                                    value="R$ 0,00"
+                                    oninput="formatarPreco(this)">
+                            </div>
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                     </div>
@@ -480,7 +571,7 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarEntradaLabel">Editar Entrada</h5>
+                    <h5 class="modal-title" id="modalEditarEntradaLabel"><i class="fas fa-edit me-2"></i>Editar Entrada</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -489,19 +580,28 @@ $this->layout("_theme");
                         <!-- Nome do Produto -->
                         <div class="mb-3">
                             <label for="entradaProduto" class="form-label">Produto</label>
-                            <input name="nome" type="text" class="form-control" id="entradaProduto" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-box"></i></span>
+                                <input name="nome" type="text" class="form-control" id="entradaProduto" readonly>
+                            </div>
                         </div>
 
                         <!-- Quantidade -->
                         <div class="mb-3">
                             <label for="entradaQuantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" min="0" step="0.001" class="form-control" id="entradaQuantidade" min="0">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                <input name="quantidade" type="text" class="form-control" id="entradaQuantidade">
+                            </div>
                         </div>
 
                         <!-- Preço -->
                         <div class="mb-3">
                             <label for="entradaPreco" class="form-label">Preço</label>
-                            <input name="preco" type="number" class="form-control" id="entradaPreco" min="0" step="0.001">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input name="preco" type="text" class="form-control preco" id="entradaPreco" oninput="formatarPreco(this)">
+                            </div>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -562,7 +662,7 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarSaidaLabel">Editar Saída</h5>
+                    <h5 class="modal-title" id="modalEditarSaidaLabel"><i class="fas fa-edit me-2"></i>Editar Saída</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -571,19 +671,28 @@ $this->layout("_theme");
                         <input type="hidden" name="idEditarSaida" id="idEditarSaida">
                         <div class="mb-3">
                             <label for="saidaProduto" class="form-label">Produto</label>
-                            <input type="text" class="form-control" id="saidaProduto" readonly> <!-- readonly torna o campo não editável -->
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-box"></i></span>
+                                <input type="text" class="form-control" id="saidaProduto" readonly>
+                            </div>
                         </div>
 
                         <!-- Quantidade -->
                         <div class="mb-3">
                             <label for="saidaQuantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" min="0" step="0.001" class="form-control" id="saidaQuantidade" min="0">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                <input name="quantidade" type="text" class="form-control" id="saidaQuantidade">
+                            </div>
                         </div>
 
                         <!-- Preço -->
                         <div class="mb-3">
                             <label for="saidaPreco" class="form-label">Preço</label>
-                            <input name="preco" type="number" class="form-control" id="saidaPreco" min="0" step="0.001">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input name="preco" type="text" class="form-control preco" id="saidaPreco" oninput="formatarPreco(this)">
+                            </div>
                         </div>
                 </div>
                 <div class="modal-footer">

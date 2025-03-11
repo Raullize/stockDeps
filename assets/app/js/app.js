@@ -103,9 +103,13 @@ function renderizarTabela() {
     tr.innerHTML = `
             <td>${categoria.nome}</td>
             <td>${categoria.descricao}</td>
-            <td>
-                <button class="btn btn-primary btn-sm" onclick="editarCategoria(${categoria.id})">Editar</button>
-                <button class="btn btn-danger btn-sm" onclick="excluirCategoria(${categoria.id})">Excluir</button>
+            <td class="text-center">
+                <button class="btn btn-primary btn-sm action-btn" onclick="editarCategoria(${categoria.id})" title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm action-btn" onclick="excluirCategoria(${categoria.id})" title="Excluir">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
             </td>
         `;
 
@@ -264,9 +268,13 @@ function mostrarPaginaEntradas(pagina) {
         <td>${entrada.quantidade}</td>
         <td>${entrada.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
         <td>${formatarData(entrada.created_at)}</td>
-        <td>
-          <button class="btn btn-primary btn-sm" onclick="editarEntrada(${entrada.id})">Editar</button>
-          <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirEntrada" onclick="excluirEntrada(${entrada.id})">Excluir</button>
+        <td class="text-center">
+          <button class="btn btn-primary btn-sm action-btn" onclick="editarEntrada(${entrada.id})" title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalExcluirEntrada" onclick="excluirEntrada(${entrada.id})" title="Excluir">
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </td>
       `;
       fragment.appendChild(tr);
@@ -336,9 +344,13 @@ function mostrarPaginaSaidas(pagina) {
         <td>${saida.quantidade}</td>
         <td>${saida.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
         <td>${formatarData(saida.created_at)}</td>
-        <td>
-          <button class="btn btn-primary btn-sm" onclick="editarSaida(${saida.id})">Editar</button>
-          <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
+        <td class="text-center">
+          <button class="btn btn-primary btn-sm action-btn" onclick="editarSaida(${saida.id})" title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})" title="Excluir">
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </td>
       `;
       fragment.appendChild(tr);
@@ -662,22 +674,55 @@ function preencherTabelaProdutos(produtosPaginados) {
       currency: "BRL",
     });
 
-    const status = quantidade > 0 ? "Disponível" : "Indisponível";
-    const dados = [
-      codigo_produto,
-      nome,
-      descricao,
-      precoFormatado,
-      quantidade,
-      unidade_medida,
-      status,
-    ];
+    // Truncar descrição se for muito longa
+    const descricaoTruncada = descricao.length > 50 
+      ? `${descricao.substring(0, 50)}...` 
+      : descricao;
 
-    dados.forEach((dado) => {
-      const td = document.createElement("td");
-      td.textContent = dado;
-      tr.appendChild(td);
-    });
+    // Determinar status com base na quantidade
+    let statusHTML = '';
+    if (quantidade === 0) {
+      statusHTML = '<span class="status-badge esgotado">Esgotado</span>';
+    } else if ((unidade_medida === 'KG' && quantidade <= 1) || (unidade_medida === 'UN' && quantidade <= 5)) {
+      statusHTML = '<span class="status-badge pouco">Estoque Baixo</span>';
+    } else {
+      statusHTML = '<span class="status-badge disponivel">Disponível</span>';
+    }
+
+    // Criar células da tabela
+    const tdCodigo = document.createElement("td");
+    tdCodigo.textContent = codigo_produto;
+    tr.appendChild(tdCodigo);
+
+    const tdNome = document.createElement("td");
+    tdNome.textContent = nome;
+    tr.appendChild(tdNome);
+
+    const tdDescricao = document.createElement("td");
+    tdDescricao.textContent = descricaoTruncada;
+    
+    // Adicionar tooltip para descrições truncadas
+    if (descricao.length > 50) {
+      tdDescricao.title = descricao;
+      tdDescricao.classList.add('text-truncate', 'max-width-description');
+    }
+    tr.appendChild(tdDescricao);
+
+    const tdPreco = document.createElement("td");
+    tdPreco.textContent = precoFormatado;
+    tr.appendChild(tdPreco);
+
+    const tdQuantidade = document.createElement("td");
+    tdQuantidade.textContent = quantidade;
+    tr.appendChild(tdQuantidade);
+
+    const tdUnidade = document.createElement("td");
+    tdUnidade.textContent = unidade_medida;
+    tr.appendChild(tdUnidade);
+
+    const tdStatus = document.createElement("td");
+    tdStatus.innerHTML = statusHTML;
+    tr.appendChild(tdStatus);
 
     tr.appendChild(createButtonGroup(produto)); // Adiciona os botões de ação
     corpoTabela.appendChild(tr);
@@ -722,11 +767,19 @@ function mostrarPagina(pagina) {
         <td>${produto.quantidade || 0}</td>
         <td>${produto.unidade_medida || ''}</td>
         <td>${status}</td>
-        <td>
-          <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="prepararEdicaoProduto(${produto.id})">Editar</button>
-          <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluir" onclick="prepararExclusao(${produto.id})">Excluir</button>
-          <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#modalEntrada" onclick="prepararEntrada(${produto.id})">Entrada</button>
-          <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalSaida" onclick="prepararSaida(${produto.id})">Saída</button>
+        <td class="text-center">
+          <button class="btn btn-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="prepararEdicaoProduto(${produto.id})" title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalExcluir" onclick="prepararExclusao(${produto.id})" title="Excluir">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="btn btn-success btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalEntrada" onclick="prepararEntrada(${produto.id})" title="Adicionar Entrada">
+            <i class="fas fa-arrow-circle-down"></i>
+          </button>
+          <button class="btn btn-warning btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalSaida" onclick="prepararSaida(${produto.id})" title="Adicionar Saída">
+            <i class="fas fa-arrow-circle-up"></i>
+          </button>
         </td>
       `;
       
@@ -1033,40 +1086,44 @@ function createButtonGroup(produto) {
   const actions = [
     {
       text: "Editar",
+      icon: "fas fa-edit",
       class: "btn-primary",
       action: () => openModal("Editar", produto, produto.id, categorias),
     },
     {
       text: "Excluir",
+      icon: "fas fa-trash-alt",
       class: "btn-danger",
       action: () => openModal("Excluir", produto.id),
     },
     {
       text: "Adicionar Entrada",
+      icon: "fas fa-arrow-circle-down",
       class: "btn-success",
       action: () => openModalEntrada(produto.id),
     },
     {
       text: "Adicionar Saída",
+      icon: "fas fa-arrow-circle-up",
       class: "btn-warning",
       action: () => openModalSaida(produto.id, produto.preco),
     },
   ];
 
-  const btnGroup = document.createElement("div");
-  btnGroup.classList.add("btn-group", "w-100");
-  actions.forEach(({ text, class: btnClass, action }) => {
+  const tdActions = document.createElement("td");
+  tdActions.classList.add("text-center");
+  
+  actions.forEach(({ icon, text, class: btnClass, action }) => {
     const btn = document.createElement("button");
-    btn.classList.add("btn", btnClass);
-    btn.textContent = text;
-    btn.onclick = action;
-    btnGroup.appendChild(btn);
+    btn.setAttribute("type", "button");
+    btn.classList.add("btn", btnClass, "btn-sm", "action-btn");
+    btn.innerHTML = `<i class="${icon}"></i>`;
+    btn.title = text;
+    btn.addEventListener("click", action);
+    tdActions.appendChild(btn);
   });
 
-  const tdAcoes = document.createElement("td");
-  tdAcoes.colSpan = 2;
-  tdAcoes.appendChild(btnGroup);
-  return tdAcoes;
+  return tdActions;
 }
 
 function openModal(tipo, produto) {
