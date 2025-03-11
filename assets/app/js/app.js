@@ -1085,22 +1085,29 @@ function openModal(tipo, produto) {
     const unidadeSelect = document.getElementById("unidadeProdutoEditar");
     const unidadeMedida = produto.unidade_medida;
 
-    // Verificar se a unidade já existe no select
-    const optionExiste = Array.from(unidadeSelect.options).some(
-      (option) => option.value === unidadeMedida
-    );
-
-    // Adicionar a unidade ao select, se não existir
-    if (!optionExiste) {
-      const novaOption = document.createElement("option");
-      novaOption.value = unidadeMedida;
-      novaOption.textContent = unidadeMedida;
-      unidadeSelect.appendChild(novaOption);
+    // Resetar a seleção para garantir que a opção padrão seja mostrada se necessário
+    unidadeSelect.querySelector('option[disabled]').selected = true;
+    
+    // Verificar se a unidade é válida (KG ou UN) e selecioná-la
+    if (unidadeMedida === 'KG' || unidadeMedida === 'UN') {
+      // Selecionar a unidade do produto
+      unidadeSelect.value = unidadeMedida;
+    } else if (unidadeMedida) {
+      // Se for uma unidade antiga diferente de KG ou UN, 
+      // adicionar temporariamente uma opção para este produto específico
+      const optionExiste = Array.from(unidadeSelect.options).some(
+        (option) => option.value === unidadeMedida
+      );
+      
+      if (!optionExiste) {
+        const novaOption = document.createElement("option");
+        novaOption.value = unidadeMedida;
+        novaOption.textContent = unidadeMedida + ' (unidade legada)';
+        novaOption.className = 'legacy-unit';
+        unidadeSelect.appendChild(novaOption);
+        unidadeSelect.value = unidadeMedida;
+      }
     }
-
-    // Selecionar a unidade do produto
-    unidadeSelect.value = unidadeMedida;
-
 
     const precoProduto = document.getElementById("precoProduto");
 
@@ -1451,3 +1458,19 @@ function prepararExclusao(id) {
 }
 
 window.onload = loadAllData;
+
+// Validação do formulário de adicionar produto
+document.addEventListener('DOMContentLoaded', function() {
+  const formAdicionarProduto = document.getElementById('produto-cadastro');
+  if (formAdicionarProduto) {
+    formAdicionarProduto.addEventListener('submit', function(event) {
+      const unidadeSelect = document.getElementById('unidadeProdutoAdicionar');
+      
+      if (!unidadeSelect.value) {
+        event.preventDefault();
+        alert('Por favor, selecione uma unidade de medida.');
+        unidadeSelect.focus();
+      }
+    });
+  }
+});

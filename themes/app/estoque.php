@@ -98,12 +98,9 @@ $this->layout("_theme");
                         </div>
                         <div class="mb-3">
                             <label for="unidadeProdutoAdicionar" class="form-label">Unidade de Medida</label>
-                            <select name="unidade" class="form-control" id="unidadeProdutoAdicionar">
-                                <option value="KG">Kilograma (kg)</option>
-                                <option value="G">Grama (g)</option>
-                                <option value="L">Litro (l)</option>
-                                <option value="ML">Mililitro (ml)</option>
-                                <option value="PACOTE">Pacote</option>
+                            <select name="unidade" class="form-control" id="unidadeProdutoAdicionar" required>
+                                <option value="" selected disabled>Selecionar Unidade de Medida</option>
+                                <option value="KG">Quilograma (kg)</option>
                                 <option value="UN">Unidade (un)</option>
                             </select>
                         </div>
@@ -156,12 +153,9 @@ $this->layout("_theme");
                         </div>
                         <div class="mb-3">
                             <label for="unidadeProdutoEditar" class="form-label">Unidade de Medida</label>
-                            <select name="unidade" class="form-control" id="unidadeProdutoEditar">
-                                <option value="KG">Kilograma (kg)</option>
-                                <option value="G">Grama (g)</option>
-                                <option value="L">Litro (l)</option>
-                                <option value="ML">Mililitro (ml)</option>
-                                <option value="PACOTE">Pacote</option>
+                            <select name="unidade" class="form-control" id="unidadeProdutoEditar" required>
+                                <option value="" disabled>Selecionar Unidade de Medida</option>
+                                <option value="KG">Quilograma (kg)</option>
                                 <option value="UN">Unidade (un)</option>
                             </select>
                         </div>
