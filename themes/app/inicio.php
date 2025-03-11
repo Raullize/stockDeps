@@ -8,11 +8,11 @@ $this->layout("_theme");
 
 <body>
     <div class="container-fluid mt-3">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-12">
                 <div class="card shadow-sm mb-4">
                     <div class="card-header bg-white py-3">
-                        <h3 class="card-title text-primary fw-bold mb-0">
+                        <h3 class="card-title text-primary fw-bold mb-0 text-start">
                             <i class="fas fa-chart-line me-2"></i>Dashboard
                         </h3>
                     </div>
