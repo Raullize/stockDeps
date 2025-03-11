@@ -632,20 +632,18 @@ th:hover .seta {
 }
 
 .card {
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: none;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
 }
 
 .card:hover {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
 }
 
 .card-header {
-  background-color: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .card-title {
@@ -867,52 +865,6 @@ th:hover .seta {
   
   .action-btn i {
     font-size: 0.75rem;
-  }
-}
-
-/* Ajustes para padronização das bordas e design dos cards */
-.card-body {
-  padding: 1.25rem;
-}
-
-.table {
-  margin-bottom: 0;
-  border-color: rgba(0, 0, 0, 0.125);
-}
-
-.table-responsive {
-  border-radius: 0 0 8px 8px;
-  overflow: hidden;
-}
-
-.table thead th {
-  background-color: #f8f9fa;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.125);
-  font-weight: 600;
-}
-
-.modal-content {
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-}
-
-/* Padronização dos estilos de borda em vários componentes */
-.form-control, 
-.form-select, 
-.input-group-text {
-  border-color: rgba(0, 0, 0, 0.125);
-}
-
-/* Ajuste para os headers de tabelas e outros elementos */
-.bg-light {
-  background-color: #f8f9fa !important;
-  border: 1px solid rgba(0, 0, 0, 0.125);
-}
-
-@media (max-width: 576px) {
-  .card {
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.125);
   }
 }
 
