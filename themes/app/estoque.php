@@ -63,6 +63,9 @@ $this->layout("_theme");
                                 </div>
                             </div>
                         </div>
+                        <div id="semResultadosProdutos" class="alert alert-info text-center d-none">
+                            <i class="fas fa-info-circle me-2"></i>Nenhum produto encontrado com o termo pesquisado.
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped">
                                 <thead class="sticky-top bg-white">

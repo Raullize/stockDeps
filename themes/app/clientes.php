@@ -47,6 +47,9 @@ $this->layout("_theme");
                                 </div>
                             </div>
                         </div>
+                        <div id="semResultadosClientes" class="alert alert-info text-center d-none">
+                            <i class="fas fa-info-circle me-2"></i>Nenhum cliente encontrado com o termo pesquisado.
+                        </div>
                         <div class="table-responsive">
                             <table id="tabelaClientes" class="table table-bordered table-striped">
                                 <thead class="sticky-top bg-white">
@@ -107,7 +110,7 @@ $this->layout("_theme");
                                 <span class="input-group-text bg-light">
                                     <i class="fas fa-mobile-alt"></i>
                                 </span>
-                                <input name="celular" type="text" class="form-control" id="telefoneCliente" placeholder="Digite o celular do cliente">
+                                <input name="celular" type="text" class="form-control" id="telefoneCliente" placeholder="Digite o celular do cliente" oninput="formatarTelefone(event)">
                             </div>
                         </div>
                     </div>
@@ -161,7 +164,7 @@ $this->layout("_theme");
                                 <span class="input-group-text bg-light">
                                     <i class="fas fa-mobile-alt"></i>
                                 </span>
-                                <input name="celular" type="text" class="form-control" id="editarTelefoneCliente">
+                                <input name="celular" type="text" class="form-control" id="editarTelefoneCliente" oninput="formatarTelefone(event)">
                             </div>
                         </div>
                     </div>
@@ -225,6 +228,30 @@ $this->layout("_theme");
                 </div>
                 <div class="modal-body p-4">
                     <div id="historicoCliente" class="mt-2"></div>
+                    <div id="semHistoricoCliente" class="alert alert-info text-center d-none">
+                        <i class="fas fa-info-circle me-2"></i>Nenhuma compra registrada para este cliente.
+                    </div>
+                    <div class="table-responsive mt-3">
+                        <table id="tabelaHistoricoCliente" class="table table-bordered table-striped d-none">
+                            <thead class="sticky-top bg-white">
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Linhas serão inseridas dinamicamente aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3">
+                        <nav>
+                            <ul class="pagination justify-content-center" id="paginacaoHistoricoCliente"></ul>
+                        </nav>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

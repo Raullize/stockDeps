@@ -46,6 +46,9 @@ $this->layout("_theme");
                                 </div>
                             </div>
                         </div>
+                        <div id="semResultadosFornecedores" class="alert alert-info text-center d-none">
+                            <i class="fas fa-info-circle me-2"></i>Nenhum fornecedor encontrado com o termo pesquisado.
+                        </div>
                         <div class="table-responsive">
                             <table id="tabelaFornecedores" class="table table-bordered table-striped">
                                 <thead class="sticky-top bg-white">
@@ -130,7 +133,7 @@ $this->layout("_theme");
                                         <span class="input-group-text bg-light">
                                             <i class="fas fa-phone"></i>
                                         </span>
-                                        <input name="telefone" type="text" class="form-control" id="telefoneFornecedor" placeholder="Digite o telefone do fornecedor">
+                                        <input name="telefone" type="text" class="form-control" id="telefoneFornecedor" placeholder="Digite o telefone do fornecedor" oninput="formatarTelefone(event)">
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +166,7 @@ $this->layout("_theme");
                                         <span class="input-group-text bg-light">
                                             <i class="fas fa-map-pin"></i>
                                         </span>
-                                        <input name="cep" type="text" class="form-control" id="cepFornecedor" placeholder="Digite o CEP">
+                                        <input name="cep" type="text" class="form-control" id="cepFornecedor" placeholder="Digite o CEP" oninput="formatarCEP(event)">
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +250,7 @@ $this->layout("_theme");
                                 <label for="editarFornecedorCnpj" class="form-label">CNPJ</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                                    <input name="cnpj" type="text" id="editarFornecedorCnpj" class="form-control" placeholder="00.000.000/0000-00">
+                                    <input name="cnpj" type="text" id="editarFornecedorCnpj" class="form-control" placeholder="00.000.000/0000-00" oninput="formatarCNPJ(event)">
                                 </div>
                             </div>
                         </div>
@@ -264,7 +267,7 @@ $this->layout("_theme");
                                 <label for="editarFornecedorTelefone" class="form-label">Telefone</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                    <input name="telefone" type="text" id="editarFornecedorTelefone" class="form-control" placeholder="(00) 00000-0000">
+                                    <input name="telefone" type="text" id="editarFornecedorTelefone" class="form-control" placeholder="(00) 00000-0000" oninput="formatarTelefone(event)">
                                 </div>
                             </div>
                         </div>
@@ -289,7 +292,7 @@ $this->layout("_theme");
                                 <label for="editarFornecedorCep" class="form-label">CEP</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
-                                    <input name="cep" type="text" id="editarFornecedorCep" class="form-control" placeholder="00000-000">
+                                    <input name="cep" type="text" id="editarFornecedorCep" class="form-control" placeholder="00000-000" oninput="formatarCEP(event)">
                                 </div>
                             </div>
                             <div class="col-md-3 mb-3">
@@ -387,6 +390,30 @@ $this->layout("_theme");
                 </div>
                 <div class="modal-body p-4">
                     <div id="historicoFornecedor" class="mt-2"></div>
+                    <div id="semHistoricoFornecedor" class="alert alert-info text-center d-none">
+                        <i class="fas fa-info-circle me-2"></i>Nenhuma compra registrada para este fornecedor.
+                    </div>
+                    <div class="table-responsive mt-3">
+                        <table id="tabelaHistoricoFornecedor" class="table table-bordered table-striped d-none">
+                            <thead class="sticky-top bg-white">
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Categoria</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Linhas serão inseridas dinamicamente aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3">
+                        <nav>
+                            <ul class="pagination justify-content-center" id="paginacaoHistoricoFornecedor"></ul>
+                        </nav>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

@@ -133,6 +133,16 @@ function buscarProduto() {
         (produto.codigo_produto?.toLowerCase() || '').includes(termoBusca)
     );
 
+    // Exibe ou oculta a mensagem de "sem resultados"
+    const semResultados = document.getElementById("semResultadosProdutos");
+    if (semResultados) {
+      if (produtosFiltrados.length === 0 && termoBusca.length > 0) {
+        semResultados.classList.remove("d-none");
+      } else {
+        semResultados.classList.add("d-none");
+      }
+    }
+
     // Reiniciar a ordenação com os produtos filtrados
     produtosOrdenados = [...produtosFiltrados];
     paginaAtual = 1; // Reinicia na primeira página
@@ -740,15 +750,15 @@ function mostrarPagina(pagina) {
   const tabela = document.getElementById("corpoTabela");
   if (!tabela) return;
   
+  // Limpar o conteúdo da tabela
+  tabela.innerHTML = "";
+  
   // Criar um fragment para otimizar as inserções no DOM
   const fragment = document.createDocumentFragment();
   
-  // Exibir mensagem caso não haja produtos
-  if (produtosPagina.length === 0) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td colspan="8" class="text-center">Nenhum produto encontrado.</td>`;
-    fragment.appendChild(tr);
-  } else {
+  // Se não houver produtos na página atual, não exibimos nada na tabela
+  // A mensagem de "nenhum produto encontrado" já é tratada pelo elemento semResultadosProdutos
+  if (produtosPagina.length > 0) {
     // Criar mapa de categorias para acesso mais rápido
     const categoriasMap = new Map();
     categorias.forEach(c => categoriasMap.set(c.id, c));
@@ -787,8 +797,7 @@ function mostrarPagina(pagina) {
     });
   }
   
-  // Limpar a tabela e adicionar o fragmento
-  tabela.innerHTML = '';
+  // Adicionar os elementos ao DOM
   tabela.appendChild(fragment);
   
   // Atualizar a paginação
@@ -866,6 +875,16 @@ function alterarTabelaPorCategoriaSelecionada() {
     );
   } else {
     produtosFiltrados = [...produtosOriginais]; // Reseta para todos os produtos
+  }
+
+  // Exibe ou oculta a mensagem de "sem resultados"
+  const semResultados = document.getElementById("semResultadosProdutos");
+  if (semResultados) {
+    if (produtosFiltrados.length === 0) {
+      semResultados.classList.remove("d-none");
+    } else {
+      semResultados.classList.add("d-none");
+    }
   }
 
   // Reiniciar a ordenação com os produtos filtrados
