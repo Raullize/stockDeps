@@ -15,7 +15,7 @@
 }
 
 .headerTabelaFornecedores button {
-  background-color: #007bff;
+  background-color: #4361ee;
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
@@ -26,12 +26,12 @@
 }
 
 .headerTabelaFornecedores button:hover {
-  background-color: #0056b3;
+  background-color: #3a56d4;
   transform: scale(1.05);
 }
 
 .headerTabelaFornecedores button:active {
-  background-color: #004085;
+  background-color: #2e44aa;
   transform: scale(0.95);
 }
 
@@ -88,7 +88,7 @@
 }
 
 button {
-  background-color: #007bff;
+  background-color: #4361ee;
   border: none;
   color: white;
   padding: 8px 16px;
@@ -99,11 +99,11 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #3a56d4;
 }
 
 button:active {
-  background-color: #004085;
+  background-color: #2e44aa;
 }
 
 .btn-group {
@@ -132,7 +132,7 @@ th:hover .seta {
     justify-content: center;
     padding: 0;
     margin: 0 3px;
-    border-radius: 50%;
+    border-radius: 4px;
 }
 
 .action-btn i {
@@ -153,4 +153,145 @@ th:hover .seta {
 .table td:last-child {
     padding: 8px 4px;
     min-width: 150px;
+}
+
+/* Estilos para a página de Fornecedores */
+
+/* Estilos do cabeçalho */
+.dashboard-header {
+    transition: all 0.3s ease;
+    border-left: 5px solid #4361ee;
+}
+
+.dashboard-header:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.text-gradient {
+    color: #4361ee;
+    font-weight: bold;
+}
+
+.header-divider {
+    height: 3px;
+    width: 50px;
+    background: #4361ee;
+    margin-bottom: 10px;
+}
+
+/* Customização da caixa de busca */
+.search-box {
+    position: relative;
+    max-width: 300px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    width: 100%;
+    font-size: 0.9rem;
+    height: 38px;
+}
+
+.search-input::placeholder {
+    color: #6c757d;
+    opacity: 0.7;
+}
+
+.search-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+    border-color: #4361ee;
+}
+
+/* Estilização da tabela */
+.table thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
+    cursor: pointer;
+    padding: 15px 10px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Estilos para os botões de ação */
+.btn-action {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin: 0 3px;
+    transition: all 0.2s ease;
+}
+
+.btn-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para paginação */
+.pagination .page-item.active .page-link {
+    background-color: #4361ee;
+    border-color: #4361ee;
+    color: white;
+}
+
+.pagination .page-link {
+    color: #4361ee;
+}
+
+.pagination .page-link:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination .page-item.active .page-link:hover {
+    background-color: #3a56d4;
+}
+
+/* Animação de indicador de ordem */
+.seta {
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.2s ease;
+}
+
+[data-order="asc"] .seta {
+    transform: rotate(180deg);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .dashboard-header {
+        padding: 15px !important;
+    }
+    
+    .table th, .table td {
+        padding: 10px 5px;
+        font-size: 14px;
+    }
+    
+    .btn-action {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.table th,
+.table td,
+.tabelaFornecedores th,
+.tabelaFornecedores td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 12px 15px;
 }

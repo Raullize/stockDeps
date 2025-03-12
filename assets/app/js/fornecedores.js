@@ -98,7 +98,7 @@ function mostrarPaginaFornecedores(pagina) {
 
 function atualizarPaginacaoFornecedores() {
     const totalPaginas = Math.ceil(fornecedoresFiltrados.length / itensPorPaginaFornecedores);
-    const pagination = document.getElementById('paginationFornecedores');
+    const pagination = document.getElementById('paginacaoFornecedores');
     pagination.innerHTML = '';
 
     const maxLeft = Math.max(paginaAtualFornecedores - Math.floor(maxBotoesPaginacaoFornecedores / 2), 1);
@@ -155,9 +155,17 @@ function aplicarOrdenacaoFornecedores() {
 // Função para buscar fornecedores com base no nome
 function buscarFornecedor() {
     const inputBuscarFornecedor = document.getElementById('buscarFornecedor');
+    if (!inputBuscarFornecedor) {
+        console.error("Elemento de busca não encontrado!");
+        return;
+    }
+    
+    // Inicializa o valor
+    inputBuscarFornecedor.value = "";
 
     inputBuscarFornecedor.addEventListener('input', function () {
         const termoBusca = inputBuscarFornecedor.value.toLowerCase();
+        console.log("Buscando fornecedor:", termoBusca);
 
         fornecedoresFiltrados = fornecedores.filter(fornecedor =>
             fornecedor.nome.toLowerCase().includes(termoBusca) ||

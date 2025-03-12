@@ -4,37 +4,53 @@ $this->layout("_theme");
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/fornecedores.css') ?>">
+<!-- FontAwesome (Ícones) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <body>
-    <div class="container-fluid mt-3">
+    <div class="container-fluid mt-4">
+        <!-- Header com animação sutil e destaque -->
+        <div class="dashboard-header mb-4 p-4 bg-white shadow-sm rounded-3">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="fw-bold display-6 mb-2 text-gradient"><i class="fas fa-truck-fast me-2"></i>Fornecedores</h1>
+                    <p class="text-muted fs-5 fw-light">Gerencie os fornecedores do sistema</p>
+                    <div class="header-divider mt-3"></div>
+                </div>
+                <div class="col-md-4 d-flex align-items-center justify-content-end">
+                    <div class="date-display text-end">
+                        <span class="current-date fw-bold"></span>
+                        <script>
+                            // Adicionar data atual
+                            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                            document.querySelector('.current-date').textContent = new Date().toLocaleDateString('pt-BR', options);
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-12">
                 <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white py-3">
-                        <h3 class="card-title text-primary fw-bold mb-0">
-                            <i class="fas fa-truck-fast me-2"></i>Gestão de Fornecedores
-                        </h3>
-                    </div>
                     <div class="card-body">
-                        <div class="headerTabelaFornecedores p-3 bg-light rounded mb-3">
-                            <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
-                                <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#modalAdicionarFornecedor" id="adicionarFornecedorBtn">
-                                    <i class="fas fa-plus me-2"></i>
-                                    <span>Adicionar Fornecedor</span>
+                        <div class="headerTabelaFornecedores p-2 mb-3">
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarFornecedor" id="adicionarFornecedorBtn">
+                                    <i class="fas fa-plus-circle"></i> Adicionar Fornecedor
                                 </button>
-                                <div class="input-group" style="max-width: 300px;">
-                                    <span class="input-group-text bg-white">
-                                        <i class="fas fa-search text-muted"></i>
-                                    </span>
-                                    <input type="text" name="buscarFornecedor" id="buscarFornecedor" placeholder="Procurar fornecedor" class="form-control">
+                            </div>
+                            <div class="d-flex flex-wrap gap-3 align-items-center">
+                                <div class="search-box">
+                                    <input type="text" name="buscarFornecedor" class="search-input" id="buscarFornecedor" placeholder="Procurar fornecedor">
                                 </div>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table id="tabelaFornecedores" class="table table-hover align-middle">
-                                <thead class="table-light">
+                            <table id="tabelaFornecedores" class="table table-bordered table-striped">
+                                <thead class="sticky-top bg-white">
                                     <tr>
-                                        <th id="ordenarNomeFornecedor">Nome <i class="fas fa-sort ms-1" id="setaNomeFornecedor"></i></th>
+                                        <th id="ordenarNomeFornecedor">Nome <span class="seta" id="setaNomeFornecedor">⬍</span></th>
                                         <th id="ordenarCnpjFornecedor">CNPJ</th>
                                         <th id="ordenarEmailFornecedor">Email</th>
                                         <th id="ordenarTelefoneFornecedor">Telefone</th>
@@ -52,11 +68,11 @@ $this->layout("_theme");
                         </div>
                     </div>
                 </div>
+                <nav>
+                    <ul class="pagination justify-content-center" id="paginacaoFornecedores"></ul>
+                </nav>
             </div>
         </div>
-        <nav>
-            <ul class="pagination justify-content-center" id="paginationFornecedores"></ul>
-        </nav>
     </div>
 
     <!-- Modal Adicionar Fornecedor -->
@@ -70,7 +86,7 @@ $this->layout("_theme");
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="formAdicionarFornecedor">
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -217,96 +233,98 @@ $this->layout("_theme");
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="formEditarFornecedor" name="formEditarFornecedor" method="post" class="p-3">
-                    <input name="idFornecedorEditar" type="hidden" id="editarFornecedorId">
-                    <div class="row">
-                        <div class="col-md-8 mb-3">
-                            <label for="editarFornecedorNome" class="form-label">Nome</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-building"></i></span>
-                                <input name="nome" type="text" id="editarFornecedorNome" class="form-control" placeholder="Nome do fornecedor">
+                    <div class="modal-body p-4">
+                        <input name="idFornecedorEditar" type="hidden" id="editarFornecedorId">
+                        <div class="row">
+                            <div class="col-md-8 mb-3">
+                                <label for="editarFornecedorNome" class="form-label">Nome</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                    <input name="nome" type="text" id="editarFornecedorNome" class="form-control" placeholder="Nome do fornecedor">
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="editarFornecedorCnpj" class="form-label">CNPJ</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                                    <input name="cnpj" type="text" id="editarFornecedorCnpj" class="form-control" placeholder="00.000.000/0000-00">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="editarFornecedorCnpj" class="form-label">CNPJ</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                                <input name="cnpj" type="text" id="editarFornecedorCnpj" class="form-control" placeholder="00.000.000/0000-00">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editarFornecedorEmail" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input name="email" type="email" id="editarFornecedorEmail" class="form-control" placeholder="email@exemplo.com">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="editarFornecedorTelefone" class="form-label">Telefone</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                    <input name="telefone" type="text" id="editarFornecedorTelefone" class="form-control" placeholder="(00) 00000-0000">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="editarFornecedorEmail" class="form-label">Email</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                <input name="email" type="email" id="editarFornecedorEmail" class="form-control" placeholder="email@exemplo.com">
-                            </div>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="editarFornecedorTelefone" class="form-label">Telefone</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                <input name="telefone" type="text" id="editarFornecedorTelefone" class="form-control" placeholder="(00) 00000-0000">
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="editarFornecedorEndereco" class="form-label">Endereço</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                            <input name="endereco" type="text" id="editarFornecedorEndereco" class="form-control" placeholder="Rua, número, bairro">
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="editarFornecedorMunicipio" class="form-label">Município</label>
+                        <div class="mb-3">
+                            <label for="editarFornecedorEndereco" class="form-label">Endereço</label>
                             <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-city"></i></span>
-                                <input name="municipio" type="text" id="editarFornecedorMunicipio" class="form-control" placeholder="Nome da cidade">
+                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                <input name="endereco" type="text" id="editarFornecedorEndereco" class="form-control" placeholder="Rua, número, bairro">
                             </div>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="editarFornecedorCep" class="form-label">CEP</label>
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
-                                <input name="cep" type="text" id="editarFornecedorCep" class="form-control" placeholder="00000-000">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="editarFornecedorMunicipio" class="form-label">Município</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-city"></i></span>
+                                    <input name="municipio" type="text" id="editarFornecedorMunicipio" class="form-control" placeholder="Nome da cidade">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label for="editarUfFornecedor" class="form-label">UF</label>
-                            <select name="uf" class="form-select" id="editarUfFornecedor">
-                                <option value="" disabled selected>Selecione</option>
-                                <option value="AC">Acre (AC)</option>
-                                <option value="AL">Alagoas (AL)</option>
-                                <option value="AP">Amapá (AP)</option>
-                                <option value="AM">Amazonas (AM)</option>
-                                <option value="BA">Bahia (BA)</option>
-                                <option value="CE">Ceará (CE)</option>
-                                <option value="DF">Distrito Federal (DF)</option>
-                                <option value="ES">Espírito Santo (ES)</option>
-                                <option value="GO">Goiás (GO)</option>
-                                <option value="MA">Maranhão (MA)</option>
-                                <option value="MT">Mato Grosso (MT)</option>
-                                <option value="MS">Mato Grosso do Sul (MS)</option>
-                                <option value="MG">Minas Gerais (MG)</option>
-                                <option value="PA">Pará (PA)</option>
-                                <option value="PB">Paraíba (PB)</option>
-                                <option value="PR">Paraná (PR)</option>
-                                <option value="PE">Pernambuco (PE)</option>
-                                <option value="PI">Piauí (PI)</option>
-                                <option value="RJ">Rio de Janeiro (RJ)</option>
-                                <option value="RN">Rio Grande do Norte (RN)</option>
-                                <option value="RS">Rio Grande do Sul (RS)</option>
-                                <option value="RO">Rondônia (RO)</option>
-                                <option value="RR">Roraima (RR)</option>
-                                <option value="SC">Santa Catarina (SC)</option>
-                                <option value="SP">São Paulo (SP)</option>
-                                <option value="SE">Sergipe (SE)</option>
-                                <option value="TO">Tocantins (TO)</option>
-                            </select>
+                            <div class="col-md-3 mb-3">
+                                <label for="editarFornecedorCep" class="form-label">CEP</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
+                                    <input name="cep" type="text" id="editarFornecedorCep" class="form-control" placeholder="00000-000">
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="editarUfFornecedor" class="form-label">UF</label>
+                                <select name="uf" class="form-select" id="editarUfFornecedor">
+                                    <option value="" disabled selected>Selecione</option>
+                                    <option value="AC">Acre (AC)</option>
+                                    <option value="AL">Alagoas (AL)</option>
+                                    <option value="AP">Amapá (AP)</option>
+                                    <option value="AM">Amazonas (AM)</option>
+                                    <option value="BA">Bahia (BA)</option>
+                                    <option value="CE">Ceará (CE)</option>
+                                    <option value="DF">Distrito Federal (DF)</option>
+                                    <option value="ES">Espírito Santo (ES)</option>
+                                    <option value="GO">Goiás (GO)</option>
+                                    <option value="MA">Maranhão (MA)</option>
+                                    <option value="MT">Mato Grosso (MT)</option>
+                                    <option value="MS">Mato Grosso do Sul (MS)</option>
+                                    <option value="MG">Minas Gerais (MG)</option>
+                                    <option value="PA">Pará (PA)</option>
+                                    <option value="PB">Paraíba (PB)</option>
+                                    <option value="PR">Paraná (PR)</option>
+                                    <option value="PE">Pernambuco (PE)</option>
+                                    <option value="PI">Piauí (PI)</option>
+                                    <option value="RJ">Rio de Janeiro (RJ)</option>
+                                    <option value="RN">Rio Grande do Norte (RN)</option>
+                                    <option value="RS">Rio Grande do Sul (RS)</option>
+                                    <option value="RO">Rondônia (RO)</option>
+                                    <option value="RR">Roraima (RR)</option>
+                                    <option value="SC">Santa Catarina (SC)</option>
+                                    <option value="SP">São Paulo (SP)</option>
+                                    <option value="SE">Sergipe (SE)</option>
+                                    <option value="TO">Tocantins (TO)</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -324,28 +342,31 @@ $this->layout("_theme");
 
     <!-- Modal Excluir -->
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="modalExcluirLabel">
-                        <i class="fas fa-trash-alt me-2"></i>Excluir Fornecedor
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Fornecedor
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="fornecedor-excluir" name="fornecedor-excluir" method="post">
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir este fornecedor?</p>
                         <div class="alert alert-warning">
-                            <i class="fas fa-exclamation-triangle me-2"></i>
-                            <strong>Atenção:</strong> Tem certeza de que deseja excluir este fornecedor?  
-                            <p class="mb-0 mt-2">Ao confirmar, todas as entradas, compras e outros registros relacionados a ele também serão removidos.</p>
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Ao confirmar, todas as entradas, compras e outros registros relacionados a ele também serão removidos.
                         </div>
                         <input type="hidden" id="idFornecedorExcluir" name="idFornecedorExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
                             <i class="fas fa-times me-2"></i>Cancelar
                         </button>
-                        <button type="submit" class="btn btn-danger" id="confirmarExcluir">
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluir">
                             <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
                         </button>
                     </div>
@@ -356,17 +377,21 @@ $this->layout("_theme");
 
     <!-- Modal Histórico -->
     <div class="modal fade" id="modalHistoricoFornecedor" tabindex="-1" aria-labelledby="modalHistoricoFornecedorLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalHistoricoFornecedorLabel">Histórico de Compras</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="modalHistoricoFornecedorLabel">
+                        <i class="fas fa-history me-2"></i>Histórico de Compras
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <p id="historicoFornecedor"></p>
+                <div class="modal-body p-4">
+                    <div id="historicoFornecedor" class="mt-2"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Fechar
+                    </button>
                 </div>
             </div>
         </div>

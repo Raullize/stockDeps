@@ -99,7 +99,7 @@ function mostrarPaginaClientes(pagina) {
 
 function atualizarPaginacaoClientes() {
     const totalPaginas = Math.ceil(clientesFiltrados.length / itensPorPaginaClientes);
-    const pagination = document.getElementById('paginationClientes');
+    const pagination = document.getElementById('paginacaoClientes');
     pagination.innerHTML = '';
 
     const maxLeft = Math.max(paginaAtualClientes - Math.floor(maxBotoesPaginacaoClientes / 2), 1);
@@ -139,9 +139,18 @@ function atualizarPaginacaoClientes() {
 
 function buscarCliente() {
     const inputBuscarCliente = document.getElementById("buscarCliente");
+    if (!inputBuscarCliente) {
+        console.error("Elemento de busca não encontrado!");
+        return;
+    }
 
+    // Inicializa o valor
+    inputBuscarCliente.value = "";
+    
+    // Adiciona o evento de input
     inputBuscarCliente.addEventListener("input", function () {
         const termoBusca = inputBuscarCliente.value.toLowerCase();
+        console.log("Buscando cliente:", termoBusca);
 
         // Atualiza clientesFiltrados com base no termo de busca
         clientesFiltrados = clientes.filter(cliente =>
