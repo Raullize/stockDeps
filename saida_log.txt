@@ -1,0 +1,4 @@
+Dados recebidos: {"produtoId2":"6","cliente_nao_cadastrado":"1","nome":"Cliente n\u00e3o cadastrado","quantidade":"2","preco":"R$\u00a018,90"}
+Cliente não cadastrado: Sim
+Preço processado: 18.9
+Cliente não cadastrado, idCliente = null

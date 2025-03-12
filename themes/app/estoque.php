@@ -531,6 +531,7 @@ $this->layout("_theme");
                 <form id="saida-cadastro" name="saida-cadastro" method="post">
                     <div class="modal-body">
                         <input name="produtoId2" type="hidden" id="produtoId2" value=""> <!-- Campo oculto para armazenar o id -->
+                        <input name="cliente_nao_cadastrado" type="hidden" id="cliente_nao_cadastrado_valor" value="0"> <!-- Campo oculto para status do checkbox -->
                         
                         <!-- Campo Cliente -->
                         <div class="mb-3 position-relative">

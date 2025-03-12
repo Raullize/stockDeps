@@ -1002,12 +1002,29 @@ function preencherClientes(clientes) {
   // Verificar se o checkbox está marcado e atualizar o estado do input
   if (checkboxClienteNaoCadastrado) {
     checkboxClienteNaoCadastrado.addEventListener("change", function() {
+      const hiddenField = document.getElementById("cliente_nao_cadastrado_valor");
+      
       if (this.checked) {
-        input.value = "";
-        input.disabled = true;
+        input.value = "Cliente não cadastrado";
+        input.readOnly = true;
+        input.classList.add('text-muted');
         lista.style.display = "none";
+        
+        // Atualiza o campo oculto
+        if (hiddenField) {
+          hiddenField.value = "1";
+          console.log("Cliente não cadastrado: Sim, campo oculto atualizado para 1");
+        }
       } else {
-        input.disabled = false;
+        input.value = "";
+        input.readOnly = false;
+        input.classList.remove('text-muted');
+        
+        // Atualiza o campo oculto
+        if (hiddenField) {
+          hiddenField.value = "0";
+          console.log("Cliente não cadastrado: Não, campo oculto atualizado para 0");
+        }
       }
     });
   }
@@ -1122,6 +1139,7 @@ document
   .getElementById("clienteNaoCadastrado")
   .addEventListener("change", function () {
     const clienteInput = document.getElementById("cliente");
+    const hiddenField = document.getElementById("cliente_nao_cadastrado_valor");
 
     if (this.checked) {
       // Cliente não cadastrado selecionado
@@ -1129,12 +1147,16 @@ document
       clienteInput.value = "Cliente não cadastrado";
       clienteInput.placeholder = "Cliente não cadastrado";
       clienteInput.classList.add("text-muted");
+      hiddenField.value = "1"; // Marca o campo oculto como "sim, não é cadastrado"
+      console.log("Cliente não cadastrado marcado: ", clienteInput.value);
     } else {
       // Cliente cadastrado selecionado
       clienteInput.readOnly = false;
       clienteInput.value = "";
       clienteInput.placeholder = "Digite o nome do cliente";
       clienteInput.classList.remove("text-muted");
+      hiddenField.value = "0"; // Marca o campo oculto como "não, é cadastrado"
+      console.log("Cliente não cadastrado desmarcado: ", clienteInput.value);
     }
   });
 

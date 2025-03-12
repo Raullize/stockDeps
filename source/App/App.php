@@ -599,104 +599,134 @@ class App
     public function estoqueSc(?array $data): void
     {
         if (!empty($data)) {
-            $data["quantidade"] = round((float)$data["quantidade"], 3);
-            if (($data["produtoId2"] && $data["quantidade"] && $data["preco"]) == null) {
-                $json = [
-                    "nome" => $data["nome"],
-                    "idProdutos" => $data["produtoId2"],
-                    "quantidade" => $data["quantidade"],
-                    "preco" => $data["preco"],
-                    "message" => "Informe todos os campos para cadastrar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
+            try {
+                // Log dos dados recebidos para depuração
+                file_put_contents("saida_log.txt", "Dados recebidos: " . json_encode($data) . "\n", FILE_APPEND);
+                
+                // Verificar se o cliente não é cadastrado usando o campo oculto
+                $clienteNaoCadastrado = isset($data["cliente_nao_cadastrado"]) && $data["cliente_nao_cadastrado"] === "1";
+                
+                // Log do status do cliente não cadastrado
+                file_put_contents("saida_log.txt", "Cliente não cadastrado: " . ($clienteNaoCadastrado ? "Sim" : "Não") . "\n", FILE_APPEND);
+                
+                // Verificar campos vazios apenas se o cliente não for marcado como não cadastrado
+                if (!$clienteNaoCadastrado && in_array("", $data)) {
+                    $json = [
+                        "message" => "Informe todos os campos para cadastrar!",
+                        "type" => "error"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
 
-            $newpreco = $data["preco"];
+                $newpreco = $data["preco"];
 
-            // Remove completamente o símbolo de moeda 'R$'
-            $newpreco = str_replace('R$', '', $newpreco);
+                // Remove completamente o símbolo de moeda 'R$'
+                $newpreco = str_replace('R$', '', $newpreco);
 
-            // Remove espaços extras (inclusive invisíveis) no início e no final
-            $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
+                // Remove espaços extras (inclusive invisíveis) no início e no final
+                $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
 
-            // Remove os pontos (separadores de milhar)
-            $newpreco = str_replace('.', '', $newpreco);
+                // Remove os pontos (separadores de milhar)
+                $newpreco = str_replace('.', '', $newpreco);
 
-            // Substitui a vírgula decimal por um ponto
-            $newpreco = str_replace(',', '.', $newpreco);
+                // Substitui a vírgula decimal por um ponto
+                $newpreco = str_replace(',', '.', $newpreco);
 
-            // Converte para float
-            $precoFloat = (float)$newpreco;
+                // Converte para float
+                $precoFloat = (float)$newpreco;
+                
+                // Log do preço processado
+                file_put_contents("saida_log.txt", "Preço processado: " . $precoFloat . "\n", FILE_APPEND);
 
-            $cliente = new Clientes();
-            $idCliente = $cliente->findByIdName($data["nome"]);
-
-            if ($data["quantidade"] <= 0) {
-                $json = [
-                    "message" => "Quantidade Inválida!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            if ($precoFloat <= 0) {
-                $json = [
-                    "message" => "Preço Inválido!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            if ($idCliente == false) {
+                // Verifica se é cliente não cadastrado e define idCliente como null diretamente
                 $idCliente = null;
-            }
+                if ($clienteNaoCadastrado || $data["nome"] === "Cliente não cadastrado") {
+                    // Cliente não cadastrado, mantém idCliente como null
+                    file_put_contents("saida_log.txt", "Cliente não cadastrado, idCliente = null\n", FILE_APPEND);
+                } else {
+                    $cliente = new Clientes();
+                    $idCliente = $cliente->findByIdName($data["nome"]);
+                    
+                    // Log do resultado da busca pelo cliente
+                    file_put_contents("saida_log.txt", "Busca por cliente: " . $data["nome"] . ", resultado: " . ($idCliente ? $idCliente : "não encontrado") . "\n", FILE_APPEND);
+                    
+                    // Se não encontrar, mantém como null
+                    if ($idCliente == false) {
+                        $idCliente = null;
+                    }
+                }
 
-            $produto = new Produtos();
-            $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
+                if ($data["quantidade"] <= 0) {
+                    $json = [
+                        "message" => "Quantidade Inválida!",
+                        "type" => "warning"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
 
-            if ($quantidadeProduto < $data["quantidade"]) {
+                if ($precoFloat <= 0) {
+                    $json = [
+                        "message" => "Preço Inválido!",
+                        "type" => "warning"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
+
+                $produto = new Produtos();
+                $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
+
+                if ($quantidadeProduto < $data["quantidade"]) {
+                    $json = [
+                        "quantidadeProduto" => $quantidadeProduto,
+                        "quantidade" => $data["quantidade"],
+                        "message" => "Quantidade inválida!",
+                        "type" => "warning"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
+
+                $saidas = new Saidas(
+                    NULL,
+                    $idCliente,
+                    $data["produtoId2"],
+                    $data["quantidade"],
+                    $precoFloat
+                );
+
+                if ($saidas->insert()) {
+
+                    $produto->subtraiQuantidadeProdutos($data["produtoId2"], $data["quantidade"]);
+
+                    $json = [
+                        "saidas" => $saidas->selectAll(),
+                        "produtos" => $produto->selectAll(),
+                        "nome" => $data["nome"],
+                        "idCliente" => $idCliente,
+                        "idProdutos" => $data["produtoId2"],
+                        "quantidade" => $data["quantidade"],
+                        "preco" => $precoFloat,
+                        "message" => "Saída cadastrada com sucesso!",
+                        "type" => "success"
+                    ];
+                    echo json_encode($json);
+                    return;
+                } else {
+                    $json = [
+                        "message" => "Saída não cadastrada!",
+                        "type" => "error"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
+            } catch (\Exception $e) {
+                // Log de erro
+                file_put_contents("saida_error.txt", date('Y-m-d H:i:s') . " - " . $e->getMessage() . "\n", FILE_APPEND);
                 $json = [
-                    "quantidadeProduto" => $quantidadeProduto,
-                    "quantidade" => $data["quantidade"],
-                    "message" => "Quantidade inválida!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $saidas = new Saidas(
-                NULL,
-                $idCliente,
-                $data["produtoId2"],
-                $data["quantidade"],
-                $precoFloat
-            );
-
-            if ($saidas->insert()) {
-
-                $produto->subtraiQuantidadeProdutos($data["produtoId2"], $data["quantidade"]);
-
-                $json = [
-                    "saidas" => $saidas->selectAll(),
-                    "produtos" => $produto->selectAll(),
-                    "nome" => $data["nome"],
-                    "idCliente" => $idCliente,
-                    "idProdutos" => $data["produtoId2"],
-                    "quantidade" => $data["quantidade"],
-                    "preco" => $precoFloat,
-                    "message" => "Saída cadastrada com sucesso!",
-                    "type" => "success"
-                ];
-                echo json_encode($json);
-                return;
-            } else {
-                $json = [
-                    "message" => "Saída não cadastrada!",
+                    "message" => "Erro ao processar a solicitação: " . $e->getMessage(),
                     "type" => "error"
                 ];
                 echo json_encode($json);
