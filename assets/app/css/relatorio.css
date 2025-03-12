@@ -177,11 +177,13 @@
 .dashboard-header {
     border-left: 5px solid var(--primary-color);
     background: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    box-shadow: var(--box-shadow);
 }
 
 .dashboard-header h1 {
     color: var(--primary-color);
+    position: relative;
+    padding-left: 0;
     font-weight: 700;
 }
 
@@ -220,12 +222,12 @@
 .relatorio-header h1 {
     font-size: 2.2rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--dark-color);
     margin-bottom: 0.5rem;
 }
 
 .relatorio-header p {
-    color: #212529;
+    color: var(--secondary-color);
     font-size: 1rem;
     margin-bottom: 0.5rem;
 }
@@ -233,7 +235,7 @@
 .relatorio-header .header-divider {
     height: 3px;
     width: 100px;
-    background: var(--primary-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--info-color));
     border-radius: 3px;
     margin-top: 5px;
     margin-bottom: 10px;

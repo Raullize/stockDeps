@@ -366,12 +366,12 @@
 .home-header h1 {
     font-size: 2.2rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--dark-color);
     margin-bottom: 0.5rem;
 }
 
 .home-header p {
-    color: #212529;
+    color: var(--secondary-color);
     font-size: 1rem;
     margin-bottom: 0.5rem;
 }
@@ -386,7 +386,7 @@
 }
 
 .home-header .date-display {
-    color: #212529;
+    color: var(--secondary-color);
     font-size: 0.95rem;
     text-align: right;
 }

@@ -19,7 +19,7 @@
   
   <!-- Ajustes de responsividade -->
   <style>
-    /* Estilos padrão para cabeçalhos de página - PADRONIZAÇÃO */
+    /* Estilos padrão para cabeçalhos de página */
     .dashboard-header, .page-header, .relatorio-header, .clientes-header, .fornecedores-header, .home-header {
       border-left: 5px solid var(--primary-color);
       padding: 2rem;
@@ -31,16 +31,20 @@
       animation: fadeInDown 0.7s ease-out;
     }
     
-    /* Padronização de cores para todos os cabeçalhos */
-    .dashboard-header h1, .page-header h1, .relatorio-header h1, .clientes-header h1, .fornecedores-header h1, .home-header h1 {
-      font-size: 2.2rem;
+    /* Padronizar cores e estilos dos elementos do cabeçalho */
+    .dashboard-header h1, .page-header h1, .relatorio-header h1, .clientes-header h1, .fornecedores-header h1, .home-header h1,
+    .dashboard-header .text-gradient, .page-header .text-gradient, .relatorio-header .text-gradient, 
+    .clientes-header .text-gradient, .fornecedores-header .text-gradient, .home-header .text-gradient {
+      color: var(--primary-color) !important;
+      -webkit-text-fill-color: var(--primary-color) !important;
+      background: none !important;
+      background-clip: unset !important;
+      -webkit-background-clip: unset !important;
       font-weight: 700;
-      color: var(--primary-color);
-      margin-bottom: 0.5rem;
     }
     
     .dashboard-header p, .page-header p, .relatorio-header p, .clientes-header p, .fornecedores-header p, .home-header p {
-      color: #212529;
+      color: #212529 !important;
       font-size: 1rem;
       margin-bottom: 0.5rem;
     }
@@ -52,20 +56,12 @@
     
     .header-divider {
       height: 3px;
-      width: 100px;
-      background: var(--primary-color);
+      width: 100px !important;
+      background: var(--primary-color) !important;
+      background-image: none !important;
       border-radius: 3px;
       margin-top: 5px;
       margin-bottom: 10px;
-    }
-    
-    /* Corrigir gradient text para manter consistência */
-    .text-gradient {
-      color: var(--primary-color) !important;
-      background: none !important;
-      -webkit-background-clip: initial !important;
-      background-clip: initial !important;
-      -webkit-text-fill-color: initial !important;
     }
     
     /* Alinhamento centralizado em telas pequenas */
@@ -82,7 +78,7 @@
       
       .header-divider {
         margin: 10px auto !important;
-        width: 100px !important; /* Manter largura consistente */
+        width: 100px !important;
       }
       
       .date-display {
@@ -118,7 +114,6 @@
         padding-right: 0.3rem !important;
       }
       
-      /* Manter largura da borda consistente mesmo em telas pequenas */
       .header-divider {
         width: 100px !important;
       }
