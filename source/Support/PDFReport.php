@@ -55,36 +55,40 @@ class PDFReport
         
         <style>
             body {
-                font-family: Arial, sans-serif;
-                margin: 0;
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                margin: 20px;
                 padding: 0;
+                color: #333;
             }
 
             h1 {
                 text-align: center;
-                margin-bottom: 40px;
+                margin-bottom: 20px;
+                color: #4361ee;
             }
 
             h2 {
-                font-size: 18px;
-                margin-bottom: 20px;
+                font-size: 16px;
+                margin-bottom: 15px;
+                color: #333;
             }
 
             table {
                 border-collapse: collapse;
                 width: 100%;
-                margin-bottom: 40px;
+                margin-bottom: 20px;
+                font-size: 12px;
             }
 
             th, td {
-                border: 1px solid #dddddd;
+                border: 1px solid #ddd;
                 text-align: left;
-                padding: 10px;
-                font-size: 10px;
+                padding: 8px;
             }
 
             th {
-                background-color: #f2f2f2;
+                background-color: #4361ee;
+                color: white;
             }
 
             tr:nth-child(even) {
@@ -166,31 +170,40 @@ class PDFReport
 
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 20px;
             padding: 0;
+            color: #333;
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 20px;
+            color: #4361ee;
+        }
+
+        h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #333;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            font-size: 12px;
         }
 
         th, td {
-            border: 1px solid #dddddd;
+            border: 1px solid #ddd;
             text-align: left;
-            padding: 5px;
-            font-size: 10px; /* Reduzir o tamanho da fonte para caber mais conteúdo */
+            padding: 8px;
         }
 
         th {
-            background-color: #f2f2f2;
+            background-color: #4361ee;
+            color: white;
         }
 
         tr:nth-child(even) {
@@ -198,8 +211,8 @@ class PDFReport
         }
 
         td {
-            word-wrap: break-word; /* Quebra de linha nas células caso o conteúdo seja grande */
-            max-width: 100px; /* Limita a largura das células */
+            word-wrap: break-word;
+            max-width: 150px;
         }
 
     </style>
@@ -273,36 +286,40 @@ class PDFReport
         
         <style>
             body {
-                font-family: Arial, sans-serif;
-                margin: 0;
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                margin: 20px;
                 padding: 0;
+                color: #333;
             }
 
             h1 {
                 text-align: center;
-                margin-bottom: 40px;
+                margin-bottom: 20px;
+                color: #4361ee;
             }
 
             h2 {
-                font-size: 18px;
-                margin-bottom: 20px;
+                font-size: 16px;
+                margin-bottom: 15px;
+                color: #333;
             }
 
             table {
                 border-collapse: collapse;
                 width: 100%;
-                margin-bottom: 40px;
+                margin-bottom: 20px;
+                font-size: 12px;
             }
 
             th, td {
-                border: 1px solid #dddddd;
+                border: 1px solid #ddd;
                 text-align: left;
-                padding: 10px;
-                font-size: 10px;
+                padding: 8px;
             }
 
             th {
-                background-color: #f2f2f2;
+                background-color: #4361ee;
+                color: white;
             }
 
             tr:nth-child(even) {
