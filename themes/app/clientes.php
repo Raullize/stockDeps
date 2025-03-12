@@ -199,7 +199,7 @@ $this->layout("_theme");
                         <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir este cliente?</p>
                         <div class="alert alert-warning">
                             <i class="fas fa-info-circle me-2"></i>
-                            Ao confirmar, todas as vendas, transações e outros registros relacionados a ele também serão removidos.
+                            <strong>Atenção:</strong> Ao confirmar, todas as vendas, transações e outros registros relacionados a ele também serão removidos.
                         </div>
                         <input type="hidden" id="idClienteExcluir" name="idClienteExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
@@ -208,7 +208,7 @@ $this->layout("_theme");
                             <i class="fas fa-times me-2"></i>Cancelar
                         </button>
                         <button type="submit" class="btn btn-danger px-4" id="confirmarExcluir">
-                            <i class="fas fa-trash-alt me-2"></i>Excluir
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
                         </button>
                     </div>
                 </form>

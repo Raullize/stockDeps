@@ -374,27 +374,33 @@ $this->layout("_theme");
 
     <!-- Modal Excluir Categoria -->
     <div class="modal fade" id="modalExcluirCategoria" tabindex="-1" aria-labelledby="modalExcluirCategoriaLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirCategoriaLabel"><i class="fas fa-trash-alt me-2"></i>Excluir Categoria</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirCategoriaLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Categoria
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="categoria-excluir" name="categoria-excluir" method="post">
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
                         <div class="text-center mb-4">
-                            <div class="mb-3 text-warning">
-                                <i class="fas fa-exclamation-triangle fa-4x"></i>
-                            </div>
-                            <h5>Tem certeza de que deseja excluir esta categoria?</h5>
-                            <p class="text-muted">Esta ação pode afetar produtos associados a esta categoria.</p>
-                            <p class="text-muted"><strong>Esta operação não pode ser desfeita!</strong></p>
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir esta categoria?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Esta ação pode afetar produtos associados e não pode ser desfeita!
                         </div>
                         <input type="hidden" id="idCategoriaExcluir" name="idCategoriaExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
-                        <button type="submit" class="btn btn-danger" id="confirmarExcluirCategoria"><i class="fas fa-trash-alt me-1"></i>Confirmar Exclusão</button>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluirCategoria">
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        </button>
                     </div>
                 </form>
             </div>
@@ -403,27 +409,33 @@ $this->layout("_theme");
 
     <!-- Modal Excluir Produto -->
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirLabel"><i class="fas fa-trash-alt me-2"></i>Excluir Produto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Produto
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="produto-excluir" name="produto-excluir" method="post">
-                    <div class="modal-body">
+                    <div class="modal-body p-4">
                         <div class="text-center mb-4">
-                            <div class="mb-3 text-danger">
-                                <i class="fas fa-exclamation-triangle fa-4x"></i>
-                            </div>
-                            <h5>Tem certeza de que deseja excluir este produto?</h5>
-                            <p class="text-muted">Ao confirmar, todas as entradas e saídas relacionadas a ele também serão removidas.</p>
-                            <p class="text-muted"><strong>Esta operação não pode ser desfeita!</strong></p>
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir este produto?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Ao confirmar, todas as entradas e saídas relacionadas a ele também serão removidas. Esta operação não pode ser desfeita!
                         </div>
                         <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
-                        <button type="submit" class="btn btn-danger" id="confirmarExcluir"><i class="fas fa-trash-alt me-1"></i>Confirmar Exclusão</button>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluir">
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        </button>
                     </div>
                 </form>
             </div>
@@ -704,26 +716,33 @@ $this->layout("_theme");
 
     <!-- Modal Excluir Entrada -->
     <div class="modal fade" id="modalExcluirEntrada" tabindex="-1" aria-labelledby="modalExcluirEntradaLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirEntradaLabel"><i class="fas fa-trash-alt me-2"></i>Excluir Entrada</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirEntradaLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Entrada
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="entrada-excluir" method="post">
-                    <div class="modal-body">
+                <form id="entrada-excluir" name="entrada-excluir" method="post">
+                    <div class="modal-body p-4">
                         <div class="text-center mb-4">
-                            <div class="mb-3 text-warning">
-                                <i class="fas fa-exclamation-triangle fa-4x"></i>
-                            </div>
-                            <h5>Tem certeza de que deseja excluir esta entrada?</h5>
-                            <p class="text-muted">Esta ação não poderá ser desfeita e afetará o estoque do produto.</p>
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir esta entrada de estoque?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Esta ação não pode ser desfeita e afetará o estoque do produto!
                         </div>
                         <input type="hidden" id="idEntradaExcluir" name="idEntradaExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
-                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt me-1"></i>Confirmar Exclusão</button>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluirEntrada">
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        </button>
                     </div>
                 </form>
             </div>
@@ -843,26 +862,33 @@ $this->layout("_theme");
 
     <!-- Modal Excluir Saída -->
     <div class="modal fade" id="modalExcluirSaida" tabindex="-1" aria-labelledby="modalExcluirSaidaLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirSaidaLabel"><i class="fas fa-trash-alt me-2"></i>Excluir Saída</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirSaidaLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Saída
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="saida-excluir" method="post">
-                    <div class="modal-body">
+                <form id="saida-excluir" name="saida-excluir" method="post">
+                    <div class="modal-body p-4">
                         <div class="text-center mb-4">
-                            <div class="mb-3 text-warning">
-                                <i class="fas fa-exclamation-triangle fa-4x"></i>
-                            </div>
-                            <h5>Tem certeza de que deseja excluir esta saída?</h5>
-                            <p class="text-muted">Esta ação não poderá ser desfeita e afetará o estoque do produto.</p>
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir esta saída de estoque?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Esta ação não pode ser desfeita e afetará o estoque do produto!
                         </div>
                         <input type="hidden" id="idSaidaExcluir" name="idSaidaExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
-                        <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt me-1"></i>Confirmar Exclusão</button>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluirSaida">
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        </button>
                     </div>
                 </form>
             </div>
