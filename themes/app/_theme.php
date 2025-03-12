@@ -16,6 +16,71 @@
   <!-- Ícone do site -->
   <link rel="icon" href="<?= url('assets/web/images/logos/logo-simple.png') ?>" type="image/png" />
   <title>StockDeps</title>
+  
+  <!-- Ajustes de responsividade -->
+  <style>
+    /* Estilos padrão para cabeçalhos de página */
+    .dashboard-header, .page-header, .relatorio-header, .clientes-header, .fornecedores-header, .home-header {
+      border-left: 5px solid var(--primary-color);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      background-color: #fff;
+      text-align: left;
+      animation: fadeInDown 0.7s ease-out;
+    }
+    
+    /* Alinhamento centralizado em telas pequenas */
+    @media (max-width: 768px) {
+      .dashboard-header, .page-header, .relatorio-header, .clientes-header, .fornecedores-header, .home-header {
+        text-align: center;
+        padding: 1.25rem;
+      }
+      
+      .dashboard-header h1, .page-header h1, .relatorio-header h1, .clientes-header h1, .fornecedores-header h1, .home-header h1,
+      .dashboard-header p, .page-header p, .relatorio-header p, .clientes-header p, .fornecedores-header p, .home-header p {
+        text-align: center !important;
+      }
+      
+      .header-divider {
+        margin: 10px auto !important;
+      }
+      
+      .date-display {
+        text-align: left !important;
+        margin-top: 1rem !important;
+        display: block !important;
+        width: 100% !important;
+      }
+      
+      /* Ajustar margens para celular */
+      .container, .container-fluid {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+      }
+      
+      /* Força alinhamento dos cabeçalhos específicos */
+      .home-header .row .col-md-8,
+      .dashboard-header .row .col-md-8 {
+        text-align: center !important;
+        width: 100% !important;
+      }
+      
+      .home-header .row .col-md-4,
+      .dashboard-header .row .col-md-4 {
+        text-align: left !important;
+        width: 100% !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container, .container-fluid {
+        padding-left: 0.3rem !important;
+        padding-right: 0.3rem !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -24,6 +89,38 @@
     <div class="loading-spinner"></div>
     <div class="loading-text">Carregando...</div>
   </div>
+  
+  <!-- Correção para tabelas em dispositivos móveis -->
+  <style>
+    @media (max-width: 991px) {
+      .sidebar.show {
+        z-index: 1100 !important;
+      }
+      
+      .table-responsive {
+        position: relative !important;
+        z-index: 1 !important;
+      }
+      
+      .sidebar.show ~ .main-content .table-responsive {
+        z-index: 1 !important;
+      }
+      
+      /* Garantir que os botões de ação fiquem visíveis */
+      .table td:last-child {
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: initial !important;
+      }
+      
+      .action-btn {
+        min-width: 28px !important;
+        min-height: 28px !important;
+        margin: 0 1px !important;
+        padding: 0 !important;
+      }
+    }
+  </style>
   
   <div class="layout-wrapper">
     <!-- Sidebar -->

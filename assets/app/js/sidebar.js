@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleBtn = document.querySelector('.toggle-btn');
     const mobileToggle = document.querySelector('.mobile-toggle');
     const menuLinks = document.querySelectorAll('.menu-link');
+    const tableResponsives = document.querySelectorAll('.table-responsive');
     
     // Toggle sidebar no desktop (apenas para telas maiores)
     if (toggleBtn) {
@@ -23,7 +24,29 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mobileToggle) {
         mobileToggle.addEventListener('click', function() {
             sidebar.classList.toggle('show');
+            
+            // Se a sidebar estiver aberta, certifique-se que as tabelas fiquem abaixo
+            if (sidebar.classList.contains('show') && window.innerWidth < 992) {
+                adjustTableZIndex(true);
+            } else {
+                adjustTableZIndex(false);
+            }
         });
+    }
+    
+    // Função para ajustar o z-index das tabelas em dispositivos móveis
+    function adjustTableZIndex(sidebarOpen) {
+        if (window.innerWidth < 992) {
+            tableResponsives.forEach(table => {
+                if (sidebarOpen) {
+                    table.style.position = 'relative';
+                    table.style.zIndex = '1';
+                } else {
+                    table.style.position = 'relative';
+                    table.style.zIndex = '10';
+                }
+            });
+        }
     }
     
     // Fechar sidebar no mobile quando clicar em um link
@@ -31,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('click', function() {
             if (window.innerWidth < 992) {
                 sidebar.classList.remove('show');
+                adjustTableZIndex(false);
             }
         });
     });
@@ -41,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Verificar se o clique foi fora da sidebar e do botão toggle
             if (!sidebar.contains(e.target) && !mobileToggle.contains(e.target)) {
                 sidebar.classList.remove('show');
+                adjustTableZIndex(false);
             }
         }
     });
@@ -76,6 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar
     setActiveLink();
     restoreSidebarState();
+    adjustTableZIndex(sidebar.classList.contains('show'));
     
     // Atualizar link ativo quando a página muda
     window.addEventListener('popstate', setActiveLink);
@@ -86,11 +112,20 @@ document.addEventListener('DOMContentLoaded', function() {
             // Em telas grandes, restaurar o estado do localStorage
             restoreSidebarState();
             sidebar.classList.remove('show'); // Remover classe show em telas grandes
+            
+            // Resetar os estilos de z-index nas tabelas
+            tableResponsives.forEach(table => {
+                table.style.position = '';
+                table.style.zIndex = '';
+            });
         } else {
             // Em telas pequenas, garantir que a sidebar tenha largura completa
             if (sidebar.classList.contains('collapsed')) {
                 sidebar.classList.remove('collapsed');
             }
+            
+            // Ajustar z-index das tabelas
+            adjustTableZIndex(sidebar.classList.contains('show'));
         }
     });
 

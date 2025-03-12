@@ -1208,7 +1208,14 @@ function createButtonGroup(produto) {
   ];
 
   const tdActions = document.createElement("td");
-  tdActions.classList.add("text-center");
+  tdActions.classList.add("text-center", "actions-cell");
+  
+  // Adicionando div container para melhor controle de layout em dispositivos móveis
+  const actionContainer = document.createElement("div");
+  actionContainer.classList.add("action-buttons-container");
+  actionContainer.style.display = "flex";
+  actionContainer.style.flexWrap = "nowrap";
+  actionContainer.style.justifyContent = "center";
   
   actions.forEach(({ icon, text, class: btnClass, action }) => {
     const btn = document.createElement("button");
@@ -1217,9 +1224,10 @@ function createButtonGroup(produto) {
     btn.innerHTML = `<i class="${icon}"></i>`;
     btn.title = text;
     btn.addEventListener("click", action);
-    tdActions.appendChild(btn);
+    actionContainer.appendChild(btn);
   });
-
+  
+  tdActions.appendChild(actionContainer);
   return tdActions;
 }
 

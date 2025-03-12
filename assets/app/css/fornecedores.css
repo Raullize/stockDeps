@@ -7,11 +7,22 @@
 
 .headerTabelaFornecedores {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 1rem;
   padding: 1.5rem;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 1.5rem;
+}
+
+.headerTabelaFornecedores h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 .headerTabelaFornecedores button {
@@ -294,4 +305,139 @@ th:hover .seta {
     text-align: center;
     vertical-align: middle;
     padding: 12px 15px;
+}
+
+/* Estilos de cabeçalho para a página de fornecedores */
+.fornecedores-header {
+  border-left: 5px solid var(--primary-color);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: #fff;
+  text-align: left;
+}
+
+.fornecedores-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+}
+
+.fornecedores-header p {
+  color: var(--secondary-color);
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.fornecedores-header .header-divider {
+  height: 3px;
+  width: 100px;
+  background: linear-gradient(90deg, var(--primary-color), var(--info-color));
+  border-radius: 3px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+/* Responsividade para cabeçalhos */
+@media (max-width: 1199px) {
+  .fornecedores-header {
+    padding: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+  
+  .fornecedores-header h1 {
+    font-size: 2rem;
+  }
+  
+  .fornecedores-header p {
+    font-size: 0.95rem;
+  }
+  
+  .headerTabelaFornecedores {
+    padding: 1.25rem;
+  }
+  
+  .headerTabelaFornecedores h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .fornecedores-header {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .fornecedores-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .fornecedores-header p {
+    font-size: 0.95rem;
+  }
+  
+  .headerTabelaFornecedores {
+    padding: 1.2rem;
+  }
+  
+  .headerTabelaFornecedores h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .fornecedores-header {
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+  
+  .fornecedores-header h1 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+  
+  .fornecedores-header p {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .fornecedores-header .header-divider {
+    margin: 10px auto;
+  }
+  
+  .headerTabelaFornecedores {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .headerTabelaFornecedores h2 {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .fornecedores-header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .fornecedores-header h1 {
+    font-size: 1.4rem;
+  }
+  
+  .fornecedores-header p {
+    font-size: 0.85rem;
+  }
+  
+  .headerTabelaFornecedores {
+    padding: 0.9rem;
+  }
+  
+  .headerTabelaFornecedores h2 {
+    font-size: 1.15rem;
+  }
 }
