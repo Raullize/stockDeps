@@ -880,27 +880,32 @@ function ordenarProdutos(produtos) {
 }
 
 function preencherCategorias(categorias, onChangeCallback) {
-  // Encontre todos os selects de categoria na página
-  const selectsCategorias = [
-    document.getElementById("categoria"),                  // Filtro principal
-    document.getElementById("categoriaProdutoAdicionar"),  // Modal adicionar
-    document.getElementById("categoriaProdutoEditar")      // Modal editar
-  ];
-
-  // Iterar sobre todos os selects encontrados e preencher cada um
-  selectsCategorias.forEach(select => {
+  // Identificar todos os selects de categoria na página
+  const selects = ['categoria', 'categoriaProdutoAdicionar', 'categoriaProdutoEditar'].map(id => 
+    document.getElementById(id)
+  ).filter(el => el !== null);
+  
+  selects.forEach(select => {
     if (select) {
-      // Limpar as opções existentes
+      // Limpar o select primeiro
       select.innerHTML = "";
-
-      // Adicionar a opção vazia para filtro (apenas no filtro principal)
-      if (select.id === "categoria") {
-        const optionVazia = document.createElement("option");
-        optionVazia.value = "";
-        optionVazia.textContent = "Todas as categorias";
-        select.appendChild(optionVazia);
+      
+      // Adicionar a opção padrão
+      const optionPadrao = document.createElement("option");
+      optionPadrao.value = "";
+      optionPadrao.disabled = true;
+      optionPadrao.selected = true;
+      
+      if (select.id === 'categoria') {
+        // Para o filtro da tabela principal
+        optionPadrao.textContent = "Todas as categorias";
+      } else {
+        // Para os modais de adicionar e editar produto
+        optionPadrao.textContent = "Selecionar Categoria";
       }
-
+      
+      select.appendChild(optionPadrao);
+      
       // Adicionar as categorias
       if (Array.isArray(categorias)) {
         categorias.forEach(categoria => {
