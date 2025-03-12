@@ -283,7 +283,7 @@ class Produtos
         }
     }
 
-    public function update($id, $nome = null, $descricao = null, $idCategoria = null, $preco = null, $imagem = null, $unidade_medida = null)
+    public function update($id, $nome = null, $descricao = null, $idCategoria = null, $preco = null, $imagem = null, $unidade_medida = null, $codigo_produto = null)
     {
         $query = "UPDATE produtos SET";
         $params = [];
@@ -311,6 +311,10 @@ class Produtos
         if (!is_null($unidade_medida)) {
             $query .= " unidade_medida = :unidade_medida,";
             $params[":unidade_medida"] = $unidade_medida;
+        }
+        if (!is_null($codigo_produto)) {
+            $query .= " codigo_produto = :codigo_produto,";
+            $params[":codigo_produto"] = $codigo_produto;
         }
     
         // Removendo a última vírgula para evitar erro de SQL

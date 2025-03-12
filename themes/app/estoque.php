@@ -107,7 +107,7 @@ $this->layout("_theme");
                                 <label for="codigoProdutoAdicionar" class="form-label">Código do Produto</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-barcode"></i></span>
-                                    <input name="codigo" type="text" class="form-control" id="codigoProdutoAdicionar" placeholder="Digite o código do produto">
+                                    <input name="codigo_produto" type="text" class="form-control" id="codigoProdutoAdicionar" placeholder="Digite o código do produto">
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
@@ -198,7 +198,7 @@ $this->layout("_theme");
                             <label for="codigoProdutoEditar" class="form-label">Código do Produto</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-barcode"></i></span>
-                                <input name="codigo" type="text" class="form-control" id="codigoProdutoEditar" placeholder="Digite o código do produto">
+                                <input name="codigo_produto" type="text" class="form-control" id="codigoProdutoEditar" placeholder="Digite o código do produto">
                             </div>
                         </div>
                         <div class="mb-3">

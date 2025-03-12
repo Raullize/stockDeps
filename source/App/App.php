@@ -258,7 +258,8 @@ class App
                 $data["categoria"] ?? $produtoAtual["categoria"],
                 $precoFloat,
                 $link, // Mantém a imagem existente se não for enviada uma nova
-                $data["unidade"] ?? $produtoAtual["unidade"]
+                $data["unidade"] ?? $produtoAtual["unidade_medida"],
+                $data["codigo_produto"] ?? $produtoAtual["codigo_produto"]
             );
     
             $json = $produtoAtualizado ? [
