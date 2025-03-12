@@ -185,12 +185,12 @@ th:hover .seta {
 .clientes-header h1 {
   font-size: 2.2rem;
   font-weight: 700;
-  color: var(--dark-color);
+  color: var(--primary-color);
   margin-bottom: 0.5rem;
 }
 
 .clientes-header p {
-  color: var(--secondary-color);
+  color: #212529;
   font-size: 1rem;
   margin-bottom: 0.5rem;
 }
@@ -198,7 +198,7 @@ th:hover .seta {
 .clientes-header .header-divider {
   height: 3px;
   width: 100px;
-  background: linear-gradient(90deg, var(--primary-color), var(--info-color));
+  background: var(--primary-color);
   border-radius: 3px;
   margin-top: 5px;
   margin-bottom: 10px;

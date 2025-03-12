@@ -175,39 +175,24 @@
 }
 
 .dashboard-header {
-    border-left: 5px solid #4361ee;
+    border-left: 5px solid var(--primary-color);
     background: #ffffff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
 .dashboard-header h1 {
-    color: #4361ee;
-    position: relative;
-    padding-left: 0;
-    font-weight: 800;
-    letter-spacing: -0.5px;
+    color: var(--primary-color);
+    font-weight: 700;
 }
 
 .dashboard-header h1 i {
-    color: #4361ee;
-}
-
-.dashboard-header h1:before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    background-color: transparent;
-    border-radius: 0;
+    color: var(--primary-color);
 }
 
 .header-divider {
-    width: 60px;
-    height: 4px;
-    background: linear-gradient(90deg, #4361ee, #3a0ca3);
+    width: 100px;
+    height: 3px;
+    background: var(--primary-color);
     margin-top: 10px;
     border-radius: 2px;
 }
@@ -235,12 +220,12 @@
 .relatorio-header h1 {
     font-size: 2.2rem;
     font-weight: 700;
-    color: var(--dark-color);
+    color: var(--primary-color);
     margin-bottom: 0.5rem;
 }
 
 .relatorio-header p {
-    color: var(--secondary-color);
+    color: #212529;
     font-size: 1rem;
     margin-bottom: 0.5rem;
 }
@@ -248,7 +233,7 @@
 .relatorio-header .header-divider {
     height: 3px;
     width: 100px;
-    background: linear-gradient(90deg, var(--primary-color), var(--info-color));
+    background: var(--primary-color);
     border-radius: 3px;
     margin-top: 5px;
     margin-bottom: 10px;

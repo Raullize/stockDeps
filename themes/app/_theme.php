@@ -19,7 +19,7 @@
   
   <!-- Ajustes de responsividade -->
   <style>
-    /* Estilos padrão para cabeçalhos de página */
+    /* Estilos padrão para cabeçalhos de página - PADRONIZAÇÃO */
     .dashboard-header, .page-header, .relatorio-header, .clientes-header, .fornecedores-header, .home-header {
       border-left: 5px solid var(--primary-color);
       padding: 2rem;
@@ -29,6 +29,43 @@
       background-color: #fff;
       text-align: left;
       animation: fadeInDown 0.7s ease-out;
+    }
+    
+    /* Padronização de cores para todos os cabeçalhos */
+    .dashboard-header h1, .page-header h1, .relatorio-header h1, .clientes-header h1, .fornecedores-header h1, .home-header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+    
+    .dashboard-header p, .page-header p, .relatorio-header p, .clientes-header p, .fornecedores-header p, .home-header p {
+      color: #212529;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .date-display {
+      color: #212529 !important;
+      font-size: 0.95rem;
+    }
+    
+    .header-divider {
+      height: 3px;
+      width: 100px;
+      background: var(--primary-color);
+      border-radius: 3px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    
+    /* Corrigir gradient text para manter consistência */
+    .text-gradient {
+      color: var(--primary-color) !important;
+      background: none !important;
+      -webkit-background-clip: initial !important;
+      background-clip: initial !important;
+      -webkit-text-fill-color: initial !important;
     }
     
     /* Alinhamento centralizado em telas pequenas */
@@ -45,6 +82,7 @@
       
       .header-divider {
         margin: 10px auto !important;
+        width: 100px !important; /* Manter largura consistente */
       }
       
       .date-display {
@@ -78,6 +116,11 @@
       .container, .container-fluid {
         padding-left: 0.3rem !important;
         padding-right: 0.3rem !important;
+      }
+      
+      /* Manter largura da borda consistente mesmo em telas pequenas */
+      .header-divider {
+        width: 100px !important;
       }
     }
   </style>
