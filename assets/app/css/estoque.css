@@ -705,3 +705,44 @@ input[type="file"]::file-selector-button:hover {
   width: 100%;
   table-layout: fixed;
 }
+
+/* Estilos para os dropdowns de sugestões (clientes e fornecedores) */
+.list-group-item {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.list-group-item:hover {
+  background-color: rgba(67, 97, 238, 0.1);
+}
+
+/* Correções para os dropdowns de sugestão */
+#clientes-lista,
+#fornecedor-lista {
+  max-width: 100%;
+  width: calc(100% - 2rem); /* Ajusta para a largura do container menos padding */
+  max-height: 200px;
+  overflow-y: auto;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1050 !important; /* Garante que fique acima de outros elementos */
+  background-color: white;
+}
+
+/* Estilização para scrollbar dos dropdowns */
+#clientes-lista::-webkit-scrollbar,
+#fornecedor-lista::-webkit-scrollbar {
+  width: 6px;
+}
+
+#clientes-lista::-webkit-scrollbar-thumb,
+#fornecedor-lista::-webkit-scrollbar-thumb {
+  background-color: rgba(67, 97, 238, 0.5);
+  border-radius: 3px;
+}
+
+#clientes-lista::-webkit-scrollbar-track,
+#fornecedor-lista::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.05);
+}

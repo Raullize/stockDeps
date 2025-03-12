@@ -893,17 +893,18 @@ function preencherCategorias(categorias, onChangeCallback) {
       // Adicionar a opção padrão
       const optionPadrao = document.createElement("option");
       optionPadrao.value = "";
-      optionPadrao.disabled = true;
-      optionPadrao.selected = true;
       
       if (select.id === 'categoria') {
-        // Para o filtro da tabela principal
+        // Para o filtro da tabela principal - NÃO deshabilitar
+        optionPadrao.disabled = false;
         optionPadrao.textContent = "Todas as categorias";
       } else {
-        // Para os modais de adicionar e editar produto
+        // Para os modais de adicionar e editar produto - Manter desabilitado
+        optionPadrao.disabled = true;
         optionPadrao.textContent = "Selecionar Categoria";
       }
       
+      optionPadrao.selected = true;
       select.appendChild(optionPadrao);
       
       // Adicionar as categorias
@@ -930,6 +931,8 @@ function preencherFornecedores(fornecedores) {
   const input = document.getElementById("fornecedor");
   const lista = document.getElementById("fornecedor-lista");
 
+  if (!input || !lista) return;
+
   input.addEventListener("input", () => {
     const query = input.value.toLowerCase().trim();
     lista.innerHTML = "";
@@ -945,7 +948,12 @@ function preencherFornecedores(fornecedores) {
 
     if (fornecedoresFiltrados.length > 0) {
       lista.style.display = "block";
-      fornecedoresFiltrados.forEach((fornecedor) => {
+      
+      // Limitar a 6 sugestões para não sobrecarregar a interface
+      const maxSugestoes = Math.min(fornecedoresFiltrados.length, 6);
+      
+      for (let i = 0; i < maxSugestoes; i++) {
+        const fornecedor = fornecedoresFiltrados[i];
         const item = document.createElement("div");
         item.classList.add("list-group-item", "list-group-item-action");
         item.textContent = fornecedor.nome;
@@ -954,13 +962,22 @@ function preencherFornecedores(fornecedores) {
           lista.style.display = "none";
         });
         lista.appendChild(item);
-      });
+      }
+      
+      // Se houver mais resultados que o limite, mostrar indicativo
+      if (fornecedoresFiltrados.length > maxSugestoes) {
+        const maisItem = document.createElement("div");
+        maisItem.classList.add("list-group-item", "text-center", "text-muted");
+        maisItem.textContent = `+ ${fornecedoresFiltrados.length - maxSugestoes} mais fornecedores`;
+        lista.appendChild(maisItem);
+      }
     } else {
       lista.style.display = "none";
     }
   });
 
   input.addEventListener("blur", () => {
+    // Pequeno atraso para permitir o clique no item antes de esconder
     setTimeout(() => {
       lista.style.display = "none";
     }, 200);
@@ -968,7 +985,9 @@ function preencherFornecedores(fornecedores) {
 
   input.addEventListener("focus", () => {
     if (input.value.trim() !== "") {
-      lista.style.display = "block";
+      // Simular input para mostrar sugestões relevantes
+      const event = new Event('input', { bubbles: true });
+      input.dispatchEvent(event);
     }
   });
 }
@@ -976,9 +995,25 @@ function preencherFornecedores(fornecedores) {
 function preencherClientes(clientes) {
   const input = document.getElementById("cliente");
   const lista = document.getElementById("clientes-lista");
+  const checkboxClienteNaoCadastrado = document.getElementById("clienteNaoCadastrado");
+
+  if (!input || !lista) return;
+
+  // Verificar se o checkbox está marcado e atualizar o estado do input
+  if (checkboxClienteNaoCadastrado) {
+    checkboxClienteNaoCadastrado.addEventListener("change", function() {
+      if (this.checked) {
+        input.value = "";
+        input.disabled = true;
+        lista.style.display = "none";
+      } else {
+        input.disabled = false;
+      }
+    });
+  }
 
   input.addEventListener("input", () => {
-    const query = input.value.toLowerCase();
+    const query = input.value.toLowerCase().trim();
     lista.innerHTML = "";
 
     if (query === "") {
@@ -992,7 +1027,12 @@ function preencherClientes(clientes) {
 
     if (clientesFiltrados.length > 0) {
       lista.style.display = "block";
-      clientesFiltrados.forEach((cliente) => {
+      
+      // Limitar a 6 sugestões para não sobrecarregar a interface
+      const maxSugestoes = Math.min(clientesFiltrados.length, 6);
+      
+      for (let i = 0; i < maxSugestoes; i++) {
+        const cliente = clientesFiltrados[i];
         const item = document.createElement("div");
         item.classList.add("list-group-item", "list-group-item-action");
         item.textContent = cliente.nome;
@@ -1001,21 +1041,32 @@ function preencherClientes(clientes) {
           lista.style.display = "none";
         });
         lista.appendChild(item);
-      });
+      }
+      
+      // Se houver mais resultados que o limite, mostrar indicativo
+      if (clientesFiltrados.length > maxSugestoes) {
+        const maisItem = document.createElement("div");
+        maisItem.classList.add("list-group-item", "text-center", "text-muted");
+        maisItem.textContent = `+ ${clientesFiltrados.length - maxSugestoes} mais clientes`;
+        lista.appendChild(maisItem);
+      }
     } else {
       lista.style.display = "none";
     }
   });
 
   input.addEventListener("blur", () => {
+    // Pequeno atraso para permitir o clique no item antes de esconder
     setTimeout(() => {
       lista.style.display = "none";
     }, 200);
   });
 
   input.addEventListener("focus", () => {
-    if (input.value.trim() !== "") {
-      lista.style.display = "block";
+    if (input.value.trim() !== "" && !checkboxClienteNaoCadastrado?.checked) {
+      // Simular input para mostrar sugestões relevantes
+      const event = new Event('input', { bubbles: true });
+      input.dispatchEvent(event);
     }
   });
 }

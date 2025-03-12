@@ -481,13 +481,13 @@ $this->layout("_theme");
                     <div class="modal-body">
                         <input name="produtoId" type="hidden" id="produtoId" value=""> <!-- Campo oculto para armazenar o id -->
                         
-                        <div class="mb-3">
+                        <div class="mb-3 position-relative">
                             <label for="fornecedor" class="form-label">Fornecedor</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-truck"></i></span>
                                 <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor" required>
                             </div>
-                            <div class="list-group mt-0 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1000;"></div>
+                            <div class="list-group mt-1 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1050;"></div>
                             <small class="form-text text-muted">Comece a digitar para ver sugestões de fornecedores cadastrados</small>
                         </div>
                         
@@ -539,13 +539,13 @@ $this->layout("_theme");
                         <input name="produtoId2" type="hidden" id="produtoId2" value=""> <!-- Campo oculto para armazenar o id -->
                         
                         <!-- Campo Cliente -->
-                        <div class="mb-3">
+                        <div class="mb-3 position-relative">
                             <label for="cliente" class="form-label">Cliente</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
                             </div>
-                            <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
+                            <div class="list-group mt-1 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1050;"></div>
                             
                             <div class="form-check mt-2">
                                 <input class="form-check-input" type="checkbox" id="clienteNaoCadastrado">
