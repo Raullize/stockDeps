@@ -13,7 +13,7 @@ $this->layout("_theme");
         <div class="dashboard-header mb-4 p-4 bg-white shadow-sm rounded-3">
             <div class="row">
                 <div class="col-md-8">
-                    <h1 class="fw-bold display-5 mb-2 text-gradient"><i class="fas fa-boxes me-2"></i>Produtos</h1>
+                    <h1 class="fw-bold display-6 mb-2 text-gradient"><i class="fas fa-boxes me-2"></i>Produtos</h1>
                     <p class="text-muted fs-5 fw-light">Gerencie o estoque do sistema</p>
                     <div class="header-divider mt-3"></div>
                 </div>
