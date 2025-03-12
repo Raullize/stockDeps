@@ -9,12 +9,11 @@
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(67, 97, 238, 0.1);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.3s ease;
     height: 100%;
     overflow: hidden;
     border: 1px solid rgba(67, 97, 238, 0.1);
     position: relative;
-    animation: fadeIn 0.6s ease-out forwards;
 }
 
 .report-card:before {
@@ -182,7 +181,7 @@
 }
 
 .dashboard-header h1 {
-    color: #2d3748;
+    color: #4361ee;
     position: relative;
     padding-left: 0;
     font-weight: 800;
@@ -211,20 +210,6 @@
     background: linear-gradient(90deg, #4361ee, #3a0ca3);
     margin-top: 10px;
     border-radius: 2px;
-}
-
-/* Animação sutil nos cards */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.report-card:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.report-card:nth-child(3) {
-    animation-delay: 0.4s;
 }
 
 /* Responsividade adicional */

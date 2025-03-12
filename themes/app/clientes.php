@@ -267,6 +267,59 @@ $this->layout("_theme");
     <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
     <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>
     <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
+    
+    <script>
+        // Aplicar transições suaves em todos os modais
+        document.addEventListener('DOMContentLoaded', function() {
+            // Estilo para transições suaves
+            const estiloTransicoes = document.createElement('style');
+            estiloTransicoes.innerHTML = `
+                .modal.fade .modal-dialog {
+                    transition: transform 0.2s ease-out !important;
+                    transform: scale(0.95) !important;
+                }
+                .modal.show .modal-dialog {
+                    transform: none !important;
+                }
+                .modal-backdrop.fade {
+                    opacity: 0;
+                    transition: opacity 0.15s linear !important;
+                }
+                .modal-backdrop.show {
+                    opacity: 0.5;
+                }
+                .fade {
+                    transition: opacity 0.12s linear !important;
+                }
+            `;
+            document.head.appendChild(estiloTransicoes);
+            
+            // Personaliza cada modal para uma aparência mais suave
+            document.querySelectorAll('.modal').forEach(modal => {
+                // Usa o evento show.bs.modal para animar a entrada
+                modal.addEventListener('show.bs.modal', function() {
+                    const dialog = this.querySelector('.modal-dialog');
+                    if (dialog) {
+                        dialog.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            dialog.style.transform = 'scale(1)';
+                        }, 10);
+                    }
+                });
+                
+                // Limpar backdrop quando o modal for fechado
+                modal.addEventListener('hidden.bs.modal', function() {
+                    document.body.classList.remove('modal-open');
+                    document.body.style.overflow = '';
+                    document.body.style.paddingRight = '';
+                    const backdrops = document.getElementsByClassName('modal-backdrop');
+                    while(backdrops.length > 0) {
+                        backdrops[0].remove();
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

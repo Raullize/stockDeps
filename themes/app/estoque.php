@@ -965,6 +965,49 @@ $this->layout("_theme");
                 fetchCategorias();
             }
         }, 1000);
+        
+        // Aplicar transições suaves em todos os modais
+        aplicarTransicoesModais();
     });
+    
+    // Função para aplicar transições suaves em todos os modais
+    function aplicarTransicoesModais() {
+        // Estilo para transições suaves
+        const estiloTransicoes = document.createElement('style');
+        estiloTransicoes.innerHTML = `
+            .modal.fade .modal-dialog {
+                transition: transform 0.2s ease-out !important;
+                transform: scale(0.95) !important;
+            }
+            .modal.show .modal-dialog {
+                transform: none !important;
+            }
+            .modal-backdrop.fade {
+                opacity: 0;
+                transition: opacity 0.15s linear !important;
+            }
+            .modal-backdrop.show {
+                opacity: 0.5;
+            }
+            .fade {
+                transition: opacity 0.12s linear !important;
+            }
+        `;
+        document.head.appendChild(estiloTransicoes);
+        
+        // Personaliza cada modal para uma aparência mais suave
+        document.querySelectorAll('.modal').forEach(modal => {
+            // Usa o evento show.bs.modal para animar a entrada
+            modal.addEventListener('show.bs.modal', function() {
+                const dialog = this.querySelector('.modal-dialog');
+                if (dialog) {
+                    dialog.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        dialog.style.transform = 'scale(1)';
+                    }, 10);
+                }
+            });
+        });
+    }
 </script>
 </body>
