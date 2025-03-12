@@ -184,11 +184,11 @@ $this->layout("_theme");
     </div>
 
     <!-- Modal Editar Produto -->
-    <div class="modal" id="modalEditar" tabindex="-1">
+    <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Editar Produto</h5>
+                    <h5 class="modal-title" id="modalEditarLabel"><i class="fas fa-edit me-2"></i>Editar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="produto-update" name="produto-update" method="post" enctype="multipart/form-data">
@@ -434,11 +434,11 @@ $this->layout("_theme");
     </div>
             
     <!-- Modal Adicionar Nota -->
-    <div class="modal" id="modalAdicionarDANFE" tabindex="-1">
+    <div class="modal fade" id="modalAdicionarDANFE" tabindex="-1" aria-labelledby="modalAdicionarDANFELabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="fas fa-file-invoice me-2"></i>Adicionar Nota DANFE</h5>
+                    <h5 class="modal-title" id="modalAdicionarDANFELabel"><i class="fas fa-file-invoice me-2"></i>Adicionar Nota DANFE</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="processarXmlNota" method="POST" enctype="multipart/form-data">
