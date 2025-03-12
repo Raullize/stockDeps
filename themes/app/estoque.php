@@ -275,12 +275,6 @@ $this->layout("_theme");
                         <button class="btn btn-success d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria">
                             <i class="fas fa-plus-circle"></i> Adicionar Categoria
                         </button>
-                        
-                        <!-- Barra de pesquisa -->
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="buscarCategoria" class="search-input" placeholder="Buscar categoria...">
-                        </div>
                     </div>
                     
                     <!-- Tabela de categorias -->
