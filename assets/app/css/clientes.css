@@ -326,3 +326,10 @@ th:hover .seta {
     font-size: 1.15rem;
   }
 }
+
+.search-box {
+    margin-left: 1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+}

@@ -35,12 +35,12 @@ $this->layout("_theme");
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <div class="headerTabelaFornecedores p-2 mb-3">
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarFornecedor" id="adicionarFornecedorBtn">
-                                    <i class="fas fa-plus-circle"></i> Adicionar Fornecedor
-                                </button>
-                            </div>
-                            <div class="d-flex flex-wrap gap-3 align-items-center">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <div>
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarFornecedor" id="adicionarFornecedorBtn">
+                                        <i class="fas fa-plus-circle"></i> Adicionar Fornecedor
+                                    </button>
+                                </div>
                                 <div class="search-box">
                                     <input type="text" name="buscarFornecedor" class="search-input" id="buscarFornecedor" placeholder="Procurar fornecedor">
                                 </div>
@@ -82,11 +82,11 @@ $this->layout("_theme");
     <div class="modal fade" id="modalAdicionarFornecedor" tabindex="-1" aria-labelledby="modalAdicionarFornecedorLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header">
                     <h5 class="modal-title" id="modalAdicionarFornecedorLabel">
                         <i class="fas fa-truck-loading me-2"></i>Adicionar Fornecedor
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="formAdicionarFornecedor">
                     <div class="modal-body p-4">
@@ -229,11 +229,11 @@ $this->layout("_theme");
     <div class="modal fade" id="modalEditarFornecedor" tabindex="-1" aria-labelledby="modalEditarFornecedorLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header">
                     <h5 class="modal-title" id="modalEditarFornecedorLabel">
                         <i class="fas fa-edit me-2"></i>Editar Fornecedor
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="formEditarFornecedor" name="formEditarFornecedor" method="post" class="p-3">
                     <div class="modal-body p-4">
@@ -382,11 +382,11 @@ $this->layout("_theme");
     <div class="modal fade" id="modalHistoricoFornecedor" tabindex="-1" aria-labelledby="modalHistoricoFornecedorLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
+                <div class="modal-header">
                     <h5 class="modal-title" id="modalHistoricoFornecedorLabel">
                         <i class="fas fa-history me-2"></i>Histórico de Compras
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div id="historicoFornecedor" class="mt-2"></div>

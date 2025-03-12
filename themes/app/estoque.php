@@ -35,31 +35,33 @@ $this->layout("_theme");
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <div class="headerTabelaProdutos p-2 mb-3">
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
-                                    <i class="fas fa-plus-circle"></i> Adicionar Produto
-                                </button>
-                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalTabelaCategorias" id="adicionarCategoriaBtn">
-                                    <i class="fas fa-tags"></i> Gerenciar Categorias
-                                </button>
-                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarDANFE">
-                                    <i class="fas fa-file-invoice"></i> Adicionar Notas
-                                </button>
-                                <button class="btn btn-info d-flex align-items-center gap-2" id="consultarEntradasBtn">
-                                    <i class="fas fa-arrow-circle-down"></i> Consultar Entradas
-                                </button>
-                                <button class="btn btn-info d-flex align-items-center gap-2" id="consultarSaidasBtn">
-                                    <i class="fas fa-arrow-circle-up"></i> Consultar Saídas
-                                </button>
-                            </div>
-                            <div class="d-flex flex-wrap gap-3 align-items-center">
-                                <div class="search-box">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" name="buscarProduto" class="search-input" id="buscarProduto" placeholder="Procurar produto">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
+                                        <i class="fas fa-plus-circle"></i> Adicionar Produto
+                                    </button>
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalTabelaCategorias" id="adicionarCategoriaBtn">
+                                        <i class="fas fa-tags"></i> Gerenciar Categorias
+                                    </button>
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarDANFE">
+                                        <i class="fas fa-file-invoice"></i> Adicionar Notas
+                                    </button>
+                                    <button class="btn btn-info d-flex align-items-center gap-2" id="consultarEntradasBtn">
+                                        <i class="fas fa-arrow-circle-down"></i> Consultar Entradas
+                                    </button>
+                                    <button class="btn btn-info d-flex align-items-center gap-2" id="consultarSaidasBtn">
+                                        <i class="fas fa-arrow-circle-up"></i> Consultar Saídas
+                                    </button>
                                 </div>
-                                <div class="filter-box">
-                                    <i class="fas fa-filter"></i>
-                                    <select id="categoria" name="categoria" class="filter-select"></select>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <div class="search-box">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" name="buscarProduto" class="search-input" id="buscarProduto" placeholder="Procurar produto">
+                                    </div>
+                                    <div class="filter-box">
+                                        <i class="fas fa-filter"></i>
+                                        <select id="categoria" name="categoria" class="filter-select"></select>
+                                    </div>
                                 </div>
                             </div>
                         </div>

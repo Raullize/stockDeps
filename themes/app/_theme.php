@@ -160,6 +160,54 @@
     }
   </style>
   
+  <!-- Padronização de estilos para modais -->
+  <style>
+    /* Estilos padrão para os modais do sistema */
+    .modal-header {
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 1rem 1.5rem;
+    }
+    
+    .modal-header .modal-title {
+      font-weight: 600;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      color: #333;
+    }
+    
+    .modal-header .modal-title i {
+      margin-right: 0.5rem;
+      color: var(--primary-color);
+    }
+    
+    /* Manter o estilo de exclusão para modais de exclusão */
+    .modal-header.bg-danger {
+      background-color: var(--danger-color) !important;
+      border-bottom: none;
+    }
+    
+    .modal-header.bg-danger .modal-title,
+    .modal-header.bg-danger .modal-title i {
+      color: white !important;
+    }
+    
+    /* Ajustes responsivos para modais */
+    @media (max-width: 576px) {
+      .modal-header {
+        padding: 0.75rem 1rem;
+      }
+      
+      .modal-header .modal-title {
+        font-size: 1.1rem;
+      }
+      
+      .modal-body {
+        padding: 1rem;
+      }
+    }
+  </style>
+  
   <div class="layout-wrapper">
     <!-- Sidebar -->
     <aside class="sidebar">

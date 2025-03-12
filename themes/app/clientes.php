@@ -36,12 +36,12 @@ $this->layout("_theme");
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <div class="headerTabelaClientes p-2 mb-3">
-                            <div class="d-flex flex-wrap gap-2 mb-3">
-                                <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarCliente" id="adicionarClienteBtn">
-                                    <i class="fas fa-user-plus"></i> Adicionar Cliente
-                                </button>
-                            </div>
-                            <div class="d-flex flex-wrap gap-3 align-items-center">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                                <div>
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarCliente" id="adicionarClienteBtn">
+                                        <i class="fas fa-user-plus"></i> Adicionar Cliente
+                                    </button>
+                                </div>
                                 <div class="search-box">
                                     <input type="text" name="buscarCliente" class="search-input" id="buscarCliente" placeholder="Procurar cliente">
                                 </div>
@@ -78,11 +78,11 @@ $this->layout("_theme");
     <div class="modal fade" id="modalAdicionarCliente" tabindex="-1" aria-labelledby="modalAdicionarClienteLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg"> <!-- Aumentando a largura do modal -->
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header">
                     <h5 class="modal-title" id="modalAdicionarClienteLabel">
                         <i class="fas fa-user-plus me-2"></i>Adicionar Cliente
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="cadastro-clientes" name="cadastro-clientes" method="post">
                     <div class="modal-body p-4">
@@ -131,11 +131,11 @@ $this->layout("_theme");
     <div class="modal fade" id="modalEditarCliente" tabindex="-1" aria-labelledby="modalEditarClienteLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
+                <div class="modal-header">
                     <h5 class="modal-title" id="modalEditarClienteLabel">
                         <i class="fas fa-user-edit me-2"></i>Editar Cliente
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="cliente-update" method="post">
                     <div class="modal-body p-4">
@@ -220,11 +220,11 @@ $this->layout("_theme");
     <div class="modal fade" id="modalHistoricoCliente" tabindex="-1" aria-labelledby="modalHistoricoClienteLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header bg-success text-white">
+                <div class="modal-header">
                     <h5 class="modal-title" id="modalHistoricoClienteLabel">
                         <i class="fas fa-history me-2"></i>Histórico de Compras
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div id="historicoCliente" class="mt-2"></div>

@@ -131,10 +131,18 @@
 }
 
 /* Campos de busca e filtros */
-.search-box, .filter-box {
+.search-box {
+  margin-left: 1rem;
   position: relative;
-  flex: 1;
-  min-width: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.filter-box {
+  margin-left: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .search-box i, .filter-box i {

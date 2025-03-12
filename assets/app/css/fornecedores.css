@@ -192,9 +192,8 @@ th:hover .seta {
 
 /* Customização da caixa de busca */
 .search-box {
+    margin-left: 1rem;
     position: relative;
-    max-width: 300px;
-    width: 100%;
     display: flex;
     align-items: center;
 }
