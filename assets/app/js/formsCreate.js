@@ -149,7 +149,6 @@ form_sc.on("submit", function (e) {
     }
 
     const serializedData = form_sc.serialize();
-    console.log("Dados do formulário sendo enviados:", serializedData);
 
     $.ajax({
         type: "POST",
@@ -157,7 +156,6 @@ form_sc.on("submit", function (e) {
         data: serializedData,
         dataType: "json",
         success: function (response) {
-            console.log("Resposta do servidor:", response);
             if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
                 // Garantir que o campo cliente esteja habilitado mesmo com erro

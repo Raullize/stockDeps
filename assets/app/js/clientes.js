@@ -42,7 +42,6 @@ async function fetchEntradas() {
 async function fetchSaidas() {
     const response = await fetch(`${BASE_URL}/getSaidas`);
     saidas = await response.json(); // Preenche a variável global saídas
-    console.log(saidas)
 }
 
 function loadAllData() {
