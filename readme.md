@@ -27,7 +27,7 @@ O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, 
 - Cadastro e gerenciamento de fornecedores.
 
 ### Relatórios
-- Geração de relatórios em **PDF** contendo informações relevantes, como movimentações do estoque, clientes cadastrados e fornecedores.
+- Geração de relatórios em **PDF** ou **Excel**, contendo informações relevantes, como movimentações do estoque, clientes cadastrados e fornecedores.
 
 ## 🔧 Tecnologias Utilizadas
 
