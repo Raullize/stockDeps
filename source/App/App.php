@@ -94,88 +94,128 @@ class App
 
     public function estoquePc(?array $data): void
     {
-        if (!empty($data)) {
+        // Limpa qualquer saída anterior e inicia buffer
+        ob_clean();
+        ob_start();
+        
+        // Define o cabeçalho para garantir que sempre retorne JSON
+        header('Content-Type: application/json; charset=utf-8');
+        
+        try {
+            if (!empty($data)) {
 
-            if (in_array("", $data)) {
+                if (in_array("", $data)) {
+                    $json = [
+                        "message" => "Informe todos os campos para cadastrar!",
+                        "type" => "error"
+                    ];
+                    ob_clean();
+                    echo json_encode($json);
+                    return;
+                }
+
+                $newpreco = $data["preco"];
+
+                // Remove o símbolo de moeda 'R$'
+                $newpreco = str_replace('R$', '', $newpreco);
+
+                // Remove os pontos (separadores de milhar)
+                $newpreco = str_replace('.', '', $newpreco);
+
+                // Substitui a vírgula decimal por um ponto
+                $newpreco = str_replace(',', '.', $newpreco);
+
+                // Converte para float
+                $precoFloat = (float)$newpreco;
+
+                $produto = new Produtos();
+
+                if ($produto->validateProduto($data["nome"], $data["categoria"], $data["codigo_produto"])) {
+                    $json = [
+                        "message" => "Produto já cadastrado!",
+                        "type" => "warning"
+                    ];
+                    ob_clean();
+                    echo json_encode($json);
+                    return;
+                }
+
+                $image = new Image("uploads", "images", true);
+
+                if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                    $site = "http://127.0.0.1/stockDeps/";
+                    $upload = $image->upload($_FILES['image'], $data['nome']);
+                    if (!$upload) {
+                        ob_clean();
+                        echo json_encode(["message" => $image->message()->getText(), "type" => "error"]);
+                        return;
+                    }
+                    $link = $site . $upload;
+                } else {
+                    $link = null;
+                }
+
+                $produto = new Produtos(
+                    NULL,
+                    $data["categoria"],
+                    $data["nome"],
+                    $data["descricao"],
+                    $precoFloat,
+                    $link,
+                    $data["unidade"],
+                    $data["codigo_produto"]
+                );
+
+                if ($produto->insert()) {
+
+                    $json = [
+                        "produtos" => $produto->selectAll(),
+                        "nome" => $data["nome"],
+                        "imagem" => $link,
+                        "categoria" => $data["categoria"],
+                        "preco" => $precoFloat,
+                        "descricao" => $data["descricao"],
+                        "unidade" => $data["unidade"],
+                        "codigo" => $data["codigo_produto"],
+                        "message" => "Produto cadastrado com sucesso!",
+                        "type" => "success"
+                    ];
+                    // Limpa buffer e envia resposta
+                    ob_clean();
+                    echo json_encode($json);
+                    return;
+                } else {
+                    $json = [
+                        "message" => "Produto não cadastrado!",
+                        "type" => "error"
+                    ];
+                    ob_clean();
+                    echo json_encode($json);
+                    return;
+                }
+            } else {
                 $json = [
-                    "message" => "Informe todos os campos para cadastrar!",
+                    "message" => "Dados não recebidos!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
                 return;
             }
-
-            $newpreco = $data["preco"];
-
-            // Remove o símbolo de moeda 'R$'
-            $newpreco = str_replace('R$', '', $newpreco);
-
-            // Remove os pontos (separadores de milhar)
-            $newpreco = str_replace('.', '', $newpreco);
-
-            // Substitui a vírgula decimal por um ponto
-            $newpreco = str_replace(',', '.', $newpreco);
-
-            // Converte para float
-            $precoFloat = (float)$newpreco;
-
-            $produto = new Produtos();
-
-            if ($produto->validateProduto($data["nome"], $data["categoria"], $data["codigo"])) {
-                $json = [
-                    "message" => "Produto já cadastrado!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $image = new Image("uploads", "images", true);
-
-            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $site = "http://127.0.0.1/stockDeps/";
-                $upload = $image->upload($_FILES['image'], $data['nome']);
-                $link = $site . $upload;
-            } else {
-                $link = null;
-            }
-
-            $produto = new Produtos(
-                NULL,
-                $data["categoria"],
-                $data["nome"],
-                $data["descricao"],
-                $precoFloat,
-                $link,
-                $data["unidade"],
-                $data["codigo"]
-            );
-
-            if ($produto->insert()) {
-
-                $json = [
-                    "produtos" => $produto->selectAll(),
-                    "nome" => $data["nome"],
-                    "imagem" => $link,
-                    "categoria" => $data["categoria"],
-                    "preco" => $precoFloat,
-                    "descricao" => $data["descricao"],
-                    "unidade" => $data["unidade"],
-                    "codigo" => $data["codigo"],
-                    "message" => "Produto cadastrado com sucesso!",
-                    "type" => "success"
-                ];
-                echo json_encode($json);
-                return;
-            } else {
-                $json = [
-                    "message" => "Produto não cadastrado!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
+        } catch (Exception $e) {
+            // Captura qualquer erro e retorna como JSON
+            $json = [
+                "message" => "Erro interno: " . $e->getMessage(),
+                "type" => "error",
+                "debug" => $e->getTraceAsString()
+            ];
+            // Limpa buffer e envia resposta de erro
+            ob_clean();
+            echo json_encode($json);
+            return;
         }
+        
+        // Finaliza o buffer
+        ob_end_flush();
     }
 
     public function estoquePd(?array $data): void

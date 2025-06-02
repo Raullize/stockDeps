@@ -28,8 +28,11 @@ class Connect
                     self::OPTIONS
                 );
             } catch (\PDOException $exception) {
-                //redirect("/ops/problemas");
-                echo "Problemas ao Conectar...";
+                // Log do erro para debug
+                error_log("Erro de conexão com banco de dados: " . $exception->getMessage());
+                
+                // Lança a exceção para ser tratada pelos métodos que chamam
+                throw new \Exception("Erro de conexão com banco de dados: " . $exception->getMessage());
             }
         }
 
