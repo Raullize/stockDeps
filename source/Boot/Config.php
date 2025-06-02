@@ -2,6 +2,13 @@
 // Definição de todas as constantes do sistema
 // Esse script consta no composer.json para ser incluido automaticamente
 
+// Configurações de erro para evitar saída HTML indesejada
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(E_ERROR | E_PARSE);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/../../error.log');
+
 // DATABASE
 
 define("CONF_DB_HOST", "127.0.0.1");

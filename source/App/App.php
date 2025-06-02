@@ -14,6 +14,8 @@ use Source\Core\Session;
 use CoffeeCode\Uploader\Image;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Source\Support\PDFReport;
+use Source\Support\ExcelReport;
 
 class App
 {
@@ -92,88 +94,128 @@ class App
 
     public function estoquePc(?array $data): void
     {
-        if (!empty($data)) {
+        // Limpa qualquer saída anterior e inicia buffer
+        ob_clean();
+        ob_start();
+        
+        // Define o cabeçalho para garantir que sempre retorne JSON
+        header('Content-Type: application/json; charset=utf-8');
+        
+        try {
+            if (!empty($data)) {
 
-            if (in_array("", $data)) {
+                if (in_array("", $data)) {
+                    $json = [
+                        "message" => "Informe todos os campos para cadastrar!",
+                        "type" => "error"
+                    ];
+                    ob_clean();
+                    echo json_encode($json);
+                    return;
+                }
+
+                $newpreco = $data["preco"];
+
+                // Remove o símbolo de moeda 'R$'
+                $newpreco = str_replace('R$', '', $newpreco);
+
+                // Remove os pontos (separadores de milhar)
+                $newpreco = str_replace('.', '', $newpreco);
+
+                // Substitui a vírgula decimal por um ponto
+                $newpreco = str_replace(',', '.', $newpreco);
+
+                // Converte para float
+                $precoFloat = (float)$newpreco;
+
+                $produto = new Produtos();
+
+                if ($produto->validateProduto($data["nome"], $data["categoria"], $data["codigo_produto"])) {
+                    $json = [
+                        "message" => "Produto já cadastrado!",
+                        "type" => "warning"
+                    ];
+                    ob_clean();
+                    echo json_encode($json);
+                    return;
+                }
+
+                $image = new Image("uploads", "images", true);
+
+                if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                    $site = "http://127.0.0.1/stockDeps/";
+                    $upload = $image->upload($_FILES['image'], $data['nome']);
+                    if (!$upload) {
+                        ob_clean();
+                        echo json_encode(["message" => $image->message()->getText(), "type" => "error"]);
+                        return;
+                    }
+                    $link = $site . $upload;
+                } else {
+                    $link = null;
+                }
+
+                $produto = new Produtos(
+                    NULL,
+                    $data["categoria"],
+                    $data["nome"],
+                    $data["descricao"],
+                    $precoFloat,
+                    $link,
+                    $data["unidade"],
+                    $data["codigo_produto"]
+                );
+
+                if ($produto->insert()) {
+
+                    $json = [
+                        "produtos" => $produto->selectAll(),
+                        "nome" => $data["nome"],
+                        "imagem" => $link,
+                        "categoria" => $data["categoria"],
+                        "preco" => $precoFloat,
+                        "descricao" => $data["descricao"],
+                        "unidade" => $data["unidade"],
+                        "codigo" => $data["codigo_produto"],
+                        "message" => "Produto cadastrado com sucesso!",
+                        "type" => "success"
+                    ];
+                    // Limpa buffer e envia resposta
+                    ob_clean();
+                    echo json_encode($json);
+                    return;
+                } else {
+                    $json = [
+                        "message" => "Produto não cadastrado!",
+                        "type" => "error"
+                    ];
+                    ob_clean();
+                    echo json_encode($json);
+                    return;
+                }
+            } else {
                 $json = [
-                    "message" => "Informe todos os campos para cadastrar!",
+                    "message" => "Dados não recebidos!",
                     "type" => "error"
                 ];
                 echo json_encode($json);
                 return;
             }
-
-            $newpreco = $data["preco"];
-
-            // Remove o símbolo de moeda 'R$'
-            $newpreco = str_replace('R$', '', $newpreco);
-
-            // Remove os pontos (separadores de milhar)
-            $newpreco = str_replace('.', '', $newpreco);
-
-            // Substitui a vírgula decimal por um ponto
-            $newpreco = str_replace(',', '.', $newpreco);
-
-            // Converte para float
-            $precoFloat = (float)$newpreco;
-
-            $produto = new Produtos();
-
-            if ($produto->validateProduto($data["nome"], $data["categoria"], $data["codigo"])) {
-                $json = [
-                    "message" => "Produto já cadastrado!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $image = new Image("uploads", "images", true);
-
-            if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                $site = "http://127.0.0.1/stockDeps/";
-                $upload = $image->upload($_FILES['image'], $data['nome']);
-                $link = $site . $upload;
-            } else {
-                $link = null;
-            }
-
-            $produto = new Produtos(
-                NULL,
-                $data["categoria"],
-                $data["nome"],
-                $data["descricao"],
-                $precoFloat,
-                $link,
-                $data["unidade"],
-                $data["codigo"]
-            );
-
-            if ($produto->insert()) {
-
-                $json = [
-                    "produtos" => $produto->selectAll(),
-                    "nome" => $data["nome"],
-                    "imagem" => $link,
-                    "categoria" => $data["categoria"],
-                    "preco" => $precoFloat,
-                    "descricao" => $data["descricao"],
-                    "unidade" => $data["unidade"],
-                    "codigo" => $data["codigo"],
-                    "message" => "Produto cadastrado com sucesso!",
-                    "type" => "success"
-                ];
-                echo json_encode($json);
-                return;
-            } else {
-                $json = [
-                    "message" => "Produto não cadastrado!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
+        } catch (Exception $e) {
+            // Captura qualquer erro e retorna como JSON
+            $json = [
+                "message" => "Erro interno: " . $e->getMessage(),
+                "type" => "error",
+                "debug" => $e->getTraceAsString()
+            ];
+            // Limpa buffer e envia resposta de erro
+            ob_clean();
+            echo json_encode($json);
+            return;
         }
+        
+        // Finaliza o buffer
+        ob_end_flush();
     }
 
     public function estoquePd(?array $data): void
@@ -256,7 +298,8 @@ class App
                 $data["categoria"] ?? $produtoAtual["categoria"],
                 $precoFloat,
                 $link, // Mantém a imagem existente se não for enviada uma nova
-                $data["unidade"] ?? $produtoAtual["unidade"]
+                $data["unidade"] ?? $produtoAtual["unidade_medida"],
+                $data["codigo_produto"] ?? $produtoAtual["codigo_produto"]
             );
     
             $json = $produtoAtualizado ? [
@@ -597,104 +640,134 @@ class App
     public function estoqueSc(?array $data): void
     {
         if (!empty($data)) {
-            $data["quantidade"] = round((float)$data["quantidade"], 3);
-            if (($data["produtoId2"] && $data["quantidade"] && $data["preco"]) == null) {
-                $json = [
-                    "nome" => $data["nome"],
-                    "idProdutos" => $data["produtoId2"],
-                    "quantidade" => $data["quantidade"],
-                    "preco" => $data["preco"],
-                    "message" => "Informe todos os campos para cadastrar!",
-                    "type" => "error"
-                ];
-                echo json_encode($json);
-                return;
-            }
+            try {
+                // Log dos dados recebidos para depuração
+                file_put_contents("saida_log.txt", "Dados recebidos: " . json_encode($data) . "\n", FILE_APPEND);
+                
+                // Verificar se o cliente não é cadastrado usando o campo oculto
+                $clienteNaoCadastrado = isset($data["cliente_nao_cadastrado"]) && $data["cliente_nao_cadastrado"] === "1";
+                
+                // Log do status do cliente não cadastrado
+                file_put_contents("saida_log.txt", "Cliente não cadastrado: " . ($clienteNaoCadastrado ? "Sim" : "Não") . "\n", FILE_APPEND);
+                
+                // Verificar campos vazios apenas se o cliente não for marcado como não cadastrado
+                if (!$clienteNaoCadastrado && in_array("", $data)) {
+                    $json = [
+                        "message" => "Informe todos os campos para cadastrar!",
+                        "type" => "error"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
 
-            $newpreco = $data["preco"];
+                $newpreco = $data["preco"];
 
-            // Remove completamente o símbolo de moeda 'R$'
-            $newpreco = str_replace('R$', '', $newpreco);
+                // Remove completamente o símbolo de moeda 'R$'
+                $newpreco = str_replace('R$', '', $newpreco);
 
-            // Remove espaços extras (inclusive invisíveis) no início e no final
-            $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
+                // Remove espaços extras (inclusive invisíveis) no início e no final
+                $newpreco = trim(preg_replace('/[^\S\r\n]+/u', '', $newpreco));
 
-            // Remove os pontos (separadores de milhar)
-            $newpreco = str_replace('.', '', $newpreco);
+                // Remove os pontos (separadores de milhar)
+                $newpreco = str_replace('.', '', $newpreco);
 
-            // Substitui a vírgula decimal por um ponto
-            $newpreco = str_replace(',', '.', $newpreco);
+                // Substitui a vírgula decimal por um ponto
+                $newpreco = str_replace(',', '.', $newpreco);
 
-            // Converte para float
-            $precoFloat = (float)$newpreco;
+                // Converte para float
+                $precoFloat = (float)$newpreco;
+                
+                // Log do preço processado
+                file_put_contents("saida_log.txt", "Preço processado: " . $precoFloat . "\n", FILE_APPEND);
 
-            $cliente = new Clientes();
-            $idCliente = $cliente->findByIdName($data["nome"]);
-
-            if ($data["quantidade"] <= 0) {
-                $json = [
-                    "message" => "Quantidade Inválida!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            if ($precoFloat <= 0) {
-                $json = [
-                    "message" => "Preço Inválido!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            if ($idCliente == false) {
+                // Verifica se é cliente não cadastrado e define idCliente como null diretamente
                 $idCliente = null;
-            }
+                if ($clienteNaoCadastrado || $data["nome"] === "Cliente não cadastrado") {
+                    // Cliente não cadastrado, mantém idCliente como null
+                    file_put_contents("saida_log.txt", "Cliente não cadastrado, idCliente = null\n", FILE_APPEND);
+                } else {
+                    $cliente = new Clientes();
+                    $idCliente = $cliente->findByIdName($data["nome"]);
+                    
+                    // Log do resultado da busca pelo cliente
+                    file_put_contents("saida_log.txt", "Busca por cliente: " . $data["nome"] . ", resultado: " . ($idCliente ? $idCliente : "não encontrado") . "\n", FILE_APPEND);
+                    
+                    // Se não encontrar, mantém como null
+                    if ($idCliente == false) {
+                        $idCliente = null;
+                    }
+                }
 
-            $produto = new Produtos();
-            $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
+                if ($data["quantidade"] <= 0) {
+                    $json = [
+                        "message" => "Quantidade Inválida!",
+                        "type" => "warning"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
 
-            if ($quantidadeProduto < $data["quantidade"]) {
+                if ($precoFloat <= 0) {
+                    $json = [
+                        "message" => "Preço Inválido!",
+                        "type" => "warning"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
+
+                $produto = new Produtos();
+                $quantidadeProduto = $produto->getQuantidadeById($data["produtoId2"]);
+
+                if ($quantidadeProduto < $data["quantidade"]) {
+                    $json = [
+                        "quantidadeProduto" => $quantidadeProduto,
+                        "quantidade" => $data["quantidade"],
+                        "message" => "Quantidade inválida!",
+                        "type" => "warning"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
+
+                $saidas = new Saidas(
+                    NULL,
+                    $idCliente,
+                    $data["produtoId2"],
+                    $data["quantidade"],
+                    $precoFloat
+                );
+
+                if ($saidas->insert()) {
+
+                    $produto->subtraiQuantidadeProdutos($data["produtoId2"], $data["quantidade"]);
+
+                    $json = [
+                        "saidas" => $saidas->selectAll(),
+                        "produtos" => $produto->selectAll(),
+                        "nome" => $data["nome"],
+                        "idCliente" => $idCliente,
+                        "idProdutos" => $data["produtoId2"],
+                        "quantidade" => $data["quantidade"],
+                        "preco" => $precoFloat,
+                        "message" => "Saída cadastrada com sucesso!",
+                        "type" => "success"
+                    ];
+                    echo json_encode($json);
+                    return;
+                } else {
+                    $json = [
+                        "message" => "Saída não cadastrada!",
+                        "type" => "error"
+                    ];
+                    echo json_encode($json);
+                    return;
+                }
+            } catch (\Exception $e) {
+                // Log de erro
+                file_put_contents("saida_error.txt", date('Y-m-d H:i:s') . " - " . $e->getMessage() . "\n", FILE_APPEND);
                 $json = [
-                    "quantidadeProduto" => $quantidadeProduto,
-                    "quantidade" => $data["quantidade"],
-                    "message" => "Quantidade inválida!",
-                    "type" => "warning"
-                ];
-                echo json_encode($json);
-                return;
-            }
-
-            $saidas = new Saidas(
-                NULL,
-                $idCliente,
-                $data["produtoId2"],
-                $data["quantidade"],
-                $precoFloat
-            );
-
-            if ($saidas->insert()) {
-
-                $produto->subtraiQuantidadeProdutos($data["produtoId2"], $data["quantidade"]);
-
-                $json = [
-                    "saidas" => $saidas->selectAll(),
-                    "produtos" => $produto->selectAll(),
-                    "nome" => $data["nome"],
-                    "idCliente" => $idCliente,
-                    "idProdutos" => $data["produtoId2"],
-                    "quantidade" => $data["quantidade"],
-                    "preco" => $precoFloat,
-                    "message" => "Saída cadastrada com sucesso!",
-                    "type" => "success"
-                ];
-                echo json_encode($json);
-                return;
-            } else {
-                $json = [
-                    "message" => "Saída não cadastrada!",
+                    "message" => "Erro ao processar a solicitação: " . $e->getMessage(),
                     "type" => "error"
                 ];
                 echo json_encode($json);
@@ -1074,457 +1147,44 @@ class App
     /*------------ RELATORIOS ------------*/
     public function relatorio(): void
     {
-
         echo $this->view->render("relatorio");
     }
 
     public function relatorioClientes(): void
     {
-        $cliente = new Clientes();
-        $clientes = $cliente->selectAll();
-
-        $clienteList = "";
-        foreach ($clientes as $cliente) {
-            $clienteList .= "
-            <tr>
-                <td>{$cliente->nome}</td>
-                <td>{$cliente->cpf}</td>
-                <td>{$cliente->celular}</td>
-            </tr>
-        ";
-        }
-
-        $dompdf = new Dompdf();
-
-        $dompdf->loadHtml("<html>
-        <body>
-        <div>
-            <h1>Relatório de Clientes</h1>
-        </div>
-        
-        <h2>Lista de Clientes Cadastrados:</h2>
-        <table>
-            <tr>
-                <th>Nome</th>
-                <th>CPF</th>
-                <th>Celular</th>
-            </tr>
-            $clienteList
-        </table>
-        </body>
-        
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-
-            h1 {
-                text-align: center;
-                margin-bottom: 40px;
-            }
-
-            h2 {
-                font-size: 18px;
-                margin-bottom: 20px;
-            }
-
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-bottom: 40px;
-            }
-
-            th, td {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 10px;
-                font-size: 10px;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-
-            td {
-                word-wrap: break-word;
-                max-width: 150px;
-            }
-        </style>
-        
-        </html>");
-
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait'); // Utiliza o formato A4 e orientação retrato
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream("relatório-clientes.pdf");
+        $pdfReport = new PDFReport();
+        $pdfReport->generateClientReport();
     }
 
     public function relatorioFornecedores(): void
     {
-        $fornecedor = new Fornecedores();
-        $fornecedores = $fornecedor->selectAll();
-
-        $fornecedorList = "";
-        foreach ($fornecedores as $fornecedor) {
-            $fornecedorList .= "
-            <tr>
-                <td>{$fornecedor->nome}</td>
-                <td>{$fornecedor->cnpj}</td>
-                <td>{$fornecedor->email}</td>
-                <td>{$fornecedor->telefone}</td>
-                <td>{$fornecedor->endereco}</td>
-                <td>{$fornecedor->municipio}</td>
-                <td>{$fornecedor->cep}</td>
-                <td>{$fornecedor->uf}</td>
-            </tr>
-        ";
-        }
-
-        $dompdf = new Dompdf();
-
-        $dompdf->loadHtml("<html>
-    <body>
-    <div>
-        <h1>Relatório de Fornecedores</h1>
-    </div>
-
-    <h2>Lista de Fornecedores em Estoque:</h2>
-    <table>
-        <tr>
-            <th>Nome</th>
-            <th>Cnpj</th>
-            <th>Email</th>
-            <th>Telefone</th>
-            <th>Endereço</th>
-            <th>Município</th>
-            <th>CEP</th>
-            <th>UF</th>
-        </tr>
-        $fornecedorList
-    </table>
-    </body>
-
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 30px;
-        }
-
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 5px;
-            font-size: 10px; /* Reduzir o tamanho da fonte para caber mais conteúdo */
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        td {
-            word-wrap: break-word; /* Quebra de linha nas células caso o conteúdo seja grande */
-            max-width: 100px; /* Limita a largura das células */
-        }
-
-    </style>
-    
-    </html>");
-
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'landscape'); // Mude para 'landscape' para um layout mais largo
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream("relatório-fornecedores");
+        $pdfReport = new PDFReport();
+        $pdfReport->generateSupplierReport();
     }
 
     public function relatorioProdutos(): void
     {
-        $produto = new Produtos();
-        $produtos = $produto->selectAll();
-        $categoria = new Categorias();
-
-        $produtoList = "";
-        foreach ($produtos as $produto) {
-            $categoriaNome = $categoria->findNameById($produto->idCategoria);
-            $produtoList .= "
-            <tr>
-                <td>{$produto->codigo_produto}</td>
-                <td>{$produto->nome}</td>
-                <td>{$categoriaNome}</td>
-                <td>{$produto->descricao}</td>
-                <td>{$produto->preco}</td>
-                <td>{$produto->quantidade}</td>
-                <td>{$produto->unidade_medida}</td>
-            </tr>
-        ";
-        }
-
-        $dompdf = new Dompdf();
-
-        $dompdf->loadHtml("<html>
-        <body>
-        <div>
-            <h1>Relatório de Produtos</h1>
-        </div>
-        
-        <h2>Lista de Produtos em Estoque:</h2>
-        <table>
-            <tr>
-                <th>Código</th>
-                <th>Nome</th>
-                <th>Categoria</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Quantidade</th>
-                <th>Unidade</th>
-            </tr>
-            $produtoList
-        </table>
-        </body>
-        
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-            }
-
-            h1 {
-                text-align: center;
-                margin-bottom: 40px;
-            }
-
-            h2 {
-                font-size: 18px;
-                margin-bottom: 20px;
-            }
-
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-bottom: 40px;
-            }
-
-            th, td {
-                border: 1px solid #dddddd;
-                text-align: left;
-                padding: 10px;
-                font-size: 10px;
-            }
-
-            th {
-                background-color: #f2f2f2;
-            }
-
-            tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-
-            td {
-                word-wrap: break-word;
-                max-width: 150px;
-            }
-        </style>
-        
-        </html>");
-
-        // (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'portrait'); // Utiliza o formato A4 e orientação retrato
-
-        // Render the HTML as PDF
-        $dompdf->render();
-
-        // Output the generated PDF to Browser
-        $dompdf->stream("relatório-produtos.pdf");
+        $pdfReport = new PDFReport();
+        $pdfReport->generateProductReport();
     }
 
     /*------------ RELATORIOS EXCEL ------------*/
     public function relatorioClientesExcel(): void
     {
-        $cliente = new Clientes();
-        $clientes = $cliente->selectAll();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Cabeçalho
-        $sheet->setCellValue('A1', 'Nome');
-        $sheet->setCellValue('B1', 'CPF');
-        $sheet->setCellValue('C1', 'Celular');
-
-        // Estilo do cabeçalho
-        $headerStyle = [
-            'font' => ['bold' => true],
-            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
-        ];
-        $sheet->getStyle('A1:C1')->applyFromArray($headerStyle);
-
-        // Dados
-        $row = 2;
-        foreach ($clientes as $cliente) {
-            $sheet->setCellValue('A' . $row, $cliente->nome);
-            $sheet->setCellValue('B' . $row, $cliente->cpf);
-            $sheet->setCellValue('C' . $row, $cliente->celular);
-            $row++;
-        }
-
-        // Auto-size columns
-        foreach (range('A', 'C') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-        }
-
-        // Create Excel file
-        $writer = new Xlsx($spreadsheet);
-        
-        // Headers para download
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="relatorio-clientes.xlsx"');
-        header('Cache-Control: max-age=0');
-        
-        $writer->save('php://output');
-        exit;
+        $excelReport = new ExcelReport();
+        $excelReport->generateClientReport();
     }
 
     public function relatorioFornecedoresExcel(): void
     {
-        $fornecedor = new Fornecedores();
-        $fornecedores = $fornecedor->selectAll();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Cabeçalho
-        $sheet->setCellValue('A1', 'Nome');
-        $sheet->setCellValue('B1', 'CNPJ');
-        $sheet->setCellValue('C1', 'Email');
-        $sheet->setCellValue('D1', 'Telefone');
-        $sheet->setCellValue('E1', 'Endereço');
-        $sheet->setCellValue('F1', 'Município');
-        $sheet->setCellValue('G1', 'CEP');
-        $sheet->setCellValue('H1', 'UF');
-
-        // Estilo do cabeçalho
-        $headerStyle = [
-            'font' => ['bold' => true],
-            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
-        ];
-        $sheet->getStyle('A1:H1')->applyFromArray($headerStyle);
-
-        // Dados
-        $row = 2;
-        foreach ($fornecedores as $fornecedor) {
-            $sheet->setCellValue('A' . $row, $fornecedor->nome);
-            $sheet->setCellValue('B' . $row, $fornecedor->cnpj);
-            $sheet->setCellValue('C' . $row, $fornecedor->email);
-            $sheet->setCellValue('D' . $row, $fornecedor->telefone);
-            $sheet->setCellValue('E' . $row, $fornecedor->endereco);
-            $sheet->setCellValue('F' . $row, $fornecedor->municipio);
-            $sheet->setCellValue('G' . $row, $fornecedor->cep);
-            $sheet->setCellValue('H' . $row, $fornecedor->uf);
-            $row++;
-        }
-
-        // Auto-size columns
-        foreach (range('A', 'H') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-        }
-
-        // Create Excel file
-        $writer = new Xlsx($spreadsheet);
-        
-        // Headers para download
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="relatorio-fornecedores.xlsx"');
-        header('Cache-Control: max-age=0');
-        
-        $writer->save('php://output');
-        exit;
+        $excelReport = new ExcelReport();
+        $excelReport->generateSupplierReport();
     }
 
     public function relatorioProdutosExcel(): void
     {
-        $produto = new Produtos();
-        $produtos = $produto->selectAll();
-        $categoria = new Categorias();
-
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Cabeçalho
-        $sheet->setCellValue('A1', 'Código');
-        $sheet->setCellValue('B1', 'Nome');
-        $sheet->setCellValue('C1', 'Descrição');
-        $sheet->setCellValue('D1', 'Categoria');
-        $sheet->setCellValue('E1', 'Preço');
-        $sheet->setCellValue('F1', 'Quantidade');
-        $sheet->setCellValue('G1', 'Unidade');
-
-        // Estilo do cabeçalho
-        $headerStyle = [
-            'font' => ['bold' => true],
-            'fill' => ['fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID, 'color' => ['rgb' => 'CCCCCC']],
-        ];
-        $sheet->getStyle('A1:G1')->applyFromArray($headerStyle);
-
-        // Dados
-        $row = 2;
-        foreach ($produtos as $produto) {
-            $categoriaNome = $categoria->findNameById($produto->idCategoria) ?? 'N/A';
-            
-            $sheet->setCellValue('A' . $row, $produto->codigo_produto);
-            $sheet->setCellValue('B' . $row, $produto->nome);
-            $sheet->setCellValue('C' . $row, $produto->descricao);
-            $sheet->setCellValue('D' . $row, $categoriaNome);
-            $sheet->setCellValue('E' . $row, $produto->preco);
-            $sheet->setCellValue('F' . $row, $produto->quantidade);
-            $sheet->setCellValue('G' . $row, $produto->unidade_medida);
-            $row++;
-        }
-
-        // Auto-size columns
-        foreach (range('A', 'G') as $col) {
-            $sheet->getColumnDimension($col)->setAutoSize(true);
-        }
-
-        // Create Excel file
-        $writer = new Xlsx($spreadsheet);
-        
-        // Headers para download
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="relatorio-produtos.xlsx"');
-        header('Cache-Control: max-age=0');
-        
-        $writer->save('php://output');
-        exit;
+        $excelReport = new ExcelReport();
+        $excelReport->generateProductReport();
     }
 
     /*------------ FUNÇÕES GET ------------*/
@@ -1750,5 +1410,21 @@ class App
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['error' => "Erro ao processar a nota: " . $e->getMessage()]);
         }
+    }
+
+    /**
+     * Método para realizar o logout do usuário
+     */
+    public function logout(): void
+    {
+        $session = new \Source\Core\Session();
+        $session->destroy();
+        
+        $json = [
+            "message" => "Logout realizado com sucesso!",
+            "type" => "success"
+        ];
+        
+        echo json_encode($json);
     }
 }

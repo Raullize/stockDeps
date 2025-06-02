@@ -1,4 +1,8 @@
-# Stock DEPS 📊📦
+# Stock DEPS 📦
+
+[![en](https://img.shields.io/badge/lang-en-red.svg)](./README.en.md)
+
+![DepsModels Logo](assets/web/images/logos/logo-without-background.png)
 
 O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, desenvolvido para facilitar a organização e controle de produtos, clientes, fornecedores e movimentações de estoque. O sistema foi projetado com tecnologias modernas e utiliza a arquitetura **MVC** (Model-View-Controller) para oferecer uma solução escalável e eficiente.
 
@@ -27,7 +31,7 @@ O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, 
 - Cadastro e gerenciamento de fornecedores.
 
 ### Relatórios
-- Geração de relatórios em **PDF** contendo informações relevantes, como movimentações do estoque, clientes cadastrados e fornecedores.
+- Geração de relatórios em **PDF** ou **Excel**, contendo informações relevantes, como movimentações do estoque, clientes cadastrados e fornecedores.
 
 ## 🔧 Tecnologias Utilizadas
 
@@ -41,7 +45,32 @@ O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, 
 
 Para testar o projeto em seu ambiente local, siga os passos abaixo:
 
-### 1. **Instalar as dependências do PHP**
+### Pré-requisitos
+
+- **XAMPP** (ou outro servidor local com Apache, MySQL e PHP)
+- **Composer** (gerenciador de dependências PHP)
+- **Node.js** e **npm** (para dependências JavaScript)
+
+### 1. **Configurar o ambiente XAMPP**
+
+1. Baixe e instale o [XAMPP](https://www.apachefriends.org/)
+2. Inicie os serviços **Apache** e **MySQL** no painel de controle do XAMPP
+3. Clone ou baixe este repositório na pasta `htdocs` do XAMPP:
+   ```bash
+   cd C:\xampp\htdocs
+   git clone [URL_DO_REPOSITORIO]
+   ```
+
+### 2. **Configurar o banco de dados**
+
+1. Acesse o **phpMyAdmin** através do navegador: `http://localhost/phpmyadmin`
+2. Crie um novo banco de dados chamado `stockDeps`
+3. Importe o arquivo SQL localizado em `01-bd/stockDeps.sql`:
+   - Clique na aba "Importar"
+   - Selecione o arquivo `stockDeps.sql`
+   - Clique em "Executar"
+
+### 3. **Instalar as dependências do PHP**
    
 Se você ainda não tem as dependências do Composer instaladas, execute o comando abaixo para instalar ou atualizar:
 
@@ -54,7 +83,7 @@ ou, se precisar atualizar:
 composer update
 ```
 
-### 2. **Instalar as dependências do Node.js**
+### 4. **Instalar as dependências do Node.js**
 
 Em seguida, instale ou atualize as dependências do Node.js:
 
@@ -67,7 +96,24 @@ ou, para atualizar as dependências:
 npm update
 ```
 
-Após esses passos, todas as dependências necessárias para rodar o projeto estarão instaladas e você poderá iniciar o servidor e testar o sistema.
+### 5. **Acessar o sistema**
+
+Após configurar tudo, acesse o sistema através do navegador:
+
+```
+http://localhost/stockDeps
+```
+
+### 6. **Credenciais de acesso**
+
+O sistema possui as seguintes credenciais pré-cadastradas:
+
+| Usuário | Senha | Observações |
+|---------|-------|-------------|
+| `teste` | `teste` | ✅ **Recomendado para testes** - Acesso completo ao sistema |
+| `demoAdmin` | `demoAdmin` | ⚠️ Redireciona para tela de admin (ainda não desenvolvida) |
+
+**Para testar o sistema, utilize as credenciais `teste` / `teste`**, pois o usuário `demoAdmin` redireciona para uma área administrativa que ainda está em desenvolvimento.
 
 ## 📈 Benefícios Reais: Já Utilizado no Dia a Dia Empresarial
 
@@ -87,4 +133,41 @@ Essa experiência comprova que o **Stock DEPS** é uma solução robusta, confi�
 - **Segurança**: Dados protegidos por tecnologias modernas.
 - **Testado e aprovado**: Utilizado no dia a dia de uma empresa real para garantir resultados confiáveis.
 
-Fale com a DEPS e experimente uma solução confiável, simples e eficiente para transformar a gestão do seu estoque!
+## 👥 Contribuidores
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/elano-tavares">
+        <img src="https://github.com/elano-tavares.png" width="100px;" alt="Elano Tavares"/><br />
+        <sub><b>Elano Tavares do Nascimento</b></sub>
+      </a><br />
+      <sub>Desenvolvedor Web</sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/MiguelLewandowski">
+        <img src="https://github.com/MiguelLewandowski.png" width="100px;" alt="Miguel Lewandowski"/><br />
+        <sub><b>Miguel Leonardo Strapazon Lewandowski</b></sub>
+      </a><br />
+      <sub>Desenvolvedor Web</sub>
+    </td>
+    <td align="center">
+      <a href="https://github.com/Raullize">
+        <img src="https://github.com/Raullize.png" width="100px;" alt="Raul Lize"/><br />
+        <sub><b>Raul Lize Teixeira</b></sub>
+      </a><br />
+      <sub>Desenvolvedor Web</sub>
+    </td>
+  </tr>
+</table>
+
+## 📞 Contato
+
+Para dúvidas, sugestões ou feedback, entre em contato conosco através dos perfis do GitHub dos contribuidores ou visite nosso site: [https://depsmodels.com](https://depsmodels.com)
+
+---
+
+<div align="center">
+  <p>Desenvolvido com 💙 pela equipe DEPS</p>
+  <p>🚀 Transformando a gestão do seu estoque</p>
+</div>

@@ -1,21 +1,194 @@
-/* Estilo do Card */
+/* Configurações gerais */
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #6c757d;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    --dark-color: #1e293b;
+    --light-color: #f8fafc;
+    --border-radius: 12px;
+    --box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
+}
+
+/* Estilo base dos cards */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.statistic-cards {
+    padding: 1.5rem;
+    height: 100%;
+}
+
+/* Estilo do header do Dashboard */
+.dashboard-header {
+    border-left: 5px solid var(--primary-color);
+    transition: var(--transition);
+}
+
+.dashboard-header:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+}
+
+.text-gradient {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.header-divider {
+    height: 3px;
+    width: 100px;
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.date-display {
+    color: #212529;
+    font-size: 0.95rem;
+}
+
+.container h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 1.5rem;
+}
+
+/* Cards de estatísticas */
+.card-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.text-dark.card-title {
+    color: #1e293b !important;
+}
+
+/* Título maior para seções específicas */
+.section-title {
+    font-size: 1.5rem !important;
+    margin-bottom: 1.2rem;
+    position: relative;
+}
+
+.card h3 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 15px 0;
+}
+
+.card p {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.card p i {
+    font-size: 1.1rem;
+}
+
+/* Fundo e cor de texto para os cards */
+.bg-primary {
+    background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%) !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.bg-dark {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+}
+
+.bg-secondary {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
+}
+
+.bg-info {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+}
+
+.bg-indigo {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+}
+
+.bg-light {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%) !important;
+    color: #334155;
+}
+
+/* Box hover effect */
+.box-hover {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.box-hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: -1;
+    transform: scale(0);
+    transition: var(--transition);
+    border-radius: 50%;
+}
+
+.box-hover:hover::before {
+    transform: scale(2);
+}
+
+/* Estilo dos produtos mais vendidos */
 .produtos-mais-vendidos-card {
-    border-radius: 12px;
+    border-radius: var(--border-radius);
     border: none;
     background-color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow);
 }
 
 .produtos-mais-vendidos-container {
-    max-height: none; /* Remover o limite de altura e o scroll */
-    padding-right: 5px; /* Para evitar que o conteúdo fique cortado */
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 5px;
+    scrollbar-width: thin;
 }
 
-.card-title {
-    font-weight: bold;
-    font-size: 1.2rem;
-    margin-bottom: 20px;
-    text-align: center;
+.produtos-mais-vendidos-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.produtos-mais-vendidos-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .list-group-item {
@@ -23,39 +196,604 @@
     justify-content: space-between;
     align-items: center;
     border: none;
-    padding: 10px 12px;
-    background-color: #f9f9f9;
+    padding: 12px 16px;
+    background-color: #f9fafb;
     margin-bottom: 8px;
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    font-size: 0.9rem; /* Diminuir o tamanho da fonte */
+    font-size: 0.95rem;
+    transition: var(--transition);
 }
 
 .list-group-item:nth-child(odd) {
-    background-color: #f4f4f4;
+    background-color: #f3f4f6;
 }
 
 .list-group-item:hover {
     background-color: #e9ecef;
+    transform: translateX(3px);
 }
 
 .list-group-item span.produto-nome {
-    max-width: 70%; /* Limitar a largura do nome do produto */
+    max-width: 70%;
     overflow: hidden;
     white-space: nowrap;
-    text-overflow: ellipsis; /* Exibir '...' se o nome do produto for muito longo */
+    text-overflow: ellipsis;
+    font-weight: 500;
+    color: #1e293b;
 }
 
 .list-group-item span.produto-nome:hover {
-    white-space: normal; /* Exibir o texto completo ao passar o mouse */
+    white-space: normal;
     overflow: visible;
 }
 
 .badge {
-    font-size: 0.8rem; /* Reduzir o tamanho da badge */
-    padding: 5px 10px;
-    border-radius: 12px;
-    background-color: #28a745;
-    color: white;
-    white-space: nowrap; /* Garantir que o badge fique em uma única linha */
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+
+/* Estilos dos gráficos */
+.chart-container {
+    min-height: 300px;
+    position: relative;
+    margin-top: 20px;
+}
+
+/* Lucro por período */
+#periodo {
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+#periodo:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+}
+
+/* Lucro bruto e líquido */
+.row .card .card {
+    background-color: #f8fafc;
+    padding: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.row .card .card:hover {
+    transform: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.row .card .card h5 {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.row .card .card h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #334155;
+}
+
+/* Produtos com estoque baixo */
+.container h3.text-danger {
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+}
+
+.card.border-danger {
+    border: 1px solid #ef4444 !important;
+    box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1), 0 2px 4px -1px rgba(239, 68, 68, 0.06);
+}
+
+.card-header.bg-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.card-header .btn-light {
+    font-weight: 500;
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header .btn-light:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+}
+
+#lista-estoque-baixo {
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding: 0.5rem;
+}
+
+#lista-estoque-baixo::-webkit-scrollbar {
+    width: 5px;
+}
+
+#lista-estoque-baixo::-webkit-scrollbar-thumb {
+    background-color: rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+}
+
+#lista-estoque-baixo .list-group-item {
+    border-left: 3px solid #ef4444;
+    transition: all 0.2s ease;
+}
+
+#lista-estoque-baixo .list-group-item:hover {
+    transform: translateX(5px);
+    background-color: #fff5f5;
+}
+
+#lista-estoque-baixo .list-group-item-danger {
+    background-color: rgba(239, 68, 68, 0.08);
+    border-left-color: #ef4444;
+}
+
+#lista-estoque-baixo .list-group-item-warning {
+    background-color: rgba(245, 158, 11, 0.08);
+    border-left-color: #f59e0b;
+}
+
+/* Estilos para o cabeçalho da Home */
+.home-header {
+    border-left: 5px solid var(--primary-color);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    background-color: #fff;
+    animation: fadeInDown 0.7s ease-out;
+    transition: var(--transition);
+    text-align: left;
+}
+
+.home-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.home-header p {
+    color: var(--secondary-color);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.home-header .header-divider {
+    height: 3px;
+    width: 100px;
+    background: var(--primary-color);
+    border-radius: 3px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.home-header .date-display {
+    color: var(--secondary-color);
+    font-size: 0.95rem;
+    text-align: right;
+}
+
+/* Responsividade melhorada */
+@media (max-width: 1199px) {
+    .container {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 2rem;
+    }
+    
+    .card h3 {
+        font-size: 2rem;
+    }
+    
+    .produtos-mais-vendidos-container {
+        max-height: 320px;
+    }
+    
+    .chart-container {
+        min-height: 280px;
+    }
+    
+    .home-header {
+        padding: 1.75rem;
+        margin-bottom: 1.75rem;
+    }
+    
+    .home-header h1 {
+        font-size: 2rem;
+    }
+    
+    .home-header p {
+        font-size: 0.95rem;
+    }
+    
+    .home-header .date-display {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 991px) {
+    .container h1 {
+        font-size: 1.8rem;
+    }
+    
+    .card h3 {
+        font-size: 1.8rem;
+    }
+    
+    .row.g-4 {
+        gap: 1rem !important;
+    }
+    
+    .dashboard-header {
+        padding: 1.5rem !important;
+    }
+    
+    .card-title {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+    
+    .statistic-cards {
+        padding: 1.25rem;
+    }
+    
+    .produtos-mais-vendidos-card {
+        margin-top: 1.5rem;
+    }
+    
+    .row .card .card h3 {
+        font-size: 1.35rem;
+    }
+    
+    .card p {
+        font-size: 0.9rem;
+    }
+    
+    .home-header {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .home-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .home-header p {
+        font-size: 0.95rem;
+    }
+    
+    .home-header .date-display {
+        font-size: 0.9rem;
+        text-align: right;
+    }
+}
+
+@media (max-width: 767px) {
+    .container {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        max-width: 100%;
+    }
+    
+    .container h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    .dashboard-header {
+        margin-bottom: 1.5rem !important;
+        padding: 1.25rem !important;
+        text-align: center;
+    }
+    
+    .dashboard-header p {
+        text-align: center;
+    }
+    
+    .header-divider {
+        margin: 10px auto;
+        width: 80px;
+    }
+    
+    .dashboard-header .date-display {
+        text-align: left !important;
+        margin-top: 1rem;
+    }
+    
+    .dashboard-header .col-md-4 {
+        text-align: left !important;
+    }
+    
+    .card-title {
+        font-size: 1rem;
+    }
+    
+    .card h3 {
+        font-size: 1.5rem;
+    }
+    
+    .card p {
+        font-size: 0.85rem;
+    }
+    
+    .chart-container {
+        min-height: 250px;
+    }
+    
+    /* Ajustar layout de cards para tela menor - 2 por linha */
+    .row.g-4 > .col-md-3 {
+        width: 50%;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+    }
+    
+    .section-title {
+        text-align: center;
+        margin-top: 2rem;
+    }
+    
+    .card.border-danger .card-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+    }
+    
+    .card.border-danger .card-header h5 {
+        margin-bottom: 0;
+    }
+    
+    .home-header {
+        padding: 1.25rem;
+        margin-bottom: 1.25rem;
+    }
+    
+    .home-header h1 {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+    
+    .home-header p {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+    
+    .home-header .header-divider {
+        margin: 10px auto;
+    }
+    
+    /* Ajustes para o cabeçalho em mobile */
+    .dashboard-header .row,
+    .home-header .row {
+        flex-direction: column;
+    }
+    
+    .dashboard-header .row .col-md-8,
+    .home-header .row .col-md-8 {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .dashboard-header .row .col-md-4,
+    .home-header .row .col-md-4 {
+        width: 100%;
+        text-align: left;
+        display: flex;
+        justify-content: flex-start;
+    }
+    
+    .dashboard-header h1,
+    .home-header h1 {
+        text-align: center;
+        width: 100%;
+    }
+    
+    .dashboard-header p,
+    .home-header p {
+        text-align: center;
+        width: 100%;
+    }
+    
+    .dashboard-header .date-display,
+    .home-header .date-display {
+        text-align: left !important;
+        margin-top: 1rem;
+        display: block;
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+        max-width: 100%;
+    }
+    
+    .row.g-4 {
+        gap: 0.5rem !important;
+    }
+    
+    .dashboard-header {
+        padding: 1rem !important;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .dashboard-header p {
+        font-size: 0.9rem;
+    }
+    
+    .card h3 {
+        font-size: 1.4rem;
+        margin: 10px 0;
+    }
+    
+    .statistic-cards {
+        padding: 1rem;
+    }
+    
+    /* Ajustar espaçamento entre cards */
+    .row.g-4 > div {
+        padding-left: 0.3rem;
+        padding-right: 0.3rem;
+    }
+    
+    /* Tornar os botões mais responsivos */
+    .card-header .btn-light {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.85rem;
+    }
+    
+    /* Ajustar layout de produtos com estoque baixo */
+    #lista-estoque-baixo .list-group-item {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    
+    /* Reduzir espessura da borda de cards */
+    .report-card:before {
+        height: 4px;
+    }
+    
+    /* Ajustar o período de seleção em gráficos */
+    #periodo {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    
+    .home-header {
+        padding: 0.9rem;
+        margin-bottom: 0.9rem;
+    }
+    
+    .home-header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .home-header p {
+        font-size: 0.85rem;
+    }
+    
+    .dashboard-header .date-display {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Muito pequenos smartphones */
+    .container {
+        padding-left: 0.3rem;
+        padding-right: 0.3rem;
+    }
+    
+    .card h3 {
+        font-size: 1.3rem;
+        margin: 8px 0;
+    }
+    
+    .card-title {
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+    
+    .card p {
+        font-size: 0.8rem;
+    }
+    
+    .card p i {
+        font-size: 0.9rem;
+    }
+    
+    .chart-container {
+        min-height: 220px;
+    }
+    
+    .produtos-mais-vendidos-container {
+        max-height: 300px;
+    }
+    
+    .badge {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .list-group-item span.produto-nome {
+        max-width: 60%;
+    }
+    
+    /* Reduzir padding para economizar espaço */
+    .card-body {
+        padding: 0.65rem;
+    }
+    
+    .statistic-cards {
+        padding: 0.65rem;
+    }
+    
+    .row .card .card {
+        margin-bottom: 0.75rem;
+    }
+}
+
+@media (max-width: 360px) {
+    /* Smartphones muito pequenos */
+    .dashboard-header h1 {
+        font-size: 1.25rem;
+    }
+    
+    .dashboard-header p {
+        font-size: 0.85rem;
+    }
+    
+    .card-title {
+        font-size: 0.95rem;
+    }
+    
+    .card h3 {
+        font-size: 1.25rem;
+    }
+    
+    .statistic-cards {
+        padding: 0.75rem;
+    }
+    
+    .card p {
+        font-size: 0.8rem;
+    }
+}
+
+/* Animações */
+@keyframes countUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }

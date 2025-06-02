@@ -116,6 +116,38 @@ const form_sc = $("#saida-cadastro");
 form_sc.on("submit", function (e) {
     e.preventDefault();
 
+    // Verificar explicitamente o status do checkbox antes de enviar
+    const clienteNaoCadastrado = $("#clienteNaoCadastrado").prop('checked');
+    const clienteInput = $("#cliente");
+    const hiddenField = $("#cliente_nao_cadastrado_valor");
+    
+    // Garantir que o valor dos campos seja correto se o checkbox estiver marcado
+    if (clienteNaoCadastrado) {
+        clienteInput.val("Cliente não cadastrado");
+        hiddenField.val("1");
+    } else {
+        // Verificar se o nome do cliente está preenchido
+        if (clienteInput.val().trim() === "") {
+            exibirMensagemTemporariaErro("Por favor, informe o nome do cliente ou marque a opção 'Cliente não cadastrado'");
+            return;
+        }
+        hiddenField.val("0");
+    }
+
+    // Verificar se a quantidade foi preenchida
+    const quantidade = $("#quantidadeSaida").val().trim();
+    if (quantidade === "") {
+        exibirMensagemTemporariaErro("Por favor, informe a quantidade");
+        return;
+    }
+
+    // Verificar se o preço foi preenchido
+    const preco = $("#precoSaida").val().trim();
+    if (preco === "" || preco === "R$ 0,00") {
+        exibirMensagemTemporariaErro("Por favor, informe um preço válido");
+        return;
+    }
+
     const serializedData = form_sc.serialize();
 
     $.ajax({
@@ -126,10 +158,14 @@ form_sc.on("submit", function (e) {
         success: function (response) {
             if (response.type === 'error') {
                 exibirMensagemTemporariaErro(response.message);
+                // Garantir que o campo cliente esteja habilitado mesmo com erro
+                $("#cliente").prop('readOnly', false);
                 return;
             }
             if (response.type === 'warning') {
                 exibirMensagemTemporariaAviso(response.message);
+                // Garantir que o campo cliente esteja habilitado mesmo com aviso
+                $("#cliente").prop('readOnly', false);
                 return;
             }
             if (response.type === 'success') {
@@ -143,7 +179,11 @@ form_sc.on("submit", function (e) {
         },
         error: function (xhr, status, error) {
             console.error("Erro no AJAX:", error);
-            exibirMensagemTemporariaErro("Erro ao processar a solicitação.");
+            console.error("Status:", status);
+            console.error("Resposta do servidor:", xhr.responseText);
+            exibirMensagemTemporariaErro("Erro ao processar a solicitação. Por favor, tente novamente.");
+            // Garantir que o campo cliente esteja habilitado mesmo com erro
+            $("#cliente").prop('readOnly', false);
         }
     });
 });
@@ -271,9 +311,27 @@ function limparCamposFormulario(formSelector) {
 
 function limparCamposSaida() {
     const form = $("#saida-cadastro");
+    const clienteInput = form.find("#cliente");
 
-    form.find("#cliente").val(''); 
+    // Limpa o valor do campo cliente
+    clienteInput.val('');
+    
+    // Garante que o campo cliente fique editável
+    clienteInput.prop('readOnly', false);
+    
+    // Desmarca o checkbox de cliente não cadastrado
     form.find("#clienteNaoCadastrado").prop('checked', false);
+    
+    // Reseta o campo oculto
+    form.find("#cliente_nao_cadastrado_valor").val('0');
+    
+    // Limpa o campo de quantidade
     form.find("#quantidadeSaida").val('');
+    
+    // Reseta o campo de preço para o valor padrão
+    form.find("#precoSaida").val('R$ 0,00');
+    
+    // Remove a classe text-muted do campo cliente se estiver presente
+    clienteInput.removeClass('text-muted');
 }
 

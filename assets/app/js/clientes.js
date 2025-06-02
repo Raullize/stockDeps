@@ -9,6 +9,12 @@ let produtos = [];
 let saidas = [];
 let categorias = [];
 
+// Variáveis para paginação do histórico de clientes
+const itensPorPaginaHistoricoCliente = 5;   // Quantidade de itens por página no histórico
+const maxBotoesPaginacaoHistoricoCliente = 5;
+let paginaAtualHistoricoCliente = 1;
+let saidasClienteAtual = [];
+
 async function fetchProdutos() {
     const response = await fetch(`${BASE_URL}/getProdutos`);
     produtos = await response.json();
@@ -36,7 +42,6 @@ async function fetchEntradas() {
 async function fetchSaidas() {
     const response = await fetch(`${BASE_URL}/getSaidas`);
     saidas = await response.json(); // Preenche a variável global saídas
-    console.log(saidas)
 }
 
 function loadAllData() {
@@ -61,11 +66,17 @@ function preencherTabelaClientes(clientesPaginados) {
             <td>${cliente.nome}</td>
             <td>${cliente.cpf}</td>
             <td>${cliente.celular}</td>
-            <td>
-                <div class="btn-group w-100">
-                    <button class="btn btn-primary text-light" onclick="abrirModalEditarCliente(${cliente.id})">Editar</button>
-                    <button class="btn btn-danger" onclick="openModalExcluir(${cliente.id})">Excluir</button>
-                    <button class="btn btn-success" onclick="abrirModalHistorico(${cliente.id})">Histórico</button>
+            <td class="text-center">
+                <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn btn-primary action-btn" onclick="abrirModalEditarCliente(${cliente.id})" title="Editar cliente">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-danger action-btn" onclick="openModalExcluir(${cliente.id})" title="Excluir cliente">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button class="btn btn-success action-btn" onclick="abrirModalHistorico(${cliente.id})" title="Histórico de compras">
+                        <i class="fas fa-history"></i>
+                    </button>
                 </div>
             </td>
         `;
@@ -93,7 +104,7 @@ function mostrarPaginaClientes(pagina) {
 
 function atualizarPaginacaoClientes() {
     const totalPaginas = Math.ceil(clientesFiltrados.length / itensPorPaginaClientes);
-    const pagination = document.getElementById('paginationClientes');
+    const pagination = document.getElementById('paginacaoClientes');
     pagination.innerHTML = '';
 
     const maxLeft = Math.max(paginaAtualClientes - Math.floor(maxBotoesPaginacaoClientes / 2), 1);
@@ -133,15 +144,32 @@ function atualizarPaginacaoClientes() {
 
 function buscarCliente() {
     const inputBuscarCliente = document.getElementById("buscarCliente");
+    if (!inputBuscarCliente) {
+        console.error("Elemento de busca não encontrado!");
+        return;
+    }
 
+    // Inicializa o valor
+    inputBuscarCliente.value = "";
+    
+    // Adiciona o evento de input
     inputBuscarCliente.addEventListener("input", function () {
         const termoBusca = inputBuscarCliente.value.toLowerCase();
+        console.log("Buscando cliente:", termoBusca);
 
         // Atualiza clientesFiltrados com base no termo de busca
         clientesFiltrados = clientes.filter(cliente =>
             cliente.nome.toLowerCase().includes(termoBusca) ||
             cliente.cpf.toLowerCase().includes(termoBusca)
         );
+
+        // Exibe ou oculta a mensagem de "sem resultados"
+        const semResultados = document.getElementById("semResultadosClientes");
+        if (clientesFiltrados.length === 0) {
+            semResultados.classList.remove("d-none");
+        } else {
+            semResultados.classList.add("d-none");
+        }
 
         // Reseta a paginação para a primeira página e exibe os resultados
         paginaAtualClientes = 1;
@@ -165,36 +193,121 @@ function abrirModalEditarCliente(id) {
     const modalEditar = new bootstrap.Modal(document.getElementById("modalEditarCliente"));
     modalEditar.show();
 }
+
 function abrirModalHistorico(id) {
     const modalHistorico = new bootstrap.Modal(document.getElementById("modalHistoricoCliente"));
+    const historicoDiv = document.getElementById("historicoCliente");
+    const semHistoricoDiv = document.getElementById("semHistoricoCliente");
+    const tabelaHistorico = document.getElementById("tabelaHistoricoCliente");
+    
+    historicoDiv.textContent = `Carregando histórico do cliente ID ${id}...`;
+    semHistoricoDiv.classList.add("d-none");
+    tabelaHistorico.classList.add("d-none");
 
-    document.getElementById("historicoCliente").textContent = `Carregando histórico do cliente ID ${id}...`;
+    saidas.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    saidasClienteAtual = saidas.filter(saida => saida.idClientes === id);
 
-    saidas.sort((a, b) => b.id - a.id);
-
-    const saidasCliente = saidas.filter(saida => saida.idClientes === id);
-
-    let htmlHistorico = '';
-    if (saidasCliente.length > 0) {
-        saidasCliente.forEach(saida => {
-            const produto = produtos.find(p => p.id === saida.idProdutos);
-            const categoria = produto ? categorias.find(c => c.id === produto.idCategoria) : null;
-
-            htmlHistorico += `
-                <p><strong>Produto:</strong> ${produto ? produto.nome : 'Desconhecido'} <br>
-                <strong>Categoria:</strong> ${categoria ? categoria.nome : 'Desconhecida'} <br>
-                <strong>Quantidade:</strong> ${saida.quantidade} <br>
-                <strong>Preço:</strong> ${saida.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <br>
-                <strong>Data:</strong> ${new Date(saida.created_at).toLocaleDateString()}</p>
-            `;
-        });
+    if (saidasClienteAtual.length > 0) {
+        // Limpa o conteúdo anterior
+        historicoDiv.innerHTML = "";
+        
+        // Mostra a tabela e preenche com os dados
+        tabelaHistorico.classList.remove("d-none");
+        
+        // Reseta a paginação para a primeira página
+        paginaAtualHistoricoCliente = 1;
+        mostrarPaginaHistoricoCliente();
     } else {
-        htmlHistorico = '<p>Nenhuma saída registrada para este cliente.</p>';
+        // Mostra mensagem de que não há histórico
+        historicoDiv.innerHTML = "";
+        semHistoricoDiv.classList.remove("d-none");
+        tabelaHistorico.classList.add("d-none");
     }
 
-    document.getElementById("historicoCliente").innerHTML = htmlHistorico;
-
     modalHistorico.show();
+}
+
+function mostrarPaginaHistoricoCliente() {
+    const inicio = (paginaAtualHistoricoCliente - 1) * itensPorPaginaHistoricoCliente;
+    const fim = inicio + itensPorPaginaHistoricoCliente;
+    const saidasPaginadas = saidasClienteAtual.slice(inicio, fim);
+    
+    const tbody = document.querySelector("#tabelaHistoricoCliente tbody");
+    tbody.innerHTML = "";
+    
+    saidasPaginadas.forEach(saida => {
+        const produto = produtos.find(p => p.id === saida.idProdutos);
+        const categoria = produto ? categorias.find(c => c.id === produto.idCategoria) : null;
+        
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${produto ? produto.nome : 'Desconhecido'}</td>
+            <td>${categoria ? categoria.nome : 'Desconhecida'}</td>
+            <td>${saida.quantidade}</td>
+            <td>${saida.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+            <td>${new Date(saida.created_at).toLocaleDateString()}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+    
+    atualizarPaginacaoHistoricoCliente();
+}
+
+function atualizarPaginacaoHistoricoCliente() {
+    const totalPaginas = Math.ceil(saidasClienteAtual.length / itensPorPaginaHistoricoCliente);
+    const pagination = document.getElementById('paginacaoHistoricoCliente');
+    pagination.innerHTML = '';
+    
+    if (totalPaginas <= 1) {
+        return; // Não mostra paginação se houver apenas uma página
+    }
+
+    const maxLeft = Math.max(paginaAtualHistoricoCliente - Math.floor(maxBotoesPaginacaoHistoricoCliente / 2), 1);
+    const maxRight = Math.min(maxLeft + maxBotoesPaginacaoHistoricoCliente - 1, totalPaginas);
+
+    if (paginaAtualHistoricoCliente > 1) {
+        const prevLi = document.createElement('li');
+        prevLi.classList.add('page-item');
+        prevLi.innerHTML = `<a class="page-link" href="#">Anterior</a>`;
+        prevLi.onclick = (e) => {
+            e.preventDefault();
+            paginaAtualHistoricoCliente--;
+            mostrarPaginaHistoricoCliente();
+        };
+        pagination.appendChild(prevLi);
+    }
+
+    for (let i = maxLeft; i <= maxRight; i++) {
+        const li = document.createElement('li');
+        li.classList.add('page-item');
+        if (i === paginaAtualHistoricoCliente) {
+            li.classList.add('active');
+        }
+
+        const a = document.createElement('a');
+        a.classList.add('page-link');
+        a.textContent = i;
+        a.href = "#";
+        a.onclick = (e) => {
+            e.preventDefault();
+            paginaAtualHistoricoCliente = i;
+            mostrarPaginaHistoricoCliente();
+        };
+        li.appendChild(a);
+        pagination.appendChild(li);
+    }
+
+    if (paginaAtualHistoricoCliente < totalPaginas) {
+        const nextLi = document.createElement('li');
+        nextLi.classList.add('page-item');
+        nextLi.innerHTML = `<a class="page-link" href="#">Próximo</a>`;
+        nextLi.onclick = (e) => {
+            e.preventDefault();
+            paginaAtualHistoricoCliente++;
+            mostrarPaginaHistoricoCliente();
+        };
+        pagination.appendChild(nextLi);
+    }
 }
 
 function openModalExcluir(clienteId) {

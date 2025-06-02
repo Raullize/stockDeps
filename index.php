@@ -46,6 +46,7 @@ $route->get("/getClientes", "App:getClientes");
 $route->get("/getFornecedores", "App:getFornecedores");
 $route->get("/getEntradas", "App:getEntradas");
 $route->get("/getSaidas", "App:getSaidas");
+$route->get("/logout", "App:logout");
 
 /* ROTAS GET:POST DE TRATAMENTO DE DADOS DA NOTA FISCAL .PDF */
 $route->post("/processarXmlNota", "App:processarXmlNota");

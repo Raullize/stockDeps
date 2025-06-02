@@ -7,15 +7,26 @@
 
 .headerTabelaClientes {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 1rem;
   padding: 1.5rem;
-  border-radius: 5px;
+  border-radius: var(--border-radius);
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 1.5rem;
+}
+
+.headerTabelaClientes h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 .headerTabelaClientes button {
-  background-color: #007bff;
+  background-color: #4361ee;
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
@@ -26,12 +37,12 @@
 }
 
 .headerTabelaClientes button:hover {
-  background-color: #0056b3;
+  background-color: #3a56d4;
   transform: scale(1.05);
 }
 
 .headerTabelaClientes button:active {
-  background-color: #004085;
+  background-color: #2e44aa;
   transform: scale(0.95);
 }
 
@@ -90,7 +101,7 @@
 }
 
 button {
-  background-color: #007bff;
+  background-color: #4361ee;
   border: none;
   color: white;
   padding: 8px 16px;
@@ -101,11 +112,11 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #3a56d4;
 }
 
 button:active {
-  background-color: #004085;
+  background-color: #2e44aa;
 }
 
 .btn-group {
@@ -124,4 +135,201 @@ button:active {
 
 th:hover .seta {
   color: black;
+}
+
+/* Adicionar estilos para os botões de ação */
+.action-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0 3px;
+    border-radius: 4px;
+}
+
+.action-btn i {
+    font-size: 0.9rem;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    transition: transform 0.3s ease;
+}
+
+/* Ajustar o espaçamento entre os botões */
+.d-flex.gap-2.justify-content-center {
+    gap: 8px !important;
+}
+
+/* Garantir que os botões fiquem bem espaçados na tabela */
+.table td:last-child {
+    padding: 8px 4px;
+    min-width: 150px;
+}
+
+/* Estilos para a página de Clientes */
+
+/* Estilos de cabeçalho para a página de clientes */
+.clientes-header {
+  border-left: 5px solid var(--primary-color);
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  background-color: #fff;
+  text-align: left;
+}
+
+.clientes-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.clientes-header p {
+  color: #212529;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.clientes-header .header-divider {
+  height: 3px;
+  width: 100px;
+  background: var(--primary-color);
+  border-radius: 3px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+/* Estilos para o cabeçalho da tabela de clientes */
+.headerTabelaClientes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  background-color: #fff;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 1.5rem;
+}
+
+.headerTabelaClientes h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.5rem;
+  width: 100%;
+}
+
+/* Responsividade para cabeçalhos */
+@media (max-width: 1199px) {
+  .clientes-header {
+    padding: 1.75rem;
+    margin-bottom: 1.75rem;
+  }
+  
+  .clientes-header h1 {
+    font-size: 2rem;
+  }
+  
+  .clientes-header p {
+    font-size: 0.95rem;
+  }
+  
+  .headerTabelaClientes {
+    padding: 1.25rem;
+  }
+  
+  .headerTabelaClientes h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 991px) {
+  .clientes-header {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .clientes-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .clientes-header p {
+    font-size: 0.95rem;
+  }
+  
+  .headerTabelaClientes {
+    padding: 1.2rem;
+  }
+  
+  .headerTabelaClientes h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .clientes-header {
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    text-align: center;
+  }
+  
+  .clientes-header h1 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+  
+  .clientes-header p {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .clientes-header .header-divider {
+    margin: 10px auto;
+  }
+  
+  .headerTabelaClientes {
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .headerTabelaClientes h2 {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .clientes-header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .clientes-header h1 {
+    font-size: 1.4rem;
+  }
+  
+  .clientes-header p {
+    font-size: 0.85rem;
+  }
+  
+  .headerTabelaClientes {
+    padding: 0.9rem;
+  }
+  
+  .headerTabelaClientes h2 {
+    font-size: 1.15rem;
+  }
+}
+
+.search-box {
+    margin-left: 1rem;
+    position: relative;
+    display: flex;
+    align-items: center;
 }

@@ -4,56 +4,95 @@ $this->layout("_theme");
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
 <link rel="stylesheet" href="<?= url('assets/app/css/estoque.css') ?>">
+<!-- FontAwesome (Ícones) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
 <body>
-    <div class="container-fluid mt-2">
-        <div class="row justify-content-center">
-            <div class="tabelaProdutos">
-                <h1 class="p-4 text-center">
-                    Produtos
-                </h1>
-                <div class="headerTabelaProdutos p-3">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
-                        Adicionar Produto
-                    </button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTabelaCategorias" id="adicionarCategoriaBtn">
-                        Gerenciar Categorias
-                    </button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAdicionarDANFE">
-                        Adicionar Notas
-                    </button>
-                    <button class="btn btn-info" id="consultarEntradasBtn">Consultar Entradas</button>
-                    <button class="btn btn-info" id="consultarSaidasBtn">Consultar Saídas</button>
-                    <div>
-                        <label for="buscarProduto" class="px-2">Procurar produto:</label>
-                        <input type="text" name="buscarProduto" class="inputsBusca" id="buscarProduto" placeholder="Procurar produto">
-                    </div>
-                    <div>
-                        <label for="categoria" class="px-2">Filtrar por categoria: </label>
-                        <select id="categoria" name="categoria"></select>
+    <div class="container-fluid mt-4">
+        <!-- Header com animação sutil e destaque -->
+        <div class="dashboard-header mb-4 p-4 bg-white shadow-sm rounded-3">
+            <div class="row">
+                <div class="col-md-8">
+                    <h1 class="fw-bold display-6 mb-2 text-gradient"><i class="fas fa-boxes me-2"></i>Produtos</h1>
+                    <p class="text-muted fs-5 fw-light">Gerencie o estoque do sistema</p>
+                    <div class="header-divider mt-3"></div>
+                </div>
+                <div class="col-md-4 d-flex align-items-center justify-content-end">
+                    <div class="date-display text-end">
+                        <span class="current-date fw-bold"></span>
+                        <script>
+                            // Adicionar data atual
+                            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                            document.querySelector('.current-date').textContent = new Date().toLocaleDateString('pt-BR', options);
+                        </script>
                     </div>
                 </div>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th id="ordenarCodigo">Código <span class="seta" id="setaCodigo">⬍</span></th>
-                            <th id="ordenarNome">Nome <span class="seta" id="setaNome">⬍</span></th>
-                            <th id="ordenarDescricao">Descrição</th>
-                            <th id="ordenarPreco">Preço <span class="seta" id="setaPreco">⬍</span></th>
-                            <th id="ordenarQuantidade">Quantidade <span class="seta" id="setaQuantidade">⬍</span></th>
-                            <th id="ordenarUnidade">Unidade</th>
-                            <th id="ordernarStatus">Status</th>
-                            <th id="acoesProdutos" class="text-center" colspan="2">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="corpoTabela">
-                    </tbody>
-                </table>
             </div>
         </div>
-        <nav>
-            <ul class="pagination justify-content-center" id="pagination"></ul>
-        </nav>
+
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="headerTabelaProdutos p-2 mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarProduto" id="adicionarProdutoBtn">
+                                        <i class="fas fa-plus-circle"></i> Adicionar Produto
+                                    </button>
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalTabelaCategorias" id="adicionarCategoriaBtn">
+                                        <i class="fas fa-tags"></i> Gerenciar Categorias
+                                    </button>
+                                    <button class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarDANFE">
+                                        <i class="fas fa-file-invoice"></i> Adicionar Notas
+                                    </button>
+                                    <button class="btn btn-info d-flex align-items-center gap-2" id="consultarEntradasBtn">
+                                        <i class="fas fa-arrow-circle-down"></i> Consultar Entradas
+                                    </button>
+                                    <button class="btn btn-info d-flex align-items-center gap-2" id="consultarSaidasBtn">
+                                        <i class="fas fa-arrow-circle-up"></i> Consultar Saídas
+                                    </button>
+                                </div>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <div class="search-box">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" name="buscarProduto" class="search-input" id="buscarProduto" placeholder="Procurar produto">
+                                    </div>
+                                    <div class="filter-box">
+                                        <i class="fas fa-filter"></i>
+                                        <select id="categoria" name="categoria" class="filter-select"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="semResultadosProdutos" class="alert alert-info text-center d-none">
+                            <i class="fas fa-info-circle me-2"></i>Nenhum produto encontrado com o termo pesquisado.
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead class="sticky-top bg-white">
+                                    <tr>
+                                        <th id="ordenarCodigo">Código <span class="seta" id="setaCodigo">⬍</span></th>
+                                        <th id="ordenarNome">Nome <span class="seta" id="setaNome">⬍</span></th>
+                                        <th id="ordenarDescricao">Descrição</th>
+                                        <th id="ordenarPreco">Preço <span class="seta" id="setaPreco">⬍</span></th>
+                                        <th id="ordenarQuantidade">Quantidade <span class="seta" id="setaQuantidade">⬍</span></th>
+                                        <th id="ordenarUnidade">Unidade</th>
+                                        <th id="ordernarStatus">Status</th>
+                                        <th id="acoesProdutos" class="text-center">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="corpoTabela">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <nav>
+                    <ul class="pagination justify-content-center" id="pagination"></ul>
+                </nav>
+            </div>
+        </div>
     </div>
 
     <!-- MODAIS -->
@@ -63,58 +102,86 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalAdicionarProdutoLabel">Adicionar Produto</h5>
+                    <h5 class="modal-title" id="modalAdicionarProdutoLabel"><i class="fas fa-plus-circle me-2"></i>Adicionar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="produto-cadastro" name="produto-cadastro" method="post" enctype="multipart/form-data">
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="codigoProdutoAdicionar" class="form-label">Código do Produto</label>
-                            <input name="codigo" type="text" class="form-control" id="codigoProdutoAdicionar" placeholder="Digite o código do produto">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="codigoProdutoAdicionar" class="form-label">Código do Produto</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                    <input name="codigo_produto" type="text" class="form-control" id="codigoProdutoAdicionar" placeholder="Digite o código do produto">
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="categoriaProdutoAdicionar" class="form-label">Categoria</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-folder"></i></span>
+                                    <select name="categoria" class="form-control" id="categoriaProdutoAdicionar" required>
+                                        <option value="" selected disabled>Escolher Categoria</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div class="mb-3">
                             <label for="nomeProdutoAdicionar" class="form-label">Nome</label>
-                            <input name="nome" type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input name="nome" type="text" class="form-control" id="nomeProdutoAdicionar" placeholder="Digite o nome do produto">
+                            </div>
                         </div>
+                        
                         <div class="mb-3">
                             <label for="descricaoProdutoAdicionar" class="form-label">Descrição</label>
-                            <textarea name="descricao" class="form-control" id="descricaoProdutoAdicionar" placeholder="Digite a descrição do produto"></textarea>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <textarea name="descricao" class="form-control" id="descricaoProdutoAdicionar" rows="3" placeholder="Digite a descrição do produto"></textarea>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="categoriaProdutoAdicionar" class="form-label">Categoria</label>
-                            <select name="categoria" class="form-control" id="categoriaProdutoAdicionar">
-                            </select>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="precoSaidaProdutoAdicionar" class="form-label">Preço para Saídas</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                    <input
+                                        name="preco"
+                                        type="text"
+                                        class="form-control preco"
+                                        id="precoSaidaProdutoAdicionar"
+                                        value="R$ 0,00"
+                                        oninput="formatarPreco(this)">
+                                </div>
+                                <small id="precoHelp" class="form-text text-muted">Ex: R$ 1.000,00</small>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="unidadeProdutoAdicionar" class="form-label">Unidade de Medida</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                    <select name="unidade" class="form-control" id="unidadeProdutoAdicionar" required>
+                                        <option value="" selected disabled>Selecionar Unidade</option>
+                                        <option value="KG">Quilograma (kg)</option>
+                                        <option value="UN">Unidade (un)</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="precoSaidaProdutoAdicionar" class="form-label">Preço para Saídas</label>
-                            <input
-                                name="preco"
-                                type="text"
-                                class="form-control preco"
-                                id="precoSaidaProdutoAdicionar"
-                                value="R$ 0,00"
-                                oninput="formatarPreco(this)">
-                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
-                        </div>
-                        <div class="mb-3">
-                            <label for="unidadeProdutoAdicionar" class="form-label">Unidade de Medida</label>
-                            <select name="unidade" class="form-control" id="unidadeProdutoAdicionar">
-                                <option value="KG">Kilograma (kg)</option>
-                                <option value="G">Grama (g)</option>
-                                <option value="L">Litro (l)</option>
-                                <option value="ML">Mililitro (ml)</option>
-                                <option value="PACOTE">Pacote</option>
-                                <option value="UN">Unidade (un)</option>
-                            </select>
-                        </div>
+                        
                         <div class="mb-3">
                             <label for="fotoProdutoAdicionar" class="form-label">Foto do Produto</label>
-                            <input name="image" type="file" id="fotoProdutoAdicionar" class="form-control">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                <input name="image" type="file" id="fotoProdutoAdicionar" class="form-control" accept="image/*">
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary" id="salvarProduto">Salvar Produto</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarProduto"><i class="fas fa-save me-1"></i>Salvar Produto</button>
                     </div>
                 </form>
             </div>
@@ -122,11 +189,11 @@ $this->layout("_theme");
     </div>
 
     <!-- Modal Editar Produto -->
-    <div class="modal" id="modalEditar" tabindex="-1">
+    <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Editar Produto</h5>
+                    <h5 class="modal-title" id="modalEditarLabel"><i class="fas fa-edit me-2"></i>Editar Produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="produto-update" name="produto-update" method="post" enctype="multipart/form-data">
@@ -134,40 +201,59 @@ $this->layout("_theme");
                         <input type="hidden" name="idProdutoUpdate" id="idProdutoUpdate">
                         <div class="mb-3">
                             <label for="codigoProdutoEditar" class="form-label">Código do Produto</label>
-                            <input name="codigo" type="text" class="form-control" id="codigoProdutoEditar" placeholder="Digite o código do produto">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                                <input name="codigo_produto" type="text" class="form-control" id="codigoProdutoEditar" placeholder="Digite o código do produto">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="nomeProduto" class="form-label">Nome</label>
-                            <input name="nome" type="text" id="nomeProduto" class="form-control">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input name="nome" type="text" id="nomeProduto" class="form-control">
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="descricaoProduto" class="form-label">Descrição</label>
-                            <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <textarea name="descricao" id="descricaoProduto" class="form-control"></textarea>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="categoriaProdutoEditar" class="form-label">Categoria</label>
-                            <select name="categoria" class="form-control" id="categoriaProdutoEditar">
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-folder"></i></span>
+                                <select name="categoria" class="form-control" id="categoriaProdutoEditar" required>
+                                    <option value="" disabled>Escolher Categoria</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="precoProduto" class="form-label">Preço</label>
-                            <input name="preco" type="text" class="form-control preco" id="precoProduto" value="R$ 0,00" oninput="formatarPreco(this)">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                                <input name="preco" type="text" class="form-control preco" id="precoProduto" value="R$ 0,00" oninput="formatarPreco(this)">
+                            </div>
                             <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
                         </div>
                         <div class="mb-3">
                             <label for="unidadeProdutoEditar" class="form-label">Unidade de Medida</label>
-                            <select name="unidade" class="form-control" id="unidadeProdutoEditar">
-                                <option value="KG">Kilograma (kg)</option>
-                                <option value="G">Grama (g)</option>
-                                <option value="L">Litro (l)</option>
-                                <option value="ML">Mililitro (ml)</option>
-                                <option value="PACOTE">Pacote</option>
-                                <option value="UN">Unidade (un)</option>
-                            </select>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                <select name="unidade" class="form-control" id="unidadeProdutoEditar" required>
+                                    <option value="" disabled>Selecionar Unidade de Medida</option>
+                                    <option value="KG">Quilograma (kg)</option>
+                                    <option value="UN">Unidade (un)</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="fotoProduto" class="form-label">Foto do Produto</label>
-                            <input name="image" type="file" id="fotoProduto" class="form-control">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-image"></i></span>
+                                <input name="image" type="file" id="fotoProduto" class="form-control">
+                            </div>
                             <img id="previewImagem" src="" alt="Imagem do Produto" style="max-width: 150px; display: none; margin:10px auto; display: block;">
                         </div>
                     </div>
@@ -185,22 +271,25 @@ $this->layout("_theme");
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTabelaCategoriasLabel">Gerenciar Categorias</h5>
+                    <h5 class="modal-title" id="modalTabelaCategoriasLabel"><i class="fas fa-tags me-2"></i>Gerenciar Categorias</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Botão para adicionar uma nova categoria -->
-                    <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria">
-                        Adicionar Categoria
-                    </button>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <!-- Botão para adicionar uma nova categoria -->
+                        <button class="btn btn-success d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalAdicionarCategoria">
+                            <i class="fas fa-plus-circle"></i> Adicionar Categoria
+                        </button>
+                    </div>
+                    
                     <!-- Tabela de categorias -->
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="tabelaCategorias">
+                        <table class="table table-bordered table-hover" id="tabelaCategorias">
                             <thead>
                                 <tr>
-                                    <th>Nome</th>
-                                    <th>Descrição</th>
-                                    <th>Ações</th>
+                                    <th style="width: 30%">Nome</th>
+                                    <th style="width: 50%">Descrição</th>
+                                    <th style="width: 20%" class="text-center">Ações</th>
                                 </tr>
                             </thead>
                             <tbody id="corpoTabelaCategorias">
@@ -210,7 +299,7 @@ $this->layout("_theme");
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Fechar</button>
                 </div>
             </div>
         </div>
@@ -221,23 +310,29 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalAdicionarCategoriaLabel">Adicionar Categoria</h5>
+                    <h5 class="modal-title" id="modalAdicionarCategoriaLabel"><i class="fas fa-plus-circle me-2"></i>Adicionar Categoria</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="categoria-cadastro" name="categoria-cadastro" method="post">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="nomeCategoriaAdicionar" class="form-label">Nome</label>
-                            <input name="nome" type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria">
+                            <label for="nomeCategoriaAdicionar" class="form-label">Nome da Categoria</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input name="nome" type="text" class="form-control" id="nomeCategoriaAdicionar" placeholder="Digite o nome da categoria" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="descricaoCategoriaAdicionar" class="form-label">Descrição</label>
-                            <textarea name="descricao" class="form-control" id="descricaoCategoriaAdicionar" placeholder="Digite a descrição da categoria"></textarea>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <textarea name="descricao" class="form-control" id="descricaoCategoriaAdicionar" rows="3" placeholder="Digite a descrição da categoria"></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary" id="salvarCategoria">Salvar Categoria</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button type="submit" class="btn btn-success" id="salvarCategoria"><i class="fas fa-save me-1"></i>Salvar Categoria</button>
                     </div>
                 </form>
             </div>
@@ -249,24 +344,30 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarCategoriaLabel">Editar Categoria</h5>
+                    <h5 class="modal-title" id="modalEditarCategoriaLabel"><i class="fas fa-edit me-2"></i>Editar Categoria</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="categoria-editar" name="categoria-editar" method="post">
                     <div class="modal-body">
                         <input name="idCategoriaEditar" id="idCategoriaEditar" type="hidden">
                         <div class="mb-3">
-                            <label for="nomeCategoriaEditar" class="form-label">Nome</label>
-                            <input name="nome" type="text" class="form-control" id="nomeCategoriaEditar" placeholder="Digite o nome da categoria">
+                            <label for="nomeCategoriaEditar" class="form-label">Nome da Categoria</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                <input name="nome" type="text" class="form-control" id="nomeCategoriaEditar" placeholder="Digite o nome da categoria" required>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="descricaoCategoriaEditar" class="form-label">Descrição</label>
-                            <textarea name="descricao" class="form-control" id="descricaoCategoriaEditar" placeholder="Digite a descrição da categoria"></textarea>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                                <textarea name="descricao" class="form-control" id="descricaoCategoriaEditar" rows="3" placeholder="Digite a descrição da categoria"></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary" id="salvarEdicaoCategoria">Salvar Alterações</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="salvarEdicaoCategoria"><i class="fas fa-save me-1"></i>Salvar Alterações</button>
                     </div>
                 </form>
             </div>
@@ -275,68 +376,104 @@ $this->layout("_theme");
 
     <!-- Modal Excluir Categoria -->
     <div class="modal fade" id="modalExcluirCategoria" tabindex="-1" aria-labelledby="modalExcluirCategoriaLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirCategoriaLabel">Excluir Categoria</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirCategoriaLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Categoria
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="categoria-excluir" name="categoria-excluir" method="post">
-                    <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir esta categoria?</p>
-                        <input type="hidden" id="idCategoriaExcluir" name="idCategoriaExcluir"> <!-- Campo oculto para armazenar o ID -->
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir esta categoria?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Esta ação pode afetar produtos associados e não pode ser desfeita!
+                        </div>
+                        <input type="hidden" id="idCategoriaExcluir" name="idCategoriaExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger" id="confirmarExcluirCategoria">Excluir</button>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluirCategoria">
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-
-    <!-- Modal Excluir -->
+    <!-- Modal Excluir Produto -->
     <div class="modal fade" id="modalExcluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirLabel">Excluir Produto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Produto
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="produto-excluir" name="produto-excluir" method="post">
-                    <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir este produto?
-                            Ao confirmar, todas as entradas e saídas relacionadas a ele também serão removidas.</p>
-                        <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir"> <!-- Campo oculto para armazenar o id -->
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir este produto?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Ao confirmar, todas as entradas e saídas relacionadas a ele também serão removidas. Esta operação não pode ser desfeita!
+                        </div>
+                        <input type="hidden" id="idProdutoExcluir" name="idProdutoExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger" id="confirmarExcluir">Excluir</button>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluir">
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
+            
     <!-- Modal Adicionar Nota -->
-    <div class="modal" id="modalAdicionarDANFE" tabindex="-1">
+    <div class="modal fade" id="modalAdicionarDANFE" tabindex="-1" aria-labelledby="modalAdicionarDANFELabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Adicionar Nota DANFE</h5>
+                    <h5 class="modal-title" id="modalAdicionarDANFELabel"><i class="fas fa-file-invoice me-2"></i>Adicionar Nota DANFE</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="processarXmlNota" method="POST" enctype="multipart/form-data">
                     <div class="modal-body">
+                        <div class="text-center mb-4">
+                            <div class="upload-icon mb-3">
+                                <i class="fas fa-file-upload fa-4x text-primary"></i>
+                            </div>
+                            <p class="lead">Faça upload do arquivo XML da nota fiscal</p>
+                            <p class="text-muted">O sistema importará automaticamente os produtos e suas informações</p>
+                        </div>
                         <div class="mb-3">
-                            <label for="arquivoNota" class="form-label">Upload de Nota (XML)</label>
-                            <input type="file" id="arquivoNota" name="arquivoNota" class="form-control" accept=".xml">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-file-alt"></i></span>
+                                <input type="file" id="arquivoNota" name="arquivoNota" class="form-control" accept=".xml" required>
+                            </div>
+                            <small class="form-text text-muted mt-2">
+                                <i class="fas fa-info-circle"></i> Apenas arquivos no formato XML são aceitos
+                            </small>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Adicionar Nota</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-upload me-1"></i>Processar Nota</button>
                     </div>
                 </form>
             </div>
@@ -348,37 +485,52 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEntradaLabel">Adicionar Entrada</h5>
+                    <h5 class="modal-title" id="modalEntradaLabel"><i class="fas fa-arrow-circle-down me-2"></i>Adicionar Entrada</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="entrada-cadastro" name="entrada-cadastro" method="post">
                     <div class="modal-body">
                         <input name="produtoId" type="hidden" id="produtoId" value=""> <!-- Campo oculto para armazenar o id -->
-                        <div class="mb-3">
+                        
+                        <div class="mb-3 position-relative">
                             <label for="fornecedor" class="form-label">Fornecedor</label>
-                            <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor">
-                            <div class="list-group mt-0 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1000;"></div>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-truck"></i></span>
+                                <input name="nome" type="text" class="form-control" id="fornecedor" placeholder="Digite o nome do fornecedor" required>
+                            </div>
+                            <div class="list-group mt-1 position-absolute w-100" id="fornecedor-lista" style="display: none; z-index: 1050;"></div>
+                            <small class="form-text text-muted">Comece a digitar para ver sugestões de fornecedores cadastrados</small>
                         </div>
-                        <div class="mb-3">
-                            <label for="quantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" min="0" step="0.001" class="form-control" id="quantidade" placeholder="Digite a quantidade">
-                        </div>
-                        <div class="mb-3">
-                            <label for="precoEntrada" class="form-label">Preço</label>
-                            <input
-                                min="0"
-                                name="preco"
-                                type="text"
-                                class="form-control preco"
-                                id="precoEntrada"
-                                value="R$ 0,00"
-                                oninput="formatarPreco(this)">
-                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="quantidade" class="form-label">Quantidade</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                    <input name="quantidade" type="text" class="form-control" id="quantidade" placeholder="Digite a quantidade" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="precoEntrada" class="form-label">Preço</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                    <input
+                                        name="preco"
+                                        type="text"
+                                        class="form-control preco"
+                                        id="precoEntrada"
+                                        value="R$ 0,00"
+                                        oninput="formatarPreco(this)"
+                                        required>
+                                </div>
+                                <small class="form-text text-muted">Ex: R$ 1.000,00</small>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary" id="salvarEntrada">Salvar Entrada</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button type="submit" class="btn btn-success" id="salvarEntrada"><i class="fas fa-save me-1"></i>Salvar Entrada</button>
                     </div>
                 </form>
             </div>
@@ -390,47 +542,63 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalSaidaLabel">Adicionar Saída</h5>
+                    <h5 class="modal-title" id="modalSaidaLabel"><i class="fas fa-arrow-circle-up me-2"></i>Adicionar Saída</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="saida-cadastro" name="saida-cadastro" method="post">
                     <div class="modal-body">
                         <input name="produtoId2" type="hidden" id="produtoId2" value=""> <!-- Campo oculto para armazenar o id -->
+                        <input name="cliente_nao_cadastrado" type="hidden" id="cliente_nao_cadastrado_valor" value="0"> <!-- Campo oculto para status do checkbox -->
+                        
                         <!-- Campo Cliente -->
-                        <div class="mb-3">
+                        <div class="mb-3 position-relative">
                             <label for="cliente" class="form-label">Cliente</label>
-                            <div class="d-flex align-items-center justify-content-center" style="min-height: 100%;">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 <input name="nome" type="text" class="form-control" id="cliente" placeholder="Digite o nome do cliente">
                             </div>
-                            <div class="list-group mt-0 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1000;"></div>
-                            <div class="form-check m-3">
+                            <div class="list-group mt-1 position-absolute w-100" id="clientes-lista" style="display: none; z-index: 1050;"></div>
+                            
+                            <div class="form-check mt-2">
                                 <input class="form-check-input" type="checkbox" id="clienteNaoCadastrado">
                                 <label class="form-check-label" for="clienteNaoCadastrado">Cliente não cadastrado</label>
                             </div>
                         </div>
-                        <!-- Campo Quantidade -->
-                        <div class="mb-3">
-                            <label for="quantidadeSaida" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" min="0" step="0.001" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade">
-                        </div>
-                        <!-- Campo Preço -->
-                        <div class="mb-3">
-                            <label for="precoSaida" class="form-label">Preço</label>
-                            <input
-                                min="0"
-                                name="preco"
-                                type="text"
-                                class="form-control preco"
-                                id="precoSaida"
-                                value="R$ 0,00"
-                                oninput="formatarPreco(this)">
-                            <small id="precoHelp" class="form-text text-muted">Digite o valor do produto com separação de milhar (ex: R$ 1.000,00).</small>
+                        
+                        <div class="row">
+                            <!-- Campo Quantidade -->
+                            <div class="col-md-6 mb-3">
+                                <label for="quantidadeSaida" class="form-label">Quantidade</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                    <input name="quantidade" type="text" class="form-control" id="quantidadeSaida" placeholder="Digite a quantidade" required>
+                                </div>
+                            </div>
+                            
+                            <!-- Campo Preço -->
+                            <div class="col-md-6 mb-3">
+                                <label for="precoSaida" class="form-label">Preço</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                    <input
+                                        min="0"
+                                        name="preco"
+                                        type="text"
+                                        class="form-control preco"
+                                        id="precoSaida"
+                                        value="R$ 0,00"
+                                        oninput="formatarPreco(this)"
+                                        required>
+                                </div>
+                                <small class="form-text text-muted">Ex: R$ 1.000,00</small>
+                            </div>
                         </div>
                     </div>
+                    
                     <!-- Botões -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary" id="salvarSaida">Salvar Saída</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button type="submit" class="btn btn-warning" id="salvarSaida"><i class="fas fa-save me-1"></i>Salvar Saída</button>
                     </div>
                 </form>
             </div>
@@ -442,40 +610,56 @@ $this->layout("_theme");
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="entradasModalLabel">Entradas</h5>
+                    <h5 class="modal-title" id="entradasModalLabel"><i class="fas fa-arrow-circle-down me-2"></i>Consulta de Entradas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex justify-content-center ">
-                        <div class="d-flex align-items-center">
-                            <label for="filtroDataEntrada">Filtrar pelo dia da entrada:  </label>
-                            <input type="date" id="filtroDataEntrada" class="inputsBusca" onchange="filtrarEntradasPorData()" />
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <label for="buscarEntrada" class="px-2">Procurar entrada: </label>
-                            <input type="text" name="buscarEntrada" class="inputsBusca" id="buscarEntrada" placeholder="Ex: produto...">
+                    <div class="card mb-3">
+                        <div class="card-body bg-light">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-6">
+                                    <label for="filtroDataEntrada" class="form-label"><i class="fas fa-calendar-alt me-1"></i>Filtrar por data:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                        <input type="date" id="filtroDataEntrada" class="form-control" onchange="filtrarEntradasPorData()" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="buscarEntrada" class="form-label"><i class="fas fa-search me-1"></i>Buscar entrada:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                        <input type="text" name="buscarEntrada" class="form-control" id="buscarEntrada" placeholder="Fornecedor ou produto...">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <table class="table table-striped" id="tabelaEntradas">
-                        <thead>
-                            <tr>
-                                <th>Fornecedor</th>
-                                <th>Produto</th>
-                                <th>Quantidade</th>
-                                <th>Preço</th>
-                                <th>Data</th>
-                                <th colspan="2">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    <!-- Navegação de Paginação para Saídas -->
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center" id="paginacaoEntradas">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tabelaEntradas">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Fornecedor</th>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Data</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Navegação de Paginação para Entradas -->
+                    <nav aria-label="Paginação de entradas">
+                        <ul class="pagination justify-content-center mt-3" id="paginacaoEntradas">
                             <!-- Botões de Paginação serão gerados aqui -->
                         </ul>
                     </nav>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Fechar</button>
                 </div>
             </div>
         </div>
@@ -486,34 +670,82 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarEntradaLabel">Editar Entrada</h5>
+                    <h5 class="modal-title" id="modalEditarEntradaLabel"><i class="fas fa-edit me-2"></i>Editar Entrada</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="entrada-editar" method="post">
+                <form id="entrada-editar" method="post">
+                    <div class="modal-body">
                         <input name="idEntradaEditar" id="idEntradaEditar" type="hidden">
+                        
                         <!-- Nome do Produto -->
                         <div class="mb-3">
                             <label for="entradaProduto" class="form-label">Produto</label>
-                            <input name="nome" type="text" class="form-control" id="entradaProduto" readonly>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-box"></i></span>
+                                <input name="nome" type="text" class="form-control" id="entradaProduto" readonly>
+                            </div>
+                            <small class="form-text text-muted">O produto não pode ser alterado</small>
                         </div>
 
-                        <!-- Quantidade -->
-                        <div class="mb-3">
-                            <label for="entradaQuantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" min="0" step="0.001" class="form-control" id="entradaQuantidade" min="0">
-                        </div>
+                        <div class="row">
+                            <!-- Quantidade -->
+                            <div class="col-md-6 mb-3">
+                                <label for="entradaQuantidade" class="form-label">Quantidade</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                    <input name="quantidade" type="text" class="form-control" id="entradaQuantidade" required>
+                                </div>
+                            </div>
 
-                        <!-- Preço -->
-                        <div class="mb-3">
-                            <label for="entradaPreco" class="form-label">Preço</label>
-                            <input name="preco" type="number" class="form-control" id="entradaPreco" min="0" step="0.001">
+                            <!-- Preço -->
+                            <div class="col-md-6 mb-3">
+                                <label for="entradaPreco" class="form-label">Preço</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                    <input name="preco" type="text" class="form-control preco" id="entradaPreco" oninput="formatarPreco(this)" required>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Salvar Alterações</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Excluir Entrada -->
+    <div class="modal fade" id="modalExcluirEntrada" tabindex="-1" aria-labelledby="modalExcluirEntradaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirEntradaLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Entrada
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
-                </div>
+                <form id="entrada-excluir" name="entrada-excluir" method="post">
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir esta entrada de estoque?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Esta ação não pode ser desfeita e afetará o estoque do produto!
+                        </div>
+                        <input type="hidden" id="idEntradaExcluir" name="idEntradaExcluir">
+                    </div>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluirEntrada">
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -524,40 +756,56 @@ $this->layout("_theme");
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="saidasModalLabel">Saídas</h5>
+                    <h5 class="modal-title" id="saidasModalLabel"><i class="fas fa-arrow-circle-up me-2"></i>Consulta de Saídas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="d-flex justify-content-center ">
-                        <div class="d-flex align-items-center">
-                            <label for="filtroDataSaida">Filtrar pelo dia da saída:  </label>
-                            <input type="date" id="filtroDataSaida" class="inputsBusca" onchange="filtrarSaidasPorData()" />
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <label for="buscarSaida" class="px-2">Procurar saída: </label>
-                            <input type="text" name="buscarSaida" class="inputsBusca" id="buscarSaida" placeholder="Ex: produto...">
+                    <div class="card mb-3">
+                        <div class="card-body bg-light">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-6">
+                                    <label for="filtroDataSaida" class="form-label"><i class="fas fa-calendar-alt me-1"></i>Filtrar por data:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                        <input type="date" id="filtroDataSaida" class="form-control" onchange="filtrarSaidasPorData()" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="buscarSaida" class="form-label"><i class="fas fa-search me-1"></i>Buscar saída:</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                        <input type="text" name="buscarSaida" class="form-control" id="buscarSaida" placeholder="Cliente ou produto...">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <table class="table table-striped" id="tabelaSaidas">
-                        <thead>
-                            <tr>
-                                <th>Cliente</th>
-                                <th>Produto</th>
-                                <th>Quantidade</th>
-                                <th>Preço</th>
-                                <th>Data</th>
-                                <th colspan="2">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="tabelaSaidas">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Data</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    
                     <!-- Navegação de Paginação para Saídas -->
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center" id="paginacaoSaidas">
+                    <nav aria-label="Paginação de saídas">
+                        <ul class="pagination justify-content-center mt-3" id="paginacaoSaidas">
                             <!-- Botões de Paginação serão gerados aqui -->
                         </ul>
                     </nav>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Fechar</button>
                 </div>
             </div>
         </div>
@@ -568,55 +816,46 @@ $this->layout("_theme");
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditarSaidaLabel">Editar Saída</h5>
+                    <h5 class="modal-title" id="modalEditarSaidaLabel"><i class="fas fa-edit me-2"></i>Editar Saída</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <form id="saida-editar" method="post">
-                        <!-- Nome do Produto (Somente leitura) -->
+                <form id="saida-editar" method="post">
+                    <div class="modal-body">
                         <input type="hidden" name="idEditarSaida" id="idEditarSaida">
+                        
+                        <!-- Nome do Produto (Somente leitura) -->
                         <div class="mb-3">
                             <label for="saidaProduto" class="form-label">Produto</label>
-                            <input type="text" class="form-control" id="saidaProduto" readonly> <!-- readonly torna o campo não editável -->
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-box"></i></span>
+                                <input type="text" class="form-control" id="saidaProduto" readonly>
+                            </div>
+                            <small class="form-text text-muted">O produto não pode ser alterado</small>
                         </div>
 
-                        <!-- Quantidade -->
-                        <div class="mb-3">
-                            <label for="saidaQuantidade" class="form-label">Quantidade</label>
-                            <input name="quantidade" type="number" min="0" step="0.001" class="form-control" id="saidaQuantidade" min="0">
-                        </div>
+                        <div class="row">
+                            <!-- Quantidade -->
+                            <div class="col-md-6 mb-3">
+                                <label for="saidaQuantidade" class="form-label">Quantidade</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-balance-scale"></i></span>
+                                    <input name="quantidade" type="text" class="form-control" id="saidaQuantidade" required>
+                                </div>
+                            </div>
 
-                        <!-- Preço -->
-                        <div class="mb-3">
-                            <label for="saidaPreco" class="form-label">Preço</label>
-                            <input name="preco" type="number" class="form-control" id="saidaPreco" min="0" step="0.001">
+                            <!-- Preço -->
+                            <div class="col-md-6 mb-3">
+                                <label for="saidaPreco" class="form-label">Preço</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                                    <input name="preco" type="text" class="form-control preco" id="saidaPreco" oninput="formatarPreco(this)" required>
+                                </div>
+                            </div>
                         </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-primary">Salvar alterações</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Excluir Entrada -->
-    <div class="modal fade" id="modalExcluirEntrada" tabindex="-1" aria-labelledby="modalExcluirEntradaLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirEntradaLabel">Excluir Entrada</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                </div>
-                <form id="entrada-excluir" method="post">
-                    <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir esta entrada?</p>
-                        <input type="hidden" id="idEntradaExcluir" name="idEntradaExcluir"> <!-- Campo oculto para armazenar o id -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Excluir</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancelar</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save me-1"></i>Salvar Alterações</button>
                     </div>
                 </form>
             </div>
@@ -625,29 +864,152 @@ $this->layout("_theme");
 
     <!-- Modal Excluir Saída -->
     <div class="modal fade" id="modalExcluirSaida" tabindex="-1" aria-labelledby="modalExcluirSaidaLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalExcluirSaidaLabel">Excluir Saída</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalExcluirSaidaLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Excluir Saída
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="saida-excluir" method="post">
-                    <div class="modal-body">
-                        <p>Tem certeza de que deseja excluir esta saída?</p>
-                        <input type="hidden" id="idSaidaExcluir" name="idSaidaExcluir"> <!-- Campo oculto para armazenar o id -->
+                <form id="saida-excluir" name="saida-excluir" method="post">
+                    <div class="modal-body p-4">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-trash-alt text-danger" style="font-size: 3rem;"></i>
+                        </div>
+                        <p class="text-center fs-5 mb-4">Tem certeza de que deseja excluir esta saída de estoque?</p>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Atenção:</strong> Esta ação não pode ser desfeita e afetará o estoque do produto!
+                        </div>
+                        <input type="hidden" id="idSaidaExcluir" name="idSaidaExcluir">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    <div class="modal-footer justify-content-center border-0 pt-0">
+                        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-danger px-4" id="confirmarExcluirSaida">
+                            <i class="fas fa-trash-alt me-2"></i>Confirmar Exclusão
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <script src="<?= url('assets/app/js/app.js') ?>"></script>
-    <script src="<?= url('assets/app/js/formsCreate.js') ?>" async></script>
-    <script src="<?= url('assets/app/js/formsDelete.js') ?>" async></script>
-    <script src="<?= url('assets/app/js/formsUpdate.js') ?>" async></script>
-    <script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>" async></script>
+<script src="<?= url('assets/app/js/app.js') ?>"></script>
+<script src="<?= url('assets/app/js/formsCreate.js') ?>"></script>
+<script src="<?= url('assets/app/js/formsDelete.js') ?>"></script>
+<script src="<?= url('assets/app/js/formsUpdate.js') ?>"></script>
+<script src="<?= url('assets/app/js/funcoesAuxiliares.js') ?>"></script>
+<script>
+    // Carregar dados quando a página for carregada
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM fully loaded');
+        
+        // Carrega todos os dados necessários
+        loadAllData();
+        
+        // Função para limpar o backdrop e restaurar o scroll
+        function limparBackdrop() {
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            const backdrops = document.getElementsByClassName('modal-backdrop');
+            while(backdrops.length > 0) {
+                backdrops[0].remove();
+            }
+        }
+
+        // Adiciona evento para limpar backdrop quando qualquer modal for fechado
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('hidden.bs.modal', function() {
+                limparBackdrop();
+            });
+        });
+        
+        // Inicializa eventos para botões de modais
+        const botaoAdicionarCategoria = document.getElementById('adicionarCategoriaBtn');
+        if (botaoAdicionarCategoria) {
+            botaoAdicionarCategoria.addEventListener('click', function() {
+                console.log('Botão Gerenciar Categorias clicado');
+                limparBackdrop(); // Limpa qualquer backdrop existente
+                const modalTabelaCategorias = new bootstrap.Modal(document.getElementById('modalTabelaCategorias'));
+                modalTabelaCategorias.show();
+            });
+        }
+        
+        const consultarEntradasBtn = document.getElementById('consultarEntradasBtn');
+        if (consultarEntradasBtn) {
+            consultarEntradasBtn.addEventListener('click', function() {
+                console.log('Botão Consultar Entradas clicado');
+                limparBackdrop(); // Limpa qualquer backdrop existente
+                const entradasModal = new bootstrap.Modal(document.getElementById('entradasModal'));
+                entradasModal.show();
+            });
+        }
+        
+        const consultarSaidasBtn = document.getElementById('consultarSaidasBtn');
+        if (consultarSaidasBtn) {
+            consultarSaidasBtn.addEventListener('click', function() {
+                console.log('Botão Consultar Saídas clicado');
+                limparBackdrop(); // Limpa qualquer backdrop existente
+                const saidasModal = new bootstrap.Modal(document.getElementById('saidasModal'));
+                saidasModal.show();
+            });
+        }
+        
+        // Verificar se as categorias foram carregadas
+        setTimeout(function() {
+            const selectCategoria = document.getElementById('categoria');
+            if (selectCategoria && selectCategoria.options.length <= 1) {
+                console.log('Recarregando categorias...');
+                fetchCategorias();
+            }
+        }, 1000);
+        
+        // Aplicar transições suaves em todos os modais
+        aplicarTransicoesModais();
+    });
+    
+    // Função para aplicar transições suaves em todos os modais
+    function aplicarTransicoesModais() {
+        // Estilo para transições suaves
+        const estiloTransicoes = document.createElement('style');
+        estiloTransicoes.innerHTML = `
+            .modal.fade .modal-dialog {
+                transition: transform 0.2s ease-out !important;
+                transform: scale(0.95) !important;
+            }
+            .modal.show .modal-dialog {
+                transform: none !important;
+            }
+            .modal-backdrop.fade {
+                opacity: 0;
+                transition: opacity 0.15s linear !important;
+            }
+            .modal-backdrop.show {
+                opacity: 0.5;
+            }
+            .fade {
+                transition: opacity 0.12s linear !important;
+            }
+        `;
+        document.head.appendChild(estiloTransicoes);
+        
+        // Personaliza cada modal para uma aparência mais suave
+        document.querySelectorAll('.modal').forEach(modal => {
+            // Usa o evento show.bs.modal para animar a entrada
+            modal.addEventListener('show.bs.modal', function() {
+                const dialog = this.querySelector('.modal-dialog');
+                if (dialog) {
+                    dialog.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        dialog.style.transform = 'scale(1)';
+                    }, 10);
+                }
+            });
+        });
+    }
+</script>
 </body>

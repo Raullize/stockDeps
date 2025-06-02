@@ -97,4 +97,29 @@ class Web
         echo $this->view->render("criasenha",[]);
     }
 
+    /**
+     * Método para exibir páginas de erro
+     */
+    public function error(array $data): void
+    {
+        $error = filter_var($data["errcode"], FILTER_VALIDATE_INT);
+        
+        $session = new Session();
+        
+        if ($error == 404) {
+            if ($session->has("user") || $session->has("admin")) {
+                // Se estiver logado, redireciona para a página inicial
+                header("Location: " . url("app"));
+                exit;
+            } else {
+                // Se não estiver logado, redireciona para a página de login
+                header("Location: " . url());
+                exit;
+            }
+        } else {
+            // Para outros erros, redireciona para a página inicial
+            header("Location: " . url());
+            exit;
+        }
+    }
 }

@@ -6,3 +6,7 @@ node_modules
 
 # Ignorar dependências do Composer
 vendor
+
+# Ignorar arquivos de desenvolvimento
+saida_log.txt
+error.log

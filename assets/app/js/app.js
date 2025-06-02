@@ -2,14 +2,21 @@ const BASE_URL = '/stockDeps/app';
 const itensPorPagina = 8;
 const maxBotoesPaginacao = 5; // Limite de botões de página exibidos
 
-// Medição de performance
-for(let i = 0; i < 10; i++) {
-    console.time('operacao');
-    // Operação não otimizada aqui
-    console.timeEnd('operacao');
+// Função de debounce para otimizar buscas
+function debounce(func, wait = 300) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
 }
 
 let produtos = [];
+let produtosOriginais = [];
 let clientes = [];
 let fornecedores = [];
 let entradas = [];
@@ -96,9 +103,13 @@ function renderizarTabela() {
     tr.innerHTML = `
             <td>${categoria.nome}</td>
             <td>${categoria.descricao}</td>
-            <td>
-                <button class="btn btn-primary btn-sm" onclick="editarCategoria(${categoria.id})">Editar</button>
-                <button class="btn btn-danger btn-sm" onclick="excluirCategoria(${categoria.id})">Excluir</button>
+            <td class="text-center">
+                <button class="btn btn-primary btn-sm action-btn" onclick="editarCategoria(${categoria.id})" title="Editar">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm action-btn" onclick="excluirCategoria(${categoria.id})" title="Excluir">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
             </td>
         `;
 
@@ -109,112 +120,191 @@ function renderizarTabela() {
 
 function buscarProduto() {
   const inputBuscarProduto = document.getElementById("buscarProduto");
-  inputBuscarProduto.addEventListener("input", function () {
+  if (!inputBuscarProduto) return;
+  
+  // Remover event listener anterior para evitar duplicações
+  const buscarProdutoHandler = debounce(function(e) {
     console.time('busca-produto');
-    const termoBusca = inputBuscarProduto.value.toLowerCase();
+    const termoBusca = e.target.value.toLowerCase();
 
     produtosFiltrados = produtosOriginais.filter(
       (produto) =>
-        produto.nome.toLowerCase().includes(termoBusca) ||
-        produto.codigo_produto.toLowerCase().includes(termoBusca)
+        (produto.nome?.toLowerCase() || '').includes(termoBusca) ||
+        (produto.codigo_produto?.toLowerCase() || '').includes(termoBusca)
     );
+
+    // Exibe ou oculta a mensagem de "sem resultados"
+    const semResultados = document.getElementById("semResultadosProdutos");
+    if (semResultados) {
+      if (produtosFiltrados.length === 0 && termoBusca.length > 0) {
+        semResultados.classList.remove("d-none");
+      } else {
+        semResultados.classList.add("d-none");
+      }
+    }
 
     // Reiniciar a ordenação com os produtos filtrados
     produtosOrdenados = [...produtosFiltrados];
     paginaAtual = 1; // Reinicia na primeira página
     mostrarPagina(paginaAtual); // Atualiza a tabela
     console.timeEnd('busca-produto');
-  });
+  }, 300);
+  
+  // Remover event listeners antigos e adicionar o novo
+  inputBuscarProduto.removeEventListener("input", buscarProdutoHandler);
+  inputBuscarProduto.addEventListener("input", buscarProdutoHandler);
 }
 
 function removerAcentos(str) {
+  if (!str) return '';
   return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
 function buscarEntrada() {
   const inputBuscarEntrada = document.getElementById("buscarEntrada");
-  inputBuscarEntrada.addEventListener("input", function () {
-    const termoBusca = removerAcentos(inputBuscarEntrada.value.toLowerCase());
+  if (!inputBuscarEntrada) return;
+  
+  const buscarEntradaHandler = debounce(function(e) {
+    const termoBusca = removerAcentos(e.target.value.toLowerCase());
+    
+    // Usar um mapa para acesso mais rápido aos produtos e fornecedores
+    const produtosMap = new Map();
+    const fornecedoresMap = new Map();
+    
+    // Preencher mapas para busca rápida
+    produtosOriginais.forEach(p => produtosMap.set(p.id, p));
+    fornecedores.forEach(f => fornecedoresMap.set(f.id, f));
 
     entradasFiltradas = entradas.filter((entrada) => {
-      const produto = produtosOriginais.find((p) => p.id == entrada.idProdutos);
-      const fornecedor = fornecedores.find((f) => f.id == entrada.idFornecedor);
+      const produto = produtosMap.get(entrada.idProdutos);
+      const fornecedor = fornecedoresMap.get(entrada.idFornecedor);
       
       return (
-        removerAcentos(produto?.nome?.toLowerCase()).includes(termoBusca) ||
-        removerAcentos(fornecedor?.nome?.toLowerCase()).includes(termoBusca)
+        removerAcentos((produto?.nome || '').toLowerCase()).includes(termoBusca) ||
+        removerAcentos((fornecedor?.nome || '').toLowerCase()).includes(termoBusca)
       );
     });
 
     paginaAtualEntradas = 1;
     mostrarPaginaEntradas(paginaAtualEntradas); // Atualiza a tabela com os resultados filtrados
-  });
+  }, 300);
+  
+  // Remover event listeners antigos e adicionar o novo
+  inputBuscarEntrada.removeEventListener("input", buscarEntradaHandler);
+  inputBuscarEntrada.addEventListener("input", buscarEntradaHandler);
 }
 
 function buscarSaida() {
   const inputBuscarSaida = document.getElementById("buscarSaida");
-  inputBuscarSaida.addEventListener("input", function () {
-    const termoBusca = removerAcentos(inputBuscarSaida.value.toLowerCase());
+  if (!inputBuscarSaida) return;
+  
+  const buscarSaidaHandler = debounce(function(e) {
+    const termoBusca = removerAcentos(e.target.value.toLowerCase());
+    
+    // Usar um mapa para acesso mais rápido aos produtos e clientes
+    const produtosMap = new Map();
+    const clientesMap = new Map();
+    
+    // Preencher mapas para busca rápida
+    produtosOriginais.forEach(p => produtosMap.set(p.id, p));
+    if (Array.isArray(clientes)) {
+      clientes.forEach(c => clientesMap.set(c.id, c));
+    }
 
     saidasFiltradas = saidas.filter((saida) => {
-      const produto = produtosOriginais.find((p) => p.id == saida.idProdutos);
-      const cliente = Array.isArray(clientes)
-        ? clientes.find((c) => c.id == saida.idClientes)?.nome || "Cliente não encontrado"
-        : "Cliente não cadastrado";
+      const produto = produtosMap.get(saida.idProdutos);
+      const cliente = clientesMap.get(saida.idClientes);
+      const nomeCliente = cliente?.nome || "Cliente não encontrado";
 
       return (
-        removerAcentos(produto?.nome?.toLowerCase()).includes(termoBusca) ||
-        removerAcentos(cliente.toLowerCase()).includes(termoBusca)
+        removerAcentos((produto?.nome || '').toLowerCase()).includes(termoBusca) ||
+        removerAcentos(nomeCliente.toLowerCase()).includes(termoBusca)
       );
     });
 
     paginaAtualSaidas = 1;
     mostrarPaginaSaidas(paginaAtualSaidas); // Atualiza a tabela com os resultados filtrados
-  });
+  }, 300);
+  
+  // Remover event listeners antigos e adicionar o novo
+  inputBuscarSaida.removeEventListener("input", buscarSaidaHandler);
+  inputBuscarSaida.addEventListener("input", buscarSaidaHandler);
 }
+
 
 
 function mostrarPaginaEntradas(pagina) {
   const inicio = (pagina - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
-entradasFiltradas.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  // Paginar os resultados corretamente
-  const entradasPagina = entradasFiltradas.slice(inicio, fim);
-
+  
+  // Ordenar as entradas da mais recente para a mais antiga
+  // Usar uma cópia para não modificar o array original diretamente
+  const entradasOrdenadas = [...entradasFiltradas].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
+  
+  // Paginar os resultados
+  const entradasPagina = entradasOrdenadas.slice(inicio, fim);
+  
   // Selecionar a tabela e limpar seu conteúdo
   const tabela = document.querySelector("#tabelaEntradas tbody");
-  tabela.innerHTML = "";
-
+  if (!tabela) return;
+  
+  // Criar mapas para acesso rápido
+  const produtosMap = new Map();
+  const fornecedoresMap = new Map();
+  
+  produtosOriginais.forEach(p => produtosMap.set(p.id, p));
+  fornecedores.forEach(f => fornecedoresMap.set(f.id, f));
+  
+  // Criar fragment para otimizar inserções no DOM
+  const fragment = document.createDocumentFragment();
+  
   // Exibir mensagem caso não haja entradas
   if (entradasPagina.length === 0) {
-    tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma entrada encontrada.</td></tr>`;
-    return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma entrada encontrada.</td></tr>`;
+    fragment.appendChild(tr);
+  } else {
+    // Preencher a tabela com as entradas paginadas
+    entradasPagina.forEach((entrada) => {
+      const produto = produtosMap.get(entrada.idProdutos);
+      const fornecedor = fornecedoresMap.get(entrada.idFornecedor);
+      
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${fornecedor?.nome || "Fornecedor não encontrado"}</td>
+        <td>${produto?.nome || "Produto não encontrado"}</td>
+        <td>${entrada.quantidade}</td>
+        <td>${entrada.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
+        <td>${formatarData(entrada.created_at)}</td>
+        <td class="text-center">
+          <button class="btn btn-primary btn-sm action-btn" onclick="editarEntrada(${entrada.id})" title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalExcluirEntrada" onclick="excluirEntrada(${entrada.id})" title="Excluir">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      `;
+      fragment.appendChild(tr);
+    });
   }
-
-  // Preencher a tabela com as entradas paginadas
-  entradasPagina.forEach((entrada) => {
-    const produto = produtosOriginais.find((p) => p.id == entrada.idProdutos);
-    const fornecedor = fornecedores.find((f) => f.id == entrada.idFornecedor);
-
-    
-
-    const row = `
-            <tr>
-                <td>${fornecedor?.nome || "Fornecedor não encontrado"}</td>
-                <td>${produto?.nome || "Produto não encontrado"}</td>
-                <td>${entrada.quantidade}</td>
-                <td>${entrada.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
-                <td>${formatarData(entrada.created_at)}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm" onclick="editarEntrada(${entrada.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirEntrada" onclick="excluirEntrada(${entrada.id})">Excluir</button>
-                </td>
-            </tr>`;
-    tabela.insertAdjacentHTML("beforeend", row);
-  });
-
+  
+  // Limpar a tabela e adicionar o fragment
+  tabela.innerHTML = '';
+  tabela.appendChild(fragment);
+  
   // Configurar a paginação
-  configurarPaginacao(entradasFiltradas.length, mostrarPaginaEntradas, "#paginacaoEntradas", pagina);
+  configurarPaginacao(
+    entradasFiltradas.length, 
+    mostrarPaginaEntradas, 
+    "#paginacaoEntradas", 
+    pagina
+  );
+  
+  // Atualizar página atual
+  paginaAtualEntradas = pagina;
 }
 
 function mostrarPaginaSaidas(pagina) {
@@ -222,46 +312,75 @@ function mostrarPaginaSaidas(pagina) {
   const fim = inicio + itensPorPagina;
 
   // Ordenar as saídas da mais recente para a mais antiga
-  saidasFiltradas.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const saidasOrdenadas = [...saidasFiltradas].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
 
-  // Paginar os resultados corretamente
-  const saidasPagina = saidasFiltradas.slice(inicio, fim);
+  // Paginar os resultados
+  const saidasPagina = saidasOrdenadas.slice(inicio, fim);
 
   // Selecionar a tabela e limpar seu conteúdo
   const tabela = document.querySelector("#tabelaSaidas tbody");
-  tabela.innerHTML = "";
+  if (!tabela) return;
+  
+  // Criar mapas para acesso rápido
+  const produtosMap = new Map();
+  const clientesMap = new Map();
+  
+  produtosOriginais.forEach(p => produtosMap.set(p.id, p));
+  if (Array.isArray(clientes)) {
+    clientes.forEach(c => clientesMap.set(c.id, c));
+  }
+  
+  // Criar fragment para otimizar inserções no DOM
+  const fragment = document.createDocumentFragment();
 
   // Exibir mensagem caso não haja saídas
   if (saidasPagina.length === 0) {
-    tabela.innerHTML = `<tr><td colspan="6" class="text-center">Nenhuma saída encontrada.</td></tr>`;
-    return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="6" class="text-center">Nenhuma saída encontrada.</td>`;
+    fragment.appendChild(tr);
+  } else {
+    // Preencher a tabela com as saídas paginadas
+    saidasPagina.forEach((saida) => {
+      const produto = produtosMap.get(saida.idProdutos);
+      const cliente = clientesMap.get(saida.idClientes);
+      const nomeCliente = cliente?.nome || "Cliente não encontrado";
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${nomeCliente}</td>
+        <td>${produto?.nome || "Produto não encontrado"}</td>
+        <td>${saida.quantidade}</td>
+        <td>${saida.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
+        <td>${formatarData(saida.created_at)}</td>
+        <td class="text-center">
+          <button class="btn btn-primary btn-sm action-btn" onclick="editarSaida(${saida.id})" title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})" title="Excluir">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+        </td>
+      `;
+      fragment.appendChild(tr);
+    });
   }
-
-  // Preencher a tabela com as saídas paginadas
-  saidasPagina.forEach((saida) => {
-    const produto = produtosOriginais.find((p) => p.id == saida.idProdutos);
-    const cliente = Array.isArray(clientes)
-    ? clientes.find((c) => c.id == saida.idClientes)?.nome ||
-      "Cliente não encontrado"
-    : "Cliente não cadastrado";
-
-    const row = `
-            <tr>
-                <td>${cliente?.nome || "Cliente não identificado"}</td>
-                <td>${produto?.nome || "Produto não encontrado"}</td>
-                <td>${saida.quantidade}</td>
-                <td>${saida.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</td>
-                <td>${formatarData(saida.created_at)}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm" onclick="editarSaida(${saida.id})">Editar</button>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalExcluirSaida" onclick="excluirSaida(${saida.id})">Excluir</button>
-                </td>
-            </tr>`;
-    tabela.insertAdjacentHTML("beforeend", row);
-  });
+  
+  // Limpar a tabela e adicionar o fragment
+  tabela.innerHTML = '';
+  tabela.appendChild(fragment);
 
   // Configurar a paginação
-  configurarPaginacao(saidasFiltradas.length, mostrarPaginaSaidas, "#paginacaoSaidas", pagina);
+  configurarPaginacao(
+    saidasFiltradas.length, 
+    mostrarPaginaSaidas, 
+    "#paginacaoSaidas", 
+    pagina
+  );
+  
+  // Atualizar página atual
+  paginaAtualSaidas = pagina;
 }
 
 
@@ -334,45 +453,75 @@ function configurarPaginacao(
   paginaAtual
 ) {
   const totalPaginas = Math.ceil(totalItens / itensPorPagina);
-  const paginacaoContainer = document.querySelector(seletorPaginacao);
-  paginacaoContainer.innerHTML = ""; // Limpa a navegação
-
-  if (totalPaginas <= 1) return; // Se há apenas uma página, não exibe paginação
-
-  const paginaInicial = Math.max(1, paginaAtual - Math.floor(maxBotoesPaginacao / 2));
-  const paginaFinal = Math.min(totalPaginas, paginaInicial + maxBotoesPaginacao - 1);
+  const container = document.querySelector(seletorPaginacao);
+  if (!container) return;
+  
+  // Criar um fragment para otimizar as inserções no DOM
+  const fragment = document.createDocumentFragment();
+  
+  // Se não houver itens ou apenas uma página, não mostrar paginação
+  if (totalPaginas <= 1) {
+    container.innerHTML = '';
+    return;
+  }
+  
+  // Calcular o intervalo de botões a exibir
+  let startPage = Math.max(1, paginaAtual - Math.floor(maxBotoesPaginacao / 2));
+  let endPage = Math.min(totalPaginas, startPage + maxBotoesPaginacao - 1);
+  
+  // Ajustar startPage se não tivermos suficientes no final
+  if (endPage - startPage + 1 < maxBotoesPaginacao) {
+    startPage = Math.max(1, endPage - maxBotoesPaginacao + 1);
+  }
 
   // Botão "Anterior"
-  const botaoAnterior = document.createElement("li");
-  botaoAnterior.classList.add("page-item");
+  const btnAnterior = document.createElement('li');
+  btnAnterior.className = `page-item ${paginaAtual === 1 ? 'disabled' : ''}`;
+  btnAnterior.innerHTML = `<a class="page-link" href="#">Anterior</a>`;
+  
   if (paginaAtual > 1) {
-    botaoAnterior.innerHTML = `<a class="page-link" href="#" onclick="${callback.name}(${paginaAtual - 1})">&laquo;</a>`;
-  } else {
-    botaoAnterior.classList.add("disabled");
-    botaoAnterior.innerHTML = `<span class="page-link">&laquo;</span>`;
+    const link = btnAnterior.querySelector('a');
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      callback(paginaAtual - 1);
+    });
   }
-  paginacaoContainer.appendChild(botaoAnterior);
+  
+  fragment.appendChild(btnAnterior);
 
-  // Botões de páginas
-  for (let i = paginaInicial; i <= paginaFinal; i++) {
-    const botaoPagina = document.createElement("li");
-    botaoPagina.classList.add("page-item");
-    if (i === paginaAtual) botaoPagina.classList.add("active");
-
-    botaoPagina.innerHTML = `<a class="page-link" href="#" onclick="${callback.name}(${i})">${i}</a>`;
-    paginacaoContainer.appendChild(botaoPagina);
+  // Botões de número de página
+  for (let i = startPage; i <= endPage; i++) {
+    const btnPagina = document.createElement('li');
+    btnPagina.className = `page-item ${i === paginaAtual ? 'active' : ''}`;
+    btnPagina.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+    
+    const link = btnPagina.querySelector('a');
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      callback(i);
+    });
+    
+    fragment.appendChild(btnPagina);
   }
 
   // Botão "Próximo"
-  const botaoProximo = document.createElement("li");
-  botaoProximo.classList.add("page-item");
+  const btnProximo = document.createElement('li');
+  btnProximo.className = `page-item ${paginaAtual === totalPaginas ? 'disabled' : ''}`;
+  btnProximo.innerHTML = `<a class="page-link" href="#">Próximo</a>`;
+  
   if (paginaAtual < totalPaginas) {
-    botaoProximo.innerHTML = `<a class="page-link" href="#" onclick="${callback.name}(${paginaAtual + 1})">&raquo;</a>`;
-  } else {
-    botaoProximo.classList.add("disabled");
-    botaoProximo.innerHTML = `<span class="page-link">&raquo;</span>`;
+    const link = btnProximo.querySelector('a');
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      callback(paginaAtual + 1);
+    });
   }
-  paginacaoContainer.appendChild(botaoProximo);
+  
+  fragment.appendChild(btnProximo);
+
+  // Limpar o container e adicionar o fragment
+  container.innerHTML = '';
+  container.appendChild(fragment);
 }
 
 function editarEntrada(id) {
@@ -535,22 +684,55 @@ function preencherTabelaProdutos(produtosPaginados) {
       currency: "BRL",
     });
 
-    const status = quantidade > 0 ? "Disponível" : "Indisponível";
-    const dados = [
-      codigo_produto,
-      nome,
-      descricao,
-      precoFormatado,
-      quantidade,
-      unidade_medida,
-      status,
-    ];
+    // Truncar descrição se for muito longa
+    const descricaoTruncada = descricao.length > 50 
+      ? `${descricao.substring(0, 50)}...` 
+      : descricao;
 
-    dados.forEach((dado) => {
-      const td = document.createElement("td");
-      td.textContent = dado;
-      tr.appendChild(td);
-    });
+    // Determinar status com base na quantidade
+    let statusHTML = '';
+    if (quantidade === 0) {
+      statusHTML = '<span class="status-badge esgotado">Esgotado</span>';
+    } else if ((unidade_medida === 'KG' && quantidade <= 1) || (unidade_medida === 'UN' && quantidade <= 5)) {
+      statusHTML = '<span class="status-badge pouco">Estoque Baixo</span>';
+    } else {
+      statusHTML = '<span class="status-badge disponivel">Disponível</span>';
+    }
+
+    // Criar células da tabela
+    const tdCodigo = document.createElement("td");
+    tdCodigo.textContent = codigo_produto;
+    tr.appendChild(tdCodigo);
+
+    const tdNome = document.createElement("td");
+    tdNome.textContent = nome;
+    tr.appendChild(tdNome);
+
+    const tdDescricao = document.createElement("td");
+    tdDescricao.textContent = descricaoTruncada;
+    
+    // Adicionar tooltip para descrições truncadas
+    if (descricao.length > 50) {
+      tdDescricao.title = descricao;
+      tdDescricao.classList.add('text-truncate', 'max-width-description');
+    }
+    tr.appendChild(tdDescricao);
+
+    const tdPreco = document.createElement("td");
+    tdPreco.textContent = precoFormatado;
+    tr.appendChild(tdPreco);
+
+    const tdQuantidade = document.createElement("td");
+    tdQuantidade.textContent = quantidade;
+    tr.appendChild(tdQuantidade);
+
+    const tdUnidade = document.createElement("td");
+    tdUnidade.textContent = unidade_medida;
+    tr.appendChild(tdUnidade);
+
+    const tdStatus = document.createElement("td");
+    tdStatus.innerHTML = statusHTML;
+    tr.appendChild(tdStatus);
 
     tr.appendChild(createButtonGroup(produto)); // Adiciona os botões de ação
     corpoTabela.appendChild(tr);
@@ -558,15 +740,71 @@ function preencherTabelaProdutos(produtosPaginados) {
 }
 
 function mostrarPagina(pagina) {
-  paginaAtual = pagina;
-
   const inicio = (pagina - 1) * itensPorPagina;
   const fim = inicio + itensPorPagina;
-
-  const produtosNaPagina = produtosOrdenados.slice(inicio, fim); // Paginar com a lista ordenada
-  preencherTabelaProdutos(produtosNaPagina);
-
-  atualizarPaginacao(produtosOrdenados.length, paginaAtual); // Atualiza paginação com a lista ordenada
+  
+  // Paginar os resultados
+  const produtosPagina = produtosOrdenados.slice(inicio, fim);
+  
+  // Selecionar a tabela e limpar seu conteúdo
+  const tabela = document.getElementById("corpoTabela");
+  if (!tabela) return;
+  
+  // Limpar o conteúdo da tabela
+  tabela.innerHTML = "";
+  
+  // Criar um fragment para otimizar as inserções no DOM
+  const fragment = document.createDocumentFragment();
+  
+  // Se não houver produtos na página atual, não exibimos nada na tabela
+  // A mensagem de "nenhum produto encontrado" já é tratada pelo elemento semResultadosProdutos
+  if (produtosPagina.length > 0) {
+    // Criar mapa de categorias para acesso mais rápido
+    const categoriasMap = new Map();
+    categorias.forEach(c => categoriasMap.set(c.id, c));
+    
+    // Preencher a tabela com os produtos paginados
+    produtosPagina.forEach((produto) => {
+      const categoria = categoriasMap.get(produto.idCategorias);
+      const status = produto.quantidade > 0 ? "Disponível" : "Indisponível";
+      
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${produto.codigo_produto || ''}</td>
+        <td>${produto.nome || ''}</td>
+        <td>${produto.descricao || ''}</td>
+        <td>${produto.preco ? produto.preco.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }) : 'R$ 0,00'}</td>
+        <td>${produto.quantidade || 0}</td>
+        <td>${produto.unidade_medida || ''}</td>
+        <td>${status}</td>
+        <td class="text-center">
+          <button class="btn btn-primary btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalEditar" onclick="prepararEdicaoProduto(${produto.id})" title="Editar">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button class="btn btn-danger btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalExcluir" onclick="prepararExclusao(${produto.id})" title="Excluir">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="btn btn-success btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalEntrada" onclick="prepararEntrada(${produto.id})" title="Adicionar Entrada">
+            <i class="fas fa-arrow-circle-down"></i>
+          </button>
+          <button class="btn btn-warning btn-sm action-btn" data-bs-toggle="modal" data-bs-target="#modalSaida" onclick="prepararSaida(${produto.id})" title="Adicionar Saída">
+            <i class="fas fa-arrow-circle-up"></i>
+          </button>
+        </td>
+      `;
+      
+      fragment.appendChild(tr);
+    });
+  }
+  
+  // Adicionar os elementos ao DOM
+  tabela.appendChild(fragment);
+  
+  // Atualizar a paginação
+  atualizarPaginacao(produtosOrdenados.length, pagina);
+  
+  // Atualizar página atual
+  paginaAtual = pagina;
 }
 
 function atualizarPaginacao(totalProdutos, paginaAtual) {
@@ -639,6 +877,16 @@ function alterarTabelaPorCategoriaSelecionada() {
     produtosFiltrados = [...produtosOriginais]; // Reseta para todos os produtos
   }
 
+  // Exibe ou oculta a mensagem de "sem resultados"
+  const semResultados = document.getElementById("semResultadosProdutos");
+  if (semResultados) {
+    if (produtosFiltrados.length === 0) {
+      semResultados.classList.remove("d-none");
+    } else {
+      semResultados.classList.add("d-none");
+    }
+  }
+
   // Reiniciar a ordenação com os produtos filtrados
   produtosOrdenados = [...produtosFiltrados];
   paginaAtual = 1; // Reinicia na primeira página
@@ -650,56 +898,57 @@ function ordenarProdutos(produtos) {
   return produtos; // Retorna os produtos ordenados
 }
 
-function preencherCategorias(categorias, callbackMostrarProdutos) {
-  const selectElement = document.getElementById("categoria");
-  const selectElementModal = document.getElementById(
-    "categoriaProdutoAdicionar"
-  );
-  const selectElementEditar = document.getElementById("categoriaProdutoEditar");
+function preencherCategorias(categorias, onChangeCallback) {
+  // Identificar todos os selects de categoria na página
+  const selects = ['categoria', 'categoriaProdutoAdicionar', 'categoriaProdutoEditar'].map(id => 
+    document.getElementById(id)
+  ).filter(el => el !== null);
+  
+  selects.forEach(select => {
+    if (select) {
+      // Limpar o select primeiro
+      select.innerHTML = "";
+      
+      // Adicionar a opção padrão
+      const optionPadrao = document.createElement("option");
+      optionPadrao.value = "";
+      
+      if (select.id === 'categoria') {
+        // Para o filtro da tabela principal - NÃO deshabilitar
+        optionPadrao.disabled = false;
+        optionPadrao.textContent = "Todas as categorias";
+      } else {
+        // Para os modais de adicionar e editar produto - Manter desabilitado
+        optionPadrao.disabled = true;
+        optionPadrao.textContent = "Selecionar Categoria";
+      }
+      
+      optionPadrao.selected = true;
+      select.appendChild(optionPadrao);
+      
+      // Adicionar as categorias
+      if (Array.isArray(categorias)) {
+        categorias.forEach(categoria => {
+          const option = document.createElement("option");
+          option.value = categoria.id;
+          option.textContent = categoria.nome;
+          select.appendChild(option);
+        });
+      }
 
-  // Limpar as opções existentes nos selects antes de adicionar novas
-  selectElement.innerHTML = "";
-  selectElementModal.innerHTML = "";
-  selectElementEditar.innerHTML = "";
-
-  // Adiciona a opção "Todas" no select principal
-  const optionAll = document.createElement("option");
-  optionAll.value = ""; // Valor vazio para identificar a exibição de todos os produtos
-  optionAll.textContent = "Todas";
-  selectElement.appendChild(optionAll);
-
-  // Adiciona o placeholder "Selecione a categoria" no modal select
-  const placeholderModal = document.createElement("option");
-  placeholderModal.value = ""; // Valor vazio para validação
-  placeholderModal.textContent = "Selecione a categoria";
-  placeholderModal.disabled = true;
-  placeholderModal.selected = true;
-  selectElementModal.appendChild(placeholderModal);
-
-  // Preenche as opções de categorias no select principal e no modal
-  categorias.forEach((categoria) => {
-    // Para o select principal
-    const optionPrincipal = document.createElement("option");
-    optionPrincipal.value = categoria.id;
-    optionPrincipal.textContent = categoria.nome;
-    selectElement.appendChild(optionPrincipal);
-
-    // Para o select do modal
-    const optionModal = document.createElement("option");
-    optionModal.value = categoria.id;
-    optionModal.textContent = categoria.nome;
-    selectElementModal.appendChild(optionModal);
-
-    const optionEditar = document.createElement("option");
-    optionEditar.value = categoria.id;
-    optionEditar.textContent = categoria.nome;
-    selectElementEditar.appendChild(optionEditar);
+      // Adicionar o evento de change, se fornecido
+      if (onChangeCallback && typeof onChangeCallback === 'function') {
+        select.addEventListener("change", onChangeCallback);
+      }
+    }
   });
 }
 
 function preencherFornecedores(fornecedores) {
   const input = document.getElementById("fornecedor");
   const lista = document.getElementById("fornecedor-lista");
+
+  if (!input || !lista) return;
 
   input.addEventListener("input", () => {
     const query = input.value.toLowerCase().trim();
@@ -716,7 +965,12 @@ function preencherFornecedores(fornecedores) {
 
     if (fornecedoresFiltrados.length > 0) {
       lista.style.display = "block";
-      fornecedoresFiltrados.forEach((fornecedor) => {
+      
+      // Limitar a 6 sugestões para não sobrecarregar a interface
+      const maxSugestoes = Math.min(fornecedoresFiltrados.length, 6);
+      
+      for (let i = 0; i < maxSugestoes; i++) {
+        const fornecedor = fornecedoresFiltrados[i];
         const item = document.createElement("div");
         item.classList.add("list-group-item", "list-group-item-action");
         item.textContent = fornecedor.nome;
@@ -725,13 +979,22 @@ function preencherFornecedores(fornecedores) {
           lista.style.display = "none";
         });
         lista.appendChild(item);
-      });
+      }
+      
+      // Se houver mais resultados que o limite, mostrar indicativo
+      if (fornecedoresFiltrados.length > maxSugestoes) {
+        const maisItem = document.createElement("div");
+        maisItem.classList.add("list-group-item", "text-center", "text-muted");
+        maisItem.textContent = `+ ${fornecedoresFiltrados.length - maxSugestoes} mais fornecedores`;
+        lista.appendChild(maisItem);
+      }
     } else {
       lista.style.display = "none";
     }
   });
 
   input.addEventListener("blur", () => {
+    // Pequeno atraso para permitir o clique no item antes de esconder
     setTimeout(() => {
       lista.style.display = "none";
     }, 200);
@@ -739,7 +1002,9 @@ function preencherFornecedores(fornecedores) {
 
   input.addEventListener("focus", () => {
     if (input.value.trim() !== "") {
-      lista.style.display = "block";
+      // Simular input para mostrar sugestões relevantes
+      const event = new Event('input', { bubbles: true });
+      input.dispatchEvent(event);
     }
   });
 }
@@ -747,9 +1012,40 @@ function preencherFornecedores(fornecedores) {
 function preencherClientes(clientes) {
   const input = document.getElementById("cliente");
   const lista = document.getElementById("clientes-lista");
+  const checkboxClienteNaoCadastrado = document.getElementById("clienteNaoCadastrado");
+
+  if (!input || !lista) return;
+
+  // Verificar se o checkbox está marcado e atualizar o estado do input
+  if (checkboxClienteNaoCadastrado) {
+    checkboxClienteNaoCadastrado.addEventListener("change", function() {
+      const hiddenField = document.getElementById("cliente_nao_cadastrado_valor");
+      
+      if (this.checked) {
+        input.value = "Cliente não cadastrado";
+        input.readOnly = true;
+        input.classList.add('text-muted');
+        lista.style.display = "none";
+        
+        // Atualiza o campo oculto
+        if (hiddenField) {
+          hiddenField.value = "1";
+        }
+      } else {
+        input.value = "";
+        input.readOnly = false;
+        input.classList.remove('text-muted');
+        
+        // Atualiza o campo oculto
+        if (hiddenField) {
+          hiddenField.value = "0";
+        }
+      }
+    });
+  }
 
   input.addEventListener("input", () => {
-    const query = input.value.toLowerCase();
+    const query = input.value.toLowerCase().trim();
     lista.innerHTML = "";
 
     if (query === "") {
@@ -763,7 +1059,12 @@ function preencherClientes(clientes) {
 
     if (clientesFiltrados.length > 0) {
       lista.style.display = "block";
-      clientesFiltrados.forEach((cliente) => {
+      
+      // Limitar a 6 sugestões para não sobrecarregar a interface
+      const maxSugestoes = Math.min(clientesFiltrados.length, 6);
+      
+      for (let i = 0; i < maxSugestoes; i++) {
+        const cliente = clientesFiltrados[i];
         const item = document.createElement("div");
         item.classList.add("list-group-item", "list-group-item-action");
         item.textContent = cliente.nome;
@@ -772,21 +1073,32 @@ function preencherClientes(clientes) {
           lista.style.display = "none";
         });
         lista.appendChild(item);
-      });
+      }
+      
+      // Se houver mais resultados que o limite, mostrar indicativo
+      if (clientesFiltrados.length > maxSugestoes) {
+        const maisItem = document.createElement("div");
+        maisItem.classList.add("list-group-item", "text-center", "text-muted");
+        maisItem.textContent = `+ ${clientesFiltrados.length - maxSugestoes} mais clientes`;
+        lista.appendChild(maisItem);
+      }
     } else {
       lista.style.display = "none";
     }
   });
 
   input.addEventListener("blur", () => {
+    // Pequeno atraso para permitir o clique no item antes de esconder
     setTimeout(() => {
       lista.style.display = "none";
     }, 200);
   });
 
   input.addEventListener("focus", () => {
-    if (input.value.trim() !== "") {
-      lista.style.display = "block";
+    if (input.value.trim() !== "" && !checkboxClienteNaoCadastrado?.checked) {
+      // Simular input para mostrar sugestões relevantes
+      const event = new Event('input', { bubbles: true });
+      input.dispatchEvent(event);
     }
   });
 }
@@ -842,54 +1154,75 @@ document
   .getElementById("clienteNaoCadastrado")
   .addEventListener("change", function () {
     const clienteInput = document.getElementById("cliente");
+    const hiddenField = document.getElementById("cliente_nao_cadastrado_valor");
 
     if (this.checked) {
-      clienteInput.readOnly = true; // Torna o campo somente leitura
-      clienteInput.value = null; // Defina o valor desejado
+      // Cliente não cadastrado selecionado
+      clienteInput.readOnly = true;
+      clienteInput.value = "Cliente não cadastrado";
+      clienteInput.placeholder = "Cliente não cadastrado";
+      clienteInput.classList.add("text-muted");
+      hiddenField.value = "1"; // Marca o campo oculto como "sim, não é cadastrado"
     } else {
-      clienteInput.readOnly = false; // Atualiza o campo oculto com o valor do input
+      // Cliente cadastrado selecionado
+      clienteInput.readOnly = false;
+      clienteInput.value = "";
+      clienteInput.placeholder = "Digite o nome do cliente";
+      clienteInput.classList.remove("text-muted");
+      hiddenField.value = "0"; // Marca o campo oculto como "não, é cadastrado"
     }
-
   });
 
 function createButtonGroup(produto) {
   const actions = [
     {
       text: "Editar",
+      icon: "fas fa-edit",
       class: "btn-primary",
       action: () => openModal("Editar", produto, produto.id, categorias),
     },
     {
       text: "Excluir",
+      icon: "fas fa-trash-alt",
       class: "btn-danger",
       action: () => openModal("Excluir", produto.id),
     },
     {
       text: "Adicionar Entrada",
+      icon: "fas fa-arrow-circle-down",
       class: "btn-success",
       action: () => openModalEntrada(produto.id),
     },
     {
       text: "Adicionar Saída",
+      icon: "fas fa-arrow-circle-up",
       class: "btn-warning",
       action: () => openModalSaida(produto.id, produto.preco),
     },
   ];
 
-  const btnGroup = document.createElement("div");
-  btnGroup.classList.add("btn-group", "w-100");
-  actions.forEach(({ text, class: btnClass, action }) => {
+  const tdActions = document.createElement("td");
+  tdActions.classList.add("text-center", "actions-cell");
+  
+  // Adicionando div container para melhor controle de layout em dispositivos móveis
+  const actionContainer = document.createElement("div");
+  actionContainer.classList.add("action-buttons-container");
+  actionContainer.style.display = "flex";
+  actionContainer.style.flexWrap = "nowrap";
+  actionContainer.style.justifyContent = "center";
+  
+  actions.forEach(({ icon, text, class: btnClass, action }) => {
     const btn = document.createElement("button");
-    btn.classList.add("btn", btnClass);
-    btn.textContent = text;
-    btn.onclick = action;
-    btnGroup.appendChild(btn);
+    btn.setAttribute("type", "button");
+    btn.classList.add("btn", btnClass, "btn-sm", "action-btn");
+    btn.innerHTML = `<i class="${icon}"></i>`;
+    btn.title = text;
+    btn.addEventListener("click", action);
+    actionContainer.appendChild(btn);
   });
-
-  const tdAcoes = document.createElement("td");
-  tdAcoes.colSpan = 2;
-  tdAcoes.appendChild(btnGroup);
-  return tdAcoes;
+  
+  tdActions.appendChild(actionContainer);
+  return tdActions;
 }
 
 function openModal(tipo, produto) {
@@ -908,22 +1241,29 @@ function openModal(tipo, produto) {
     const unidadeSelect = document.getElementById("unidadeProdutoEditar");
     const unidadeMedida = produto.unidade_medida;
 
-    // Verificar se a unidade já existe no select
-    const optionExiste = Array.from(unidadeSelect.options).some(
-      (option) => option.value === unidadeMedida
-    );
-
-    // Adicionar a unidade ao select, se não existir
-    if (!optionExiste) {
-      const novaOption = document.createElement("option");
-      novaOption.value = unidadeMedida;
-      novaOption.textContent = unidadeMedida;
-      unidadeSelect.appendChild(novaOption);
+    // Resetar a seleção para garantir que a opção padrão seja mostrada se necessário
+    unidadeSelect.querySelector('option[disabled]').selected = true;
+    
+    // Verificar se a unidade é válida (KG ou UN) e selecioná-la
+    if (unidadeMedida === 'KG' || unidadeMedida === 'UN') {
+      // Selecionar a unidade do produto
+      unidadeSelect.value = unidadeMedida;
+    } else if (unidadeMedida) {
+      // Se for uma unidade antiga diferente de KG ou UN, 
+      // adicionar temporariamente uma opção para este produto específico
+      const optionExiste = Array.from(unidadeSelect.options).some(
+        (option) => option.value === unidadeMedida
+      );
+      
+      if (!optionExiste) {
+        const novaOption = document.createElement("option");
+        novaOption.value = unidadeMedida;
+        novaOption.textContent = unidadeMedida + ' (unidade legada)';
+        novaOption.className = 'legacy-unit';
+        unidadeSelect.appendChild(novaOption);
+        unidadeSelect.value = unidadeMedida;
+      }
     }
-
-    // Selecionar a unidade do produto
-    unidadeSelect.value = unidadeMedida;
-
 
     const precoProduto = document.getElementById("precoProduto");
 
@@ -978,14 +1318,6 @@ function openModalEntrada(id) {
   inputProdutoId.value = id;
   new bootstrap.Modal(document.getElementById("modalEntrada")).show();
 }
-
-document
-  .getElementById("saida-cadastro")
-  .addEventListener("submit", function (event) {
-    const inputPrecoSaida = document.getElementById("precoSaida");
-
-    inputPrecoSaida.value = preco;
-  });
 
 function openModalSaida(id, preco) {
   const inputProdutoId = document.getElementById("produtoId2");
@@ -1242,4 +1574,59 @@ function excluirCategoria(id) {
   new bootstrap.Modal(document.getElementById("modalExcluirCategoria")).show();
 }
 
+// Adicionando as funções prepararEntrada e prepararSaida que são chamadas pelos botões
+function prepararEntrada(id) {
+  openModalEntrada(id);
+}
+
+function prepararSaida(id) {
+  // Encontrar o produto pelo ID para obter o preço
+  const produto = produtosOriginais.find(p => p.id == id);
+  const preco = produto ? produto.preco : 0;
+  
+  openModalSaida(id, preco);
+}
+
+// Função para preparar a edição de um produto
+function prepararEdicaoProduto(id) {
+  // Encontrar o produto pelo ID
+  const produto = produtosOriginais.find(p => p.id == id);
+  
+  // Se encontrou o produto, abrir o modal para edição
+  if (produto) {
+    openModal("Editar", produto);
+  } else {
+    console.error("Produto não encontrado:", id);
+  }
+}
+
+// Função para preparar a exclusão de um produto
+function prepararExclusao(id) {
+  // Definir o ID do produto a ser excluído no campo oculto
+  const inputIdProdutoExcluir = document.getElementById("idProdutoExcluir");
+  if (inputIdProdutoExcluir) {
+    inputIdProdutoExcluir.value = id;
+  }
+  
+  // Abrir o modal de exclusão
+  const modalExcluir = new bootstrap.Modal(document.getElementById("modalExcluir"));
+  modalExcluir.show();
+}
+
 window.onload = loadAllData;
+
+// Validação do formulário de adicionar produto
+document.addEventListener('DOMContentLoaded', function() {
+  const formAdicionarProduto = document.getElementById('produto-cadastro');
+  if (formAdicionarProduto) {
+    formAdicionarProduto.addEventListener('submit', function(event) {
+      const unidadeSelect = document.getElementById('unidadeProdutoAdicionar');
+      
+      if (!unidadeSelect.value) {
+        event.preventDefault();
+        alert('Por favor, selecione uma unidade de medida.');
+        unidadeSelect.focus();
+      }
+    });
+  }
+});

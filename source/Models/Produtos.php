@@ -202,16 +202,23 @@ class Produtos
 
     public function validateProduto($nome, $idCategoria, $codigo_produto) : bool
     {
-        $query = "SELECT * FROM produtos WHERE (nome = :nome AND idCategoria = :idCategoria) OR (codigo_produto = :codigo_produto)";
-        $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":nome", $nome);
-        $stmt->bindParam(":idCategoria", $idCategoria);
-        $stmt->bindParam(":codigo_produto", $codigo_produto);
-        $stmt->execute();
-        if($stmt->rowCount() == 1){
+        try {
+            $query = "SELECT * FROM produtos WHERE (nome = :nome AND idCategoria = :idCategoria) OR (codigo_produto = :codigo_produto)";
+            $stmt = Connect::getInstance()->prepare($query);
+            $stmt->bindParam(":nome", $nome);
+            $stmt->bindParam(":idCategoria", $idCategoria);
+            $stmt->bindParam(":codigo_produto", $codigo_produto);
+            $stmt->execute();
+            if($stmt->rowCount() >= 1){
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            // Log do erro para debug
+            error_log("Erro ao validar produto: " . $e->getMessage());
+            // Em caso de erro, assume que o produto já existe para evitar duplicatas
             return true;
-        } else {
-            return false;
         }
     }
 
@@ -231,18 +238,29 @@ class Produtos
 
     public function insert() : bool
     {
-        $query = "INSERT INTO produtos (idCategoria, nome, descricao, preco, imagem, unidade_medida, codigo_produto) 
-                    VALUES (:idCategoria, :nome, :descricao, :preco, :imagem, :unidade_medida, :codigo_produto)";
-        $stmt = Connect::getInstance()->prepare($query);
-        $stmt->bindParam(":idCategoria", $this->idCategoria);
-        $stmt->bindParam(":nome", $this->nome);
-        $stmt->bindValue(":descricao", $this->descricao);
-        $stmt->bindParam(":preco", $this->preco);
-        $stmt->bindParam(":imagem", $this->imagem);
-        $stmt->bindParam(":unidade_medida", $this->unidade_medida);
-        $stmt->bindParam(":codigo_produto", $this->codigo_produto);
-        $stmt->execute();
-        return true;
+        try {
+            $query = "INSERT INTO produtos (idCategoria, nome, descricao, preco, quantidade, imagem, unidade_medida, codigo_produto) 
+                        VALUES (:idCategoria, :nome, :descricao, :preco, :quantidade, :imagem, :unidade_medida, :codigo_produto)";
+            $stmt = Connect::getInstance()->prepare($query);
+            $stmt->bindParam(":idCategoria", $this->idCategoria);
+            $stmt->bindParam(":nome", $this->nome);
+            $stmt->bindValue(":descricao", $this->descricao);
+            $stmt->bindParam(":preco", $this->preco);
+            $stmt->bindValue(":quantidade", 0); // Quantidade inicial como 0
+            $stmt->bindParam(":imagem", $this->imagem);
+            $stmt->bindParam(":unidade_medida", $this->unidade_medida);
+            $stmt->bindParam(":codigo_produto", $this->codigo_produto);
+            
+            if ($stmt->execute()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            // Log do erro para debug (opcional)
+            error_log("Erro ao inserir produto: " . $e->getMessage());
+            return false;
+        }
     }
 
     public function somaQuantidadeProdutos(int $idProduto, float $quantidade) 
@@ -283,7 +301,7 @@ class Produtos
         }
     }
 
-    public function update($id, $nome = null, $descricao = null, $idCategoria = null, $preco = null, $imagem = null, $unidade_medida = null)
+    public function update($id, $nome = null, $descricao = null, $idCategoria = null, $preco = null, $imagem = null, $unidade_medida = null, $codigo_produto = null)
     {
         $query = "UPDATE produtos SET";
         $params = [];
@@ -312,6 +330,10 @@ class Produtos
             $query .= " unidade_medida = :unidade_medida,";
             $params[":unidade_medida"] = $unidade_medida;
         }
+        if (!is_null($codigo_produto)) {
+            $query .= " codigo_produto = :codigo_produto,";
+            $params[":codigo_produto"] = $codigo_produto;
+        }
     
         // Removendo a última vírgula para evitar erro de SQL
         $query = rtrim($query, ',');
@@ -326,4 +348,4 @@ class Produtos
         // Retorna se houve alterações
         return $stmt->rowCount() > 0;
     }
-}    
+}
