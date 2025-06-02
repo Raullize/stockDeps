@@ -6,3 +6,5 @@ node_modules
 
 # Ignorar dependências do Composer
 vendor
+
+saida_log.txt
