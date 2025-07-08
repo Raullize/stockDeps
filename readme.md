@@ -2,9 +2,23 @@
 
 [![en](https://img.shields.io/badge/lang-en-red.svg)](./README.en.md)
 
-![DepsModels Logo](assets/web/images/logos/logo-without-background.png)
+<img src="assets/web/images/logos/logo-without-background.png" alt="DepsModels Logo" width="400">
+
+## 📋 Descrição
 
 O **Stock DEPS** é um sistema de gerenciamento de estoque robusto e intuitivo, desenvolvido para facilitar a organização e controle de produtos, clientes, fornecedores e movimentações de estoque. O sistema foi projetado com tecnologias modernas e utiliza a arquitetura **MVC** (Model-View-Controller) para oferecer uma solução escalável e eficiente.
+
+## 🎬 Demonstração
+
+Veja o Stock DEPS em ação! Confira nossa demonstração completa das principais funcionalidades:
+
+<div align="center">
+  <img src="assets/web/images/demo/demo.gif" alt="Demonstração do Stock DEPS" width="800">
+</div>
+
+> 📱 **Quer ver mais detalhes?** [Clique aqui para visualizar em tamanho completo](assets/web/images/demo/demo.gif)
+
+> ⏳ **Nota**: A demonstração pode demorar alguns segundos para carregar devido ao tamanho do arquivo. Por favor, aguarde!
 
 ## 🖥 Funcionalidades Principais
 
